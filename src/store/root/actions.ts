@@ -1,10 +1,9 @@
-import { ActionTree } from 'vuex'
+import { ActionTree, ActionContext } from 'vuex'
 import { IRootState } from './state'
 
 const actions: ActionTree<IRootState, IRootState> = {
-  serverInit (/* context */) {
-    // console.log('serverInit')
-    // your code
+  serverInit ({ dispatch }: ActionContext<IRootState, IRootState>) {
+    return dispatch('account/fetchAccount')
   },
 
   browserInit (/* context */) {

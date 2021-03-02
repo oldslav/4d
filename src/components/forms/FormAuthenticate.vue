@@ -1,50 +1,59 @@
 <template>
-  <q-form @submit="onSubmit" class="q-gutter-md">
-    <q-input
-      filled
-      v-model="form.username"
-      label="Login *"
-      hint="Name and surname"
-      lazy-rules
-      :rules="validateUsername"
-    />
+  <div class="q-gutter-md">
+    <q-inner-loading :showing="visibleLoading" style="z-index: 20;"/>
 
-    <q-input
-      filled
-      type="password"
-      v-model="form.password"
-      label="Password *"
-      lazy-rules
-      :rules="validatePassword"
-    />
+    <q-form @submit="onSubmit">
+      <q-input
+        filled
+        v-model="form.username"
+        label="Login *"
+        hint="Name and surname"
+        lazy-rules
+        :rules="validateUsername"
+      />
 
-    <div>
-      <q-btn label="Submit" type="submit" color="primary"/>
-    </div>
-  </q-form>
+      <q-input
+        filled
+        type="password"
+        v-model="form.password"
+        label="Password *"
+        lazy-rules
+        :rules="validatePassword"
+      />
+
+      <div>
+        <q-btn label="Submit" type="submit" color="primary"/>
+      </div>
+    </q-form>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import {defineComponent} from '@vue/composition-api'
 
 export default defineComponent({
   name: 'FormAuthenticate',
-  data () {
+  data() {
     return {
-      form: { login: '', username: '' }
+      form: {username: '', password: ''},
+      visibleLoading: false
     }
   },
   computed: {
     validateUsername: () => [(val: string) => val.length > 0 || 'Please type login'],
     validatePassword: () => [
       (val: string) => val !== '' || 'Please type password',
-      (val: string) => val.length > 8 || 'Please type a real password'
+      (val: string) => val.length > 7 || 'Minimum 8 symbols'
     ]
   },
   methods: {
-    onSubmit () {
+    onSubmit() {
+      this.visibleLoading = true;
       this.$store.dispatch('account/localLogin', this.form)
-      // console.log('onSubmit')
+        .finally(() => {
+          this.$emit('done');
+          this.visibleLoading = false;
+        })
     }
   }
 })

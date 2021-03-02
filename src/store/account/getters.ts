@@ -4,12 +4,16 @@ import { IRootState } from '../root/state'
 import { IAccountState } from './state'
 
 const getters: GetterTree<IAccountState, IRootState> = {
-  getAccount (/* context */) {
-    // your code
+  getAccessToken (state: IAccountState) {
+    return state.accessToken
   },
 
-  isAuthenticated (/* context */) {
-    // your code
+  isAuthenticated (state: IAccountState) {
+    return state.account !== null
+  },
+
+  getAccount (state: IAccountState) {
+    return state.account
   }
 }
 
