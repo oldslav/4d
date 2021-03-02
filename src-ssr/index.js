@@ -12,7 +12,6 @@
  */
 
 const express = require('express')
-const compression = require('compression')
 
 const ssr = require('quasar-ssr')
 const extension = require('./extension')
@@ -22,9 +21,6 @@ const port = process.env.PORT || 3000
 const serve = (path, cache) => express.static(ssr.resolveWWW(path), {
   maxAge: cache ? 1000 * 60 * 60 * 24 * 30 : 0
 })
-
-// gzip
-app.use(compression({ threshold: 0 }))
 
 // serve this with no cache, if built with PWA:
 if (ssr.settings.pwa) {
