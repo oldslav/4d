@@ -12,15 +12,15 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 import FormAuthenticate from 'components/forms/FormAuthenticate.vue'
 
 export default defineComponent({
   name: 'PageIndex',
   components: { FormAuthenticate },
-  computed:{
-    ...mapGetters('account',['getAccount', 'isAuthenticated'])
+  computed: {
+    ...mapGetters('account', ['getAccount', 'isAuthenticated'])
   }
 })
 </script>

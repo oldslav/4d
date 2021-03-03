@@ -88,6 +88,12 @@ module.exports = configure(function (ctx) {
             exclude: /node_modules/
           })
         }
+      },
+      env: {
+        API: {
+          serverBase: 'https://iuul.innopolis.university',
+          browserBase: '/'
+        }
       }
     },
 

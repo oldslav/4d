@@ -29,13 +29,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'FormAuthenticate',
-  data() {
+  data () {
     return {
-      form: {username: '', password: ''},
+      form: { username: '', password: '' },
       visibleLoading: false
     }
   },
@@ -47,12 +47,12 @@ export default defineComponent({
     ]
   },
   methods: {
-    onSubmit() {
-      this.visibleLoading = true;
+    onSubmit () {
+      this.visibleLoading = true
       this.$store.dispatch('account/localLogin', this.form)
         .finally(() => {
-          this.$emit('done');
-          this.visibleLoading = false;
+          this.$emit('done')
+          this.visibleLoading = false
         })
     }
   }
