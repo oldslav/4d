@@ -90,10 +90,8 @@ module.exports = configure(function (ctx) {
         }
       },
       env: {
-        API: {
-          serverBase: 'https://iuul.innopolis.university',
-          browserBase: '/'
-        }
+        SERVER_API_HOST: 'https://iuul.innopolis.university',
+        BROWSER_API_HOST: '/'
       }
     },
 

@@ -45,7 +45,7 @@ const createInstance = (store: Store<IRootState>) => {
   instance.interceptors.request.use(requestInterceptor(store))
 
   if (process.env.SERVER) {
-    instance.defaults.baseURL = process.env.SERVER ? process.env.API.serverBase : process.env.API.browserBase
+    instance.defaults.baseURL = process.env.SERVER ? process.env.SERVER_API_HOST : process.env.BROWSER_API_HOST
   }
 
   return instance
