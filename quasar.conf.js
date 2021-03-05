@@ -21,7 +21,7 @@ module.exports = configure(function (ctx) {
     },
 
     // https://quasar.dev/quasar-cli/prefetch-feature
-    // preFetch: true,
+    preFetch: true,
 
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -29,7 +29,8 @@ module.exports = configure(function (ctx) {
     boot: [
       'composition-api',
       'i18n',
-      'axios'
+      'axios',
+      'cookies'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -87,6 +88,10 @@ module.exports = configure(function (ctx) {
             exclude: /node_modules/
           })
         }
+      },
+      env: {
+        SERVER_API_HOST: 'https://iuul.innopolis.university',
+        BROWSER_API_HOST: '/'
       }
     },
 
@@ -94,7 +99,18 @@ module.exports = configure(function (ctx) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically,
+      proxy: {
+        // proxy all requests starting with /api to jsonplaceholder
+        '/api': {
+          target: 'https://iuul.innopolis.university',
+          changeOrigin: true
+        },
+        '/oauth': {
+          target: 'https://iuul.innopolis.university',
+          changeOrigin: true
+        }
+      }
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -116,7 +132,9 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Cookies'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
@@ -125,13 +143,16 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
-      pwa: true
+      pwa: false
     },
 
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: {
+        skipWaiting: true,
+        clientsClaim: true
+      }, // only for GenerateSW
       manifest: {
         name: '4D City Maps&Data',
         short_name: '4D City Maps&Data',
