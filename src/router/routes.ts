@@ -5,8 +5,8 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      { path: '/ui-kit', component: () => import('pages/UI-kit.vue') }
+      { path: '', name: 'index', component: () => import('pages/Index.vue') },
+      { path: '/UIKit', name: 'ui-kit', component: () => import('pages/UI-kit.vue') }
     ]
   },
 
@@ -14,6 +14,7 @@ const routes: RouteConfig[] = [
   // but you can also remove it
   {
     path: '*',
+    name: 'error-page',
     component: () => import('pages/Error404.vue')
   }
 ]

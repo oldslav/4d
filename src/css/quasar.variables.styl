@@ -12,13 +12,169 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary   = #1976D2
-$secondary = #26A69A
-$accent    = #9C27B0
+//$primary   = #1976D2
+//$secondary = #26A69A
+//$accent    = #9C27B0
+//
+//$dark      = #1D1D1D
+//
+//$positive  = #21BA45
+//$negative  = #C10015
+//$info      = #31CCEC
+//$warning   = #F2C037
 
-$dark      = #1D1D1D
+/////////////////////////////////////////////////////////////////
+////////////////////////    MAIN    /////////////////////////////
+/////////////////////////////////////////////////////////////////
 
-$positive  = #21BA45
-$negative  = #C10015
-$info      = #31CCEC
-$warning   = #F2C037
+$primary     = #0E8AFD
+$secondary   = #8FD93A
+
+$background  = #FFFFFF
+$light       = #F5F7FA
+$dark        = #C0C8CF
+$grey        = #333333
+
+$medium-blue = #007ADD
+$dark-blue   = #006BC1
+
+/////////////////////////////////////////////////////////////////
+////////////////////////    MAP    //////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+$map-pale-purple      = #E8B5B5 // Очень бледно-пурпурный
+$map-pink-antique     = #D26C6C // Розовый антик
+$map-purplish-red     = #9A525E // Серовато-пурпурно-красный
+$map-dark-peach       = #FFDCB3 // Темно - персиковый
+
+$map-light-blue       = #A6CEE3 // Светлый синий
+$map-shiny-blue       = #298BAF // Блестящий зеленовато - синий
+$map-dark-azure       = #075386 // Темно-лазурный
+$map-midnight-blue    = #003366 // Полуночно - синий
+
+$map-greenish-blue    = #ADC7CC // Очень светлый зеленовато - синий
+$map-very-light-green = #90D0BF // Очень светлый зеленый
+$map-bluish-green     = #679186 // Синевато - зеленый
+$map-moderate-green   = #346666 // Умеренный зеленовато - синий
+
+$map-light-green      = #C2DBAB // Очень светлый зеленый
+$map-pale-green       = #8BA771 // Бледно-зеленый
+$map-green-fern       = #59753F // Зеленый папоротник
+$map-violet-blue      = #333D64 // Фиолетово - синий
+
+$map-pale-blue        = #CDD1D6 // Очень бледный синий
+$map-slate-gray       = #7E8797 // Светлый аспидно-серый
+$map-tele-gray        = #909090 // Телегрей
+$map-gentian-blue     = #071834 // Горечавково - синий
+
+$map-dusty-blue       = #96EBEB // Пыльный голубой
+$map-green-jungle     = #35B3B3 // Зеленые джунгли Крайола
+$map-yellow-click     = #FFE606 // Желтый клик
+
+/////////////////////////////////////////////////////////////////
+////////////////////////    SERVICE    //////////////////////////
+/////////////////////////////////////////////////////////////////
+
+$green    = #84D197
+$orange   = #FFA63E
+$red      = #FF6565
+
+/////////////////////////////////////////////////////////////////
+////////////////////    ILLUSTRATIONS    ////////////////////////
+/////////////////////////////////////////////////////////////////
+
+$illustration-light          = #EEF7FF
+$illustration-light-blue     = #F5F9FE
+$illustration-light-gray     = #BBCFE2
+$illustration-blue           = #0E8AFD
+$illustration-dark-blue      = #568DC4
+$illustration-white          = #FFFFFF
+$illustration-gray           = #8597A8
+$illustration-dark-gray      = #465C72
+$illustration-dark-gray-plus = #38495B
+$illustration-black          = #25323F
+$illustration-skin           = #FBBEBE
+$illustration-dark-skin      = #F3AEAE
+$illustration-pink           = #FF6584
+
+/////////////////////////////////////////////////////////////////
+////////////////////    DARK THEME    ///////////////////////////
+/////////////////////////////////////////////////////////////////
+
+$dark-theme-light   = #465275
+$dark-theme-medium  = #343C50
+$dark-theme-dark    = #282D3B
+$dark-theme-black   = #1F232E
+
+/////////////////////////////////////////////////////////////////
+////////////////////    TYPOGRAPHY    ///////////////////////////
+/////////////////////////////////////////////////////////////////
+
+$headings ?= {
+    overline: {
+        size: 12px,
+        line-height: 16px,
+        weight: 700,
+        letter-spacing: 3px
+    },
+    h1: {
+        size: 48px,
+        line-height: 58px,
+        weight: 100,
+        letter-spacing: 0
+    },
+    h2: {
+        size: 36px,
+        line-height: 44px,
+        weight: 700,
+        letter-spacing: 0
+    },
+    h3: {
+        size: 30px,
+        line-height: 38px,
+        weight: 700,
+        letter-spacing: 0
+    },
+    title: {
+        size: 20px,
+        line-height: 28px,
+        weight: 400,
+        letter-spacing: 0
+    },
+    medium: {
+        size: 16px,
+        line-height: 24px,
+        weight: 400,
+        letter-spacing: 0.5px
+    },
+    medium-b: {
+        size: 16px,
+        line-height: 24px,
+        weight: 700,
+        letter-spacing: 0.5px
+    },
+    small: {
+        size: 14px,
+        line-height: 22px,
+        weight: 400,
+        letter-spacing: 0.5px
+    },
+    button: {
+        size: 14px,
+        line-height: 16px,
+        weight: 400,
+        letter-spacing: 0.75px
+    },
+    caption: {
+        size: 12px,
+        line-height: 16px,
+        weight: 400,
+        letter-spacing: 0.5px
+    }
+}
+
+$h-tags ?= {
+  h1: $headings.h1,
+  h2: $headings.h2,
+  h3: $headings.h3
+}

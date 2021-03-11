@@ -1,31 +1,31 @@
-<template>
-  <div class="q-gutter-md">
-    <q-inner-loading :showing="visibleLoading" style="z-index: 20;"/>
+<template lang="pug">
+.q-gutter-md
+  q-inner-loading(
+    :showing="visibleLoading"
+    style="z-index: 20;"
+  )
 
-    <q-form @submit="onSubmit">
-      <q-input
-        filled
-        v-model="form.username"
-        label="Login *"
-        hint="Name and surname"
-        lazy-rules
-        :rules="validateUsername"
-      />
+  q-form(@submit="onSubmit")
+    q-input(
+      filled
+      v-model="form.username"
+      label="Login *"
+      hint="Name and surname"
+      lazy-rules
+      :rules="validateUsername"
+    )
 
-      <q-input
-        filled
-        type="password"
-        v-model="form.password"
-        label="Password *"
-        lazy-rules
-        :rules="validatePassword"
-      />
+    q-input(
+      filled
+      type="password"
+      v-model="form.password"
+      label="Password *"
+      lazy-rules
+      :rules="validatePassword"
+    )
 
-      <div>
-        <q-btn label="Submit" type="submit" color="primary"/>
-      </div>
-    </q-form>
-  </div>
+    div
+      q-btn(label="Submit" type="submit" color="primary")
 </template>
 
 <script lang="ts">
@@ -35,7 +35,10 @@ export default defineComponent({
   name: 'FormAuthenticate',
   data () {
     return {
-      form: { username: '', password: '' },
+      form: {
+        password: '',
+        username: ''
+      },
       visibleLoading: false
     }
   },

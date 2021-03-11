@@ -5,20 +5,20 @@ import { IRootState } from 'src/store/root/state'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $axios: AxiosInstance;
+    $axios: AxiosInstance
   }
 }
 
 declare module 'vuex/types/index' {
   interface Store<S> {
-    $axios: AxiosInstance;
-    REFRESH_PROMISE: null | Promise<void>;
+    $axios: AxiosInstance
+    REFRESH_PROMISE: null | Promise<void>
   }
 }
 
 declare module 'axios' {
   interface AxiosRequestConfig {
-    skipAuth: boolean;
+    skipAuth: boolean
   }
 }
 
