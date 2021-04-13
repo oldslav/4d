@@ -5,7 +5,7 @@ export interface IRootState {
 function state (): IRootState {
   return {
     isMobile: false
-  }
+  };
 }
 
-export default state
+export default state;

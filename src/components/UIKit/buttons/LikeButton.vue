@@ -10,70 +10,70 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from '@vue/composition-api'
+  import { defineComponent, ref, computed } from "@vue/composition-api";
 
-export default defineComponent({
-  name: 'LikeButton',
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    count: {
-      type: Number,
-      default: 0
-    },
-    disable: {
-      type: Boolean,
-      default: false
-    },
-    activeColor: {
-      type: String,
-      default: ''
-    },
-    active: {
-      type: Boolean,
-      default: false
-    },
-    activeIcon: {
-      type: String,
-      default: ''
-    }
-  },
-
-  setup (props) {
-    const hover = ref(false)
-
-    const buttonIcon = computed(() => {
-      if (props.active) {
-        return props.activeIcon || props.icon
+  export default defineComponent({
+    name: "LikeButton",
+    props: {
+      icon: {
+        type: String,
+        default: ""
+      },
+      count: {
+        type: Number,
+        default: 0
+      },
+      disable: {
+        type: Boolean,
+        default: false
+      },
+      activeColor: {
+        type: String,
+        default: ""
+      },
+      active: {
+        type: Boolean,
+        default: false
+      },
+      activeIcon: {
+        type: String,
+        default: ""
       }
-      return props.icon
-    })
+    },
 
-    const iconStyles = computed(() => {
-      if (props.disabled) {
-        return { opacity: 0.6 }
-      }
-      if (props.active || hover.value) {
-        return {
-          color: props.activeColor,
-          opacity: 1
+    setup (props) {
+      const hover = ref(false);
+
+      const buttonIcon = computed(() => {
+        if (props.active) {
+          return props.activeIcon || props.icon;
         }
-      }
-      return {
-        color: '#FFFFFF',
-        opacity: 0.6
-      }
-    })
+        return props.icon;
+      });
 
-    return {
-      hover,
-      buttonIcon,
-      iconStyles
+      const iconStyles = computed(() => {
+        if (props.disabled) {
+          return { opacity: 0.6 };
+        }
+        if (props.active || hover.value) {
+          return {
+            color: props.activeColor,
+            opacity: 1
+          };
+        }
+        return {
+          color: "#FFFFFF",
+          opacity: 0.6
+        };
+      });
+
+      return {
+        hover,
+        buttonIcon,
+        iconStyles
+      };
     }
-  }
-})
+  });
 </script>
 
 <style lang="stylus" scoped>

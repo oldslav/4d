@@ -1,11 +1,11 @@
-import { Module } from 'vuex'
+import { Module } from "vuex";
 
-import { IRootState } from '../root/state'
-import state, { IAccountState } from './state'
+import { IRootState } from "../root/state";
+import state, { IAccountState } from "./state";
 
-import actions from './actions'
-import getters from './getters'
-import mutations from './mutations'
+import actions from "./actions";
+import getters from "./getters";
+import mutations from "./mutations";
 
 const accountModule: Module<IAccountState, IRootState> = {
   namespaced: true,
@@ -13,6 +13,6 @@ const accountModule: Module<IAccountState, IRootState> = {
   getters,
   mutations,
   state
-}
+};
 
-export default accountModule
+export default accountModule;

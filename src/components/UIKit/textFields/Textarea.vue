@@ -22,48 +22,48 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { matArrowDropDown } from '@quasar/extras/material-icons'
+  import { defineComponent } from "@vue/composition-api";
+  import { matArrowDropDown } from "@quasar/extras/material-icons";
 
-export default defineComponent({
-  name: 'Textarea',
-  props: {
-    value: {
-      type: String,
-      default: ''
+  export default defineComponent({
+    name: "Textarea",
+    props: {
+      value: {
+        type: String,
+        default: ""
+      },
+      placeholder: {
+        type: String,
+        default: "Введите текст"
+      },
+      disable: {
+        type: Boolean,
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: true
+      },
+      debounce: {
+        type: Number,
+        default: 0
+      },
+      valid: {
+        type: Boolean,
+        default: true
+      },
+      max: {
+        type: Number,
+        default: 0
+      }
     },
-    placeholder: {
-      type: String,
-      default: 'Введите текст'
-    },
-    disable: {
-      type: Boolean,
-      default: false
-    },
-    dense: {
-      type: Boolean,
-      default: true
-    },
-    debounce: {
-      type: Number,
-      default: 0
-    },
-    valid: {
-      type: Boolean,
-      default: true
-    },
-    max: {
-      type: Number,
-      default: 0
-    }
-  },
 
-  setup () {
-    return {
-      matArrowDropDown
+    setup () {
+      return {
+        matArrowDropDown
+      };
     }
-  }
-})
+  });
 </script>
 
 <style lang="stylus" scoped>

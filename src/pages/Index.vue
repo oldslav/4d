@@ -7,16 +7,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { mapGetters } from 'vuex'
+  import { defineComponent } from "@vue/composition-api";
+  import { mapGetters } from "vuex";
 
-import FormAuthenticate from 'components/forms/auth/LoginForm.vue'
+  import LoginForm from "components/forms/auth/LoginForm.vue";
 
-export default defineComponent({
-  name: 'PageIndex',
-  components: { FormAuthenticate },
-  computed: {
-    ...mapGetters('account', ['getAccount', 'isAuthenticated'])
-  }
-})
+  export default defineComponent({
+    name: "PageIndex",
+    components: { LoginForm },
+    computed: {
+      ...mapGetters("account", ["getAccount", "isAuthenticated"])
+    }
+  });
 </script>

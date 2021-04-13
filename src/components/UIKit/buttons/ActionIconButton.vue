@@ -7,25 +7,25 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
+  import { defineComponent } from "@vue/composition-api";
 
-export default defineComponent({
-  name: 'ActionIconButton',
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    label: {
-      type: String,
-      default: 'Label'
-    },
-    disable: {
-      type: Boolean,
-      default: false
+  export default defineComponent({
+    name: "ActionIconButton",
+    props: {
+      icon: {
+        type: String,
+        default: ""
+      },
+      label: {
+        type: String,
+        default: "Label"
+      },
+      disable: {
+        type: Boolean,
+        default: false
+      }
     }
-  }
-})
+  });
 </script>
 
 <style lang="stylus" scoped>

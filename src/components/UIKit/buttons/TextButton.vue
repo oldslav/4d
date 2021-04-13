@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
+  import { defineComponent } from "@vue/composition-api";
 
-export default defineComponent({
-  name: 'TextButton',
-  props: {
-    label: {
-      type: String,
-      default: 'Label'
-    },
-    disable: {
-      type: Boolean,
-      default: false
+  export default defineComponent({
+    name: "TextButton",
+    props: {
+      label: {
+        type: String,
+        default: "Label"
+      },
+      disable: {
+        type: Boolean,
+        default: false
+      }
     }
-  }
-})
+  });
 </script>
 
 <style lang="stylus" scoped>

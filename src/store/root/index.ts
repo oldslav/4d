@@ -1,4 +1,4 @@
-import state from './state'
-import actions from './actions'
+import state from "./state";
+import actions from "./actions";
 
-export default { state, actions }
+export default { state, actions };

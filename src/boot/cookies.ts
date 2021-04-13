@@ -1,7 +1,7 @@
-import { boot } from 'quasar/wrappers'
-import { Cookies, LooseDictionary } from 'quasar'
+import { boot } from "quasar/wrappers";
+import { Cookies, LooseDictionary } from "quasar";
 
-declare module 'vuex/types/index' {
+declare module "vuex/types/index" {
   interface Store<S> {
     $cookies: Cookies
   }
@@ -9,6 +9,6 @@ declare module 'vuex/types/index' {
 
 export default boot(({ app, ssrContext }) => {
   if (app.store) {
-    app.store.$cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext as LooseDictionary) : Cookies
+    app.store.$cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext as LooseDictionary) : Cookies;
   }
-})
+});

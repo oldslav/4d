@@ -13,41 +13,41 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+  import { defineComponent } from "@vue/composition-api";
 
-export default defineComponent({
-  name: 'Textarea',
-  props: {
-    value: {
-      type: String,
-      default: ''
-    },
-    placeholder: {
-      type: String,
-      default: ''
-    },
-    label: {
-      type: String,
-      default: ''
-    },
-    disable: {
-      type: Boolean,
-      default: false
-    },
-    valid: {
-      type: Boolean,
-      default: true
-    },
-    dense: {
-      type: Boolean,
-      default: false
-    },
-    debounce: {
-      type: Number,
-      default: 0
+  export default defineComponent({
+    name: "Textarea",
+    props: {
+      value: {
+        type: String,
+        default: ""
+      },
+      placeholder: {
+        type: String,
+        default: ""
+      },
+      label: {
+        type: String,
+        default: ""
+      },
+      disable: {
+        type: Boolean,
+        default: false
+      },
+      valid: {
+        type: Boolean,
+        default: true
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      debounce: {
+        type: Number,
+        default: 0
+      }
     }
-  }
-})
+  });
 </script>
 
 <style lang="stylus" scoped>

@@ -19,9 +19,9 @@ export interface IAccount {
   lastName: string,
   patronymic: string,
 
-  'job_position': string,
-  'no_patronymic': boolean,
-  'isYuristic': boolean
+  "job_position": string,
+  "no_patronymic": boolean,
+  "isYuristic": boolean
 
   pcmEmail: boolean,
   pcmPhone: boolean,

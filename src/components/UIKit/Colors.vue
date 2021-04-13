@@ -1,8 +1,12 @@
 <template>
   <div>
-    <div class="text-h1 ui__title">COLORS</div>
+    <div class="text-h1 ui__title">
+      COLORS
+    </div>
 
-    <div class="text-h3">MAIN</div>
+    <div class="text-h3">
+      MAIN
+    </div>
     <div class="colors__block colors__block_main">
       <div>primary</div>
       <div>secondary</div>
@@ -14,7 +18,9 @@
       <div>dark-blue</div>
     </div>
 
-    <div class="text-h3">MAP COLOR</div>
+    <div class="text-h3">
+      MAP COLOR
+    </div>
     <div class="colors__block colors__block_map">
       <div>map-pale-purple</div>
       <div>map-pink-antique</div>
@@ -41,14 +47,18 @@
       <div>map-yellow-click</div>
     </div>
 
-    <div class="text-h3">SERVICE</div>
+    <div class="text-h3">
+      SERVICE
+    </div>
     <div class="colors__block colors__block_service">
       <div>green</div>
       <div>orange</div>
       <div>red</div>
     </div>
 
-    <div class="text-h3">ILLUSTRATIONS</div>
+    <div class="text-h3">
+      ILLUSTRATIONS
+    </div>
     <div class="colors__block colors__block_illustrations">
       <div>illustration-light</div>
       <div>illustration-light-blue</div>
@@ -65,7 +75,9 @@
       <div>illustration-pink</div>
     </div>
 
-    <div class="text-h3">DARK THEME</div>
+    <div class="text-h3">
+      DARK THEME
+    </div>
     <div class="colors__block colors__block_dark">
       <div>dark-theme-light</div>
       <div>dark-theme-medium</div>

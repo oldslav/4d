@@ -16,16 +16,15 @@
         unelevated
         to="/"
         label="Go Home"
-        no-caps
-      />
+        no-caps></q-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+  import { defineComponent } from "@vue/composition-api";
 
-export default defineComponent({
-  name: 'Error404'
-})
+  export default defineComponent({
+    name: "Error404"
+  });
 </script>

@@ -18,29 +18,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+  import { defineComponent } from "@vue/composition-api";
 
-export default defineComponent({
-  name: 'Search',
-  props: {
-    value: {
-      type: String,
-      default: ''
-    },
-    placeholder: {
-      type: String,
-      default: 'Search'
-    },
-    disable: {
-      type: Boolean,
-      default: false
-    },
-    debounce: {
-      type: Number,
-      default: 0
+  export default defineComponent({
+    name: "Search",
+    props: {
+      value: {
+        type: String,
+        default: ""
+      },
+      placeholder: {
+        type: String,
+        default: "Search"
+      },
+      disable: {
+        type: Boolean,
+        default: false
+      },
+      debounce: {
+        type: Number,
+        default: 0
+      }
     }
-  }
-})
+  });
 </script>
 
 <style lang="stylus" scoped>

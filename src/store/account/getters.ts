@@ -1,20 +1,20 @@
-import { GetterTree } from 'vuex'
+import { GetterTree } from "vuex";
 
-import { IRootState } from '../root/state'
-import { IAccountState } from './state'
+import { IRootState } from "../root/state";
+import { IAccountState } from "./state";
 
 const getters: GetterTree<IAccountState, IRootState> = {
   getAccessToken (state: IAccountState) {
-    return state.accessToken
+    return state.accessToken;
   },
 
   isAuthenticated (state: IAccountState) {
-    return state.account !== null
+    return state.account !== null;
   },
 
   getAccount (state: IAccountState) {
-    return state.account
+    return state.account;
   }
-}
+};
 
-export default getters
+export default getters;

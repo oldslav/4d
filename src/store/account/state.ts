@@ -1,4 +1,4 @@
-import { IAccount, IAccessToken } from './models'
+import { IAccount, IAccessToken } from "./models";
 
 export interface IAccountState {
   account: IAccount | null,
@@ -9,7 +9,7 @@ function state (): IAccountState {
   return {
     account: null,
     accessToken: null
-  }
+  };
 }
 
-export default state
+export default state;
