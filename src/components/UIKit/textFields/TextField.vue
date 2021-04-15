@@ -13,10 +13,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from "@vue/composition-api";
-
-  export default defineComponent({
-    name: "Textarea",
+  export default {
+    name: "TextField",
     props: {
       value: {
         type: String,
@@ -47,7 +45,7 @@
         default: 0
       }
     }
-  });
+  };
 </script>
 
 <style lang="stylus" scoped>

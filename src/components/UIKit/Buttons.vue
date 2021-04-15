@@ -1,8 +1,8 @@
 <template lang="pug">
   div
-    .text-h1.ui__title BUTTONS
-
-    .buttons__list
+    h3(class="text-title")
+      | Buttons
+    div(class="row q-gutter-md justify-start")
       q-btn(color="primary" label="Outlined" icon="icon-pet")
       q-btn(outline color="primary" label="Outlined")
       q-btn(color="primary" label="Primary")
@@ -17,6 +17,4 @@
 </script>
 
 <style lang="stylus" scoped>
-.buttons__list > *
-  margin 15px
 </style>

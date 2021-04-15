@@ -1,9 +1,7 @@
 <template lang="pug">
-  q-page
-    Buttons.ui__block
-    TextFields.ui__block
-    Colors.ui__block
-    Typography.ui__block
+  div(class="q-mx-xl")
+    Buttons
+    TextFields
 </template>
 
 <script>
@@ -25,11 +23,5 @@
 </script>
 
 <style lang="stylus">
-.ui__block
-  padding 15px
 
-.ui__title
-  margin 20px 0
-  text-align center
-  color $illustration-white
 </style>

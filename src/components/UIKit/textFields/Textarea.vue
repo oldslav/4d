@@ -14,7 +14,7 @@
       :class="{ 'textarea_error': !valid }"
     )
       template(v-slot:append)
-        q-icon(:name="matArrowDropDown" style="color: #C0C8CF")
+        q-icon(name="matArrowDropDown" style="color: #C0C8CF")
 
     .row.justify-center
     .textarea__tooltip.text-caption.text-center(v-show="max && value.length >= max")
@@ -22,10 +22,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from "@vue/composition-api";
-  import { matArrowDropDown } from "@quasar/extras/material-icons";
-
-  export default defineComponent({
+  export default {
     name: "Textarea",
     props: {
       value: {
@@ -56,14 +53,8 @@
         type: Number,
         default: 0
       }
-    },
-
-    setup () {
-      return {
-        matArrowDropDown
-      };
     }
-  });
+  };
 </script>
 
 <style lang="stylus" scoped>
