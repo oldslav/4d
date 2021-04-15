@@ -1,9 +1,9 @@
-<template>
-  <q-layout view="lHh Lpr lFf">
-    <q-page-container>
-      <router-view></router-view>
-    </q-page-container>
-  </q-layout>
+<template lang="pug">
+  q-layout(view="lHh Lpr lFf")
+    q-header
+      router-view(name="toolbar")
+    q-page-container
+      router-view
 </template>
 
 <script lang="ts">

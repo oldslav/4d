@@ -5,8 +5,19 @@ const routes: RouteConfig[] = [
     path: "/",
     component: (): Promise<any> => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "index", component: (): Promise<any> => import("pages/Index.vue") },
-      { path: "/UIKit", name: "ui-kit", component: (): Promise<any> => import("pages/UI-kit.vue") }
+      {
+        path: "",
+        name: "index",
+        component: (): Promise<any> => import("pages/Index.vue")
+      },
+      {
+        path: "/UIPlayground",
+        name: "ui-playground",
+        components: {
+          default: (): Promise<any> => import("pages/UIPlayground.vue"),
+          toolbar: (): Promise<any> => import("components/Toolbar.vue")
+        }
+      }
     ]
   },
 
