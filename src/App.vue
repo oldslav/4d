@@ -1,7 +1,7 @@
-<template>
-  <div id="q-app">
-    <router-view></router-view>
-  </div>
+<template lang="pug">
+  div#q-app
+    component(:is="layout")
+      router-view
 </template>
 
 <script>
@@ -9,6 +9,11 @@
     name: "App",
     created () {
       this.$q.dark.set(false);
+    },
+    computed: {
+      layout () {
+        return this.$route.meta.layout || "div";
+      }
     }
   };
 </script>

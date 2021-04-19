@@ -1,9 +1,6 @@
 <template lang="pug">
   q-page.row.items-center.justify-evenly
-    div(style="width: 500px")
-      form-authenticate(v-if="!isAuthenticated")
-      div(v-if="isAuthenticated")
-        router-link(:to="{ name: 'ui-playground' }") UI Kit
+    router-link(:to="{ name: 'playground' }") UI Kit
 </template>
 
 <script lang="ts">

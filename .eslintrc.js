@@ -1,5 +1,4 @@
 const INLINE_ELEMENTS = require("eslint-plugin-vue/lib/utils/inline-non-void-elements.json");
-const { resolve } = require('path');
 
 // const error = "error";
 const error = "warn";
@@ -15,20 +14,14 @@ module.exports = {
   ],
   parser: '@babel/eslint-parser',
   parserOptions: {
-    project: resolve(__dirname, './tsconfig.json'),
-    tsconfigRootDir: __dirname,
-    babelOptions: {
-      configFile: resolve(__dirname, './babel.config.js'),
-    },
     ecmaVersion: 2020,
     sourceType: "module"
   },
   plugins: [
-    "@babel"
+    "@babel",
+    "vue"
   ],
   rules: {
-    // "no-console": process.env.NODE_ENV === "production" ? warn : "off",
-    // "no-debugger": process.env.NODE_ENV === "production" ? warn : "off",
     "no-console": "warn",
     "no-debugger": process.env.NODE_ENV === "production" ? error : "off",
     "semi": ["error", "always"],
@@ -114,7 +107,6 @@ module.exports = {
         // "@vue/typescript/recommended",
         // "@vue/prettier",
         // "@vue/prettier/@typescript-eslint",
-        "plugin:vue/essential",
         "plugin:vue/base"
       ],
       rules: {

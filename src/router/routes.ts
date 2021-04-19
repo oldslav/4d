@@ -1,24 +1,30 @@
 import { RouteConfig } from "vue-router";
 
+import MainLayout from "@/layouts/MainLayout.vue";
+import Toolbar from "@/components/Toolbar.vue";
+
 const routes: RouteConfig[] = [
   {
     path: "/",
-    component: (): Promise<any> => import("layouts/MainLayout.vue"),
-    children: [
-      {
-        path: "",
-        name: "index",
-        component: (): Promise<any> => import("pages/Index.vue")
-      },
-      {
-        path: "/UIPlayground",
-        name: "ui-playground",
-        components: {
-          default: (): Promise<any> => import("pages/UIPlayground.vue"),
-          toolbar: (): Promise<any> => import("components/Toolbar.vue")
-        }
-      }
-    ]
+    name: "main",
+    components: {
+      default: (): Promise<any> => import("pages/Index.vue"),
+      toolbar: Toolbar
+    },
+    meta: {
+      layout: MainLayout
+    }
+  },
+  {
+    path: "/playground",
+    name: "playground",
+    components: {
+      default: (): Promise<any> => import("pages/UIPlayground.vue"),
+      toolbar: Toolbar
+    },
+    meta: {
+      layout: MainLayout
+    }
   },
 
   // Always leave this as last one,
