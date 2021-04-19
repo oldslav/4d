@@ -3,6 +3,18 @@
     "locales": {
       "ru": "Russian",
       "en-us": "English"
+    },
+    "action": {
+      "goBack": "Go back"
+    },
+    "error": {
+      "404": "Page not found"
+    },
+    "message": {
+      "notFound": {
+        "top": "",
+        "bottom": ""
+      }
     }
   }
 }
