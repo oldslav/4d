@@ -1,30 +1,37 @@
-<template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
-    <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
-
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
-      </div>
-
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps></q-btn>
-    </div>
-  </div>
+<template lang="pug">
+  q-page.error404.column.justify-start.items-center.q-pt-xl.full-height.bg-secondary-light
+    h2.text-title.error404__title
+      | {{ $t("common.error.notFound.title") }}
+    h3.text-subtitle.text-center.q-my-lg.q-px-sm
+      div
+        | {{ $t("common.error.notFound.topSub") }}
+      div
+        | {{ $t("common.error.notFound.bottomSub") }}
+    q-btn(flat @click="goBack()" color="primary" :label="$t('entity.action.goBack')")
+    q-img.q-mt-xl.error404__image(src="@/assets/svg/404.svg")
 </template>
 
-<script lang="ts">
-  import { defineComponent } from "@vue/composition-api";
-
-  export default defineComponent({
-    name: "Error404"
-  });
+<script>
+  export default {
+    name: "Error404",
+    methods: {
+      goBack () {
+        this.$router.go(-1);
+      }
+    }
+  };
 </script>
+
+<style lang="stylus">
+  .error404 {
+    &__image {
+      max-width 660px
+    }
+  }
+
+  @media (max-width: $breakpoint-sm-min) {
+    .error404__title {
+      font-size 24px
+    }
+  }
+</style>

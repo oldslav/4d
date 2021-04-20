@@ -3,6 +3,18 @@
     "locales": {
       "ru": "Russian",
       "en-us": "English"
+    },
+    "error": {
+      "notFound": {
+        "title": "Page not found",
+        "topSub": "Ищете что-то интересное на нашем сайте?",
+        "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
+      }
+    }
+  },
+  "entity": {
+    "action": {
+      "goBack": "Go back"
     }
   }
 }
