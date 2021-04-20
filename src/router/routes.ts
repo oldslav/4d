@@ -33,7 +33,7 @@ const routes: RouteConfig[] = [
     path: "*",
     name: "error-page",
     components: {
-      default: (): Promise<any> => import("pages/Error404.vue"),
+      default: (): Promise<any> => import("pages/RequestsEmpty.vue"),
       toolbar: Toolbar
     },
     meta: {
