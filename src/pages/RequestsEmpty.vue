@@ -3,17 +3,16 @@
     h3.requests-empty__title.text-center
       | У вас пока нет ни одной заявки
     .text-subtitle.text-center.q-px-lg
-      | Вы можете перейти в раздел
-      span.q-mx-xs
-        router-link.text-primary(to="/")
-          | Сервисы
-      | и ознакомиться с возможностями и предложениями Иннополиса
+      | {{ $t("employee.profile.tickets.empty.subtitle1") }}
+      router-link.text-primary(to="/")
+        | {{ $t("employee.profile.tickets.empty.services") }}
+      | {{ $t("employee.profile.tickets.empty.subtitle2") }}
     q-img.requests-empty__image.q-mt-xl(src="@/assets/svg/empty-placeholder.svg")
 </template>
 
 <script>
   export default {
-    name: "RequestsEmpty"
+    name: "RequestsEmpty",
   };
 </script>
 
@@ -27,6 +26,7 @@
       max-width 650px
     }
   }
+
   @media (max-width: $breakpoint-sm-min) {
     .requests-empty__title {
       font-size 20px
