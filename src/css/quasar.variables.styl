@@ -63,69 +63,84 @@ $dark-theme-black   = #1F232E
 ////////////////////    TYPOGRAPHY    ///////////////////////////
 /////////////////////////////////////////////////////////////////
 
+$h1 = 48px
+$h2 = 36px
+$h3 = 30px
+$h4 = 24px
+$h5 = 20px
+$medium = 16px
+$small = 14px
+$caption = 12px
+
 $typography-font-family = "Leto Sans"
 $headings ?= {
     overline: {
-        size: 12px,
+        size: $caption,
         line-height: 16px,
         weight: 700,
         letter-spacing: 3px
     },
     h1: {
-        size: 48px,
+        size: $h1,
         line-height: 58px,
         weight: 100,
         letter-spacing: 0
     },
     h2: {
-        size: 36px,
+        size: $h2,
         line-height: 44px,
         weight: 700,
         letter-spacing: 0
     },
     h3: {
-        size: 30px,
+        size: $h3,
         line-height: 38px,
         weight: 700,
         letter-spacing: 0
     },
+    h4: {
+        size: $h4,
+        line-height: 28px,
+        weight: 700,
+        letter-spacing: 0
+    }
     title: {
-        size: 36px,
+        size: $h2,
         line-height: 44px,
         weight: 700
     },
     subtitle: {
-        size: 16px,
+        size: $medium,
         line-height: 20px,
         weight: 400,
         letter-spacing: 0.5px
     },
     medium: {
-        size: 16px,
+        size: $medium,
         line-height: 24px,
         weight: normal,
         letter-spacing: 0.5px
     },
     medium-b: {
-        size: 16px,
+        size: $medium,
         line-height: 24px,
         weight: 700,
         letter-spacing: 0.5px
     },
     small: {
-        size: 14px,
+        size: $small,
         line-height: 22px,
         weight: 400,
         letter-spacing: 0.5px
     },
     button: {
-        size: 14px,
+        size: $small,
         line-height: 16px,
         weight: 400,
         letter-spacing: 0.75px
     },
     caption: {
-        size: 12px,
+        size: $caption,
         line-height: 16px,
         weight: 400,
         letter-spacing: 0.5px

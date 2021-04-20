@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.error404.column.justify-start.items-center.q-pt-xl.full-height.bg-secondary-light
-    h2.text-title.error404__title
+    h2.text-title.text-center.error404__title
       | {{ $t("common.error.notFound.title") }}
     h3.text-subtitle.text-center.q-my-lg.q-px-sm
       div
@@ -31,7 +31,7 @@
 
   @media (max-width: $breakpoint-sm-min) {
     .error404__title {
-      font-size 24px
+      font-size $h4
     }
   }
 </style>
