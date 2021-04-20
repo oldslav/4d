@@ -2,8 +2,7 @@
   q-toolbar
     q-toolbar-title
       Title
-    div.col-1
-      q-select(v-model="locale" color="primary" :options="locales" option-label="label" option-value="value" filled flat)
+    q-select(v-model="locale" color="primary" :options="locales" option-label="label" option-value="value" filled flat)
 
     q-toggle(
       v-model="darkMode" unchecked-icon="dark_mode" checked-icon="light_mode"
