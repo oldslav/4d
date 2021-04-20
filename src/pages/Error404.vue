@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-page.error404.column.justify-start.items-center.q-pt-xl.full-height
+  q-page.error404.column.justify-start.items-center.q-pt-xl.full-height.bg-illustration-light-blue
     h2.text-title.error404__title
       | {{ $t("common.error.notFound.title") }}
     h3.text-subtitle.text-center.q-my-lg.q-px-sm
@@ -7,8 +7,7 @@
         | {{ $t("common.error.notFound.topSub") }}
       div
         | {{ $t("common.error.notFound.bottomSub") }}
-    a(@click="goBack()").text-subtitle.text-illustration-blue.error404__link
-      | {{ $t("entity.action.goBack") }}
+    q-btn(flat @click="goBack()" color="illustration-blue" :label="$t('entity.action.goBack')")
     q-img.q-mt-xl.error404__image(src="@/assets/svg/404.svg")
 </template>
 
@@ -25,16 +24,8 @@
 
 <style lang="stylus">
   .error404 {
-    background-color $illustration-light-blue
-
     &__image {
       max-width 660px
-    }
-
-    &__link {
-      &:hover {
-        cursor pointer
-      }
     }
   }
 
