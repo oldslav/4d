@@ -1,7 +1,7 @@
 <template lang="pug">
-  .error404.column.justify-start.items-center.q-pt-xl.fullscreen
+  q-page.error404.column.justify-start.items-center.q-pt-xl.full-height
     h2.text-title.error404__title
-      | {{ $t("common.error[404]") }}
+      | {{ $t("common.error.notFound.title") }}
     h3.text-subtitle.text-center.q-my-lg.q-px-sm
       div
         | {{ $t("common.error.notFound.topSub") }}

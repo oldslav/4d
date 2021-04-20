@@ -5,8 +5,8 @@
       "en-us": "English"
     },
     "error": {
-      "404": "Page not found",
       "notFound": {
+        "title": "Page not found",
         "topSub": "Ищете что-то интересное на нашем сайте?",
         "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
       }
