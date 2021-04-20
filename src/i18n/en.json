@@ -4,17 +4,17 @@
       "ru": "Russian",
       "en-us": "English"
     },
+    "error": {
+      "404": "Page not found",
+      "notFound": {
+        "topSub": "Ищете что-то интересное на нашем сайте?",
+        "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
+      }
+    }
+  },
+  "entity": {
     "action": {
       "goBack": "Go back"
-    },
-    "error": {
-      "404": "Page not found"
-    },
-    "message": {
-      "notFound": {
-        "top": "",
-        "bottom": ""
-      }
     }
   }
 }

@@ -1,11 +1,15 @@
 <template lang="pug">
-  .error404.fullscreen.column
-    h1.error404__heading {{ $t("common.error[404]") }}
-    .error404__text
-      p.error404__label {{ $t("common.message.notFound.top") }}
-      p.error404__label {{ $t("common.message.notFound.bottom") }}
-    a(@click="goBack()").error404__link {{ $t("common.action.goBack") }}
-    q-img.error404__image(src="@/assets/svg/404.svg")
+  .error404.column.justify-start.items-center.q-pt-xl.fullscreen
+    h2.text-title.error404__title
+      | {{ $t("common.error[404]") }}
+    h3.text-subtitle.text-center.q-my-lg.q-px-sm
+      div
+        | {{ $t("common.error.notFound.topSub") }}
+      div
+        | {{ $t("common.error.notFound.bottomSub") }}
+    a(@click="goBack()").text-subtitle.text-illustration-blue.error404__link
+      | {{ $t("entity.action.goBack") }}
+    q-img.q-mt-xl.error404__image(src="@/assets/svg/404.svg")
 </template>
 
 <script>
@@ -22,35 +26,12 @@
 <style lang="stylus">
   .error404 {
     background-color $illustration-light-blue
-    align-items center
-    justify-content flex-start
-    padding-top 70px
-
-    &__heading {
-      font-size 36px
-      font-weight normal
-    }
 
     &__image {
       max-width 660px
-      margin-top 50px
-    }
-
-    &__text {
-      text-align center
-      margin 24px 0
-    }
-
-    &__label {
-      margin 0
-      padding 0
-      color $grey
     }
 
     &__link {
-      color $illustration-blue
-      font-size 16px
-
       &:hover {
         cursor pointer
       }
@@ -58,7 +39,7 @@
   }
 
   @media (max-width: $breakpoint-sm-min) {
-    .error404__heading {
+    .error404__title {
       font-size 24px
     }
   }
