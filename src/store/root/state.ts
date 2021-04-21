@@ -1,6 +1,4 @@
-export interface IRootState {
-  isMobile: boolean
-}
+import { IRootState } from "../types/root";
 
 function state (): IRootState {
   return {

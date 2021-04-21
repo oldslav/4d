@@ -1,19 +1,17 @@
-<template>
-  <q-layout view="lHh Lpr lFf">
-    <q-page-container>
-      <router-view></router-view>
-    </q-page-container>
-  </q-layout>
+<template lang="pug">
+  q-layout(view="hHh Lpr lFf")
+    q-header(elevated)
+      router-view(name="toolbar")
+    q-drawer(show-if-above v-model="left" side="left" elevated)
+      router-view(name="asideLeft")
+    q-drawer(v-model="right" side="right" elevated)
+      router-view(name="asideRight")
+    q-page-container
+      router-view
 </template>
 
-<script lang="ts">
-  import { defineComponent } from "@vue/composition-api";
-
-  export default defineComponent({
-    name: "MainLayout",
-    preFetch ({ store, ssrContext, currentRoute }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return store.dispatch("serverInit", { ssrContext, currentRoute });
-    }
-  });
+<script>
+  export default {
+    name: "MainLayout"
+  };
 </script>

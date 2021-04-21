@@ -1,13 +1,15 @@
 $alpha = 0.1;
 
 $primary     = #0E8AFD
-$primary-light = rgba(14, 138, 253, $alpha)
+$primary-light = transparentify($primary, $primary, $alpha)
 $secondary   = #8FD93A
+$background-secondary = #F5F9FE
 
 $background  = #FFFFFF
 $light       = #F5F7FA
-$dark        = #C0C8CF
+$dark        = #1F232E
 $grey        = #333333
+$dark-secondary = #1E212B
 
 $medium-blue = #007ADD
 $dark-blue   = #006BC1
@@ -44,15 +46,3 @@ $map-gentian-blue     = #071834 // Горечавково - синий
 $map-dusty-blue       = #96EBEB // Пыльный голубой
 $map-green-jungle     = #35B3B3 // Зеленые джунгли Крайола
 $map-yellow-click     = #FFE606 // Желтый клик
-
-/////////////////////////////////////////////////////////////////
-//////////////////////    BUTTONS    ////////////////////////////
-/////////////////////////////////////////////////////////////////
-
-.text-primary-light {
-  color: $grey;
-}
-
-.bg-primary-light {
-  background: $primary-light;
-}

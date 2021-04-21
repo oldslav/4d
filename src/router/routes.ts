@@ -1,13 +1,43 @@
 import { RouteConfig } from "vue-router";
 
+import MainLayout from "@/layouts/MainLayout.vue";
+import Toolbar from "@/components/Toolbar.vue";
+
 const routes: RouteConfig[] = [
   {
     path: "/",
-    component: (): Promise<any> => import("layouts/MainLayout.vue"),
-    children: [
-      { path: "", name: "index", component: (): Promise<any> => import("pages/Index.vue") },
-      { path: "/UIKit", name: "ui-kit", component: (): Promise<any> => import("pages/UI-kit.vue") }
-    ]
+    name: "main",
+    components: {
+      default: (): Promise<any> => import("pages/Index.vue"),
+      toolbar: Toolbar
+    },
+    meta: {
+      layout: MainLayout
+    }
+  },
+  {
+    path: "/playground",
+    name: "playground",
+    components: {
+      default: (): Promise<any> => import("pages/UIPlayground.vue"),
+      toolbar: Toolbar,
+      asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
+    },
+    meta: {
+      layout: MainLayout
+    }
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    components: {
+      default: (): Promise<any> => import("pages/Profile.vue"),
+      toolbar: Toolbar,
+      asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
+    },
+    meta: {
+      layout: MainLayout
+    }
   },
 
   // Always leave this as last one,
@@ -15,7 +45,13 @@ const routes: RouteConfig[] = [
   {
     path: "*",
     name: "error-page",
-    component: (): Promise<any> => import("pages/Error404.vue")
+    components: {
+      default: (): Promise<any> => import("pages/Error404.vue"),
+      toolbar: Toolbar
+    },
+    meta: {
+      layout: MainLayout
+    }
   }
 ];
 

@@ -34,9 +34,11 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: [
-      "app.styl",
-      "fonts.styl",
-      "icons.styl"
+      "_app.styl",
+      "_fonts.styl",
+      "_icons.styl",
+      "_colors.styl",
+      "_override.styl"
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -79,6 +81,11 @@ module.exports = configure(function (ctx) {
 
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack (cfg) {
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+          "@": path.resolve(__dirname, "./src")
+        };
+        
         // linting is slow in TS projects, we execute it only for production builds
         if (ctx.prod) {
           cfg.module.rules.push({

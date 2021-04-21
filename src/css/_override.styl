@@ -1,0 +1,67 @@
+@import "_colors.styl"
+
+/////////////////////////////////////////////////////////////////
+//////////////////////    BUTTONS    ////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+.border-width
+  &:before
+    border-width: $border-width-base
+
+.q-btn--outline
+  .q-btn__wrapper
+    @extend .border-width
+
+.q-field--outlined
+  .q-field__inner
+    .q-field__control
+      @extend .border-width
+
+.q-btn--flat
+  max-height: 40px
+
+  .q-btn__wrapper
+    padding: 0 16px
+
+
+.text-primary-flat
+  background: $primary-light
+  color: $primary
+
+  &__bordered
+    @extend .text-primary-flat
+    background: inherit
+    border: 2px solid $primary
+
+  .q-btn
+    &__content
+      text-transform: none
+
+  i
+    color: $primary
+
+.text-primary-light
+  color: $grey
+
+.text-primary
+  color $primary
+
+.bg-primary-light
+  background: $primary-light
+
+.bg-secondary-light
+  background $background-secondary
+
+
+
+.body
+  &--light
+    .error
+      @extend .bg-secondary-light
+
+    .q-header, .q-drawer
+      background: $background
+
+  &--dark
+    .q-header, .q-drawer
+      background: $dark-secondary

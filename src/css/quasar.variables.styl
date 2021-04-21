@@ -27,6 +27,7 @@
 ////////////////////////    SERVICE    //////////////////////////
 /////////////////////////////////////////////////////////////////
 
+$border-width-base = 2px
 $green    = #84D197
 $orange   = #FFA63E
 $red      = #FF6565
@@ -62,83 +63,122 @@ $dark-theme-black   = #1F232E
 ////////////////////    TYPOGRAPHY    ///////////////////////////
 /////////////////////////////////////////////////////////////////
 
+fluid-font-size($minimumSize = 12, $maximumSize = 36, $minimumViewportWidth = 300, $maximumViewportWidth = 1920)
+  'calc(%spx + (%s - %s) * ((100vw - %spx) / (%s - %s))) !important' % ($minimumSize $maximumSize $minimumSize $minimumViewportWidth $maximumViewportWidth $minimumViewportWidth)
+
+$h1 = 48px
+$h2 = 36px
+$h3 = 30px
+$h4 = 24px
+$h5 = 20px
+$medium = 16px
+$small = 14px
+$caption = 12px
+
 $typography-font-family = "Leto Sans"
 $headings ?= {
     overline: {
-        size: 12px,
-        line-height: 16px,
-        weight: 700,
-        letter-spacing: 3px
+      size: $caption,
+      line-height: 16px,
+      weight: 700,
+      letter-spacing: 3px
     },
     h1: {
-        size: 48px,
-        line-height: 58px,
-        weight: 100,
-        letter-spacing: 0
+      size: $h1,
+      line-height: 58px,
+      weight: 100,
+      letter-spacing: 0
     },
     h2: {
-        size: 36px,
-        line-height: 44px,
-        weight: 700,
-        letter-spacing: 0
+      size: $h2,
+      line-height: 44px,
+      weight: 700,
+      letter-spacing: 0
     },
     h3: {
-        size: 30px,
-        line-height: 38px,
-        weight: 700,
-        letter-spacing: 0
+      size: $h3,
+      line-height: 38px,
+      weight: 700,
+      letter-spacing: 0
     },
+    h4: {
+      size: 2.125rem,
+      line-height: 2.5rem,
+      letter-spacing: .00735em,
+      weight: 400
+    },
+    h5: {
+      size: 1.5rem,
+      line-height: 2rem,
+      letter-spacing: normal,
+      weight: 400
+    },
+    h6: {
+      size: 1.25rem,
+      line-height: 2rem,
+      letter-spacing: .0125em,
+      weight: 500
+    },
+    h4: {
+      size: $h4,
+      line-height: 28px,
+      weight: 700,
+      letter-spacing: 0
+    }
     title: {
-        size: 36px,
-        line-height: 44px,
-        weight: 700
+      size: $h2,
+      line-height: 44px,
+      weight: 700
     },
     subtitle: {
-        size: 16px,
-        line-height: 20px,
-        weight: 400,
-        letter-spacing: 0.5px
+      size: $medium,
+      line-height: 20px,
+      weight: 400,
+      letter-spacing: 0.5px
     },
     medium: {
-        size: 16px,
-        line-height: 24px,
-        weight: normal,
-        letter-spacing: 0.5px
+      size: $medium,
+      line-height: 24px,
+      weight: normal,
+      letter-spacing: 0.5px
     },
     medium-b: {
-        size: 16px,
-        line-height: 24px,
-        weight: 700,
-        letter-spacing: 0.5px
+      size: fluid-font-size(16, $h5),
+      line-height: 24px,
+      weight: 700,
+      letter-spacing: 0.5px
     },
     small: {
-        size: 14px,
-        line-height: 22px,
-        weight: 400,
-        letter-spacing: 0.5px
+      size: $small,
+      line-height: 22px,
+      weight: 400,
+      letter-spacing: 0.5px
     },
     button: {
-        size: 14px,
-        line-height: 16px,
-        weight: 400,
-        letter-spacing: 0.75px
+      size: $small,
+      line-height: 16px,
+      weight: 400,
+      letter-spacing: 0.75px
     },
     caption: {
-        size: 12px,
-        line-height: 16px,
-        weight: 400,
-        letter-spacing: 0.5px
+      size: $caption,
+      line-height: 16px,
+      weight: 400,
+      letter-spacing: 0.5px
     }
 }
 
 $h-tags ?= {
   h1: $headings.h1,
   h2: $headings.h2,
-  h3: $headings.h3
+  h3: $headings.h3,
+  h4: $headings.h4,
+  h5: $headings.h5,
+  h6: $headings.h6
 }
 
 $button-border-radius           ?= 4px
-$button-padding                 ?= 14px 16px
+$button-padding                 ?= 12px 16px
 $button-dense-padding           ?= .285em
 $button-transition              ?= $generic-hover-transition
 $button-font-size               ?= 14px
