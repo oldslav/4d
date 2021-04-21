@@ -1,7 +1,7 @@
 import { store } from "quasar/wrappers";
 import Vuex from "vuex";
 
-import { IRootState } from "./root/state";
+import { IRootState } from "src/store/types/root";
 
 import root from "./root";
 import modules from "./modules";

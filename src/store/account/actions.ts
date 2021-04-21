@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree } from "vuex";
 
-import { IRootState } from "../root/state";
+import { IRootState } from "../types/root";
 import { IAccountState } from "./state";
 import { ILoginPayload, ILoginResponse, IAccount, IAccessToken } from "./models";
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-page.error404.column.justify-start.items-center.q-pt-xl.full-height.bg-secondary-light
+  q-page.error.column.justify-start.items-center.q-pt-xl.full-height
     h2.text-title.text-center.error404__title
       | {{ $t("common.error.notFound.title") }}
     h3.text-subtitle.text-center.q-my-lg.q-px-sm

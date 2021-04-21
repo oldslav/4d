@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
-import { IRootState } from "src/store/root/state";
+import { IRootState } from "../store/types/root";
 
 declare module "vue/types/vue" {
   interface Vue {

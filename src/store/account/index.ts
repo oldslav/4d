@@ -1,6 +1,6 @@
 import { Module } from "vuex";
 
-import { IRootState } from "../root/state";
+import { IRootState } from "../types/root";
 import state, { IAccountState } from "./state";
 
 import actions from "./actions";
