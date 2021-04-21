@@ -20,37 +20,43 @@
     div.column
       h3.text-title
         | Input
+      h4.text-medium-b
+        | With icon
       div.row.q-py-xs.q-gutter-md.justify-start
-        div.col-1
-          q-input(v-model="search" color="purple-12" label="With icon" clearable)
+        div
+          q-input(v-model="search" color="purple-12" label="With icon" clearable wrap)
             template(v-slot:prepend)
               q-icon(name="search")
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Outlined" outlined)
             template(v-slot:prepend)
               q-icon(name="search")
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Readonly" readonly)
             template(v-slot:prepend)
               q-icon(name="search")
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Disabled" disable)
             template(v-slot:prepend)
               q-icon(name="search")
 
+      h4.text-medium-b
+        | Primary
       div.row.q-py-xs.q-gutter-md.justify-start
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Primary" clearable)
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Outlined" outlined)
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Readonly" readonly)
-        div.col-1
+        div
           q-input(v-model="search" color="purple-12" label="Disabled" disable)
 
     div.column
       h3.text-title
         | Dropdown
+      h4.text-medium-b
+        | With icon
       div.row.q-gutter-md.justify-star
         div.col-1
           q-select(v-model="dropdown" color="purple-12" :options="options" label="With Icon" clearable)
@@ -75,7 +81,7 @@
                 q-item-section
                   q-item-label(v-html="scope.opt.label")
                   q-item-label(caption)
-                    | {{ scope.opt.description }}
+                    | {{ scope.opt.description }}z
         div.col-1
           q-select(v-model="dropdown" color="purple-12" :options="options" label="Readonly" readonly)
             template(v-slot:prepend)
@@ -85,6 +91,8 @@
             template(v-slot:prepend)
               q-icon(name="search")
 
+      h4.text-medium-b
+        | Primary
       div.row.q-py-xs.q-gutter-md.justify-start
         div.col-1
           q-select(v-model="dropdown" color="purple-12" :options="options" label="Primary" clearable)
@@ -109,86 +117,81 @@
       h3.text-title
         | Autocomplete
       div.row.q-gutter-md.justify-star
-        div.col-2
-          q-select(
-            :value="autocompleteValue"
-            :options="autocompleteOptions"
-            @filter="filterFn"
-            @input-value="setAutocompleteValue"
-            color="purple-12"
-            label="With icon"
-            hide-selected
-            fill-input
-            use-input)
-            template(v-slot:prepend)
-              q-icon(name="search")
-            template(v-slot:no-option)
-              q-item
-                q-item-section.text-grey
-                  | No results
-        div.col-2
-          q-select(
-            :value="autocompleteValue"
-            :options="autocompleteOptions"
-            @filter="filterFn"
-            @input-value="setAutocompleteValue"
-            color="purple-12"
-            label="Primary"
-            hide-selected
-            fill-input
-            use-input)
-            template(v-slot:no-option)
-              q-item
-                q-item-section.text-grey
-                  | No results
-        div.col-2
-          q-select(
-            :value="autocompleteValue"
-            :options="autocompleteOptions"
-            @filter="filterFn"
-            @input-value="setAutocompleteValue"
-            color="purple-12"
-            label="Outlined"
-            hide-selected
-            fill-input
-            outlined
-            use-input)
-            template(v-slot:no-option)
-              q-item
-                q-item-section.text-grey
-                  | No results
-        div.col-2
-          q-select(
-            :value="autocompleteValue"
-            :options="autocompleteOptions"
-            @filter="filterFn"
-            @input-value="setAutocompleteValue"
-            color="purple-12"
-            label="Readonly"
-            hide-selected
-            fill-input
-            readonly
-            use-input)
-            template(v-slot:no-option)
-              q-item
-                q-item-section.text-grey
-                  | No results
-        div.col-2
-          q-select(
-            :value="autocompleteValue"
-            :options="autocompleteOptions"
-            @filter="filterFn"
-            @input-value="setAutocompleteValue"
-            color="purple-12"
-            label="Disabled"
-            hide-selected
-            fill-input
-            disable
-            use-input)
-            template(v-slot:no-option)
-              q-item
-                q-item-section.text-grey
-                  | No results
+        q-select(
+          :value="autocompleteValue"
+          :options="autocompleteOptions"
+          @filter="filterFn"
+          @input-value="setAutocompleteValue"
+          color="purple-12"
+          label="With icon"
+          hide-selected
+          fill-input
+          use-input)
+          template(v-slot:prepend)
+            q-icon(name="search")
+          template(v-slot:no-option)
+            q-item
+              q-item-section.text-grey
+                | No results
+        q-select(
+          :value="autocompleteValue"
+          :options="autocompleteOptions"
+          @filter="filterFn"
+          @input-value="setAutocompleteValue"
+          color="purple-12"
+          label="Primary"
+          hide-selected
+          fill-input
+          use-input)
+          template(v-slot:no-option)
+            q-item
+              q-item-section.text-grey
+                | No results
+        q-select(
+          :value="autocompleteValue"
+          :options="autocompleteOptions"
+          @filter="filterFn"
+          @input-value="setAutocompleteValue"
+          color="purple-12"
+          label="Outlined"
+          hide-selected
+          fill-input
+          outlined
+          use-input)
+          template(v-slot:no-option)
+            q-item
+              q-item-section.text-grey
+                | No results
+        q-select(
+          :value="autocompleteValue"
+          :options="autocompleteOptions"
+          @filter="filterFn"
+          @input-value="setAutocompleteValue"
+          color="purple-12"
+          label="Readonly"
+          hide-selected
+          fill-input
+          readonly
+          use-input)
+          template(v-slot:no-option)
+            q-item
+              q-item-section.text-grey
+                | No results
+        q-select(
+          :value="autocompleteValue"
+          :options="autocompleteOptions"
+          @filter="filterFn"
+          @input-value="setAutocompleteValue"
+          color="purple-12"
+          label="Disabled"
+          hide-selected
+          fill-input
+          disable
+          use-input)
+          template(v-slot:no-option)
+            q-item
+              q-item-section.text-grey
+                | No results
 </template>
 
 <script>

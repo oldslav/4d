@@ -1,6 +1,8 @@
 <template lang="pug">
   q-page.row.items-center.justify-evenly
-    router-link(:to="{ name: 'playground' }") UI Kit
+    router-link(:to="{ name: 'playground' }") UI Playground
+    router-link(:to="{ name: 'error-page' }") 404
+    router-link(:to="{ name: 'profile' }") Profile
 </template>
 
 <script lang="ts">

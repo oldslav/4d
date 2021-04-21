@@ -1,5 +1,5 @@
 import { ActionTree, ActionContext } from "vuex";
-import { IRootState } from "./state";
+import { IRootState } from "../types/root";
 
 const actions: ActionTree<IRootState, IRootState> = {
   serverInit ({ dispatch }: ActionContext<IRootState, IRootState>) {

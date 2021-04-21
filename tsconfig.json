@@ -1,7 +1,11 @@
 {
   "extends": "@quasar/app/tsconfig-preset",
+  "skipLibCheck": true,
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5"
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
