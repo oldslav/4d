@@ -2,7 +2,7 @@
   div.aside-profile
     q-list
       q-item.q-py-lg.text-subtitle(clickable @click="$router.back()")
-        q-item-section.aside-avatar(avatar)
+        q-item-section.list-item-avatar(avatar)
           q-icon.text-primary(name="arrow_back")
         q-item-section(avatar)
           | {{ $t("entity.dashboard") }}
@@ -12,10 +12,10 @@
         :key="index"
         clickable
         :to="item.action"
-        active-class="active-aside-item"
+        active-class="list-item-active"
         v-if="item.show"
       )
-        q-item-section.aside-avatar(avatar)
+        q-item-section.list-item-avatar(avatar)
           q-icon(:name="item.icon")
         q-item-section
           | {{ item.label }}
@@ -70,5 +70,6 @@
 </script>
 
 <style lang="stylus">
-
+  .aside-profile {
+  }
 </style>
