@@ -5,7 +5,7 @@
         q-item-section.list-item-avatar(avatar)
           q-icon.text-primary(name="arrow_back")
         q-item-section(avatar)
-          | {{ $t("entity.dashboard") }}
+          | {{ $t("action.goBack") }}
       q-separator
       q-item.q-py-md.text-subtitle(
         v-for="(item, index) in items"
@@ -28,7 +28,7 @@
       return {
         items: [
           {
-            label: this.$t("entity.usersProfile"),
+            label: this.$t("entity.profile"),
             action: "/profile",
             icon: "o_person",
             show: true
@@ -46,7 +46,7 @@
             show: true
           },
           {
-            label: this.$t("entity.billsPayment"),
+            label: this.$t("entity.bills"),
             action: "/stub",
             icon: "o_article",
             show: true

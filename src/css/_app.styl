@@ -20,3 +20,17 @@
 
 .list-item-avatar
   min-width unset
+
+
+
+// Transition
+.fade-enter-active {
+  transition: all .15s ease;
+}
+.fade-leave-active {
+  transition: all .15s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
