@@ -3,8 +3,21 @@
   "skipLibCheck": true,
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es5"
+    "noEmit": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "target": "esnext",
+    "module": "esnext",
+    "sourceMap": false,
+    "moduleResolution": "node"
   },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "tests/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

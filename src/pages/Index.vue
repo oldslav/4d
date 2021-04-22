@@ -5,17 +5,16 @@
     router-link(:to="{ name: 'profile' }") Profile
 </template>
 
-<script lang="ts">
-  import { defineComponent } from "@vue/composition-api";
+<script>
   import { mapGetters } from "vuex";
 
   import LoginForm from "components/forms/auth/LoginForm.vue";
 
-  export default defineComponent({
-    name: "PageIndex",
+  export default {
+    name: "Index",
     components: { LoginForm },
     computed: {
       ...mapGetters("account", ["getAccount", "isAuthenticated"])
     }
-  });
+  };
 </script>

@@ -1,8 +1,5 @@
 <template lang="pug">
   q-layout(view="hHh Lpr lFf")
-    q-header(elevated)
-      transition(name="fade" mode="out-in")
-        router-view(name="toolbar")
     q-page-container
       transition(name="fade" mode="out-in")
         router-view
@@ -10,6 +7,10 @@
 
 <script>
   export default {
-    name: "MainLayout"
+    name: "EmptyLayout"
   };
 </script>
+
+<style scoped>
+
+</style>

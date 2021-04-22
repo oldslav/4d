@@ -7,6 +7,8 @@ declare module "vuex/types/index" {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export default boot(({ app, ssrContext }) => {
   if (app.store) {
     app.store.$cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext as LooseDictionary) : Cookies;
