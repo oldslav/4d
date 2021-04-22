@@ -27,6 +27,11 @@
     "action": {
       "goBack": "Вернуться назад"
     },
-    "services": "Сервисы"
+    "services": "Сервисы",
+    "dashboard": "Личный кабинет",
+    "usersProfile": "Профиль пользователя",
+    "documents": "Документы",
+    "tickets": "Заявки",
+    "billsPayment": "Оплата счетов"
   }
 }
