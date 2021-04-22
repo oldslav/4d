@@ -1,7 +1,7 @@
 <template lang="pug">
   q-page.tickets-empty.column.items-center.justify-lg-center.full-height.q-pt-xl.bg-secondary-light
     h4.text-h4.text-center
-      | У вас пока нет ни одной заявки
+      | {{ $t("employee.profile.tickets.empty.title") }}
     .text-subtitle.text-center.q-px-lg
       | {{ $t("employee.profile.tickets.empty.subtitle1") }}
       router-link.text-primary(to="/")
