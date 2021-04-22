@@ -18,6 +18,9 @@ const routes: RouteConfig[] = [
   {
     path: "/playground",
     name: "playground",
+    redirect: {
+      name: "playground-buttons"
+    },
     components: {
       default: (): Promise<any> => import("pages/UIPlayground.vue"),
       toolbar: Toolbar,
@@ -25,7 +28,33 @@ const routes: RouteConfig[] = [
     },
     meta: {
       layout: MainLayout
-    }
+    },
+    children: [
+      {
+        path: "buttons",
+        name: "playground-buttons",
+        meta: {
+          layout: MainLayout
+        },
+        component: (): Promise<any> => import("components/playground/Buttons.vue")
+      },
+      {
+        path: "inputs",
+        name: "playground-inputs",
+        meta: {
+          layout: MainLayout
+        },
+        component: (): Promise<any> => import("components/playground/Inputs.vue")
+      },
+      {
+        path: "selects",
+        name: "playground-selects",
+        meta: {
+          layout: MainLayout
+        },
+        component: (): Promise<any> => import("components/playground/Selects.vue")
+      }
+    ]
   },
   {
     path: "/profile",

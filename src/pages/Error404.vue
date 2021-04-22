@@ -7,7 +7,7 @@
         | {{ $t("common.error.notFound.topSub") }}
       div
         | {{ $t("common.error.notFound.bottomSub") }}
-    q-btn(flat @click="goBack()" color="primary" :label="$t('entity.action.goBack')")
+    q-btn(flat @click="goBack()" color="primary" :label="$t('action.goBack')")
     q-img.q-mt-xl.error404__image(src="@/assets/svg/404.svg")
 </template>
 
