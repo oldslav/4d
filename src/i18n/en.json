@@ -23,10 +23,15 @@
       }
     }
   },
+  "action": {
+    "goBack": "Go back"
+  },
   "entity": {
-    "action": {
-      "goBack": "Go back"
-    },
-    "services": "Сервисы"
+    "services": "Сервисы",
+    "dashboard": "Личный кабинет",
+    "profile": "Профиль пользователя",
+    "documents": "Документы",
+    "tickets": "Заявки",
+    "bills": "Оплата счетов"
   }
 }

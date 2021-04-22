@@ -1,2 +1,36 @@
+@import "_colors.styl"
+
 .text-overline
   text-transform uppercase !important
+
+.list-item-active
+  background-color $primary-light
+
+  .q-icon
+    color $primary
+
+  &:before
+    content ''
+    width 3px
+    background $primary
+    height 100%
+    position absolute
+    top 0
+    left 0
+
+.list-item-avatar
+  min-width unset
+
+
+
+// Transition
+.fade-enter-active {
+  transition: all .15s ease;
+}
+.fade-leave-active {
+  transition: all .15s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter, .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
