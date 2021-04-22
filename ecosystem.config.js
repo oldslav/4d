@@ -23,15 +23,15 @@ module.exports = {
       ref  : "origin/master",
       repo : "",
       path : "dist/ssr",
-      postDeploy : "npm install && pm2 startOrRestart ecosystem.config.js --env production"
+      postDeploy : "pm2 startOrRestart ecosystem.config.js --env production"
     },
-    staging : {
+    development : {
       user : "node",
       host : "127.0.0.1",
       ref  : "origin/master",
       repo : "",
       path : "dist/ssr",
-      postDeploy : "npm install && pm2 startOrRestart ecosystem.config.js --env production"
+      postDeploy : "pm2 startOrRestart ecosystem.config.js --env development"
     }
   }
 };
