@@ -1,7 +1,8 @@
 <template lang="pug">
   div#q-app
     component(:is="layout")
-      router-view
+      transition(name="fade" mode="out-in")
+        router-view
 </template>
 
 <script>
@@ -12,7 +13,7 @@
     },
     computed: {
       layout () {
-        return this.$route.meta.layout || "div";
+        return this.$route.meta.layout || "EmptyLayout";
       }
     }
   };

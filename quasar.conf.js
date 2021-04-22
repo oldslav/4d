@@ -13,6 +13,7 @@ const path = require("path");
 
 module.exports = configure(function (ctx) {
   return {
+    sourceMap: true,
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: {
       tsCheckerConfig: {
@@ -96,6 +97,14 @@ module.exports = configure(function (ctx) {
             exclude: /node_modules/
           });
         }
+        cfg.module.rules.push({
+          test: /\.ts?$/,
+          loader: "ts-loader",
+          options: {
+            appendTsSuffixTo: [/\.vue$/]
+          },
+          exclude: /node_modules/
+        });
         cfg.module.rules.push({
           test: /\.pug$/,
           loader: "pug-plain-loader"
@@ -237,12 +246,7 @@ module.exports = configure(function (ctx) {
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
-      nodeIntegration: true,
-
-      extendWebpack (/* cfg */) {
-        // do something with Electron main process Webpack cfg
-        // chainWebpack also available besides this extendWebpack
-      }
+      nodeIntegration: true
     }
   };
 });
