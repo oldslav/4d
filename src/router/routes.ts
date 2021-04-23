@@ -117,7 +117,7 @@ const routes: RouteConfig[] = [
       asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
     },
     meta: {
-      layout: MainLayout
+      layout: ProfileLayout
     }
   },
 
