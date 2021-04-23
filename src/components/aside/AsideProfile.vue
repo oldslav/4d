@@ -40,7 +40,7 @@
           },
           {
             label: this.$t("entity.documents"),
-            action: "/stub",
+            action: "/documents",
             icon: "o_text_snippet",
             show: true
           },

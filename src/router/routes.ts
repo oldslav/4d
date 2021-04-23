@@ -108,6 +108,18 @@ const routes: RouteConfig[] = [
       }
     ]
   },
+  {
+    path: "/documents",
+    name: "documents",
+    components: {
+      default: (): Promise<any> => import("pages/Documents.vue"),
+      toolbar: Toolbar,
+      asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
+    },
+    meta: {
+      layout: MainLayout
+    }
+  },
 
   // Always leave this as last one,
   // but you can also remove it
