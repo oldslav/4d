@@ -26,7 +26,7 @@ const routes: RouteConfig[] = [
     components: {
       default: (): Promise<any> => import("pages/UIPlayground.vue"),
       toolbar: Toolbar,
-      asideLeft: (): Promise<any> => import("components/Aside/AsideProfile.vue")
+      asideLeft: (): Promise<any> => import("components/aside/AsideProfile.vue")
     },
     meta: {
       layout: MainLayout
