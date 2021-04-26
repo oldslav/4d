@@ -2,7 +2,7 @@
   q-page.row.items-center.justify-evenly
     router-link(:to="{ name: 'playground' }") UI Playground
     router-link(:to="{ name: 'error-page' }") 404
-    router-link(:to="{ name: 'profile' }") Profile
+    router-link(:to="{ name: 'user-profile' }") Profile
 </template>
 
 <script>

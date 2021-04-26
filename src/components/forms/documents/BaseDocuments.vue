@@ -7,7 +7,7 @@
   import FilePicker from "components/common/FilePicker";
 
   export default {
-    name: "DocumentsForm",
+    name: "BaseDocuments",
     components: { FilePicker },
     props: {
       value: {
@@ -17,10 +17,6 @@
       entries: {
         type: Array,
         default: () => []
-      },
-      immediate: { // флаг, при котором отправка и удаление данных будет происходить сразу после событий добавления или удаления
-        type: Boolean,
-        default: false
       }
     },
     data () {

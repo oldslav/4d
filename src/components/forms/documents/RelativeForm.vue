@@ -2,17 +2,17 @@
   q-form
     .row.q-col-gutter-sm
       .col-12.col-md-4
-        q-input(label="Фамилия" v-model="lastName")
+        q-input(:label="$t('user.lastName')" v-model="lastName")
       .col-12.col-md-4
-        q-input(label="Имя" v-model="firstName")
+        q-input(:label="$t('user.firstName')" v-model="firstName")
       .col-12.col-md-4
-        q-input(label="Отчество" v-model="patronymic")
-    q-expansion-item.q-mt-sm.full-width(label="Документы" header-class="q-px-none text-subtitle")
-      documents-form(:entries="entries" v-model="documents")
+        q-input(:label="$t('user.patronymic')" v-model="patronymic")
+    q-expansion-item.q-mt-sm.full-width(:label="$t('entity.documents')" header-class="q-px-none text-subtitle")
+      base-documents(:entries="entries" v-model="documents")
 </template>
 
 <script>
-  import DocumentsForm from "components/forms/documents/DocumentsForm";
+  import BaseDocuments from "./BaseDocuments";
 
   const childModel = () => ({
     passport: null,
@@ -29,7 +29,7 @@
 
   export default {
     name: "RelativeForm",
-    components: { DocumentsForm },
+    components: { BaseDocuments },
     props: {
       child: {
         type: Boolean,
@@ -38,9 +38,9 @@
     },
     data () {
       return {
-        firstName: "",
-        lastName: "",
-        patronymic: "",
+        firstName: null,
+        lastName: null,
+        patronymic: null,
         documents: { ...this.documentsModel }
       };
     },
@@ -50,26 +50,26 @@
           {
             value: "passport",
             props: {
-              label: "Скан-копия паспорта",
+              label: this.$t("user.profile.documents.passportCopy"),
               maxFiles: 5
             }
           },
           {
             value: "snils",
             props: {
-              label: "Скан-копия СНИЛС"
+              label: this.$t("user.profile.documents.snilsCopy")
             }
           },
           {
             value: "inn",
             props: {
-              label: "Скан-копия ИНН"
+              label: this.$t("user.profile.documents.innCopy")
             }
           },
           {
             value: "marriageCertificate",
             props: {
-              label: "Скан-копия свидетельства о браке"
+              label: this.$t("user.profile.documents.marriageCertificate")
             }
           }
         ];
@@ -79,19 +79,19 @@
           {
             value: "birthCertificate",
             props: {
-              label: "Скан-копия свидетельства о рождении"
+              label: this.$t("user.profile.documents.birthCertificate")
             }
           },
           {
             value: "registration",
             props: {
-              label: "Скан-копия прописки"
+              label: this.$t("user.profile.documents.registrationCopy")
             }
           },
           {
             value: "passport",
             props: {
-              label: "Скан-копия пасспорта",
+              label: this.$t("user.profile.documents.passportCopy"),
               maxFiles: 5
             }
           }
