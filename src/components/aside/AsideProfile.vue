@@ -52,13 +52,13 @@
           },
           {
             label: this.$t("entity.bills"),
-            action: "/stub",
+            action: "playground",
             icon: "o_article",
             show: true
           },
           {
             label: "Hidden stuff",
-            action: "/stub",
+            action: "main",
             icon: "o_article",
             show: this.role === "admin"
           }

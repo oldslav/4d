@@ -120,6 +120,18 @@ const routes: RouteConfig[] = [
       layout: ProfileLayout
     }
   },
+  {
+    path: "/tickets",
+    name: "tickets",
+    components: {
+      default: (): Promise<any> => import("pages/TicketsEmpty.vue"), // temporary
+      toolbar: Toolbar,
+      asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
+    },
+    meta: {
+      layout: ProfileLayout
+    }
+  },
 
   // Always leave this as last one,
   // but you can also remove it

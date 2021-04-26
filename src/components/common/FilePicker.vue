@@ -1,25 +1,27 @@
 <template lang="pug">
   q-file(
-    v-model="model"
-    borderless
+    :value="value"
+    dense
+    ref="picker"
     :label="label"
     bottom-slots
+    borderless
     multiple
     append
     :accept="accept"
     :max-files="maxFiles"
     :max-file-size="maxSize"
+    @input="onInput"
   )
     template(#append)
-      q-icon(name="o_file_upload")
+      q-icon.cursor-pointer(name="o_file_upload" @click="pickFiles")
     template(#hint)
       | {{ description }}
     template(#file="{ index, file }")
-      q-chip.full-width.q-pl-none(removable color="transparent" @remove="removeFile(index)" icon-remove="o_delete")
+      q-chip.file-picker__chip.q-pl-none.q-ml-none(removable color="transparent" @remove="removeFile(index)" icon-remove="o_delete")
         div.ellipsis
           | {{ file.name }}
-        q-tooltip
-          | {{ file.name }}
+      .flex-break
 </template>
 
 <script>
@@ -27,7 +29,7 @@
     props: {
       value: {
         type: Array,
-        default: []
+        default: () => []
       },
       accept: {
         type: String,
@@ -45,39 +47,28 @@
         type: Number,
         default: 3
       },
-      // multiple: {
-      //   type: Boolean,
-      //   default: false
-      // },
       maxFiles: {
         type: Number,
         default: 1
       }
     },
     data () {
-      return {
-        model: null
-      };
+      return {};
     },
     computed: {
       maxSize () {
-        return this.maxFileSize * 1000000;
+        return this.maxFileSize * 1024 ** 2;
       }
     },
     methods: {
-      removeFile (index) {
-        this.model.splice(index, 1);
-      }
-    },
-    watch: {
-      value: {
-        immediate: true,
-        handler (val) {
-          this.model = val;
-        }
+      onInput (value) {
+        this.$emit("input", value);
       },
-      model (val) {
-        this.$emit("input", val);
+      removeFile (index) {
+        this.$refs.picker.removeAtIndex(index);
+      },
+      pickFiles (evt) {
+        this.$refs.picker.pickFiles(evt);
       }
     }
   };
