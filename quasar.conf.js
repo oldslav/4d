@@ -89,14 +89,12 @@ module.exports = configure(function (ctx) {
         };
 
         // linting is slow in TS projects, we execute it only for production builds
-        if (ctx.prod) {
-          cfg.module.rules.push({
-            enforce: "pre",
-            test: /\.(js|vue)$/,
-            loader: "eslint-loader",
-            exclude: /node_modules/
-          });
-        }
+        cfg.module.rules.push({
+          enforce: "pre",
+          test: /\.(js|vue)$/,
+          loader: "eslint-loader",
+          exclude: /node_modules/
+        });
         cfg.module.rules.push({
           test: /\.ts?$/,
           loader: "ts-loader",
