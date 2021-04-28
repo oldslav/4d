@@ -2,6 +2,21 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
 import { IRootState } from "../store/types/root";
+import qs from "qs";
+
+axios.defaults.baseURL = process.env.SERVER_API_HOST;
+axios.interceptors.request.use(
+  config => {
+    config.paramsSerializer = (params: any): string => qs.stringify(params, {
+      allowDots: true,
+      arrayFormat: "comma"
+    });
+    
+    return config;
+  },
+  
+  error => Promise.reject(error)
+);
 
 declare module "vue/types/vue" {
   interface Vue {
@@ -44,9 +59,9 @@ const createInstance = (store: Store<IRootState>) => {
 
   instance.interceptors.request.use(requestInterceptor(store));
 
-  if (process.env.SERVER) {
-    instance.defaults.baseURL = process.env.SERVER ? process.env.SERVER_API_HOST : process.env.BROWSER_API_HOST;
-  }
+  // if (process.env.SERVER) {
+  //   instance.defaults.baseURL = process.env.SERVER ? process.env.SERVER_API_HOST : process.env.BROWSER_API_HOST;
+  // }
 
   return instance;
 };

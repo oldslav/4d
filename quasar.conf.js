@@ -109,8 +109,8 @@ module.exports = configure(function (ctx) {
         });
       },
       env: {
-        SERVER_API_HOST: "https://iuul.innopolis.university",
-        BROWSER_API_HOST: "/"
+        SERVER_API_HOST: "https://iuul.innopolis.university/api/v1",
+        BROWSER_API_HOST: "https://iuul.innopolis.university/api/v1"
       }
     },
 

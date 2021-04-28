@@ -66,18 +66,47 @@ const routes: RouteConfig[] = [
     }
   },
   {
-    path: "/profile",
-    name: "profile",
+    path: "/user",
+    name: "user",
+    redirect: {
+      name: "user-profile"
+    },
     components: {
-      default: (): Promise<any> => import("pages/Profile.vue"),
-      asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+      default: { render: (c) => c("router-view") }, // STUB
+      asideLeft: (): Promise<any> => import("components/aside/AsideProfile.vue")
     },
     meta: {
-      asideLeft: true,
       toolbar: true,
-      asideRight: false,
+      asideLeft: true,
       content: true
-    }
+    },
+    children: [
+      {
+        path: "profile",
+        name: "user-profile",
+        components: {
+          default: (): Promise<any> => import("pages/Profile.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "tickets",
+        name: "user-tickets",
+        components: {
+          default: (): Promise<any> => import("pages/UserTickets.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          content: true
+        }
+      }
+    ]
   },
 
   // Always leave this as last one,

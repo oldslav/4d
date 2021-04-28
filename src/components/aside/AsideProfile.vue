@@ -34,7 +34,7 @@
         return [
           {
             label: this.$t("entity.profile"),
-            action: "/profile",
+            action: { name: "user-profile" },
             icon: "o_person",
             show: true
           },
@@ -46,7 +46,7 @@
           },
           {
             label: this.$t("entity.tickets"),
-            action: "/stub",
+            action: { name: "user-tickets" },
             icon: "o_library_add_check",
             show: true
           },
