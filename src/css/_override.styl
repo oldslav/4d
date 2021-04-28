@@ -53,6 +53,18 @@
   background $background-secondary
 
 
+.mobile
+  .q-toolbar
+    padding: 0
+
+    .q-tabs
+
+      .q-tab
+        padding: 0 10px
+
+        &__label
+          font-size: 10px
+
 .q-tab
   &__label
     text-transform: none
@@ -68,7 +80,7 @@
       background: $background
 
     .q-tab
-      &__label
+      &__label, &__icon
         color: $grey
 
   &--dark
