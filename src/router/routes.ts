@@ -1,20 +1,17 @@
 import { RouteConfig } from "vue-router";
 
-import MainLayout from "@/layouts/MainLayout.vue";
-import ProfileLayout from "@/layouts/ProfileLayout.vue";
-import EmptyLayout from "@/layouts/EmptyLayout.vue";
-import Toolbar from "@/components/Toolbar.vue";
-
 const routes: RouteConfig[] = [
   {
     path: "/",
     name: "main",
     components: {
-      default: (): Promise<any> => import("pages/Index.vue"),
-      toolbar: Toolbar
+      default: (): Promise<any> => import("pages/Index.vue")
     },
     meta: {
-      layout: MainLayout
+      asideLeft: false,
+      toolbar: true,
+      asideRight: false,
+      content: true
     }
   },
   {
@@ -24,50 +21,62 @@ const routes: RouteConfig[] = [
       name: "playground-buttons"
     },
     components: {
-      default: (): Promise<any> => import("pages/UIPlayground.vue"),
-      toolbar: Toolbar,
-      asideLeft: (): Promise<any> => import("components/aside/AsideProfile.vue")
-    },
-    meta: {
-      layout: MainLayout
+      default: (): Promise<any> => import("pages/UIPlayground.vue")
     },
     children: [
       {
         path: "buttons",
         name: "playground-buttons",
+        component: (): Promise<any> => import("components/playground/Buttons.vue"),
         meta: {
-          layout: MainLayout
-        },
-        component: (): Promise<any> => import("components/playground/Buttons.vue")
+              asideLeft: false,
+              toolbar: true,
+              asideRight: false,
+              content: true
+            }
       },
       {
         path: "inputs",
         name: "playground-inputs",
+        component: (): Promise<any> => import("components/playground/Inputs.vue"),
         meta: {
-          layout: MainLayout
-        },
-        component: (): Promise<any> => import("components/playground/Inputs.vue")
+          asideLeft: false,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
       },
       {
         path: "selects",
         name: "playground-selects",
+        component: (): Promise<any> => import("components/playground/Selects.vue"),
         meta: {
-          layout: MainLayout
-        },
-        component: (): Promise<any> => import("components/playground/Selects.vue")
+          asideLeft: false,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
       }
-    ]
+    ],
+    meta: {
+      asideLeft: false,
+      toolbar: true,
+      asideRight: false,
+      content: true
+    }
   },
   {
     path: "/profile",
     name: "profile",
     components: {
       default: (): Promise<any> => import("pages/Profile.vue"),
-      toolbar: Toolbar,
       asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
     },
     meta: {
-      layout: ProfileLayout
+      asideLeft: true,
+      toolbar: true,
+      asideRight: false,
+      content: true
     }
   },
 
@@ -78,11 +87,13 @@ const routes: RouteConfig[] = [
     alias: "*",
     name: "error-page",
     components: {
-      default: (): Promise<any> => import("pages/Error404.vue"),
-      toolbar: Toolbar
+      default: (): Promise<any> => import("pages/Error404.vue")
     },
     meta: {
-      layout: EmptyLayout
+      asideLeft: false,
+      toolbar: false,
+      asideRight: false,
+      content: true
     }
   }
 ];

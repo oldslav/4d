@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-tabs(v-model="currentTab" @input="onChange" align="left")
+  q-tabs(v-model="currentTab" @input="onChange" align="left" mobile-arrows)
     slot
 </template>
 

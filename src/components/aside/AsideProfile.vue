@@ -24,9 +24,14 @@
 <script>
   export default {
     name: "AsideProfile",
-    data () {
-      return {
-        items: [
+    computed: {
+      // stub
+      role () {
+        return "user";
+      },
+
+      items () {
+        return [
           {
             label: this.$t("entity.profile"),
             action: "/profile",
@@ -57,13 +62,7 @@
             icon: "o_article",
             show: this.role === "admin"
           }
-        ]
-      };
-    },
-    computed: {
-      // stub
-      role () {
-        return "user";
+        ];
       }
     }
   };
