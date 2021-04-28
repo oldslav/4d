@@ -69,7 +69,7 @@ const routes: RouteConfig[] = [
     path: "/profile",
     name: "profile",
     components: {
-      default: (): Promise<any> => import("pages/Profile.vue"),
+      default: (): Promise<any> => import("pages/UserProfile.vue"),
       asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
     },
     meta: {
