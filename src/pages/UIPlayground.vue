@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-mx-xl.q-my-lg
+  q-page.q-mx-xl.q-my-lg
     BaseTabs(v-model="tab")
       q-route-tab(:to="{ name: 'playground-buttons' }" name="buttons" label="Buttons")
       q-route-tab(:to="{ name: 'playground-inputs' }" name="inputs" label="Inputs")

@@ -1,8 +1,14 @@
 {
   "common": {
     "locales": {
-      "ru": "Russian",
-      "en-us": "English"
+      "ru": {
+        "alias": "RU",
+        "full": "Russian"
+      },
+      "en-us": {
+        "alias": "EN",
+        "full": "English"
+      }
     },
     "error": {
       "notFound": {
@@ -10,7 +16,8 @@
         "topSub": "Ищете что-то интересное на нашем сайте?",
         "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
       }
-    }
+    },
+    "theme": "Theme"
   },
   "employee": {
     "profile": {
@@ -27,11 +34,13 @@
     "goBack": "Go back"
   },
   "entity": {
-    "services": "Сервисы",
-    "dashboard": "Личный кабинет",
-    "profile": "Профиль пользователя",
-    "documents": "Документы",
-    "tickets": "Заявки",
-    "bills": "Оплата счетов"
+    "services": "Services",
+    "dashboard": "Personal account",
+    "profile": "Profile",
+    "documents": "Documents",
+    "tickets": "Tickets",
+    "bills": "Bills",
+    "main": "Main",
+    "playground": "Playground"
   }
 }

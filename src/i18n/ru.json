@@ -1,8 +1,14 @@
 {
   "common": {
     "locales": {
-      "ru": "Русский",
-      "en-us": "Английский"
+      "ru": {
+        "alias": "RU",
+        "full": "Русский"
+      },
+      "en-us": {
+        "alias": "EN",
+        "full": "Английский"
+      }
     },
     "error": {
       "notFound": {
@@ -29,9 +35,11 @@
   "entity": {
     "services": "Сервисы",
     "dashboard": "Личный кабинет",
-    "profile": "Профиль пользователя",
+    "profile": "Профиль",
     "documents": "Документы",
     "tickets": "Заявки",
-    "bills": "Оплата счетов"
+    "bills": "Счета",
+    "main": "Главная",
+    "playground": "Playground"
   }
 }

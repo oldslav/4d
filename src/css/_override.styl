@@ -64,9 +64,17 @@
     .error
       @extend .bg-secondary-light
 
-    .q-header, .q-drawer
+    .q-header, .q-drawer, .q-footer
       background: $background
 
+    .q-tab
+      &__label
+        color: $grey
+
   &--dark
-    .q-header, .q-drawer
+    .q-header, .q-drawer, .q-footer
       background: $dark-secondary
+
+    .q-tab
+      &__label
+        color: $primary
