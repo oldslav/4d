@@ -29,11 +29,11 @@ const routes: RouteConfig[] = [
         name: "playground-buttons",
         component: (): Promise<any> => import("components/playground/Buttons.vue"),
         meta: {
-              asideLeft: false,
-              toolbar: true,
-              asideRight: false,
-              content: true
-            }
+          asideLeft: false,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
       },
       {
         path: "inputs",
@@ -95,10 +95,22 @@ const routes: RouteConfig[] = [
         }
       },
       {
+        path: "documents",
+        name: "user-documents",
+        components: {
+          default: (): Promise<any> => import("pages/UserDocuments.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          content: true
+        }
+      },
+      {
         path: "tickets",
         name: "user-tickets",
         components: {
-          default: (): Promise<any> => import("pages/UserTickets.vue")
+          default: (): Promise<any> => import("pages/TicketsEmpty.vue") // temporary
         },
         meta: {
           toolbar: true,
@@ -107,30 +119,6 @@ const routes: RouteConfig[] = [
         }
       }
     ]
-  },
-  {
-    path: "/documents",
-    name: "documents",
-    components: {
-      default: (): Promise<any> => import("pages/Documents.vue"),
-      toolbar: Toolbar,
-      asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
-    },
-    meta: {
-      layout: ProfileLayout
-    }
-  },
-  {
-    path: "/tickets",
-    name: "tickets",
-    components: {
-      default: (): Promise<any> => import("pages/TicketsEmpty.vue"), // temporary
-      toolbar: Toolbar,
-      asideLeft: (): Promise<any> => import("@/components/Aside/AsideProfile.vue")
-    },
-    meta: {
-      layout: ProfileLayout
-    }
   },
 
   // Always leave this as last one,
