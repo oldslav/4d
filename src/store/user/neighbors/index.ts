@@ -6,9 +6,9 @@ const state: INeighborsState = {
   neighbors: null
 };
 
-const neighborsModule: Module<INeighborsState, IRootState> = {
+const neighbors: Module<INeighborsState, IRootState> = {
   namespaced: true,
   state
 };
 
-export default neighborsModule;
+export default neighbors;

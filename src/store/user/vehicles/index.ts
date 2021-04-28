@@ -1,5 +1,4 @@
 import { ActionContext, ActionTree, Module } from "vuex";
-import { IDocumentsState } from "src/store/types/documents";
 import { IRootState } from "src/store/types/root";
 import { IVehiclesState } from "src/store/types/vehicles";
 
@@ -16,7 +15,7 @@ const state: IVehiclesState = {
   }
 };
 
-const actions: ActionTree<IDocumentsState, IRootState> = {
+const actions: ActionTree<IVehiclesState, IRootState> = {
   getVehicleTypes (ctx: ActionContext<IRootState, IRootState>) {
     return this.$axios.get(`${ API_AUTO }`);
   },
@@ -28,10 +27,10 @@ const actions: ActionTree<IDocumentsState, IRootState> = {
   }
 };
 
-const vehiclesModule: Module<any, IRootState> = {
+const vehicles: Module<IVehiclesState, IRootState> = {
   namespaced: true,
   actions,
   state
 };
 
-export default vehiclesModule;
+export default vehicles;
