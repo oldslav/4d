@@ -9,7 +9,7 @@
       q-card-section.q-pa-lg
         .text-medium.text-weight-bold
           | {{ $t("user.profile.documents.familyInfo") }}
-        relative-form(child)
+        neighbor-form
     q-card
       q-card-section
         .text-medium.text-weight-bold
@@ -18,15 +18,15 @@
 </template>
 
 <script>
-  import FilePicker from "components/common/FilePicker";
-  import RelativeForm from "components/forms/documents/RelativeForm";
-  import BaseDocuments from "components/common/BaseDocuments";
+  import FilePicker from "../components/common/FilePicker";
+  import NeighborForm from "../components/forms/documents/NeighborForm";
+  import BaseDocuments from "../components/common/BaseDocuments";
   import VehicleForm from "components/forms/documents/VehicleForm";
-  import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
+  import MyDocumentsForm from "../components/forms/documents/MyDocumentsForm";
 
   export default {
     name: "UserDocuments",
-    components: { MyDocumentsForm, VehicleForm, BaseDocuments, RelativeForm, FilePicker },
+    components: { MyDocumentsForm, VehicleForm, BaseDocuments, NeighborForm, FilePicker },
     data () {
       return {
         myDocuments: {

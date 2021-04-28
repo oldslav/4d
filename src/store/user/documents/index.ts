@@ -1,18 +1,17 @@
-import { ActionContext, ActionTree } from "vuex";
+import { ActionContext, ActionTree, Module } from "vuex";
 import { IRootState } from "src/store/types/root";
+import { IDocumentsState } from "src/store/types/documents";
 
-const API_AUTO = "https://api.auto.ria.com/categories/";
-
-const actions: ActionTree<IRootState, IRootState> = {
-  getVehicleTypes (ctx: ActionContext<IRootState, IRootState>) {
-    return this.$axios.get(`${ API_AUTO }`);
-  },
-  getVehicleBrands (ctx: ActionContext<IRootState, IRootState>, typeId) {
-    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks`);
-  },
-  getVehicleModels (ctx: ActionContext<IRootState, IRootState>, { typeId, brandId }) {
-    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks/${ brandId }/models`);
-  }
+const state: IDocumentsState = {
+  passport: null,
+  snils: null,
+  inn: null,
+  workCertificate: null
 };
 
-export default { namespaced: true, actions };
+const userDocuments: Module<IDocumentsState, IRootState> = {
+  namespaced: true,
+  state
+};
+
+export default userDocuments;

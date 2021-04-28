@@ -28,7 +28,7 @@
   });
 
   export default {
-    name: "RelativeForm",
+    name: "NeighborForm",
     components: { BaseDocuments },
     props: {
       child: {
