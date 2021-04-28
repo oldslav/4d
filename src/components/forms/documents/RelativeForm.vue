@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import BaseDocuments from "./BaseDocuments";
+  import BaseDocuments from "../../common/BaseDocuments";
 
   const childModel = () => ({
     passport: null,

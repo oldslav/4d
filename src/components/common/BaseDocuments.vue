@@ -4,7 +4,7 @@
 </template>
 
 <script>
-  import FilePicker from "components/common/FilePicker";
+  import FilePicker from "./FilePicker";
 
   export default {
     name: "BaseDocuments",

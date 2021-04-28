@@ -4,12 +4,12 @@
       q-card-section.q-pa-lg
         .text-weight-bold.text-medium
           | {{ $t("user.profile.documents.myDocuments") }}
-        base-documents(:entries="myDocumentsEntries" v-model="myDocuments")
+        my-documents-form(v-model="myDocuments" @save="onSaveDocuments()")
     q-card
       q-card-section.q-pa-lg
         .text-medium.text-weight-bold
           | {{ $t("user.profile.documents.familyInfo") }}
-        relative-form
+        relative-form(child)
     q-card
       q-card-section
         .text-medium.text-weight-bold
@@ -20,12 +20,13 @@
 <script>
   import FilePicker from "components/common/FilePicker";
   import RelativeForm from "components/forms/documents/RelativeForm";
-  import BaseDocuments from "components/forms/documents/BaseDocuments";
+  import BaseDocuments from "components/common/BaseDocuments";
   import VehicleForm from "components/forms/documents/VehicleForm";
+  import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
 
   export default {
     name: "UserDocuments",
-    components: { VehicleForm, BaseDocuments, RelativeForm, FilePicker },
+    components: { MyDocumentsForm, VehicleForm, BaseDocuments, RelativeForm, FilePicker },
     data () {
       return {
         myDocuments: {
@@ -39,35 +40,11 @@
     computed: {
       buttonVisible () {
         return true;
-      },
-      myDocumentsEntries () {
-        return [
-          {
-            props: {
-              label: this.$t("user.profile.documents.passportCopy"),
-              maxFiles: 5
-            },
-            value: "passport"
-          },
-          {
-            props: {
-              label: this.$t("user.profile.documents.snilsCopy")
-            },
-            value: "snils"
-          },
-          {
-            props: {
-              label: this.$t("user.profile.documents.innCopy")
-            },
-            value: "inn"
-          },
-          {
-            props: {
-              label: this.$t("user.profile.documents.workCertificate")
-            },
-            value: "job"
-          }
-        ];
+      }
+    },
+    methods: {
+      onSaveDocuments () {
+        // send documents
       }
     }
   };
