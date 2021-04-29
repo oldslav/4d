@@ -12,15 +12,17 @@
       q-separator.q-my-lg
       .email-block.row
         .col
-          BaseInput(v-model="email" label="Email")
+          BaseInput(v-model="email" label="Email" readonly)
         .col.flex.items-center.justify-end
-          | Изменить
+          router-link(:to="{ name: 'change-email' }")
+            | Сохранить
       q-separator.q-my-lg
       .password-block.row
         .col
           BaseInput(v-model="password" label="Пароль")
         .col.flex.items-center.justify-end
-          | Изменить
+          router-link(:to="{ name: 'change-password' }")
+            | Изменить
       q-separator.q-mt-lg
       .contacts-block.row
         .col
@@ -39,15 +41,45 @@
             | VK
       .save-btn.flex.items-center.justify-end.q-mt-lg
         q-btn(color="primary" label="Сохранить")
+    
+    BaseModal(:value="showEmailModal" @input="toggleModal")
+      template(v-slot:title)
+        | Смена почты
+      template(v-slot:content)
+        | После сохранения на новый адрес будет отправлено письмо для подтверждения электронной почты
+        BaseInput(v-model="emailConfirmation" label="Email")
+      template(v-slot:buttons)
+        q-btn(v-close-popup color="primary" label="Сохранить")
+    
+    BaseModal(:value="showPasswordModal" @input="toggleModal")
+      template(v-slot:title)
+        | Смена пароля
+      template(v-slot:content)
+        BaseInput(v-model="emailConfirmation" label="Текущий пароль")
+        BaseInput(v-model="emailConfirmation" label="Новый пароль")
+        BaseInput(v-model="emailConfirmation" label="Новый пароль")
+      template(v-slot:buttons)
+        q-btn(v-close-popup color="primary" label="Сохранить")
 </template>
 
 <script>
   import BaseInput from "components/common/BaseInput";
+  import BaseModal from "components/common/BaseModal";
   import { mapGetters } from "vuex";
 
   export default {
     name: "UserProfile",
-    components: { BaseInput },
+    components: {
+      BaseInput,
+      BaseModal
+    },
+    data () {
+      return {
+        showEmailModal: false,
+        showPasswordModal: false,
+        emailConfirmation: null
+      };
+    },
     computed: {
       ...mapGetters([
         "getAccount"
@@ -100,6 +132,20 @@
       toggleVK: {
         get () {
           return this.getAccount ? this.getAccount.toggleVK : false;
+        }
+      }
+    },
+    methods: {
+      toggleModal (value) {
+        if (!value) this.$router.push({ name: "profile" });
+      }
+    },
+    watch: {
+      $route: {
+        immediate: true,
+        handler: function (newVal) {
+          this.showEmailModal = newVal.meta && newVal.meta.showEmailModal;
+          this.showPasswordModal = newVal.meta && newVal.meta.showPasswordModal;
         }
       }
     }
