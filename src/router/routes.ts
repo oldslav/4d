@@ -29,11 +29,11 @@ const routes: RouteConfig[] = [
         name: "playground-buttons",
         component: (): Promise<any> => import("components/playground/Buttons.vue"),
         meta: {
-              asideLeft: false,
-              toolbar: true,
-              asideRight: false,
-              content: true
-            }
+          asideLeft: false,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
       },
       {
         path: "inputs",
@@ -66,22 +66,24 @@ const routes: RouteConfig[] = [
     }
   },
   {
-    path: "/profile",
-    name: "profile",
+    path: "/user",
+    name: "user",
+    redirect: {
+      name: "user-profile"
+    },
     components: {
-      default: (): Promise<any> => import("pages/UserProfile.vue"),
-      asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+      default: { render: (c) => c("router-view") }, // STUB
+      asideLeft: (): Promise<any> => import("components/aside/AsideProfile.vue")
     },
     meta: {
-      asideLeft: true,
       toolbar: true,
-      asideRight: false,
+      asideLeft: true,
       content: true
     },
     children: [
       {
-        path: "change-email",
-        name: "change-email",
+        path: "profile",
+        name: "user-profile",
         components: {
           default: (): Promise<any> => import("pages/UserProfile.vue"),
           asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
@@ -92,21 +94,62 @@ const routes: RouteConfig[] = [
           asideRight: false,
           content: true,
           showEmailModal: true
+        },
+        children: [
+          {
+            path: "change-email",
+            name: "change-email",
+            components: {
+              default: (): Promise<any> => import("pages/UserProfile.vue"),
+              asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+            },
+            meta: {
+              asideLeft: true,
+              toolbar: true,
+              asideRight: false,
+              content: true,
+              showEmailModal: true
+            }
+          },
+          {
+            path: "change-password",
+            name: "change-password",
+            components: {
+              default: (): Promise<any> => import("pages/UserProfile.vue"),
+              asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+            },
+            meta: {
+              asideLeft: true,
+              toolbar: true,
+              asideRight: false,
+              content: true,
+              showPasswordModal: true
+            }
+          }
+        ]
+      },
+      {
+        path: "documents",
+        name: "user-documents",
+        components: {
+          default: (): Promise<any> => import("pages/UserDocuments.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          content: true
         }
       },
       {
-        path: "change-password",
-        name: "change-password",
+        path: "tickets",
+        name: "user-tickets",
         components: {
-          default: (): Promise<any> => import("pages/UserProfile.vue"),
-          asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+          default: (): Promise<any> => import("pages/UserTickets.vue")
         },
         meta: {
-          asideLeft: true,
           toolbar: true,
-          asideRight: false,
-          content: true,
-          showPasswordModal: true
+          asideLeft: true,
+          content: true
         }
       }
     ]

@@ -137,7 +137,7 @@
     },
     methods: {
       toggleModal (value) {
-        if (!value) this.$router.push({ name: "profile" });
+        if (!value) this.$router.push({ name: "user-profile" });
       }
     },
     watch: {
