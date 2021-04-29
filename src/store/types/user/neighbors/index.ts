@@ -1,4 +1,4 @@
-import { IUserName } from "src/store/types/user";
+import { IUserName } from "../index";
 
 export interface INeighborsState {
   neighbors: Array<INeighbor> | null

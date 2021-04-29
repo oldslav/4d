@@ -86,7 +86,7 @@
       }
     },
     methods: {
-      ...mapActions("documents", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels"]),
+      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels"]),
       loadTypes (val, update) {
         if (this.vehicleTypes !== null) {
           update();

@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, Module } from "vuex";
 import { IRootState } from "src/store/types/root";
-import { IVehiclesState } from "src/store/types/vehicles";
+import { IVehiclesState } from "src/store/types/user/vehicles";
 
 const API_AUTO = "https://api.auto.ria.com/categories/";
 

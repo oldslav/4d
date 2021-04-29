@@ -1,6 +1,6 @@
 import { Module } from "vuex";
-import { IRootState } from "src/store/types/root";
-import { IDocumentsState } from "src/store/types/documents";
+import { IRootState } from "../../types/root";
+import { IDocumentsState } from "../../types/user/documents";
 
 const state: IDocumentsState = {
   passport: null,

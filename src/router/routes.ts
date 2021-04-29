@@ -110,7 +110,7 @@ const routes: RouteConfig[] = [
         path: "tickets",
         name: "user-tickets",
         components: {
-          default: (): Promise<any> => import("pages/TicketsEmpty.vue") // temporary
+          default: (): Promise<any> => import("pages/UserTickets.vue")
         },
         meta: {
           toolbar: true,

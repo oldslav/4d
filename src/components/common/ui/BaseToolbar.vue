@@ -17,7 +17,7 @@
       q-btn(round dense icon="o_account_circle" text-color="primary")
         q-menu
           q-list(dense)
-            q-item(:to="{ name: 'profile' }" exact)
+            q-item(:to="{ name: 'user-profile' }" exact)
               q-item-section(avatar)
                 q-icon(name="o_account_circle")
               q-item-section

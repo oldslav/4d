@@ -1,5 +1,5 @@
 import { Module } from "vuex";
-import { INeighborsState } from "src/store/types/neighbors";
+import { INeighborsState } from "../../types/user/neighbors";
 import { IRootState } from "src/store/types/root";
 
 const state: INeighborsState = {

@@ -40,7 +40,7 @@
           },
           {
             label: this.$t("entity.documents"),
-            action: "/documents",
+            action: { name: "user-documents" },
             icon: "o_text_snippet",
             show: true
           },
@@ -52,13 +52,13 @@
           },
           {
             label: this.$t("entity.bills"),
-            action: "playground",
+            action: { name: "playground" },
             icon: "o_article",
             show: true
           },
           {
             label: "Hidden stuff",
-            action: "main",
+            action: { name: "main" },
             icon: "o_article",
             show: this.role === "admin"
           }
