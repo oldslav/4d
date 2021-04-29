@@ -29,11 +29,11 @@ const routes: RouteConfig[] = [
         name: "playground-buttons",
         component: (): Promise<any> => import("components/playground/Buttons.vue"),
         meta: {
-              asideLeft: false,
-              toolbar: true,
-              asideRight: false,
-              content: true
-            }
+          asideLeft: false,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
       },
       {
         path: "inputs",
@@ -91,6 +91,18 @@ const routes: RouteConfig[] = [
           asideLeft: true,
           toolbar: true,
           asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "documents",
+        name: "user-documents",
+        components: {
+          default: (): Promise<any> => import("pages/UserDocuments.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
           content: true
         }
       },

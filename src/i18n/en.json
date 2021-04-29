@@ -19,13 +19,36 @@
     },
     "theme": "Theme"
   },
-  "employee": {
+  "user": {
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "patronymic": "Отчество",
     "profile": {
       "tickets": {
         "empty": {
           "title": "У вас пока нет ни одной заявки",
           "subtitle1": "Вы можете перейти в раздел ",
           "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
+        }
+      },
+      "documents": {
+        "myDocuments": "Мои документы",
+        "familyInfo": "Данные о семье",
+        "vehicleInfo": "Данные об автомобиле",
+        "passportCopy": "Скан-копия паспорта",
+        "snilsCopy": "Скан-копия СНИЛС",
+        "innCopy": "Скан-копия ИНН",
+        "workCertificate": "Справка с места работы",
+        "birthCertificate": "Скан-копия свидетельства о рождении",
+        "marriageCertificate": "Скан-копия свидетельства о браке",
+        "registrationCopy": "Скан-копия прописки",
+        "sts": "Свидетельство о регистрации ТС",
+        "pts": "Паспорт ТС",
+        "vehicle": {
+          "type": "Тип",
+          "brand": "Марка",
+          "model": "Модель",
+          "plates": "Номер"
         }
       }
     }
