@@ -4,57 +4,66 @@
       .col-12.col-sm-6.col-md-3
         q-select(
           :label="$t('user.profile.documents.vehicle.type')"
-          v-model="type"
+          v-model="vehicle.type"
           :options="vehicleTypes"
           option-label="name"
-          @filter="loadTypes"
+          @filter="typesFilter"
           :loading="loadingTypes"
           @input="loadBrands()"
         )
       .col-12.col-sm-6.col-md-3
         q-select(
           :label="$t('user.profile.documents.vehicle.brand')"
-          v-if="type"
+          :disable="!vehicle.type"
           :options="actualBrands"
           option-label="name"
-          v-model="brand"
+          v-model="vehicle.brand"
           use-input
-          @input="loadModels()"
           @filter="filterBrands"
+          @input="loadModels()"
         )
       .col-12.col-sm-6.col-md-3
         q-select(
           :label="$t('user.profile.documents.vehicle.model')"
-          v-if="brand"
+          :disable="!vehicle.brand"
           :options="actualModels"
           option-label="name"
-          v-model="model"
+          v-model="vehicle.model"
           use-input
           @filter="filterModels"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('user.profile.documents.vehicle.plates')" v-if="model" v-model="plates")
+        q-input(:label="$t('user.profile.documents.vehicle.plates')" :disable="!vehicle.model" v-model="vehicle.number")
     q-expansion-item.q-mt-sm(:label="$t('entity.documents')" header-class="q-px-none text-subtitle")
-      base-documents(:entries="entries" v-model="documents")
+      file-picker(:max-files="2" v-model="vehicle.pts" :label="this.$t('user.profile.documents.pts')")
+      file-picker(:max-files="2" v-model="vehicle.sts" :label="this.$t('user.profile.documents.sts')")
+    div.text-right.q-mt-md
+      q-btn(color="primary" @click="log()" label="Сохранить")
 </template>
 
 <script>
   import { mapActions } from "vuex";
-  import BaseDocuments from "../../common/BaseDocuments";
+  import FilePicker from "components/common/FilePicker";
 
   export default {
     name: "VehicleForm",
-    components: { BaseDocuments },
+    components: { FilePicker },
+    props: {
+      value: {
+        type: Object,
+        default: () => ({})
+      }
+    },
+    mounted () {
+      return Promise.allSettled([
+        this.loadTypes(),
+        ...this.vehicle.type ? [this.loadBrands()] : [],
+        ...this.vehicle.brand ? [this.loadModels()] : []
+      ]);
+    },
     data () {
       return {
-        type: null,
-        brand: null,
-        model: null,
-        plates: null,
-        documents: {
-          sts: null,
-          pts: null
-        },
+        vehicle: { ...this.value },
         vehicleTypes: null,
         vehicleBrands: null,
         vehicleModels: null,
@@ -65,49 +74,30 @@
         loadingModels: false
       };
     },
-    computed: {
-      entries () {
-        return [
-          {
-            value: "sts",
-            props: {
-              label: this.$t("user.profile.documents.sts"),
-              maxFiles: 2
-            }
-          },
-          {
-            value: "pts",
-            props: {
-              label: this.$t("user.profile.documents.pts"),
-              maxFiles: 2
-            }
-          }
-        ];
-      }
-    },
     methods: {
       ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels"]),
-      loadTypes (val, update) {
+      typesFilter (val, update) {
         if (this.vehicleTypes !== null) {
           update();
           return;
         }
         update(() => {
-          this.loadingTypes = true;
-          this.getVehicleTypes()
-            .then(({ data }) => {
-              this.vehicleTypes = data;
-            })
-            .finally(() => {
-              this.loadingTypes = false;
-            });
+          this.loadTypes();
         });
       },
+      loadTypes () {
+        this.loadingTypes = true;
+        return this.getVehicleTypes()
+          .then(({ data }) => {
+            this.vehicleTypes = data;
+          })
+          .finally(() => {
+            this.loadingTypes = false;
+          });
+      },
       loadBrands () {
-        this.brand = null;
-        this.model = null;
         this.loadingBrands = true;
-        return this.getVehicleBrands(this.type.value)
+        return this.getVehicleBrands(this.vehicle.type.value)
           .then(({ data }) => {
             this.vehicleBrands = data;
           })
@@ -116,9 +106,8 @@
           });
       },
       loadModels () {
-        this.model = null;
         this.loadingModels = true;
-        this.getVehicleModels({ typeId: this.type.value, brandId: this.brand.value })
+        return this.getVehicleModels({ typeId: this.vehicle.type.value, brandId: this.vehicle.brand.value })
           .then(({ data }) => {
             this.vehicleModels = data;
           })
@@ -135,6 +124,20 @@
         update(() => {
           this.actualModels = this.vehicleModels.filter((m) => m.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
         });
+      }
+    },
+    watch: {
+      value: {
+        deep: true,
+        handler (val) {
+          this.vehicle = val;
+        }
+      },
+      vehicle: {
+        deep: true,
+        handler (val) {
+          this.$emit("input", val);
+        }
       }
     }
   };

@@ -1,6 +1,8 @@
 <template lang="pug">
   q-file(
     :value="value"
+    :rules="rules"
+    no-error-icon
     dense
     ref="picker"
     :label="label"
@@ -8,6 +10,7 @@
     borderless
     multiple
     append
+    :lazy-rules="lazy"
     :accept="accept"
     :max-files="maxFiles"
     :max-file-size="maxSize"
@@ -31,6 +34,14 @@
         type: Array,
         default: () => []
       },
+      lazy: {
+        type: Boolean,
+        default: false
+      },
+      rules: {
+        type: Array,
+        default: () => []
+      },
       accept: {
         type: String,
         default: ".jpg, .png, .pdf, .jpeg"
@@ -44,16 +55,13 @@
         default: "Формат jpg, jpeg, png, pdf"
       },
       maxFileSize: {
-        type: Number,
+        type: [Number, String],
         default: 3
       },
       maxFiles: {
-        type: Number,
+        type: [Number, String],
         default: 1
       }
-    },
-    data () {
-      return {};
     },
     computed: {
       maxSize () {
