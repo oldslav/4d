@@ -17,8 +17,8 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, IRootState> = {
-  [GET_USER_TICKETS] ({ commit, state }) {
-    const response = TicketsService.getTicketsLiving({
+  async [GET_USER_TICKETS] ({ commit }) {
+    const response = await TicketsService.getTicketsLiving({
       filters: {
         statusId: [124, 13, 1412]
       }
