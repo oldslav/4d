@@ -152,7 +152,8 @@ module.exports = configure(function () {
 
       // Quasar plugins
       plugins: [
-        "Cookies"
+        "Cookies",
+        "Dialog"
       ]
     },
 

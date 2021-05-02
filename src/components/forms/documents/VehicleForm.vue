@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-form
+  q-form(@submit="onSubmit()")
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-3
         q-select(
@@ -7,9 +7,9 @@
           v-model="vehicle.type"
           :options="vehicleTypes"
           option-label="name"
-          @filter="typesFilter"
           :loading="loadingTypes"
           @input="loadBrands()"
+          :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
         q-select(
@@ -17,10 +17,12 @@
           :disable="!vehicle.type"
           :options="actualBrands"
           option-label="name"
+          option-value="name"
           v-model="vehicle.brand"
           use-input
           @filter="filterBrands"
           @input="loadModels()"
+          :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
         q-select(
@@ -31,19 +33,23 @@
           v-model="vehicle.model"
           use-input
           @filter="filterModels"
+          :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
         q-input(:label="$t('user.profile.documents.vehicle.plates')" :disable="!vehicle.model" v-model="vehicle.number")
     q-expansion-item.q-mt-sm(:label="$t('entity.documents')" header-class="q-px-none text-subtitle")
       file-picker(:max-files="2" v-model="vehicle.pts" :label="this.$t('user.profile.documents.pts')")
       file-picker(:max-files="2" v-model="vehicle.sts" :label="this.$t('user.profile.documents.sts')")
-    div.text-right.q-mt-md
-      q-btn(color="primary" @click="log()" label="Сохранить")
+    div.text-right.q-mt-md(v-show="isChanged")
+      q-btn.q-mr-md(flat @click="onCancel()" label="Отмена")
+      q-btn(color="primary" label="Сохранить" type="submit")
 </template>
 
 <script>
   import { mapActions } from "vuex";
+  import { isEqual } from "lodash";
   import FilePicker from "components/common/FilePicker";
+  import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE } from "@/store/constants/action-constants";
 
   export default {
     name: "VehicleForm",
@@ -52,6 +58,10 @@
       value: {
         type: Object,
         default: () => ({})
+      },
+      index: {
+        type: Number,
+        default: null
       }
     },
     mounted () {
@@ -71,19 +81,38 @@
         actualModels: null,
         loadingTypes: false,
         loadingBrands: false,
-        loadingModels: false
+        loadingModels: false,
+        requiredRule: [val => !!val || "Поле обязательно к заполнению"]
       };
     },
+    computed: {
+      isChanged () {
+        return !isEqual(this.value, this.vehicle);
+      },
+      isUpdate () {
+        return !!this.vehicle.id;
+      }
+    },
     methods: {
-      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels"]),
-      typesFilter (val, update) {
-        if (this.vehicleTypes !== null) {
-          update();
-          return;
+      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels", CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE]),
+      onSubmit () {
+        let action;
+        if (this.isUpdate) {
+          action = this[UPDATE_USER_VEHICLE];
+        } else {
+          action = this[CREATE_USER_VEHICLE];
         }
-        update(() => {
-          this.loadTypes();
-        });
+        return action.call(this, this.vehicle);
+      },
+      onCancel () {
+        if (this.isUpdate) {
+          this.discardChanges();
+        } else {
+          this.$emit("remove", this.index);
+        }
+      },
+      discardChanges () {
+        this.vehicle = { ...this.value };
       },
       loadTypes () {
         this.loadingTypes = true;
@@ -132,13 +161,13 @@
         handler (val) {
           this.vehicle = val;
         }
-      },
-      vehicle: {
-        deep: true,
-        handler (val) {
-          this.$emit("input", val);
-        }
       }
+      // vehicle: {
+      //   deep: true,
+      //   handler (val) {
+      //     this.$emit("input", val);
+      //   }
+      // }
     }
   };
 </script>

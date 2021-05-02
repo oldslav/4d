@@ -9,20 +9,11 @@ const initialState = (): IDocumentsState => {
     passport: [],
     snils: [],
     inn: [],
-    workCertificate: []
+    job: []
   };
 };
 
 const state: () => IDocumentsState = initialState;
-
-const getters: GetterTree<IDocumentsState, IRootState> = {
-  isChanged (state: IDocumentsState) {
-    return !isEqual(state, initialState());
-  },
-  getDocuments (state: IDocumentsState) {
-    return state;
-  }
-};
 
 const mutations: MutationTree<IDocumentsState> = {
   [SET_PASSPORT] (state: IDocumentsState, payload) {
@@ -35,15 +26,23 @@ const mutations: MutationTree<IDocumentsState> = {
     state.inn = payload;
   },
   [SET_WORK_CERTIFICATE] (state: IDocumentsState, payload) {
-    state.workCertificate = payload;
+    state.job = payload;
   }
 };
 
+const getters: GetterTree<IDocumentsState, IRootState> = {
+  isChanged (state: IDocumentsState) {
+    return !isEqual(state, initialState());
+  },
+  getDocuments (state: IDocumentsState) {
+    return state;
+  }
+};
 const documents: Module<IDocumentsState, IRootState> = {
   namespaced: true,
   state,
-  getters,
-  mutations
+  mutations,
+  getters
 };
 
 export default documents;

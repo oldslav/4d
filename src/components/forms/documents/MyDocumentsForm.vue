@@ -3,7 +3,7 @@
     file-picker.q-mt-sm(:max-files="5" v-model="passport" :label="$t('user.profile.documents.passportCopy')")
     file-picker.q-mt-sm(v-model="snils" :label="$t('user.profile.documents.snilsCopy')")
     file-picker.q-mt-sm(v-model="inn" :label="$t('user.profile.documents.innCopy')")
-    file-picker.q-mt-sm(v-model="workCertificate" :label="$t('user.profile.documents.workCertificate')")
+    file-picker.q-mt-sm(v-model="job" :label="$t('user.profile.documents.workCertificate')")
     q-btn.q-mt-md(color="primary" label="Сохранить" v-show="isChanged" type="submit")
 </template>
 
@@ -53,9 +53,9 @@
           this.setInn(val);
         }
       },
-      workCertificate: {
+      job: {
         get () {
-          return this.getDocuments.workCertificate;
+          return this.getDocuments.job;
         },
         set (val) {
           this.setWorkCertificate(val);
