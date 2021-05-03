@@ -1,8 +1,10 @@
 import { isEqual } from "lodash";
-import { GetterTree, Module, MutationTree } from "vuex";
+import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { IRootState } from "../../types/root";
 import { IDocumentsState } from "../../types/user/documents";
-import { SET_PASSPORT, SET_INN, SET_SNILS, SET_WORK_CERTIFICATE } from "src/store/constants/mutation-constants";
+import { SET_PASSPORT, SET_INN, SET_SNILS, SET_JOB } from "src/store/constants/mutation-constants";
+import { CREATE_USER_DOCUMENT, DELETE_USER_DOCUMENT } from "src/store/constants/action-constants";
+import { UserDocumentsService } from "src/api/user/documents";
 
 const initialState = (): IDocumentsState => {
   return {
@@ -25,8 +27,17 @@ const mutations: MutationTree<IDocumentsState> = {
   [SET_INN] (state: IDocumentsState, payload) {
     state.inn = payload;
   },
-  [SET_WORK_CERTIFICATE] (state: IDocumentsState, payload) {
+  [SET_JOB] (state: IDocumentsState, payload) {
     state.job = payload;
+  }
+};
+
+const actions: ActionTree<IDocumentsState, IRootState> = {
+  [CREATE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, IRootState>, document) {
+    return UserDocumentsService.createDocument(document);
+  },
+  [DELETE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, IRootState>, id) {
+    return UserDocumentsService.deleteDocument(id);
   }
 };
 
@@ -38,10 +49,12 @@ const getters: GetterTree<IDocumentsState, IRootState> = {
     return state;
   }
 };
+
 const documents: Module<IDocumentsState, IRootState> = {
   namespaced: true,
   state,
   mutations,
+  actions,
   getters
 };
 

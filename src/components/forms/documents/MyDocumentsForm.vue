@@ -9,7 +9,7 @@
 
 <script>
   import { mapGetters, mapMutations } from "vuex";
-  import { SET_PASSPORT, SET_INN, SET_SNILS, SET_WORK_CERTIFICATE } from "@/store/constants/mutation-constants";
+  import { SET_PASSPORT, SET_INN, SET_SNILS, SET_JOB } from "@/store/constants/mutation-constants";
   import FilePicker from "components/common/FilePicker";
 
   export default {
@@ -52,7 +52,7 @@
           return this.getDocuments.job;
         },
         set (val) {
-          this.setWorkCertificate(val);
+          this.setJob(val);
         }
       }
     },
@@ -61,7 +61,7 @@
         setPassport: SET_PASSPORT,
         setSnils: SET_SNILS,
         setInn: SET_INN,
-        setWorkCertificate: SET_WORK_CERTIFICATE
+        setJob: SET_JOB
       }),
       onInput (val) {
         this.$emit("input", val);
