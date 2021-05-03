@@ -11,21 +11,15 @@
   import { mapGetters, mapMutations } from "vuex";
   import { SET_PASSPORT, SET_INN, SET_SNILS, SET_WORK_CERTIFICATE } from "@/store/constants/mutation-constants";
   import FilePicker from "components/common/FilePicker";
-  import BaseDocuments from "components/common/BaseDocuments";
 
   export default {
     name: "MyDocumentsForm",
-    components: { BaseDocuments, FilePicker },
+    components: { FilePicker },
     props: {
       value: {
         type: Object,
         default: () => ({})
       }
-    },
-    data () {
-      return {
-        passportRules: [val => val && val.length > 0 || "Поле обязательно для заполнения"]
-      };
     },
     computed: {
       ...mapGetters("user/documents", ["isChanged", "getDocuments"]),

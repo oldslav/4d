@@ -116,7 +116,7 @@
       getNeighbors: {
         deep: true,
         handler (val) {
-          this.neighbors = val;
+          this.neighbors = JSON.parse(JSON.stringify(val));
         }
       }
     }

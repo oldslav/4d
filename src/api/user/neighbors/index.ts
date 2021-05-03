@@ -1,4 +1,5 @@
 import Axios, { AxiosPromise } from "axios";
+import { DocumentPayload } from "src/api/common";
 
 interface NeighborPayload {
   id?: number,
@@ -27,5 +28,13 @@ export class UserNeighborsService {
 
   public static deleteNeighbor (id: number): AxiosPromise<NeighborResponse> {
     return Axios.delete(`profile/documents/neighbors/${ id }`);
+  }
+
+  public static createNeighborFile (document: DocumentPayload, id: number): AxiosPromise<NeighborResponse> {
+    return Axios.post(`profile/documents/neighbors/${ id }/file`, document);
+  }
+
+  public static deleteNeighborFile (id: number): AxiosPromise<NeighborResponse> {
+    return Axios.delete(`profile/documents/neighbors/file/${ id }`);
   }
 }

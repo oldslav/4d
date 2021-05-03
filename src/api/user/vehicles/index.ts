@@ -1,4 +1,5 @@
 import Axios, { AxiosPromise } from "axios";
+import { DocumentPayload } from "src/api/common";
 
 interface VehiclesPayload {
   id?: number | string,
@@ -6,11 +7,6 @@ interface VehiclesPayload {
   brand: string,
   model: string,
   number: string
-}
-
-interface VehicleFile {
-  file: any,
-  id: number
 }
 
 interface VehiclesResponse {
@@ -30,7 +26,7 @@ export class UserVehiclesService {
     return Axios.delete(`profile/documents/car/${ id }`);
   }
 
-  public static createVehicleFile (file: VehicleFile, id: number): AxiosPromise<VehiclesResponse> {
+  public static createVehicleFile (file: DocumentPayload, id: number): AxiosPromise<VehiclesResponse> {
     return Axios.post(`profile/documents/car/${ id }/file`, file);
   }
 

@@ -85,7 +85,7 @@
       getVehicles: {
         deep: true,
         handler (val) {
-          this.vehicles = val;
+          this.vehicles = JSON.parse(JSON.stringify(val));
         }
       }
     }
