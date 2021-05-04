@@ -1,11 +1,16 @@
 import Axios, { AxiosPromise } from "axios";
 import { DocumentPayload } from "src/api/common";
 
+interface Option {
+  name: string,
+  id: string
+}
+
 interface VehiclesPayload {
   id?: number | string,
-  type: string,
-  brand: string,
-  model: string,
+  type: Option,
+  brand: Option,
+  model: Option,
   number: string
 }
 

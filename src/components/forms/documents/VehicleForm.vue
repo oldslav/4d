@@ -2,37 +2,36 @@
   q-form(@submit="onSubmit()")
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-3
-        q-select(
+        base-autocomplete(
           :label="$t('user.profile.documents.vehicle.type')"
           v-model="vehicle.type"
           :options="vehicleTypes"
-          option-label="name"
-          :loading="loadingTypes"
-          @input="loadBrands()"
+          field="name"
+          prop="id"
           :rules="requiredRule"
+          @input="loadBrands()"
         )
       .col-12.col-sm-6.col-md-3
-        q-select(
+        base-autocomplete(
           :label="$t('user.profile.documents.vehicle.brand')"
           :disable="!vehicle.type"
-          :options="actualBrands"
-          option-label="name"
-          option-value="name"
+          :options="vehicleBrands"
+          field="name"
+          prop="id"
           v-model="vehicle.brand"
           use-input
-          @filter="filterBrands"
           @input="loadModels()"
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-select(
+        base-autocomplete(
           :label="$t('user.profile.documents.vehicle.model')"
           :disable="!vehicle.brand"
-          :options="actualModels"
-          option-label="name"
+          :options="vehicleModels"
+          field="name"
+          prop="id"
           v-model="vehicle.model"
           use-input
-          @filter="filterModels"
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
@@ -48,12 +47,13 @@
 <script>
   import { mapActions } from "vuex";
   import { isEqual } from "lodash";
-  import FilePicker from "components/common/FilePicker";
   import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE } from "@/store/constants/action-constants";
+  import FilePicker from "components/common/FilePicker";
+  import BaseAutocomplete from "components/common/BaseAutocomplete";
 
   export default {
     name: "VehicleForm",
-    components: { FilePicker },
+    components: { FilePicker, BaseAutocomplete },
     props: {
       value: {
         type: Object,
@@ -74,11 +74,9 @@
     data () {
       return {
         vehicle: { ...this.value },
-        vehicleTypes: null,
-        vehicleBrands: null,
-        vehicleModels: null,
-        actualBrands: null,
-        actualModels: null,
+        vehicleTypes: [],
+        vehicleBrands: [],
+        vehicleModels: [],
         loadingTypes: false,
         loadingBrands: false,
         loadingModels: false,
@@ -117,7 +115,7 @@
       loadTypes () {
         this.loadingTypes = true;
         return this.getVehicleTypes()
-          .then(({ data }) => {
+          .then((data) => {
             this.vehicleTypes = data;
           })
           .finally(() => {
@@ -126,8 +124,8 @@
       },
       loadBrands () {
         this.loadingBrands = true;
-        return this.getVehicleBrands(this.vehicle.type.value)
-          .then(({ data }) => {
+        return this.getVehicleBrands(this.vehicle.type.id)
+          .then((data) => {
             this.vehicleBrands = data;
           })
           .finally(() => {
@@ -136,23 +134,13 @@
       },
       loadModels () {
         this.loadingModels = true;
-        return this.getVehicleModels({ typeId: this.vehicle.type.value, brandId: this.vehicle.brand.value })
-          .then(({ data }) => {
+        return this.getVehicleModels({ typeId: this.vehicle.type.id, brandId: this.vehicle.brand.id })
+          .then((data) => {
             this.vehicleModels = data;
           })
           .finally(() => {
             this.loadingModels = false;
           });
-      },
-      filterBrands (val, update) {
-        update(() => {
-          this.actualBrands = this.vehicleBrands.filter((b) => b.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-        });
-      },
-      filterModels (val, update) {
-        update(() => {
-          this.actualModels = this.vehicleModels.filter((m) => m.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-        });
       }
     },
     watch: {

@@ -19,9 +19,9 @@ export interface IVehiclesEntry {
   index: number
 }
 
-export interface Option {
+interface Option {
   name: string,
-  value: number
+  id: string
 }
 
 export interface IVehicle {

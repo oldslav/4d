@@ -3,9 +3,19 @@ import { IRootState } from "src/store/types/root";
 import { IVehicle, IVehiclesEntry, IVehiclesState } from "src/store/types/user/vehicles";
 import { SET_VEHICLE_ITEM, CREATE_VEHICLE_ITEM } from "src/store/constants/mutation-constants";
 import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE, DELETE_USER_VEHICLE } from "src/store/constants/action-constants";
-import { UserVehiclesService } from "src/api/user/vehicles";
+import { UserVehiclesService } from "../../../api/user/vehicles";
 
 const API_AUTO = "https://api.auto.ria.com/categories/";
+
+const replaceValues = (data: any) => {
+  return data.map((item: any) => {
+    const { name, value } = item;
+    return {
+      name,
+      id: value.toString()
+    };
+  });
+};
 
 const state: IVehiclesState = {
   //STUB
@@ -14,15 +24,15 @@ const state: IVehiclesState = {
       id: 1,
       type: {
         name: "Легковые",
-        value: 1
+        id: "1"
       },
       brand: {
         name: "Acura",
-        value: 98
+        id: "98"
       },
       model: {
         name: "EL",
-        value: 30098
+        id: "30098"
       },
       number: "123",
       sts: null,
@@ -32,15 +42,15 @@ const state: IVehiclesState = {
       id: 2,
       type: {
         name: "Мото",
-        value: 2
+        id: "2"
       },
       brand: {
         name: "Acxa",
-        value: 2282
+        id: "2282"
       },
       model: {
         name: "ATB",
-        value: 31849
+        id: "31849"
       },
       number: "777",
       sts: null,
@@ -60,13 +70,17 @@ const mutations: MutationTree<IVehiclesState> = {
 
 const actions: ActionTree<IVehiclesState, IRootState> = {
   getVehicleTypes () {
-    return this.$axios.get(`${ API_AUTO }`);
+    return this.$axios.get(`${ API_AUTO }`)
+      .then(({ data }) => replaceValues(data));
   },
+  // перенести в dictionary
   getVehicleBrands (ctx: ActionContext<IRootState, IRootState>, typeId) {
-    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks`);
+    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks`)
+      .then(({ data }) => replaceValues(data));
   },
   getVehicleModels (ctx: ActionContext<IRootState, IRootState>, { typeId, brandId }) {
-    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks/${ brandId }/models`);
+    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks/${ brandId }/models`)
+      .then(({ data }) => replaceValues(data));
   },
   [CREATE_USER_VEHICLE] (ctx: ActionContext<IVehiclesState, IRootState>, vehicle) {
     const { sts, pts, ...payload } = vehicle;
