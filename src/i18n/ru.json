@@ -16,6 +16,11 @@
         "topSub": "Ищете что-то интересное на нашем сайте?",
         "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
       }
+    },
+    "theme": "Тема",
+    "login": {
+      "title": "Вход",
+      "subtitle": "Добро пожаловать в город высоких технологий"
     }
   },
   "user": {
@@ -53,6 +58,7 @@
     }
   },
   "action": {
+    "login": "Войти",
     "goBack": "Назад"
   },
   "entity": {
@@ -63,6 +69,8 @@
     "tickets": "Заявки",
     "bills": "Счета",
     "main": "Главная",
-    "playground": "Playground"
+    "playground": "Playground",
+    "email": "E-mail / Login",
+    "password": "Пароль"
   }
 }

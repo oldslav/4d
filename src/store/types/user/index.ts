@@ -7,6 +7,7 @@ export interface IUserState {
   login: string | null,
   createdAt: Date | null,
   updatedAt: Date | null
+  access_token: string | null;
 }
 
 export interface IUserName {

@@ -1,6 +1,5 @@
 import { IRootState } from "src/store/types/root";
 import { ActionContext, ActionTree, MutationTree } from "vuex";
-import { IUserName } from "src/store/types/user";
 
 const state: IRootState = {
 

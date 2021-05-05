@@ -4,32 +4,22 @@ export interface IRole {
   description: string
 }
 
+export interface IAccountName {
+  first: string | null,
+  last: string | null,
+  patronymic: string | null,
+  full: string | null
+}
+
 export interface IAccount {
-  id: number,
-
-  accountFacebookName: string | null,
-  accountGoogleName: string | null,
-  accountVkName: string | null,
-  avatarLocation: string | null,
-
-  email: string,
-  phone: string,
-
-  firstName: string,
-  lastName: string,
-  patronymic: string,
-
-  "job_position": string,
-  "no_patronymic": boolean,
-  "isYuristic": boolean
-
-  pcmEmail: boolean,
-  pcmPhone: boolean,
-  pcmTelegram: boolean,
-  pcmWhatsApp: boolean,
-  telegramAlias: string | null,
-
-  roles: IRole[]
+  name: IAccountName,
+  email: string | null,
+  phones: string | null,
+  telegram: string | null,
+  uid: string | null,
+  login: string | null,
+  createdAt: Date | null,
+  updatedAt: Date | null
 }
 
 export interface ILoginPayload {
@@ -38,11 +28,8 @@ export interface ILoginPayload {
 }
 
 export interface ILoginResponse {
-  // eslint-disable-next-line camelcase
   access_token:string,
-  // eslint-disable-next-line camelcase
   refresh_token: string,
-  // eslint-disable-next-line camelcase
   expires_in: number
 }
 

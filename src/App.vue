@@ -48,17 +48,36 @@
         q-page-container(:value="meta.content")
           transition(name="fade" mode="out-in")
             router-view
+
+      transition(name="fade" mode="out-in")
+        AuthModal(v-model="auth")
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import AsideProfile from "./components/aside/AsideProfile";
+  import AuthModal from "./components/auth/AuthModal";
   import BaseToolbar from "./components/common/ui/BaseToolbar";
+  import LoginForm from "./components/forms/auth/LoginForm";
+  import { GET_ACCOUNT } from "./store/constants/action-constants";
 
   export default {
     name: "App",
-    components: { AsideProfile, BaseToolbar },
-    created () {
+    components: { AuthModal, LoginForm, AsideProfile, BaseToolbar },
+    async created () {
+      try {
+        await this.GET_ACCOUNT();
+      } catch (e) {
+        if (e.response) {
+          this.auth = true;
+        }
+      }
       this.$q.dark.set(false);
+    },
+    data () {
+      return {
+        auth: false
+      };
     },
     computed: {
       meta () {
@@ -101,6 +120,11 @@
           }
         ];
       }
+    },
+    methods: {
+      ...mapActions([
+        GET_ACCOUNT
+      ])
     }
   };
 </script>
