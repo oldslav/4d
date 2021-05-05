@@ -3,6 +3,8 @@ import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
 import { IRootState } from "../store/types/root";
 import qs from "qs";
+import { ACCESS_TOKEN_COOKIE, FETCH_ACCESS_TOKEN } from "src/store/constants/action-constants";
+import { LocalStorage } from "quasar";
 
 axios.defaults.baseURL = process.env.SERVER_API_HOST;
 axios.interceptors.request.use(
@@ -25,9 +27,17 @@ declare module "vue/types/vue" {
 }
 
 declare module "vuex/types/index" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Store<S> {
     $axios: AxiosInstance
     REFRESH_PROMISE: null | Promise<void>
+  }
+}
+
+declare module "vuex/types/index" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface Store<S> {
+    $local: LocalStorage
   }
 }
 
@@ -37,42 +47,30 @@ declare module "axios" {
   }
 }
 
-const requestInterceptor = (store: Store<IRootState>) => {
+const requestInterceptor = (store: Store<any>) => {
   return async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
     if (config.skipAuth) {
       return config;
     }
 
     const headers = config.headers as {[key: string]: string};
-    const accessToken = await store.dispatch("account/getAccessToken") as string | null;
-
-    if (accessToken !== null) {
-      headers.Authorization = `Bearer ${ accessToken }`;
+    const accessToken = store.getters.isAccessToken
+      ? store.state.account.accessToken.token
+      : store.$local.getItem(ACCESS_TOKEN_COOKIE);
+    
+    if (accessToken === null) {
+      await store.dispatch(FETCH_ACCESS_TOKEN);
     }
-
+    
+    headers.Authorization = `Bearer ${ accessToken }`;
+    
     return config;
   };
 };
 
-const createInstance = (store: Store<IRootState>) => {
-  const instance = axios.create();
-
-  instance.interceptors.request.use(requestInterceptor(store));
-
-  // if (process.env.SERVER) {
-  //   instance.defaults.baseURL = process.env.SERVER ? process.env.SERVER_API_HOST : process.env.BROWSER_API_HOST;
-  // }
-
-  return instance;
-};
-
-export default boot(({ app, Vue }) => {
-  const instance = createInstance(app.store as Store<IRootState>);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  Vue.prototype.$axios = instance;
-
+export default boot(({ app }) => {
+  axios.interceptors.request.use(requestInterceptor(app.store as Store<IRootState>));
   if (app.store) {
-    app.store.$axios = instance;
-    app.store.REFRESH_PROMISE = null;
+    app.store.$local = LocalStorage;
   }
 });
