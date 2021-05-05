@@ -43,7 +43,7 @@ declare module "vuex/types/index" {
 
 declare module "axios" {
   interface AxiosRequestConfig {
-    skipAuth: boolean
+    skipAuth?: boolean
   }
 }
 
