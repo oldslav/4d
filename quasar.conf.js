@@ -109,8 +109,8 @@ module.exports = configure(function () {
         });
       },
       env: {
-        SERVER_API_HOST: "https://4d-dev.innopolis.university/api/v1",
-        BROWSER_API_HOST: "https://4d-dev.innopolis.university/api/v1"
+        SERVER_API_HOST: "https://4d-dev.innopolis.university",
+        BROWSER_API_HOST: "https://4d-dev.innopolis.university"
       }
     },
 
@@ -152,7 +152,8 @@ module.exports = configure(function () {
 
       // Quasar plugins
       plugins: [
-        "Cookies"
+        "Cookies",
+        "LocalStorage"
       ]
     },
 
