@@ -3,15 +3,16 @@
     v-model="value"
     @input="onInput"
     color="primary"
+    :type="type"
     :label="label"
     :clearable="clearable"
     :outlined="outlined"
     :readonly="readonly"
     :disable="disable"
     )
-    template(v-slot:prepend)
+    template(v-if="prepend" v-slot:prepend)
       slot(name="prepend")
-    template(v-slot:append)
+    template(v-if="append" v-slot:append)
       slot(name="append")
 </template>
 
@@ -19,7 +20,19 @@
   export default {
     name: "BaseInput",
     props: {
+      prepend: {
+        type: Boolean,
+        default: null
+      },
+      append: {
+        type: Boolean,
+        default: null
+      },
       label: {
+        type: String,
+        default: null
+      },
+      type: {
         type: String,
         default: null
       },

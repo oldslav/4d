@@ -1,7 +1,5 @@
-import account from "./account";
-import user from "src/store/user";
+import account from "src/store/account";
 
 export default {
-  account,
-  user
+  account
 };

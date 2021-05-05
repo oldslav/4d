@@ -23,6 +23,6 @@ export interface TicketsResponse extends PaginationOutput {
 
 export class TicketsService {
   public static getTicketsLiving (params: Partial<TicketsQuery>): AxiosPromise<TicketsResponse> {
-    return Axios.get("/services/apartments/tickets", { params, skipAuth: true });
+    return Axios.get("/api/v1/services/apartments/tickets", { params, skipAuth: true });
   }
 }

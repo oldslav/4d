@@ -1,3 +1,5 @@
+import axios, { AxiosInstance } from "axios";
+
 interface Aggregates {
   [key: string]: any;
 }
@@ -21,4 +23,8 @@ export interface PaginationOutput {
 export interface PaginationParams {
   limit: number;
   offset: number;
+}
+
+export class Service {
+  protected static api: AxiosInstance = axios;
 }
