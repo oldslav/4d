@@ -1,4 +1,5 @@
-import Axios, { AxiosPromise } from "axios";
+import { Service } from "src/api/common";
+import { AxiosPromise } from "axios";
 import { DocumentPayload } from "src/api/common";
 
 interface NeighborPayload {
@@ -13,28 +14,24 @@ interface NeighborPayload {
   neighborsTypeId: 0
 }
 
-interface NeighborResponse {
-
-}
-
-export class UserNeighborsService {
-  public static createNeighbor (neighbor: NeighborPayload): AxiosPromise<NeighborResponse> {
-    return Axios.post("profile/documents/neighbors", neighbor);
+export class UserNeighborsService extends Service {
+  public static createNeighbor (neighbor: NeighborPayload): AxiosPromise<any> {
+    return this.api.post("api/v1/profile/documents/neighbors", neighbor);
   }
 
-  public static updateNeighbor (neighbor: NeighborPayload): AxiosPromise<NeighborResponse> {
-    return Axios.put(`profile/documents/neighbors/${ neighbor.id }`, neighbor);
+  public static updateNeighbor (neighbor: NeighborPayload): AxiosPromise<any> {
+    return this.api.put(`api/v1/profile/documents/neighbors/${ neighbor.id }`, neighbor);
   }
 
-  public static deleteNeighbor (id: number): AxiosPromise<NeighborResponse> {
-    return Axios.delete(`profile/documents/neighbors/${ id }`);
+  public static deleteNeighbor (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/profile/documents/neighbors/${ id }`);
   }
 
-  public static createNeighborFile (document: DocumentPayload, id: number): AxiosPromise<NeighborResponse> {
-    return Axios.post(`profile/documents/neighbors/${ id }/file`, document);
+  public static createNeighborFile (document: DocumentPayload, id: number): AxiosPromise<any> {
+    return this.api.post(`api/v1/profile/documents/neighbors/${ id }/file`, document);
   }
 
-  public static deleteNeighborFile (id: number): AxiosPromise<NeighborResponse> {
-    return Axios.delete(`profile/documents/neighbors/file/${ id }`);
+  public static deleteNeighborFile (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/profile/documents/neighbors/file/${ id }`);
   }
 }

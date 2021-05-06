@@ -13,10 +13,10 @@ axios.interceptors.request.use(
       allowDots: true,
       arrayFormat: "comma"
     });
-    
+
     return config;
   },
-  
+
   error => Promise.reject(error)
 );
 
@@ -43,7 +43,7 @@ declare module "vuex/types/index" {
 
 declare module "axios" {
   interface AxiosRequestConfig {
-    skipAuth: boolean
+    skipAuth?: boolean
   }
 }
 
@@ -57,13 +57,13 @@ const requestInterceptor = (store: Store<any>) => {
     const accessToken = store.getters.isAccessToken
       ? store.state.account.accessToken.token
       : store.$local.getItem(ACCESS_TOKEN_COOKIE);
-    
+
     if (accessToken === null) {
       await store.dispatch(FETCH_ACCESS_TOKEN);
     }
-    
+
     headers.Authorization = `Bearer ${ accessToken }`;
-    
+
     return config;
   };
 };

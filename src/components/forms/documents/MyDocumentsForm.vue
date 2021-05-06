@@ -1,16 +1,26 @@
 <template lang="pug">
-  q-form.text-right(@submit="onSubmit" ref="form")
-    file-picker.q-mt-sm(:max-files="5" v-model="passport" :label="$t('user.profile.documents.passportCopy')")
-    file-picker.q-mt-sm(v-model="snils" :label="$t('user.profile.documents.snilsCopy')")
-    file-picker.q-mt-sm(v-model="inn" :label="$t('user.profile.documents.innCopy')")
-    file-picker.q-mt-sm(v-model="job" :label="$t('user.profile.documents.workCertificate')")
-    q-btn.q-mt-md(color="primary" label="Сохранить" v-show="isChanged" type="submit")
+  q-form(@submit="onSubmit" ref="form")
+    file-picker.q-mt-sm(:max-files="5" v-model="passport" @remove="onRemove" :label="$t('user.profile.documents.passportCopy')")
+    file-picker.q-mt-sm(v-model="snils" @remove="onRemove" :label="$t('user.profile.documents.snilsCopy')")
+    file-picker.q-mt-sm(v-model="inn" @remove="onRemove" :label="$t('user.profile.documents.innCopy')")
+    file-picker.q-mt-sm(v-model="job" @remove="onRemove" :label="$t('user.profile.documents.workCertificate')")
+    div.text-right.q-mt-md(v-show="isChanged")
+      q-btn.q-mr-md(flat @click="onCancel()" label="Отмена")
+      q-btn(color="primary" label="Сохранить" type="submit")
 </template>
 
 <script>
-  import { mapGetters, mapMutations } from "vuex";
-  import { SET_PASSPORT, SET_INN, SET_SNILS, SET_JOB } from "@/store/constants/mutation-constants";
+  import { mapGetters, mapMutations, mapActions } from "vuex";
+  import {
+    SET_PASSPORT,
+    SET_INN,
+    SET_SNILS,
+    SET_JOB,
+    SET_DELETED_ID,
+    SET_STATE_DEFAULT
+  } from "@/store/constants/mutation-constants";
   import FilePicker from "components/common/FilePicker";
+  import { UPDATE_USER_DOCUMENTS } from "@/store/constants/action-constants";
 
   export default {
     name: "MyDocumentsForm",
@@ -28,7 +38,7 @@
           return this.getDocuments.passport;
         },
         set (val) {
-          this.setPassport(val);
+          this.SET_PASSPORT(val);
         }
       },
       snils: {
@@ -36,7 +46,7 @@
           return this.getDocuments.snils;
         },
         set (val) {
-          this.setSnils(val);
+          this.SET_SNILS(val);
         }
       },
       inn: {
@@ -44,7 +54,7 @@
           return this.getDocuments.inn;
         },
         set (val) {
-          this.setInn(val);
+          this.SET_INN(val);
         }
       },
       job: {
@@ -52,23 +62,31 @@
           return this.getDocuments.job;
         },
         set (val) {
-          this.setJob(val);
+          this.SET_JOB(val);
         }
       }
     },
     methods: {
-      ...mapMutations("user/documents", {
-        setPassport: SET_PASSPORT,
-        setSnils: SET_SNILS,
-        setInn: SET_INN,
-        setJob: SET_JOB
-      }),
+      ...mapMutations("user/documents", [
+        SET_PASSPORT,
+        SET_SNILS,
+        SET_INN,
+        SET_JOB,
+        SET_DELETED_ID,
+        SET_STATE_DEFAULT
+      ]),
+      ...mapActions("user/documents", [UPDATE_USER_DOCUMENTS]),
       onInput (val) {
         this.$emit("input", val);
       },
+      onRemove (id) {
+        this.SET_DELETED_ID(id);
+      },
       onSubmit () {
-        // this.$emit("save");
-        // call action?
+        this.UPDATE_USER_DOCUMENTS();
+      },
+      onCancel () {
+        this.defaultState();
       }
     }
   };

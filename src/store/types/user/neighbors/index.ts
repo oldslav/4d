@@ -1,5 +1,8 @@
+import { Document } from "src/store/types/common";
+
 export interface INeighborsState {
-  items: Array<INeighbor> | null
+  items: INeighbor[] | null,
+  deletedIds: number[]
 }
 
 interface INeighborName {
@@ -10,17 +13,12 @@ interface INeighborName {
   patronymic: string
 }
 
-interface INeighborDocuments {
-  passport: Array<any> | null,
-  snils: Array<any> | null,
-  inn: Array<any> | null,
-  marriage: Array<any> | null,
-  birth: Array<any> | null,
-  children_registration: Array<any> | null,
-}
-
 export interface INeighbor {
+  id?: number,
   name: INeighborName,
-  documents: Partial<INeighborDocuments>,
-  neighborsTypeId: number
+  documents: Partial<Document[]>,
+  neighborsType: {
+    id: number,
+    name: string
+  }
 }

@@ -1,97 +1,112 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { IRootState } from "src/store/types/root";
-import { IVehicle, IVehiclesEntry, IVehiclesState } from "src/store/types/user/vehicles";
-import { SET_VEHICLE_ITEM, CREATE_VEHICLE_ITEM } from "src/store/constants/mutation-constants";
-import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE, DELETE_USER_VEHICLE } from "src/store/constants/action-constants";
-import { UserVehiclesService } from "../../../api/user/vehicles";
-
-const API_AUTO = "https://api.auto.ria.com/categories/";
-
-const replaceValues = (data: any) => {
-  return data.map((item: any) => {
-    const { name, value } = item;
-    return {
-      name,
-      id: value.toString()
-    };
-  });
-};
+import { IVehiclesState } from "src/store/types/user/vehicles";
+import {
+  CREATE_USER_VEHICLE,
+  UPDATE_USER_VEHICLE,
+  DELETE_USER_VEHICLE,
+  UPDATE_VEHICLE_DOCUMENTS, DELETE_VEHICLE_DOCUMENT, CREATE_VEHICLE_DOCUMENT, GET_USER_DOCUMENTS, STORE_USER_VEHICLES
+} from "src/store/constants/action-constants";
+import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
+import { UserVehiclesService } from "src/api/user/vehicles";
+import { DictionariesService } from "src/api/dictionaries";
 
 const state: IVehiclesState = {
-  //STUB
-  items: [
-    {
-      id: 1,
-      type: {
-        name: "Легковые",
-        id: "1"
-      },
-      brand: {
-        name: "Acura",
-        id: "98"
-      },
-      model: {
-        name: "EL",
-        id: "30098"
-      },
-      number: "123",
-      sts: null,
-      pts: null
-    },
-    {
-      id: 2,
-      type: {
-        name: "Мото",
-        id: "2"
-      },
-      brand: {
-        name: "Acxa",
-        id: "2282"
-      },
-      model: {
-        name: "ATB",
-        id: "31849"
-      },
-      number: "777",
-      sts: null,
-      pts: null
-    }
-  ]
+  items: [],
+  deletedIds: []
 };
 
 const mutations: MutationTree<IVehiclesState> = {
-  [SET_VEHICLE_ITEM] (state: IVehiclesState, { payload, index }: IVehiclesEntry) {
-    state.items[index] = payload;
+  [SET_ITEMS] (state: IVehiclesState, payload) {
+    state.items = payload;
   },
-  [CREATE_VEHICLE_ITEM] (state: IVehiclesState, payload: IVehicle) {
-    state.items.push(payload);
+  [SET_DELETED_ID] (state, id) {
+    state.deletedIds.push(id);
+  },
+  [CLEAR_DELETED_IDS] (state) {
+    state.deletedIds = [];
   }
 };
 
 const actions: ActionTree<IVehiclesState, IRootState> = {
   getVehicleTypes () {
-    return this.$axios.get(`${ API_AUTO }`)
-      .then(({ data }) => replaceValues(data));
+    return DictionariesService.getVehicleTypes();
   },
-  // перенести в dictionary
   getVehicleBrands (ctx: ActionContext<IRootState, IRootState>, typeId) {
-    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks`)
-      .then(({ data }) => replaceValues(data));
+    return DictionariesService.getVehicleBrands(typeId);
   },
   getVehicleModels (ctx: ActionContext<IRootState, IRootState>, { typeId, brandId }) {
-    return this.$axios.get(`${ API_AUTO }/${ typeId }/marks/${ brandId }/models`)
-      .then(({ data }) => replaceValues(data));
+    return DictionariesService.getVehicleModels(typeId, brandId);
   },
-  [CREATE_USER_VEHICLE] (ctx: ActionContext<IVehiclesState, IRootState>, vehicle) {
-    const { sts, pts, ...payload } = vehicle;
-    return UserVehiclesService.createVehicle(payload);
+  [CREATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, IRootState>, vehicle) {
+    const { documents, ...payload } = vehicle;
+    return UserVehiclesService.createVehicle(payload)
+      .then(({ data }) => {
+        const { id } = data;
+        return dispatch(UPDATE_VEHICLE_DOCUMENTS, { documents, id });
+      })
+      .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [UPDATE_USER_VEHICLE] (ctx: ActionContext<IVehiclesState, IRootState>, vehicle) {
-    const { sts, pts, ...payload } = vehicle;
-    return UserVehiclesService.updateVehicle(payload);
+  [UPDATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, IRootState>, vehicle) {
+    const { documents, ...payload } = vehicle;
+    return UserVehiclesService.updateVehicle(payload)
+      .then(({ data }) => {
+        const { id } = data;
+        return dispatch(UPDATE_VEHICLE_DOCUMENTS, { documents, id });
+      })
+      .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [DELETE_USER_VEHICLE] (ctx: ActionContext<IVehiclesState, IRootState>, id) {
-    return UserVehiclesService.deleteVehicle(id);
+  [DELETE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, IRootState>, id) {
+    return UserVehiclesService.deleteVehicle(id)
+      .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
+  },
+  [CREATE_VEHICLE_DOCUMENT] (ctx, { payload, id }) {
+    return UserVehiclesService.createVehicleFile(payload, id);
+  },
+  [DELETE_VEHICLE_DOCUMENT] (ctx, id) {
+    return UserVehiclesService.deleteVehicleFile(id);
+  },
+  [UPDATE_VEHICLE_DOCUMENTS] ({ dispatch, state, rootGetters, commit }, { documents, id }) {
+    const { deletedIds } = state;
+    const awaitsCreate: any = [];
+    Object.entries(documents).forEach(([key, val]: any) => {
+      val.forEach((file: any) => {
+        if (!file.id) {
+          const type = rootGetters["references/getDocTypeByName"](key);
+          const payload = new FormData();
+          payload.append("file", file);
+          payload.append("typeId", type.id);
+          awaitsCreate.push(payload);
+        }
+      });
+    });
+    return Promise.all(deletedIds.map((id) => dispatch(DELETE_VEHICLE_DOCUMENT, id)))
+      .then(() => {
+        commit(CLEAR_DELETED_IDS);
+        return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_VEHICLE_DOCUMENT, { payload: p, id })));
+      });
+  },
+  [STORE_USER_VEHICLES] ({ commit }, vehicles) {
+    const result = vehicles.map((v: any) => {
+      const documents = {
+        sts: [],
+        pts: []
+      };
+      const { id, model, brand, type, number, images } = v;
+      images.forEach((doc: any) => {
+        const { id, imagePath, docType } = doc;
+        const file = {
+          id,
+          imagePath,
+          name: imagePath
+        };
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        documents[docType.name].push(file);
+      });
+      return { id, model, brand, type, number, documents };
+    });
+    commit(SET_ITEMS, result);
   }
 };
 

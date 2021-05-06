@@ -74,6 +74,9 @@
       },
       removeFile (index) {
         this.$refs.picker.removeAtIndex(index);
+        if (!!this.value[index].id) {
+          this.$emit("remove", this.value[index].id);
+        }
       },
       pickFiles (evt) {
         this.$refs.picker.pickFiles(evt);

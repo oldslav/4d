@@ -15,18 +15,16 @@
               | Ребенка
     q-tab-panels(v-model="currentTab" animated keep-alive)
       q-tab-panel.q-px-none(v-for="(neighbor, index) in neighbors" :name="neighbor | neighborName(index)" :key="index")
-        spouse-form(v-if="neighbor.neighborsTypeId === 5" :value="neighbor" @remove="removeNeighbor" :index="index")
-        child-form(v-else-if="neighbor.neighborsTypeId === 4" :value="neighbor" @remove="removeNeighbor" :index="index")
+        neighbor-resolver(:value="neighbor" @remove="removeNeighbor" :index="index")
 </template>
 
 <script>
   import { mapActions, mapGetters } from "vuex";
+  import NeighborResolver from "components/user/documents/NeighborResolver";
   import BaseTabs from "components/common/BaseTabs";
-  import SpouseForm from "components/forms/documents/SpouseForm";
-  import ChildForm from "components/forms/documents/ChildForm";
   import { DELETE_USER_NEIGHBOR } from "@/store/constants/action-constants";
 
-  const defaultChild = () => ({
+  const defaultNeighbor = (id) => ({
     name: {
       last: null,
       full: null,
@@ -34,34 +32,20 @@
       noPatronymic: false,
       patronymic: null
     },
-    neighborsTypeId: 4,
+    neighborsTypeId: id,
     documents: {
-      children_registration: null,
-      passport: null,
-      birth: null
-    }
-  });
-
-  const defaultSpouse = () => ({
-    name: {
-      last: null,
-      full: null,
-      first: null,
-      noPatronymic: false,
-      patronymic: null
-    },
-    neighborsTypeId: 5,
-    documents: {
-      inn: null,
-      snils: null,
-      passport: null,
-      marriage: null
+      inn: [],
+      snils: [],
+      passport: [],
+      marriage: [],
+      birth: [],
+      children_registration: []
     }
   });
 
   export default {
     name: "Neighbors",
-    components: { BaseTabs, SpouseForm, ChildForm },
+    components: { BaseTabs, NeighborResolver },
     filters: {
       neighborName: (item, index) => {
         const { first } = item.name;
@@ -106,10 +90,10 @@
         }
       },
       addSpouse () {
-        this.neighbors.push(defaultSpouse());
+        this.neighbors.push(defaultNeighbor(5));
       },
       addChild () {
-        this.neighbors.push(defaultChild());
+        this.neighbors.push(defaultNeighbor(4));
       }
     },
     watch: {

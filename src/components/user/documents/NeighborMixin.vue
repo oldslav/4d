@@ -52,6 +52,9 @@
       },
       discardChanges () {
         this.neighbor = deepClone(this.value);
+      },
+      onRemove (id) {
+        this.$emit("removeFile", id);
       }
     },
     watch: {

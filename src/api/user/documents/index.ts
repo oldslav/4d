@@ -1,20 +1,17 @@
-import Axios, { AxiosPromise } from "axios";
+import { Service } from "src/api/common";
+import { AxiosPromise } from "axios";
 import { DocumentPayload } from "src/api/common";
 
-interface DocumentsResponse {
-
-}
-
-export class UserDocumentsService {
-  public static getDocuments (): AxiosPromise<DocumentsResponse> {
-    return Axios.get("profile/documents");
+export class UserDocumentsService extends Service {
+  public static getDocuments (): AxiosPromise<any> {
+    return this.api.get("api/v1/profile/documents");
   }
 
-  public static createDocument (document: DocumentPayload): AxiosPromise<DocumentsResponse> {
-    return Axios.post("profile/documents", document);
+  public static createDocument (document: DocumentPayload): AxiosPromise<any> {
+    return this.api.post("api/v1/profile/documents", document, { headers: { "content-type": "image/*" } });
   }
 
-  public static deleteDocument (id: number): AxiosPromise<DocumentsResponse> {
-    return Axios.delete(`profile/documents/${ id }`);
+  public static deleteDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/profile/documents/${ id }`);
   }
 }

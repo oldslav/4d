@@ -1,4 +1,5 @@
-import Axios, { AxiosPromise } from "axios";
+import { Service } from "src/api/common";
+import { AxiosPromise } from "axios";
 import { DocumentPayload } from "src/api/common";
 
 interface Option {
@@ -14,28 +15,24 @@ interface VehiclesPayload {
   number: string
 }
 
-interface VehiclesResponse {
-
-}
-
-export class UserVehiclesService {
-  public static createVehicle (payload: VehiclesPayload): AxiosPromise<VehiclesResponse> {
-    return Axios.post("profile/documents/car", payload);
+export class UserVehiclesService extends Service {
+  public static createVehicle (payload: VehiclesPayload): AxiosPromise<any> {
+    return this.api.post("api/v1/profile/documents/car", payload);
   }
 
-  public static updateVehicle (payload: VehiclesPayload): AxiosPromise<VehiclesResponse> {
-    return Axios.put(`profile/documents/car/${ payload.id }`, payload);
+  public static updateVehicle (payload: VehiclesPayload): AxiosPromise<any> {
+    return this.api.put(`api/v1/profile/documents/car/${ payload.id }`, payload);
   }
 
-  public static deleteVehicle (id: string | number): AxiosPromise<VehiclesResponse> {
-    return Axios.delete(`profile/documents/car/${ id }`);
+  public static deleteVehicle (id: string | number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/profile/documents/car/${ id }`);
   }
 
-  public static createVehicleFile (file: DocumentPayload, id: number): AxiosPromise<VehiclesResponse> {
-    return Axios.post(`profile/documents/car/${ id }/file`, file);
+  public static createVehicleFile (file: DocumentPayload, id: number): AxiosPromise<any> {
+    return this.api.post(`api/v1/profile/documents/car/${ id }/file`, file);
   }
 
-  public static deleteVehicleFile (id: number): AxiosPromise<VehiclesResponse> {
-    return Axios.delete(`profile/documents/car/file/${ id }`);
+  public static deleteVehicleFile (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/profile/documents/car/file/${ id }`);
   }
 }

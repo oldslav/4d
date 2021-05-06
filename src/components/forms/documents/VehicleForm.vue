@@ -37,8 +37,8 @@
       .col-12.col-sm-6.col-md-3
         q-input(:label="$t('user.profile.documents.vehicle.plates')" :disable="!vehicle.model" v-model="vehicle.number")
     q-expansion-item.q-mt-sm(:label="$t('entity.documents')" header-class="q-px-none text-subtitle")
-      file-picker(:max-files="2" v-model="vehicle.pts" :label="this.$t('user.profile.documents.pts')")
-      file-picker(:max-files="2" v-model="vehicle.sts" :label="this.$t('user.profile.documents.sts')")
+      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('user.profile.documents.pts')")
+      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('user.profile.documents.sts')")
     div.text-right.q-mt-md(v-show="isChanged")
       q-btn.q-mr-md(flat @click="onCancel()" label="Отмена")
       q-btn(color="primary" label="Сохранить" type="submit")
@@ -50,6 +50,8 @@
   import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE } from "@/store/constants/action-constants";
   import FilePicker from "components/common/FilePicker";
   import BaseAutocomplete from "components/common/BaseAutocomplete";
+
+  const deepClone = (val) => JSON.parse(JSON.stringify(val));
 
   export default {
     name: "VehicleForm",
@@ -73,7 +75,7 @@
     },
     data () {
       return {
-        vehicle: { ...this.value },
+        vehicle: deepClone(this.value),
         vehicleTypes: [],
         vehicleBrands: [],
         vehicleModels: [],
@@ -110,7 +112,7 @@
         }
       },
       discardChanges () {
-        this.vehicle = { ...this.value };
+        this.vehicle = deepClone(this.value);
       },
       loadTypes () {
         this.loadingTypes = true;
@@ -141,21 +143,18 @@
           .finally(() => {
             this.loadingModels = false;
           });
+      },
+      onRemoveFile (id) {
+        this.$emit("removeFile", id);
       }
     },
     watch: {
       value: {
         deep: true,
         handler (val) {
-          this.vehicle = val;
+          this.vehicle = deepClone(val);
         }
       }
-      // vehicle: {
-      //   deep: true,
-      //   handler (val) {
-      //     this.$emit("input", val);
-      //   }
-      // }
     }
   };
 </script>

@@ -8,23 +8,25 @@
       q-btn(flat auto-close icon="add" @click="addVehicleItem()")
     q-tab-panels(v-model="currentTab" animated keep-alive)
       q-tab-panel.q-px-none(v-for="(vehicle, index) in vehicles" :key="index" :name="vehicle | vehicleName(index)")
-        vehicle-form(:value="vehicle" :index="index" @remove="removeVehicle")
+        vehicle-form(:value="vehicle" :index="index" @remove="removeVehicle" @removeFile="onRemoveFile")
 </template>
 
 <script>
-  import { mapGetters, mapMutations, mapActions } from "vuex";
+  import { mapGetters, mapActions, mapMutations } from "vuex";
   import BaseTabs from "components/common/BaseTabs";
   import VehicleForm from "components/forms/documents/VehicleForm";
-  import { SET_VEHICLE_ITEM, CREATE_VEHICLE_ITEM } from "@/store/constants/mutation-constants";
   import { DELETE_USER_VEHICLE } from "@/store/constants/action-constants";
+  import { SET_DELETED_ID } from "@/store/constants/mutation-constants";
 
   const defaultVehicle = () => ({
     type: null,
     brand: null,
     model: null,
     number: null,
-    sts: null,
-    pts: null
+    documents: {
+      sts: [],
+      pts: []
+    }
   });
 
   export default {
@@ -52,8 +54,8 @@
       ...mapGetters("user/vehicles", ["getVehicles"])
     },
     methods: {
-      ...mapMutations("user/vehicles", { setVehicleItem: SET_VEHICLE_ITEM, createVehicleItem: CREATE_VEHICLE_ITEM }),
       ...mapActions("user/vehicles", { deleteVehicle: DELETE_USER_VEHICLE }),
+      ...mapMutations("user/vehicles", [SET_DELETED_ID]),
       cloneData () {
         this.vehicles = JSON.parse(JSON.stringify(this.getVehicles));
       },
@@ -67,6 +69,9 @@
         })
           .onOk(() => this.removeVehicle(index));
       },
+      onRemoveFile (id) {
+        this.SET_DELETED_ID(id);
+      },
       removeVehicle (index) {
         if (!!this.vehicles[index].id) {
           this.deleteVehicle(this.vehicles[index].id);
@@ -77,9 +82,6 @@
       addVehicleItem () {
         this.vehicles.push(defaultVehicle());
       }
-      // onInput (payload, index) {
-      //   this.setVehicleItem({ payload, index });
-      // }
     },
     watch: {
       getVehicles: {
