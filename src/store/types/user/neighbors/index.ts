@@ -1,10 +1,24 @@
-import { IUserName } from "../index";
+import { Document } from "src/store/types/common";
 
 export interface INeighborsState {
-  neighbors: Array<INeighbor> | null
+  items: INeighbor[] | null,
+  deletedIds: number[]
+}
+
+interface INeighborName {
+  first: string,
+  full: string,
+  last: string,
+  noPatronymic: boolean,
+  patronymic: string
 }
 
 export interface INeighbor {
-  name: IUserName,
-  documents: any
+  id?: number,
+  name: INeighborName,
+  documents: Partial<Document[]>,
+  neighborsType: {
+    id: number,
+    name: string
+  }
 }

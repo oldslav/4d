@@ -38,13 +38,13 @@ const mutations: MutationTree<IUserState> = {
 const actions: ActionTree<IUserState, IRootState> = {
   async [USER_LOGIN] ({ commit }) {
     const payload = new FormData();
-  
+
     payload.append("username", "user");
     payload.append("password", "user");
     payload.append("grant_type", "password");
-    
+
     const { data } = await AuthService.login(payload);
-    
+
     commit(SET_USER, data);
   }
 };

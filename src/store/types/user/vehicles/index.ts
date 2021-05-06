@@ -1,12 +1,20 @@
+import { Document } from "src/store/types/common";
+
 export interface IVehiclesState {
-  type: string | null,
-  brand: string | null,
-  model: string | null,
-  plates: string | null,
-  documents: IVehicleDocuments
+  items: IVehicle[],
+  deletedIds: number[]
 }
 
-export interface IVehicleDocuments {
-  sts: Array<any> | null,
-  pts: Array<any> | null
+interface Option {
+  name: string,
+  id: string
+}
+
+export interface IVehicle {
+  id?: number,
+  type: Option | null,
+  brand: Option | null,
+  model: Option | null,
+  number: string | null,
+  documents: Partial<Document>[]
 }
