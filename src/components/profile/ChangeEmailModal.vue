@@ -1,12 +1,18 @@
 <template lang="pug">
-  BaseModal(:value="showChangeEmailModal" @input="toggleModal")
-    template(v-slot:title)
-      | {{ $t('user.profile.changeEmailModal.title') }}
-    template(v-slot:content)
-      | {{ $t('user.profile.changeEmailModal.message') }}
-      BaseInput(v-model="newEmail" :label="$t('user.profile.changeEmailModal.email')")
-    template(v-slot:buttons)
-      q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="toggleModal(false)")
+  BaseModal(:value="showChangeEmailModal" position="standard" @input="toggleModal")
+    q-card.modal-container
+      q-card-section.row.justify-between.items-center.text-h6
+        | {{ $t('user.profile.changeEmailModal.title') }}
+        q-icon.cursor-pointer(name="o_close" @click="toggleModal(false)")
+
+      q-separator.q-mb-sm
+
+      q-card-section
+        | {{ $t('user.profile.changeEmailModal.message') }}
+        BaseInput(v-model="newEmail" :label="$t('user.profile.changeEmailModal.email')")
+
+      q-card-actions(align="right") 
+        q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="toggleModal(false)")
 </template>
 
 <script>

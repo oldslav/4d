@@ -1,13 +1,18 @@
 <template lang="pug">
-  BaseModal(:value="showChangePasswordModal" @input="toggleModal")
-    template(v-slot:title)
-      |  {{ $t('user.profile.changePasswordModal.title') }}
-    template(v-slot:content)
-      BaseInput(v-model="password" :label="$t('user.profile.changePasswordModal.password')")
-      BaseInput(v-model="newPassword" :label="$t('user.profile.changePasswordModal.newPassword')")
-      BaseInput(v-model="confirmPassword" :label="$t('user.profile.changePasswordModal.confirmPassword')")
-    template(v-slot:buttons)
-      q-btn(v-close-popup color="primary" :label="$t('user.profile.changePasswordModal.resetPassword')" @click="toggleModal(false)")
+  BaseModal(:value="showChangePasswordModal" position="standard" @input="toggleModal")
+    q-card.modal-container
+      q-card-section.row.justify-between.items-center.text-h6
+        |  {{ $t('user.profile.changePasswordModal.title') }}
+        q-icon.cursor-pointer(name="o_close" @click="toggleModal(false)")
+
+      q-separator.q-mb-sm
+
+      q-card-section
+        BaseInput(v-model="password" :label="$t('user.profile.changePasswordModal.password')")
+        BaseInput(v-model="newPassword" :label="$t('user.profile.changePasswordModal.newPassword')")
+        BaseInput(v-model="confirmPassword" :label="$t('user.profile.changePasswordModal.confirmPassword')")
+      q-card-actions(align="right")
+        q-btn(v-close-popup color="primary" :label="$t('user.profile.changePasswordModal.resetPassword')" @click="toggleModal(false)")
 </template>
 
 <script>
@@ -72,4 +77,6 @@
 </script>
 
 <style lang="stylus" scoped>
+.modal-container
+  min-width: 35vw
 </style>

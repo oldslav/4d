@@ -17,7 +17,11 @@
         "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
       }
     },
-    "theme": "Theme"
+    "theme": "Theme",
+    "login": {
+      "title": "Login",
+      "subtitle": "It's good to be at the forefront of various technologies"
+    }
   },
   "user": {
     "firstName": "Firstname",
@@ -76,6 +80,7 @@
     }
   },
   "action": {
+    "login": "Login",
     "goBack": "Go back"
   },
   "entity": {
@@ -86,6 +91,8 @@
     "tickets": "Tickets",
     "bills": "Bills",
     "main": "Main",
-    "playground": "Playground"
+    "playground": "Playground",
+    "email": "E-mail / Login",
+    "password": "Password"
   }
 }
