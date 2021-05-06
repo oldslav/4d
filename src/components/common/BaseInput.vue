@@ -1,5 +1,6 @@
 <template lang="pug">
   q-input(
+    ref="input"
     v-model="value"
     @input="onInput"
     color="primary"
@@ -8,7 +9,10 @@
     :outlined="outlined"
     :readonly="readonly"
     :disable="disable"
-    )
+    :rules="rules"
+    :mask="mask"
+    :unmasked-value="unmaskedValue"
+  )
     template(v-slot:prepend)
       slot(name="prepend")
     template(v-slot:append)
@@ -38,6 +42,18 @@
       disable: {
         type: Boolean,
         default: null
+      },
+      rules: {
+        type: Array,
+        default: () => []
+      },
+      mask: {
+        type: String,
+        default: ""
+      },
+      unmaskedValue: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -48,6 +64,7 @@
     methods: {
       onInput (value) {
         this.$emit("input", value);
+        if (this.rules.length > 0) this.$refs.input.validate();
       }
     }
   };

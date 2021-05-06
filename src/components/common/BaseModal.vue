@@ -1,6 +1,6 @@
 <template lang="pug">
   q-dialog(:value="value" @input="onToggle")
-    q-card
+    q-card.modal-container
         q-card-section.row.justify-between.items-center.text-h6
           slot(name="title")
 
@@ -32,6 +32,7 @@
   }; 
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+.modal-container
+  min-width: 35vw
 </style>

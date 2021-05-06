@@ -23,6 +23,28 @@
     "lastName": "Фамилия",
     "patronymic": "Отчество",
     "profile": {
+      "mainForm": {
+        "email": "Email",
+        "password": "Пароль",
+        "contacts": "Контакты",
+        "phone": "Телефон",
+        "telegramAlias": "Telegram (alias)",
+        "change": "Изменить",
+        "save": "Сохранить"
+      },
+      "changePasswordModal": {
+        "title": "Смена пароля",
+        "password": "Текущий пароль",
+        "newPassword": "Новый пароль",
+        "confirmPassword": "Подтвердите новый пароль",
+        "resetPassword": "Сбросить пароль"
+      },
+      "changeEmailModal": {
+        "title": "Смена почты",
+        "email": "Email",
+        "message": "После сохранения на новый адрес будет отправлено письмо для подтверждения электронной почты",
+        "save": "Сохранить"
+      },
       "tickets": {
         "empty": {
           "title": "У вас пока нет ни одной заявки",

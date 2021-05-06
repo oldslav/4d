@@ -4,6 +4,7 @@ import userTickets from "src/store/user/tickets";
 import neighbors from "src/store/user/neighbors";
 import documents from "src/store/user/documents";
 import vehicles from "src/store/user/vehicles";
+import { profileForm, newPasswordForm } from "src/store/user/profile";
 import { IUserState } from "src/store/types/user";
 
 const state: IUserState = {
@@ -29,7 +30,9 @@ const user: Module<IUserState, IRootState> = {
     userTickets,
     documents,
     vehicles,
-    neighbors
+    neighbors,
+    profileForm,
+    newPasswordForm
   }
 };
 

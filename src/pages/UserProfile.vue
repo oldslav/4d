@@ -1,152 +1,152 @@
 <template lang="pug">
   q-page
-    .container.q-ma-lg.q-pa-lg.shadow-2.rounded-borders
+    q-form.container.q-ma-lg.q-pa-lg.shadow-2.rounded-borders(
+      @validation-success="onValidationSuccess"
+    )
       .main-block.row
         .col
-          BaseInput(v-model="lastName" label="Фамилия")
-          BaseInput(v-model="firstName" label="Имя")
-          BaseInput(v-model="patronymic" label="Отчество")
+          BaseInput(
+            v-model="lastName"
+            :label="$t('user.lastName')"
+            :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+          )
+          BaseInput(
+            v-model="firstName"
+            :label="$t('user.firstName')"
+            :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+          )
+          BaseInput(
+            v-model="patronymic"
+            :label="$t('user.patronymic')"
+            :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+          )
         .col.flex.items-center.justify-center
           q-avatar(size="10rem")
             img(src="@/assets/svg/avatar-placeholder.svg")
       q-separator.q-my-lg
       .email-block.row
         .col
-          BaseInput(v-model="email" label="Email" readonly)
+          BaseInput(v-model="email" :label="$t('user.profile.mainForm.email')" readonly)
         .col.flex.items-center.justify-end
           router-link(:to="{ name: 'change-email' }")
-            | Сохранить
+            | {{ $t('user.profile.mainForm.change') }}
       q-separator.q-my-lg
       .password-block.row
         .col
-          BaseInput(v-model="password" label="Пароль")
+          BaseInput(:label="$t('user.profile.mainForm.password')" readonly)
         .col.flex.items-center.justify-end
           router-link(:to="{ name: 'change-password' }")
-            | Изменить
+            | {{ $t('user.profile.mainForm.change') }}
       q-separator.q-mt-lg
       .contacts-block.row
         .col
           h5.q-my-lg
-            | Контакты
-          BaseInput(v-model="phone" label="Телефон")
-          BaseInput(v-model="telegramAlias" label="Telegram (alias)")
-        .col.column.q-ml-lg
-          h5.q-my-lg
-            | Социальные сети
-          q-toggle(v-model="toggleGoogle")
-            | Google
-          q-toggle(v-model="toggleFacebook")
-            | Facebook
-          q-toggle(v-model="toggleVK")
-            | VK
+            | {{ $t('user.profile.mainForm.contacts') }}
+          BaseInput(
+            v-model="phone"
+            mask="# (###) ### - ####"
+            unmasked-value
+            :label="$t('user.profile.mainForm.phone')"
+            :rules="[ val => val && (val.length === 0 || val.length === 11) ]"
+          )
+          BaseInput(
+            v-model="telegramAlias"
+            :label="$t('user.profile.mainForm.telegramAlias')"
+          )
       .save-btn.flex.items-center.justify-end.q-mt-lg
-        q-btn(color="primary" label="Сохранить")
-    
-    BaseModal(:value="showEmailModal" @input="toggleModal")
-      template(v-slot:title)
-        | Смена почты
-      template(v-slot:content)
-        | После сохранения на новый адрес будет отправлено письмо для подтверждения электронной почты
-        BaseInput(v-model="emailConfirmation" label="Email")
-      template(v-slot:buttons)
-        q-btn(v-close-popup color="primary" label="Сохранить")
-    
-    BaseModal(:value="showPasswordModal" @input="toggleModal")
-      template(v-slot:title)
-        | Смена пароля
-      template(v-slot:content)
-        BaseInput(v-model="emailConfirmation" label="Текущий пароль")
-        BaseInput(v-model="emailConfirmation" label="Новый пароль")
-        BaseInput(v-model="emailConfirmation" label="Новый пароль")
-      template(v-slot:buttons)
-        q-btn(v-close-popup color="primary" label="Сохранить")
+        q-btn(
+          color="primary"
+          :label="$t('user.profile.mainForm.save')"
+        )
+
+    ChangeEmailModal
+    ChangePasswordModal
 </template>
 
 <script>
+  import ChangeEmailModal from "components/profile/ChangeEmailModal";
+  import ChangePasswordModal from "components/profile/ChangePasswordModal";
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
-  import { mapGetters } from "vuex";
+  import { mapState } from "vuex";
 
   export default {
     name: "UserProfile",
     components: {
       BaseInput,
-      BaseModal
+      BaseModal,
+      ChangeEmailModal,
+      ChangePasswordModal
     },
     data () {
       return {
-        showEmailModal: false,
-        showPasswordModal: false,
-        emailConfirmation: null
+        isFormValidated: false
       };
     },
     computed: {
-      ...mapGetters([
-        "getAccount"
-      ]),
       firstName: {
         get () {
-          return this.getAccount ? this.getAccount.firstName : null;
+          return this.profileForm.firstName;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_FIRSTNAME", value);
         }
       },
       lastName: {
         get () {
-          return this.getAccount ? this.getAccount.lastName : null;
+          return this.profileForm.lastName;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_LASTNAME", value);
         }
       },
       patronymic: {
         get () {
-          return this.getAccount ? this.getAccount.patronymic : null;
+          return this.profileForm.patronymic;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_PATRONYMIC", value);
         }
       },
       email: {
         get () {
-          return this.getAccount ? this.getAccount.email : null;
-        }
-      },
-      password: {
-        get () {
-          return this.getAccount ? this.getAccount.password : null;
+          return this.profileForm.email;
         }
       },
       phone: {
         get () {
-          return this.getAccount ? this.getAccount.phone : null;
+          return this.profileForm.phone;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_PHONE", value);
         }
       },
       telegramAlias: {
         get () {
-          return this.getAccount ? this.getAccount.telegramAlias : null;
+          return this.profileForm.telegramAlias;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_TELEGRAM_ALIAS", value);
         }
       },
-      toggleGoogle: {
+      newEmail: {
         get () {
-          return this.getAccount ? this.getAccount.toggleGoogle : false;
+          return this.profileForm.newEmail;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_NEW_EMAIL", value);
         }
       },
-      toggleFacebook: {
-        get () {
-          return this.getAccount ? this.getAccount.toggleFacebook : false;
-        }
-      },
-      toggleVK: {
-        get () {
-          return this.getAccount ? this.getAccount.toggleVK : false;
-        }
-      }
+      ...mapState({
+        profileForm: state => state.user.profileForm
+      })
     },
     methods: {
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
-      }
-    },
-    watch: {
-      $route: {
-        immediate: true,
-        handler: function (newVal) {
-          this.showEmailModal = newVal.meta && newVal.meta.showEmailModal;
-          this.showPasswordModal = newVal.meta && newVal.meta.showPasswordModal;
-        }
+      },
+      onValidationSuccess () {
+        this.isFormValidated = true;
       }
     }
   };

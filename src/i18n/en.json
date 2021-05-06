@@ -20,10 +20,32 @@
     "theme": "Theme"
   },
   "user": {
-    "firstName": "Имя",
-    "lastName": "Фамилия",
-    "patronymic": "Отчество",
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "patronymic": "Patronymic",
     "profile": {
+      "mainForm": {
+        "email": "Email",
+        "password": "Password",
+        "contacts": "Contacts",
+        "phone": "Phone",
+        "telegramAlias": "Telegram (alias)",
+        "change": "Change",
+        "save": "Save"
+      },
+      "changePasswordModal": {
+        "title": "Change password",
+        "password": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "resetPassword": "Reset password"
+      },
+      "changeEmailModal": {
+        "title": "Change email",
+        "email": "Email",
+        "message": "После сохранения на новый адрес будет отправлено письмо для подтверждения электронной почты",
+        "save": "Save"
+      },
       "tickets": {
         "empty": {
           "title": "У вас пока нет ни одной заявки",

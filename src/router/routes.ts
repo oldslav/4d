@@ -92,8 +92,7 @@ const routes: RouteConfig[] = [
           asideLeft: true,
           toolbar: true,
           asideRight: false,
-          content: true,
-          showEmailModal: true
+          content: true
         },
         children: [
           {
@@ -108,7 +107,7 @@ const routes: RouteConfig[] = [
               toolbar: true,
               asideRight: false,
               content: true,
-              showEmailModal: true
+              showChangeEmailModal: true
             }
           },
           {
@@ -123,7 +122,8 @@ const routes: RouteConfig[] = [
               toolbar: true,
               asideRight: false,
               content: true,
-              showPasswordModal: true
+              modal: true,
+              showChangePasswordModal: true
             }
           }
         ]
