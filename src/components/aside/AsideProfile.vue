@@ -39,7 +39,7 @@
             show: true
           },
           {
-            label: this.$t("entity.documents"),
+            label: this.$t("entity.documents.title"),
             action: { name: "user-documents" },
             icon: "o_text_snippet",
             show: true

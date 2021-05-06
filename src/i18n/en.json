@@ -56,43 +56,82 @@
           "subtitle1": "Вы можете перейти в раздел ",
           "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
         }
-      },
-      "documents": {
-        "myDocuments": "Мои документы",
-        "familyInfo": "Данные о семье",
-        "vehicleInfo": "Данные об автомобиле",
-        "passportCopy": "Скан-копия паспорта",
-        "snilsCopy": "Скан-копия СНИЛС",
-        "innCopy": "Скан-копия ИНН",
-        "workCertificate": "Справка с места работы",
-        "birthCertificate": "Скан-копия свидетельства о рождении",
-        "marriageCertificate": "Скан-копия свидетельства о браке",
-        "registrationCopy": "Скан-копия прописки",
-        "sts": "Свидетельство о регистрации ТС",
-        "pts": "Паспорт ТС",
-        "vehicle": {
-          "type": "Тип",
-          "brand": "Марка",
-          "model": "Модель",
-          "plates": "Номер"
-        }
       }
     }
   },
   "action": {
     "login": "Login",
-    "goBack": "Go back"
+    "goBack": "Go back",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "entity": {
     "services": "Services",
     "dashboard": "Personal account",
     "profile": "Profile",
-    "documents": "Documents",
+    "documents": {
+      "title": "Documents",
+      "data": "My documents"
+    },
+    "files": {
+      "passportCopy": "Скан-копия паспорта",
+      "snilsCopy": "Скан-копия СНИЛС",
+      "innCopy": "Скан-копия ИНН",
+      "workCertificate": "Справка с места работы",
+      "birthCertificate": "Скан-копия свидетельства о рождении",
+      "marriageCertificate": "Скан-копия свидетельства о браке",
+      "registrationCopy": "Скан-копия прописки",
+      "sts": "Свидетельство о регистрации ТС",
+      "pts": "Паспорт ТС",
+      "personalAgreement": "Согласие на обработку персональных данных"
+    },
     "tickets": "Tickets",
     "bills": "Bills",
     "main": "Main",
     "playground": "Playground",
     "email": "E-mail / Login",
-    "password": "Password"
+    "password": "Password",
+    "vehicles": {
+      "title": "Автомобили",
+      "data": "Данные об автомобилях",
+      "type": "Тип",
+      "brand": "Марка",
+      "model": "Модель",
+      "plates": "Номер",
+      "messages": {
+        "create": {
+          "success": "Автомобиль успешно создан",
+          "fail": "При создании автомобиля произошла ошибка"
+        },
+        "update": {
+          "success": "Автомобиль успешно обновлен",
+          "fail": "При обновлении автомобиля произошла ошибка"
+        },
+        "delete": {
+          "success": "Автомобиль успешно удален",
+          "fail": "при удалении автомобиля произошла ошибка"
+        }
+      }
+    },
+    "neighbors": {
+      "title": "Родственники",
+      "child": "Ребенок",
+      "spouse": "Супруг (а)",
+      "data": "Данные о семье",
+      "messages": {
+        "create": {
+          "success": "Родственник успешно создан",
+          "fail": "При создании родственника произошла ошибка"
+        },
+        "update": {
+          "success": "Данные о родственнике успешно обновлены",
+          "fail": "При обновлении данных о родственнике произошла ошибка"
+        },
+        "delete": {
+          "success": "Родственник успешно удален",
+          "fail": "При удалении родственника произошла ошибка"
+        }
+      }
+    }
   }
 }

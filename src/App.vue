@@ -59,7 +59,7 @@
   import AuthModal from "./components/auth/AuthModal";
   import BaseToolbar from "./components/common/ui/BaseToolbar";
   import LoginForm from "./components/forms/auth/LoginForm";
-  import { GET_ACCOUNT } from "./store/constants/action-constants";
+  import { GET_ACCOUNT, GET_REFERENCES } from "./store/constants/action-constants";
 
   export default {
     name: "App",
@@ -67,6 +67,7 @@
     async created () {
       try {
         await this.GET_ACCOUNT();
+        await this.GET_REFERENCES();
       } catch (e) {
         if (e.response) {
           this.auth = true;
@@ -124,7 +125,8 @@
     methods: {
       ...mapActions([
         GET_ACCOUNT
-      ])
+      ]),
+      ...mapActions("references", [GET_REFERENCES])
     }
   };
 </script>

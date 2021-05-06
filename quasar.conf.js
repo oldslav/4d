@@ -30,7 +30,8 @@ module.exports = configure(function () {
     boot: [
       "i18n",
       "axios",
-      "cookies"
+      "cookies",
+      "notify-defaults"
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -136,7 +137,9 @@ module.exports = configure(function () {
     framework: {
       iconSet: "material-icons", // Quasar icon set
       lang: "en-us", // Quasar language pack
-      config: {},
+      config: {
+
+      },
 
       // Possible values for "importStrategy":
       // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
@@ -153,7 +156,9 @@ module.exports = configure(function () {
       // Quasar plugins
       plugins: [
         "Cookies",
-        "LocalStorage"
+        "LocalStorage",
+        "Dialog",
+        "Notify"
       ]
     },
 
