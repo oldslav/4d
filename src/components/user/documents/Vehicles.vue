@@ -74,7 +74,19 @@
       },
       removeVehicle (index) {
         if (!!this.vehicles[index].id) {
-          this.deleteVehicle(this.vehicles[index].id);
+          this.deleteVehicle(this.vehicles[index].id)
+            .then(() => {
+              this.$q.notify({
+                type: "positive",
+                message: this.$t("entity.vehicles.messages.delete.success")
+              });
+            })
+            .catch(() => {
+              this.$q.notify({
+                type: "negative",
+                message: this.$t("entity.vehicles.messages.delete.fail")
+              });
+            });
         } else {
           this.vehicles.splice(index, 1);
         }

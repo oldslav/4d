@@ -1,12 +1,12 @@
 <template lang="pug">
   q-form(@submit="onSubmit" ref="form")
-    file-picker.q-mt-sm(:max-files="5" v-model="passport" @remove="onRemove" :label="$t('user.profile.documents.passportCopy')")
-    file-picker.q-mt-sm(v-model="snils" @remove="onRemove" :label="$t('user.profile.documents.snilsCopy')")
-    file-picker.q-mt-sm(v-model="inn" @remove="onRemove" :label="$t('user.profile.documents.innCopy')")
-    file-picker.q-mt-sm(v-model="job" @remove="onRemove" :label="$t('user.profile.documents.workCertificate')")
+    file-picker.q-mt-sm(:max-files="5" v-model="passport" @remove="onRemove" :label="$t('entity.files.passportCopy')")
+    file-picker.q-mt-sm(v-model="snils" @remove="onRemove" :label="$t('entity.files.snilsCopy')")
+    file-picker.q-mt-sm(v-model="inn" @remove="onRemove" :label="$t('entity.files.innCopy')")
+    file-picker.q-mt-sm(v-model="job" @remove="onRemove" :label="$t('entity.files.workCertificate')")
     div.text-right.q-mt-md(v-show="isChanged")
-      q-btn.q-mr-md(flat @click="onCancel()" label="Отмена")
-      q-btn(color="primary" label="Сохранить" type="submit")
+      q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
+      q-btn(color="primary" :label="this.$t('action.save')" type="submit")
 </template>
 
 <script>

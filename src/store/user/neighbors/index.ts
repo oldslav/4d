@@ -60,7 +60,6 @@ const actions: ActionTree<INeighborsState, IRootState> = {
   [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state, rootGetters }, { documents, id }) {
     const { deletedIds } = state;
     const awaitsCreate: any = [];
-    console.log("entries", Object.entries(documents));
     Object.entries(documents).forEach(([key, val]: any) => {
       val.forEach((file: any) => {
         if (!file.id) {

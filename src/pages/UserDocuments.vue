@@ -3,21 +3,21 @@
     q-card
       q-card-section.q-pa-lg
         .text-weight-bold.text-medium
-          | {{ $t("user.profile.documents.myDocuments") }}
+          | {{ $t("entity.documents.data") }}
         my-documents-form
       q-inner-loading(:showing="loadingDocuments")
         q-spinner(size="50px" color="primary")
     q-card
       q-card-section.q-pa-lg
         .text-medium.text-weight-bold
-          | {{ $t("user.profile.documents.familyInfo") }}
+          | {{ $t("entity.neighbors.data") }}
         neighbors.q-mt-sm
       q-inner-loading(:showing="loadingNeighbors")
         q-spinner(size="50px" color="primary")
     q-card
       q-card-section
         .text-medium.text-weight-bold
-          | {{ $t("user.profile.documents.vehicleInfo") }}
+          | {{ $t("entity.vehicles.data") }}
         vehicles.q-mt-sm
       q-inner-loading(:showing="loadingVehicles")
         q-spinner(size="50px" color="primary")

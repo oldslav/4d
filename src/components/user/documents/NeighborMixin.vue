@@ -36,12 +36,26 @@
       ...mapActions("user/neighbors", [CREATE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR]),
       onSubmit () {
         let action;
+        let actionLabel = "create";
         if (this.isUpdate) {
+          actionLabel = "update";
           action = this[UPDATE_USER_NEIGHBOR];
         } else {
           action = this[CREATE_USER_NEIGHBOR];
         }
-        return action.call(this, this.neighbor);
+        return action.call(this, this.neighbor)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t(`entity.neighbors.messages.${ actionLabel }.success`)
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t(`entity.neighbors.messages.${ actionLabel }.fail`)
+            });
+          });
       },
       onCancel () {
         if (this.isUpdate) {

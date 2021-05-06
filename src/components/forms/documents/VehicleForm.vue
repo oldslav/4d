@@ -3,7 +3,7 @@
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-3
         base-autocomplete(
-          :label="$t('user.profile.documents.vehicle.type')"
+          :label="$t('entity.vehicles.type')"
           v-model="vehicle.type"
           :options="vehicleTypes"
           field="name"
@@ -13,7 +13,7 @@
         )
       .col-12.col-sm-6.col-md-3
         base-autocomplete(
-          :label="$t('user.profile.documents.vehicle.brand')"
+          :label="$t('entity.vehicles.brand')"
           :disable="!vehicle.type"
           :options="vehicleBrands"
           field="name"
@@ -25,7 +25,7 @@
         )
       .col-12.col-sm-6.col-md-3
         base-autocomplete(
-          :label="$t('user.profile.documents.vehicle.model')"
+          :label="$t('entity.vehicles.model')"
           :disable="!vehicle.brand"
           :options="vehicleModels"
           field="name"
@@ -35,13 +35,13 @@
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('user.profile.documents.vehicle.plates')" :disable="!vehicle.model" v-model="vehicle.number")
-    q-expansion-item.q-mt-sm(:label="$t('entity.documents')" header-class="q-px-none text-subtitle")
-      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('user.profile.documents.pts')")
-      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('user.profile.documents.sts')")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number")
+    q-expansion-item.q-mt-sm(:label="$t('entity.documents.title')" header-class="q-px-none text-subtitle")
+      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
+      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
     div.text-right.q-mt-md(v-show="isChanged")
-      q-btn.q-mr-md(flat @click="onCancel()" label="Отмена")
-      q-btn(color="primary" label="Сохранить" type="submit")
+      q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
+      q-btn(color="primary" :label="this.$t('action.save')" type="submit")
 </template>
 
 <script>
@@ -97,12 +97,26 @@
       ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels", CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE]),
       onSubmit () {
         let action;
+        let actionLabel = "create";
         if (this.isUpdate) {
+          actionLabel = "update";
           action = this[UPDATE_USER_VEHICLE];
         } else {
           action = this[CREATE_USER_VEHICLE];
         }
-        return action.call(this, this.vehicle);
+        return action.call(this, this.vehicle)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t(`entity.vehicles.messages.${ actionLabel }.success`)
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t(`entity.vehicles.messages.${ actionLabel }.fail`)
+            });
+          });
       },
       onCancel () {
         if (this.isUpdate) {

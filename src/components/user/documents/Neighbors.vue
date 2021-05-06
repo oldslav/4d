@@ -9,20 +9,21 @@
         q-list
           q-item(clickable @click="addSpouse()")
             q-item-section
-              | Супруга (у)
+              | {{$t("entity.neighbors.spouse")}}
           q-item(clickable @click="addChild()")
             q-item-section
-              | Ребенка
+              | {{$t('entity.neighbors.child')}}
     q-tab-panels(v-model="currentTab" animated keep-alive)
       q-tab-panel.q-px-none(v-for="(neighbor, index) in neighbors" :name="neighbor | neighborName(index)" :key="index")
-        neighbor-resolver(:value="neighbor" @remove="removeNeighbor" :index="index")
+        neighbor-resolver(:value="neighbor" @remove="removeNeighbor" :index="index" @removeFile="onRemoveFile")
 </template>
 
 <script>
-  import { mapActions, mapGetters } from "vuex";
+  import { mapActions, mapGetters, mapMutations } from "vuex";
   import NeighborResolver from "components/user/documents/NeighborResolver";
   import BaseTabs from "components/common/BaseTabs";
   import { DELETE_USER_NEIGHBOR } from "@/store/constants/action-constants";
+  import { SET_DELETED_ID } from "@/store/constants/mutation-constants";
 
   const defaultNeighbor = (id) => ({
     name: {
@@ -69,6 +70,7 @@
     },
     methods: {
       ...mapActions("user/neighbors", { deleteNeighbor: DELETE_USER_NEIGHBOR }),
+      ...mapMutations("user/neighbors", [SET_DELETED_ID]),
       cloneData () {
         this.neighbors = JSON.parse(JSON.stringify(this.getNeighbors));
       },
@@ -82,9 +84,24 @@
         })
           .onOk(() => this.removeNeighbor(index));
       },
+      onRemoveFile (id) {
+        this.SET_DELETED_ID(id);
+      },
       removeNeighbor (index) {
         if (!!this.neighbors[index].id) {
-          this.deleteNeighbor(this.neighbors[index].id);
+          this.deleteNeighbor(this.neighbors[index].id)
+            .then(() => {
+              this.$q.notify({
+                type: "positive",
+                message: this.$t("entity.neighbors.messages.delete.success")
+              });
+            })
+            .catch(() => {
+              this.$q.notify({
+                type: "negative",
+                message: this.$t("entity.neighbors.messages.delete.fail")
+              });
+            });
         } else {
           this.neighbors.splice(index, 1);
         }
