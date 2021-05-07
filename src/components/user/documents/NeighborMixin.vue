@@ -14,11 +14,15 @@
       index: {
         type: Number,
         default: null
+      },
+      backup: {
+        type: Object,
+        default: () => ({})
       }
     },
     data () {
       return {
-        neighbor: deepClone(this.value),
+        neighbor: { ...this.value },
         nameRules: [
           val => !!val || "Поле обязательно к заполнению"
         ]
@@ -26,7 +30,7 @@
     },
     computed: {
       isChanged () {
-        return !isEqual(this.value, this.neighbor);
+        return !isEqual(this.backup, this.neighbor);
       },
       isUpdate () {
         return !!this.neighbor.id;
@@ -65,7 +69,7 @@
         }
       },
       discardChanges () {
-        this.neighbor = deepClone(this.value);
+        this.neighbor = deepClone(this.backup);
       },
       onRemove (id) {
         this.$emit("removeFile", id);
@@ -75,7 +79,13 @@
       value: {
         deep: true,
         handler (val) {
-          this.neighbor = deepClone(val);
+          this.neighbor = val;
+        }
+      },
+      neighbor: {
+        deep: true,
+        handler (val) {
+          this.$emit("input", val);
         }
       }
     }

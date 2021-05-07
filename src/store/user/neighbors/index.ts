@@ -90,11 +90,11 @@ const actions: ActionTree<INeighborsState, IRootState> = {
       };
       const { id, name, images, neighborType } = n;
       images.forEach((doc: any) => {
-        const { id, imagePath, docType } = doc;
+        const { id, imagePath, docType, fileName } = doc;
         const file = {
           id,
           imagePath,
-          name: imagePath
+          name: fileName
         };
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

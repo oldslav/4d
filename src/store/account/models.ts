@@ -11,15 +11,38 @@ export interface IAccountName {
   full: string | null
 }
 
+export interface IContacts {
+  email:string | null,
+  pcm: {
+    email: boolean,
+    phone: boolean,
+    telegram: boolean,
+    whatsApp: boolean
+  },
+  phone: string | null,
+  telegramAlias: string | null
+}
+
+// export interface IAccount {
+//   name: IAccountName,
+//   email: string | null,
+//   phones: string | null,
+//   telegram: string | null,
+//   uid: string | null,
+//   login: string | null,
+//   createdAt: Date | null,
+//   updatedAt: Date | null,
+//   roles: IRole[] | null
+// }
+
 export interface IAccount {
   name: IAccountName,
-  email: string | null,
-  phones: string | null,
-  telegram: string | null,
-  uid: string | null,
-  login: string | null,
-  createdAt: Date | null,
-  updatedAt: Date | null
+  contacts: IContacts,
+  id: string | null,
+  jobPosition: string | null,
+  created: string | null,
+  updated: string | null,
+  roles: IRole[] | null
 }
 
 export interface ILoginPayload {

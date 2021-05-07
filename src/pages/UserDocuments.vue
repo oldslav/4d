@@ -34,7 +34,12 @@
   import Neighbors from "components/user/documents/Neighbors";
   import {
     CREATE_USER_NEIGHBOR,
-    CREATE_USER_VEHICLE, DELETE_USER_NEIGHBOR, DELETE_USER_VEHICLE, GET_USER_DOCUMENTS, UPDATE_USER_DOCUMENTS,
+    CREATE_USER_VEHICLE,
+    DELETE_USER_NEIGHBOR,
+    DELETE_USER_VEHICLE,
+    GET_REFERENCES,
+    GET_USER_DOCUMENTS,
+    UPDATE_USER_DOCUMENTS,
     UPDATE_USER_NEIGHBOR,
     UPDATE_USER_VEHICLE
   } from "@/store/constants/action-constants";
@@ -44,7 +49,7 @@
     components: { MyDocumentsForm, VehicleForm, FilePicker, Neighbors, Vehicles },
     created () {
       this.loadingPage = true;
-      this.GET_USER_DOCUMENTS()
+      return Promise.all([this.GET_USER_DOCUMENTS(), this.GET_REFERENCES()])
         .finally(() => {
           this.loadingPage = false;
         });
@@ -70,7 +75,8 @@
       }
     },
     methods: {
-      ...mapActions("user/documents", [GET_USER_DOCUMENTS])
+      ...mapActions("user/documents", [GET_USER_DOCUMENTS]),
+      ...mapActions("references", [GET_REFERENCES])
     }
   };
 </script>
