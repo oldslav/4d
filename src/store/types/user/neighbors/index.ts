@@ -17,7 +17,7 @@ export interface INeighbor {
   id?: number,
   name: INeighborName,
   documents: Partial<Document[]>,
-  neighborsType: {
+  neighborType: {
     id: number,
     name: string
   }
