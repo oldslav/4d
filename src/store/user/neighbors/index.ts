@@ -85,9 +85,10 @@ const actions: ActionTree<INeighborsState, IRootState> = {
         passport: [],
         marriage: [],
         birth: [],
-        children_registration: []
+        children_registration: [],
+        consent_processing_personal_data: []
       };
-      const { id, name, images, neighborsType } = n;
+      const { id, name, images, neighborType } = n;
       images.forEach((doc: any) => {
         const { id, imagePath, docType } = doc;
         const file = {
@@ -99,7 +100,7 @@ const actions: ActionTree<INeighborsState, IRootState> = {
         // @ts-ignore
         documents[docType.name].push(file);
       });
-      return { id, name, documents, neighborsType };
+      return { id, name, documents, neighborType };
     });
     commit(SET_ITEMS, result);
   }

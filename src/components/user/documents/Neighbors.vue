@@ -33,14 +33,15 @@
       noPatronymic: false,
       patronymic: null
     },
-    neighborsTypeId: id,
+    neighborTypeId: id,
     documents: {
       inn: [],
       snils: [],
       passport: [],
       marriage: [],
       birth: [],
-      children_registration: []
+      children_registration: [],
+      consent_processing_personal_data: []
     }
   });
 

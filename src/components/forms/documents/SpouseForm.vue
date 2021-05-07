@@ -12,7 +12,7 @@
       file-picker(:label="this.$t(`entity.files.snilsCopy`)" @remove="onRemove" v-model="neighbor.documents.snils")
       file-picker(:label="this.$t(`entity.files.innCopy`)" @remove="onRemove" v-model="neighbor.documents.inn")
       file-picker(:label="this.$t(`entity.files.marriageCertificate`)" @remove="onRemove" v-model="neighbor.documents.marriage")
-      file-picker(:label="this.$t(`entity.files.personalAgreement`)" @remove="onRemove")
+      file-picker(:label="this.$t(`entity.files.personalAgreement`)" @remove="onRemove" v-model="neighbor.documents.consent_processing_personal_data")
     div.text-right.q-mt-md(v-show="isChanged")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
