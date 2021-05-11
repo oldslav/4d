@@ -94,11 +94,11 @@ const actions: ActionTree<IVehiclesState, IRootState> = {
       };
       const { id, model, brand, type, number, images } = v;
       images.forEach((doc: any) => {
-        const { id, imagePath, docType } = doc;
+        const { id, imagePath, docType, fileName } = doc;
         const file = {
           id,
           imagePath,
-          name: imagePath
+          name: fileName
         };
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

@@ -64,6 +64,10 @@
       index: {
         type: Number,
         default: null
+      },
+      backup: {
+        type: Object,
+        default: () => ({})
       }
     },
     mounted () {
@@ -75,7 +79,7 @@
     },
     data () {
       return {
-        vehicle: deepClone(this.value),
+        vehicle: { ...this.value },
         vehicleTypes: [],
         vehicleBrands: [],
         vehicleModels: [],
@@ -87,7 +91,7 @@
     },
     computed: {
       isChanged () {
-        return !isEqual(this.value, this.vehicle);
+        return !isEqual(this.backup, this.vehicle); // backup
       },
       isUpdate () {
         return !!this.vehicle.id;
@@ -126,7 +130,7 @@
         }
       },
       discardChanges () {
-        this.vehicle = deepClone(this.value);
+        this.vehicle = deepClone(this.backup); // backup
       },
       loadTypes () {
         this.loadingTypes = true;
@@ -166,7 +170,13 @@
       value: {
         deep: true,
         handler (val) {
-          this.vehicle = deepClone(val);
+          this.vehicle = val;
+        }
+      },
+      vehicle: {
+        deep: true,
+        handler (val) {
+          this.$emit("input", val);
         }
       }
     }
