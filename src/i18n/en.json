@@ -21,6 +21,10 @@
     "login": {
       "title": "Login",
       "subtitle": "It's good to be at the forefront of various technologies"
+    },
+    "register": {
+      "title": "Registration",
+      "subtitle": "Стань частью города Иннополис и меняй его вместе с нами"
     }
   },
   "user": {
@@ -39,6 +43,7 @@
   },
   "action": {
     "login": "Login",
+    "register": "Register",
     "goBack": "Go back",
     "save": "Save",
     "cancel": "Cancel"
