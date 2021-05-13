@@ -5,35 +5,47 @@
     )
       .main-block.row
         .col
-          BaseInput(
+          q-input(
             v-model="lastName"
             :label="$t('user.lastName')"
             :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
           )
-          BaseInput(
+          q-input(
             v-model="firstName"
             :label="$t('user.firstName')"
             :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
           )
-          BaseInput(
+          q-input(
             v-model="patronymic"
             :label="$t('user.patronymic')"
             :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
           )
         .col.flex.items-center.justify-center
           q-avatar(size="10rem")
-            img(src="@/assets/svg/avatar-placeholder.svg")
+            q-file(
+              :value="avatarImage"
+              accept="image/*"
+              no-error-icon
+              dense
+              ref="picker"
+              bottom-slots
+              borderless
+              append
+              @input="onImageUpload"
+            )
+              img.full-width(:src="avatarUrl")
+              
       q-separator.q-my-lg
       .email-block.row
         .col
-          BaseInput(v-model="email" :label="$t('user.profile.mainForm.email')" readonly)
+          q-input(v-model="email" :label="$t('user.profile.mainForm.email')" readonly)
         .col.flex.items-center.justify-end
           router-link(:to="{ name: 'change-email' }")
             | {{ $t('user.profile.mainForm.change') }}
       q-separator.q-my-lg
       .password-block.row
         .col
-          BaseInput(:label="$t('user.profile.mainForm.password')" readonly)
+          q-input(value="***************" :label="$t('user.profile.mainForm.password')" readonly)
         .col.flex.items-center.justify-end
           router-link(:to="{ name: 'change-password' }")
             | {{ $t('user.profile.mainForm.change') }}
@@ -42,14 +54,14 @@
         .col
           h5.q-my-lg
             | {{ $t('user.profile.mainForm.contacts') }}
-          BaseInput(
+          q-input(
             v-model="phone"
             mask="# (###) ### - ####"
             unmasked-value
             :label="$t('user.profile.mainForm.phone')"
             :rules="[ val => val && (val.length === 0 || val.length === 11) ]"
           )
-          BaseInput(
+          q-input(
             v-model="telegramAlias"
             :label="$t('user.profile.mainForm.telegramAlias')"
           )
@@ -57,6 +69,7 @@
         q-btn(
           color="primary"
           :label="$t('user.profile.mainForm.save')"
+          @click="updateProfile()"
         )
 
     ChangeEmailModal
@@ -78,15 +91,19 @@
       ChangeEmailModal,
       ChangePasswordModal
     },
+    mounted () {
+      this.$store.dispatch("user/profileForm/GET_USER_PROFILE_DEFAULT");
+    },
     data () {
       return {
-        isFormValidated: false
+        isFormValidated: false,
+        avatarImage: null
       };
     },
     computed: {
       firstName: {
         get () {
-          return this.profileForm.firstName;
+          return this.$store.state.user.profileForm.name.first;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_FIRSTNAME", value);
@@ -94,7 +111,7 @@
       },
       lastName: {
         get () {
-          return this.profileForm.lastName;
+          return this.profileForm.name.last;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_LASTNAME", value);
@@ -102,7 +119,7 @@
       },
       patronymic: {
         get () {
-          return this.profileForm.patronymic;
+          return this.profileForm.name.patronymic;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_PATRONYMIC", value);
@@ -110,12 +127,12 @@
       },
       email: {
         get () {
-          return this.profileForm.email;
+          return this.profileForm.contacts.email;
         }
       },
       phone: {
         get () {
-          return this.profileForm.phone;
+          return this.profileForm.contacts.phone;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_PHONE", value);
@@ -123,18 +140,15 @@
       },
       telegramAlias: {
         get () {
-          return this.profileForm.telegramAlias;
+          return this.profileForm.contacts.telegramAlias;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_TELEGRAM_ALIAS", value);
         }
       },
-      newEmail: {
+      avatarUrl: {
         get () {
-          return this.profileForm.newEmail;
-        },
-        set (value) {
-          this.$store.commit("user/profileForm/SET_PROFILE_FORM_NEW_EMAIL", value);
+          return this.profileForm.avatarUrl || require("@/assets/svg/avatar-placeholder.svg");
         }
       },
       ...mapState({
@@ -147,6 +161,47 @@
       },
       onValidationSuccess () {
         this.isFormValidated = true;
+      },
+      async updateProfile () {
+        try {
+          await this.$store.dispatch("user/profileForm/UPDATE_USER_PROFILE");
+          this.$q.notify({
+            message: "Данные обновлены",
+            color: "green",
+            position: "bottom"
+          });
+        } catch (error) {
+          this.$q.notify({
+            message: error.response.data.error,
+            color: "red",
+            position: "bottom"
+          });
+        }
+      },
+      onImageUpload (image) {
+        const reader = new FileReader();
+
+        reader.onloadend = async () => {
+          try {
+            const data = new FormData();
+            data.append("file", image);
+            await this.$store.dispatch("user/profileForm/UPDATE_USER_PROFILE_AVATAR", data);
+            this.$store.commit("user/profileForm/SET_PROFILE_FORM_AVATAR_URL", reader.result);
+            this.$q.notify({
+              message: "Аватар изменен",
+              color: "green",
+              position: "bottom"
+            });
+          } catch (error) {
+            this.$q.notify({
+              message: error.response.data.message,
+              color: "red",
+              position: "bottom"
+            });
+          }
+        };
+
+        reader.readAsDataURL(image);
       }
     }
   };

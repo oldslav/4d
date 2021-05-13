@@ -42,7 +42,7 @@
         "password": "Current password",
         "newPassword": "New password",
         "confirmPassword": "Confirm new password",
-        "resetPassword": "Reset password"
+        "save": "Save"
       },
       "changeEmailModal": {
         "title": "Change email",

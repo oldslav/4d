@@ -42,7 +42,7 @@
         "password": "Текущий пароль",
         "newPassword": "Новый пароль",
         "confirmPassword": "Подтвердите новый пароль",
-        "resetPassword": "Сбросить пароль"
+        "save": "Сохранить"
       },
       "changeEmailModal": {
         "title": "Смена почты",

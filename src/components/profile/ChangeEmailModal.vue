@@ -12,7 +12,7 @@
         BaseInput(v-model="newEmail" :label="$t('user.profile.changeEmailModal.email')")
 
       q-card-actions(align="right") 
-        q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="toggleModal(false)")
+        q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="updateEmail")
 </template>
 
 <script>
@@ -47,6 +47,23 @@
     methods: {
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
+      },
+      async updateEmail () {
+        try {
+          await this.$store.dispatch("user/profileForm/CHANGE_USER_PROFILE_EMAIL");
+          this.$q.notify({
+            message: "Почта изменена",
+            color: "green",
+            position: "bottom"
+          });
+          this.toggleModal(false);
+        } catch (error) {
+          this.$q.notify({
+            message: error.response.data.message,
+            color: "red",
+            position: "bottom"
+          });
+        }
       }
     },
     watch: {

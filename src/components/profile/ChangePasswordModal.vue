@@ -12,7 +12,7 @@
         BaseInput(v-model="newPassword" :label="$t('user.profile.changePasswordModal.newPassword')")
         BaseInput(v-model="confirmPassword" :label="$t('user.profile.changePasswordModal.confirmPassword')")
       q-card-actions(align="right")
-        q-btn(v-close-popup color="primary" :label="$t('user.profile.changePasswordModal.resetPassword')" @click="toggleModal(false)")
+        q-btn(v-close-popup color="primary" :label="$t('user.profile.changePasswordModal.save')" @click="updatePassword()")
 </template>
 
 <script>
@@ -34,18 +34,18 @@
     computed: {
       password: {
         get () {
-          return this.newPasswordForm.password;
+          return this.newPasswordForm.oldPassword;
         },
         set (value) {
-          this.$store.commit("user/newPasswordForm/SET_NEW_PASSWORD_FORM_PASSWORD", value);
+          this.$store.commit("user/newPasswordForm/SET_NEW_PASSWORD_FORM_OLD_PASSWORD", value);
         }
       },
       newPassword: {
         get () {
-          return this.newPasswordForm.newPassword;
+          return this.newPasswordForm.password;
         },
         set (value) {
-          this.$store.commit("user/newPasswordForm/SET_NEW_PASSWORD_FORM_NEW_PASSWORD", value);
+          this.$store.commit("user/newPasswordForm/SET_NEW_PASSWORD_FORM_PASSWORD", value);
         }
       },
       confirmPassword: {
@@ -63,6 +63,23 @@
     methods: {
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
+      },
+      async updatePassword () {
+        try {
+          const response = await this.$store.dispatch("user/newPasswordForm/CHANGE_USER_PROFILE_PASSWORD");
+          this.$q.notify({
+            message: response,
+            color: "green",
+            position: "bottom"
+          });
+          this.toggleModal(false);
+        } catch (error) {
+          this.$q.notify({
+            message: error.response.data.message,
+            color: "red",
+            position: "bottom"
+          });
+        }
       }
     },
     watch: {
