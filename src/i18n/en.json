@@ -20,17 +20,31 @@
     "theme": "Theme",
     "login": {
       "title": "Login",
-      "subtitle": "It's good to be at the forefront of various technologies"
+      "subtitle": "It's good to be at the forefront of various technologies",
+      "noAccount": "Don't have an account yet?"
     },
     "register": {
       "title": "Registration",
-      "subtitle": "Стань частью города Иннополис и меняй его вместе с нами"
+      "subtitle": "Стань частью города Иннополис и меняй его вместе с нами",
+      "haveAccount": "Already have an account?",
+      "chooseProfile": "Choose user profile",
+      "consent": {
+        "byHitting": "Нажимая кнопку “Зарегистрироваться”, я принимаю условия ",
+        "userConsent": "Пользовательского соглашения ",
+        "allow": "и даю согласие на ",
+        "dataProcessing": "обработку персональных данных "
+      }
     }
   },
   "user": {
     "firstName": "Имя",
     "lastName": "Фамилия",
     "patronymic": "Отчество",
+    "companyName": "Company name",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "individual": "Физическое лицо",
+    "legalEntity": "Юридическое лицо",
     "profile": {
       "tickets": {
         "empty": {
@@ -88,11 +102,11 @@
         },
         "update": {
           "success": "Автомобиль успешно обновлен",
-          "fail": "При обновлении автомобиля произошла ошибка"
+          "fail": "При обновлении данных об автомобиле произошла ошибка"
         },
         "delete": {
           "success": "Автомобиль успешно удален",
-          "fail": "при удалении автомобиля произошла ошибка"
+          "fail": "При удалении данных об автомобиле произошла ошибка"
         }
       }
     },
@@ -112,7 +126,7 @@
         },
         "delete": {
           "success": "Родственник успешно удален",
-          "fail": "При удалении родственника произошла ошибка"
+          "fail": "При удалении данных о родственнике произошла ошибка"
         }
       }
     }

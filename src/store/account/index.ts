@@ -80,6 +80,7 @@ const mutations: MutationTree<IAccountState> = {
 
 const actions: ActionTree<IAccountState, IRootState> = {
   [ACCOUNT_CREATE] (ctx, payload) {
+    console.log("payload", payload);
     return AuthService.registration(payload);
   },
 

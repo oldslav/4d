@@ -6,14 +6,19 @@
       | {{ $t("common.register.subtitle") }}
     q-form.q-gutter-y-md.q-mt-lg(@submit.prevent.stop="onSubmit()")
       h3.text-subtitle
-        | Выберите профиль пользователя
+        | {{ $t("common.register.chooseProfile") }}
       q-tabs(v-model="currentTab" align="justify")
         q-tab(v-for="tab in tabs" :name="tab.id" :label="tab.name" :key="tab.id")
       q-tab-panels.q-mt-xs(v-model="currentTab")
-        q-tab-panel.q-pt-none(v-for="tab in tabs" :name="tab.id" :key="tab.id")
+        q-tab-panel.q-pa-none(v-for="tab in tabs" :name="tab.id" :key="tab.id")
           component(:is="activeComponent" v-model="model")
       q-checkbox(v-model="consent" size="sm")
-        | {{ label }}
+        | {{ $t("common.register.consent.byHitting") }}
+        span
+          | {{ $t("common.register.consent.userConsent") }}
+        | {{ $t("common.register.consent.allow") }}
+        span
+          | {{ $t("common.register.consent.dataProcessing") }}
       q-btn.full-width(:label="$t('action.register')" type="submit" :disable="!buttonActive" color="primary")
 </template>
 
@@ -34,9 +39,6 @@
       };
     },
     computed: {
-      label () {
-        return "Нажимая кнопку “Зарегистрироваться”, я принимаю условия Пользовательского соглашения и даю согласие на обработку персональных данных";
-      },
       buttonActive () {
         return this.consent;
       },
@@ -47,11 +49,11 @@
         return [
           {
             id: 1,
-            name: "Физическое лицо"
+            name: this.$t("user.individual")
           },
           {
             id: 2,
-            name: "Юридическое лицо"
+            name: this.$t("user.legalEntity")
           }
         ];
       }

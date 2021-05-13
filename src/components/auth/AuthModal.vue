@@ -15,11 +15,11 @@
       LoginForm.auth-modal__content(@submit="onSubmit" v-if="isLogin")
       registration-form.auth-modal__content(v-if="isRegister")
       q-card-section.auth-modal__content.text-small(v-if="isRegister")
-        | Уже есть аккаунт?
-        q-btn.q-ml-sm(label="Войти" flat color="primary" size="md" no-caps @click="toLogin()")
+        | {{ $t("common.register.haveAccount") }}
+        q-btn.q-ml-sm(:label="$t('action.login')" flat color="primary" size="md" no-caps @click="toLogin()")
       q-card-section.auth-modal__content(v-if="isLogin")
-        | Еще нет аккаунта?
-        q-btn.q-ml-sm(label="Зарегистрироваться" flat color="primary" size="md" no-caps @click="toRegister()")
+        | {{ $t("common.login.noAccount") }}
+        q-btn.q-ml-sm(:label="$t('action.register')" flat color="primary" size="md" no-caps @click="toRegister()")
 </template>
 
 <script>
@@ -38,7 +38,7 @@
     },
     data () {
       return {
-        mode: "register"
+        mode: "login"
       };
     },
     computed: {
