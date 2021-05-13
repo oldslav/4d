@@ -1,25 +1,28 @@
 <template lang="pug">
   .full-width
-    base-tabs(v-model="currentTab")
-      q-tab(v-for="(tab, index) in neighbors" :key="index" :name="tab | neighborName(index)")
+    q-tabs(v-model="currentTab" align="left" dense)
+      q-tab(v-for="(tab, index) in neighbors" :key="index" :disable="isChanged" :name="index")
+        q-tooltip(v-if="isChanged")
+          | Сохраните или отмените изменения, чтобы переключить вкладку
         div.flex.items-center
           | {{ tab | neighborName(index) }}
           q-btn.q-ml-sm(round size="sm" dense flat icon="o_delete" @click.stop="onRemove(index)")
       q-btn-dropdown(flat auto-close icon="add")
         q-list
-          q-item(clickable @click="addSpouse()")
+          q-item(clickable @click="addNeighbor(5)")
             q-item-section
               | {{$t("entity.neighbors.spouse")}}
-          q-item(clickable @click="addChild()")
+          q-item(clickable @click="addNeighbor(4)")
             q-item-section
-              | {{$t('entity.neighbors.child')}}
+              | {{$t("entity.neighbors.child")}}
     q-tab-panels(v-model="currentTab" animated keep-alive)
-      q-tab-panel.q-px-none(v-for="(neighbor, index) in neighbors" :name="neighbor | neighborName(index)" :key="index")
-        neighbor-resolver(:value="neighbor" @remove="removeNeighbor" :index="index" @removeFile="onRemoveFile")
+      q-tab-panel.q-px-none(v-for="(neighbor, index) in neighbors" :name="index" :key="index")
+        neighbor-resolver(v-model="neighbors[index]" @remove="removeNeighbor" :backup="getNeighbors[index]" :index="index" @removeFile="onRemoveFile")
 </template>
 
 <script>
   import { mapActions, mapGetters, mapMutations } from "vuex";
+  import { isEqual } from "lodash";
   import NeighborResolver from "components/user/documents/NeighborResolver";
   import BaseTabs from "components/common/BaseTabs";
   import { DELETE_USER_NEIGHBOR } from "@/store/constants/action-constants";
@@ -33,14 +36,15 @@
       noPatronymic: false,
       patronymic: null
     },
-    neighborsTypeId: id,
+    neighborTypeId: id,
     documents: {
       inn: [],
       snils: [],
       passport: [],
       marriage: [],
       birth: [],
-      children_registration: []
+      children_registration: [],
+      consent_processing_personal_data: []
     }
   });
 
@@ -62,11 +66,14 @@
     data () {
       return {
         neighbors: null,
-        currentTab: null
+        currentTab: 0
       };
     },
     computed: {
-      ...mapGetters("user/neighbors", ["getNeighbors"])
+      ...mapGetters("user/neighbors", ["getNeighbors"]),
+      isChanged () {
+        return !isEqual(this.getNeighbors, this.neighbors);
+      }
     },
     methods: {
       ...mapActions("user/neighbors", { deleteNeighbor: DELETE_USER_NEIGHBOR }),
@@ -106,11 +113,9 @@
           this.neighbors.splice(index, 1);
         }
       },
-      addSpouse () {
-        this.neighbors.push(defaultNeighbor(5));
-      },
-      addChild () {
-        this.neighbors.push(defaultNeighbor(4));
+      addNeighbor (id) {
+        this.neighbors.push(defaultNeighbor(id));
+        this.currentTab = this.neighbors.length - 1;
       }
     },
     watch: {

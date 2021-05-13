@@ -6,7 +6,7 @@
     name: "NeighborResolver",
     render (createElement, context) {
       const { value } = context.props;
-      const id = !!value.neighborsType ? value.neighborsType.id : value.neighborsTypeId;
+      const id = !!value.neighborType ? value.neighborType.id : value.neighborTypeId;
       let component;
       if (id === 5) {
         component = SpouseForm;

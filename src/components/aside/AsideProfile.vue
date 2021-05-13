@@ -22,12 +22,14 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+
   export default {
     name: "AsideProfile",
     computed: {
-      // stub
-      role () {
-        return "user";
+      ...mapGetters(["getUserRolesNames"]),
+      isUser () {
+        return this.getUserRolesNames.includes("ROLE_USER");
       },
 
       items () {
@@ -36,31 +38,25 @@
             label: this.$t("entity.profile"),
             action: { name: "user-profile" },
             icon: "o_person",
-            show: true
+            show: this.isUser
           },
           {
             label: this.$t("entity.documents.title"),
             action: { name: "user-documents" },
             icon: "o_text_snippet",
-            show: true
+            show: this.isUser
           },
           {
             label: this.$t("entity.tickets"),
             action: { name: "user-tickets" },
             icon: "o_library_add_check",
-            show: true
+            show: this.isUser
           },
           {
             label: this.$t("entity.bills"),
             action: { name: "playground" },
             icon: "o_article",
-            show: true
-          },
-          {
-            label: "Hidden stuff",
-            action: { name: "main" },
-            icon: "o_article",
-            show: this.role === "admin"
+            show: this.isUser
           }
         ];
       }

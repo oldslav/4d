@@ -1,18 +1,21 @@
 <template lang="pug">
   .full-width
-    base-tabs(v-model="currentTab")
-      q-tab(v-for="(tab, index) in vehicles" :key="index" :name="tab | vehicleName(index)")
+    q-tabs(v-model="currentTab" align="left" dense)
+      q-tab(v-for="(tab, index) in vehicles" :disable="isChanged" :key="index" :name="index")
+        q-tooltip(v-if="isChanged")
+          | Сохраните или отмените изменения, чтобы переключить вкладку
         div.flex.items-center
           | {{ tab | vehicleName(index) }}
-          q-btn.q-ml-sm(round size="sm" dense flat icon="o_delete" @click.stop="onRemove(index)")
+          q-btn.q-ml-sm(round size="sm" dense :disable="isChanged" flat icon="o_delete" @click.stop="onRemove(index)")
       q-btn(flat auto-close icon="add" @click="addVehicleItem()")
     q-tab-panels(v-model="currentTab" animated keep-alive)
-      q-tab-panel.q-px-none(v-for="(vehicle, index) in vehicles" :key="index" :name="vehicle | vehicleName(index)")
-        vehicle-form(:value="vehicle" :index="index" @remove="removeVehicle" @removeFile="onRemoveFile")
+      q-tab-panel.q-px-none(v-for="(vehicle, index) in vehicles" :key="index" :name="index")
+        vehicle-form(v-model="vehicles[index]" :index="index" :backup="getVehicles[index]" @remove="removeVehicle" @removeFile="onRemoveFile")
 </template>
 
 <script>
   import { mapGetters, mapActions, mapMutations } from "vuex";
+  import { isEqual } from "lodash";
   import BaseTabs from "components/common/BaseTabs";
   import VehicleForm from "components/forms/documents/VehicleForm";
   import { DELETE_USER_VEHICLE } from "@/store/constants/action-constants";
@@ -35,7 +38,7 @@
     filters: {
       vehicleName: (item, index) => {
         const { brand, model } = item;
-        if (!brand) {
+        if (!model) {
           return `Автомобиль ${ index + 1 }`;
         }
         return `${ brand.name } ${ model.name }`;
@@ -46,12 +49,15 @@
     },
     data () {
       return {
-        currentTab: null,
+        currentTab: 0,
         vehicles: null
       };
     },
     computed: {
-      ...mapGetters("user/vehicles", ["getVehicles"])
+      ...mapGetters("user/vehicles", ["getVehicles"]),
+      isChanged () {
+        return !isEqual(this.getVehicles, this.vehicles);
+      }
     },
     methods: {
       ...mapActions("user/vehicles", { deleteVehicle: DELETE_USER_VEHICLE }),
@@ -93,6 +99,7 @@
       },
       addVehicleItem () {
         this.vehicles.push(defaultVehicle());
+        this.currentTab = this.vehicles.length - 1;
       }
     },
     watch: {

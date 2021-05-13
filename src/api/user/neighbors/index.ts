@@ -11,7 +11,7 @@ interface NeighborPayload {
     noPatronymic: boolean,
     patronymic: string
   },
-  neighborsTypeId: 0
+  neighborTypeId: number
 }
 
 export class UserNeighborsService extends Service {
