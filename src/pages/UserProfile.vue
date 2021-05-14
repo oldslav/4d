@@ -33,7 +33,7 @@
               append
               @input="onImageUpload"
             )
-              img.full-width(:src="avatarUrl")
+              img.full-width(:src="avatarUrl" ref="avatarImg")
               
       q-separator.q-my-lg
       .email-block.row
@@ -148,7 +148,13 @@
       },
       avatarUrl: {
         get () {
-          return this.profileForm.avatarUrl || require("@/assets/svg/avatar-placeholder.svg");
+          if (this.profileForm.avatarUrl) {
+            return `${ process.env.SERVER_API_HOST }${ this.profileForm.avatarUrl }`;
+          }
+          return require("@/assets/svg/avatar-placeholder.svg");
+        },
+        set (value) {
+          this.$refs.avatarImg.src = value;
         }
       },
       ...mapState({
@@ -186,7 +192,7 @@
             const data = new FormData();
             data.append("file", image);
             await this.$store.dispatch("user/profileForm/UPDATE_USER_PROFILE_AVATAR", data);
-            this.$store.commit("user/profileForm/SET_PROFILE_FORM_AVATAR_URL", reader.result);
+            this.avatarUrl = reader.result;
             this.$q.notify({
               message: "Аватар изменен",
               color: "green",
