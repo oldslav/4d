@@ -62,7 +62,9 @@ const requestInterceptor = (store: Store<any>) => {
       await store.dispatch(FETCH_ACCESS_TOKEN);
     }
 
-    headers.Authorization = `Bearer ${ accessToken }`;
+    if(accessToken) {
+      headers.Authorization = `Bearer ${ accessToken }`;
+    }
 
     return config;
   };
