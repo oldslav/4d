@@ -51,6 +51,13 @@
           q-checkbox(v-model="rooms" val="3" color="primary" label="3 Комнаты")
 
           BaseInput(v-model="phone" :label="$t('entity.contacts.phone')" clearable).col
+          BaseInput(v-model="telegram" :label="$t('entity.contacts.telegram')" clearable).col
+          div.column
+            h3.text-subtitle.q-my-sm Предпочтительный способ связи
+            q-checkbox(v-model="pcm.phone" label="Телефон" size="sm")
+            q-checkbox(v-model="pcm.email" label="Email" size="sm")
+            q-checkbox(v-model="pcm.telegram" label="Telegram" size="sm")
+            q-checkbox(v-model="pcm.whatsApp" label="WhatsApp" size="sm")
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -86,7 +93,13 @@
         employerPetition: null,
         phone: null,
         telegram: null,
-        rooms: []
+        rooms: [],
+        pcm: {
+          phone: false,
+          email: false,
+          telegram: false,
+          whatsApp: false
+        }
       };
     },
     computed: {
