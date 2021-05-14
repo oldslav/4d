@@ -47,10 +47,9 @@
     }
   },
   "user": {
-    "firstName": "Имя",
-    "lastName": "Фамилия",
-    "patronymic": "Отчество",
-    "profile": {},
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "patronymic": "Patronymic",
     "tickets": {
       "actions": {
         "create": "Создать новую заявку",
@@ -60,9 +59,8 @@
         "title": "У вас пока нет ни одной заявки",
         "subtitle1": "Вы можете перейти в раздел ",
         "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
-    "firstName": "Firstname",
-    "lastName": "Lastname",
-    "patronymic": "Patronymic",
+      }
+    },
     "companyName": "Company name",
     "password": "Password",
     "confirmPassword": "Confirm password",
