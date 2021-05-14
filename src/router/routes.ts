@@ -85,14 +85,48 @@ const routes: RouteConfig[] = [
         path: "profile",
         name: "user-profile",
         components: {
-          default: (): Promise<any> => import("pages/Profile.vue")
+          default: (): Promise<any> => import("pages/UserProfile.vue"),
+          asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
         },
         meta: {
           asideLeft: true,
           toolbar: true,
           asideRight: false,
           content: true
-        }
+        },
+        children: [
+          {
+            path: "change-email",
+            name: "change-email",
+            components: {
+              default: (): Promise<any> => import("pages/UserProfile.vue"),
+              asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+            },
+            meta: {
+              asideLeft: true,
+              toolbar: true,
+              asideRight: false,
+              content: true,
+              showChangeEmailModal: true
+            }
+          },
+          {
+            path: "change-password",
+            name: "change-password",
+            components: {
+              default: (): Promise<any> => import("pages/UserProfile.vue"),
+              asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
+            },
+            meta: {
+              asideLeft: true,
+              toolbar: true,
+              asideRight: false,
+              content: true,
+              modal: true,
+              showChangePasswordModal: true
+            }
+          }
+        ]
       },
       {
         path: "documents",

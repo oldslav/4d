@@ -4,6 +4,7 @@ import userTickets from "src/store/user/tickets";
 import neighbors from "src/store/user/neighbors";
 import documents from "src/store/user/documents";
 import vehicles from "src/store/user/vehicles";
+import { profileForm, newPasswordForm } from "src/store/user/profile";
 import { IUserState } from "src/store/types/user";
 import { USER_LOGIN } from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_USER } from "src/store/constants/mutation-constants";
@@ -58,7 +59,9 @@ const user: Module<IUserState, IRootState> = {
     userTickets,
     documents,
     vehicles,
-    neighbors
+    neighbors,
+    profileForm,
+    newPasswordForm
   }
 };
 

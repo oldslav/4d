@@ -1,6 +1,6 @@
 <template lang="pug">
-  q-dialog(
-    v-model="value"
+  BaseModal(
+    :value="value"
     ref="auth-modal"
     full-height
     square
@@ -8,6 +8,7 @@
     maximized
     transition-show="fade"
     transition-hide="fade"
+    @toggleModal="(value) => $emit('input', value)"
   )
     LoginForm(@submit="onSubmit")
 </template>
