@@ -116,7 +116,21 @@ const routes: RouteConfig[] = [
           toolbar: true,
           asideLeft: true,
           content: true
-        }
+        },
+        children: [
+          {
+            path: "apartments",
+            name: "user-tickets-apartments",
+            components: {
+              default: (): Promise<any> => import("pages/UserTickets.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          }
+        ]
       }
     ]
   },

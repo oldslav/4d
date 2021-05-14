@@ -17,14 +17,14 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, IRootState> = {
-  async [GET_USER_TICKETS] ({ commit }) {
-    const response = await TicketsService.getTicketsLiving({
-      filters: {
-        statusId: [124, 13, 1412]
-      }
+  async [GET_USER_TICKETS] ({ state, commit }) {
+    const { filters } = state;
+    
+    const { data } = await TicketsService.getTicketsLiving({
+      filters
     });
     
-    commit(SET_USER_TICKETS, response);
+    commit(SET_USER_TICKETS, data);
   }
 };
 
