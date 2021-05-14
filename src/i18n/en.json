@@ -15,18 +15,46 @@
         "title": "Page not found",
         "topSub": "Ищете что-то интересное на нашем сайте?",
         "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
+      },
+      "validation": {
+        "required": "This field is required",
+        "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
+        "email": "Please enter valid email",
+        "confirmPassword": "Password mismatch"
       }
     },
     "theme": "Theme",
     "login": {
       "title": "Login",
-      "subtitle": "It's good to be at the forefront of various technologies"
+      "subtitle": "It's good to be at the forefront of various technologies",
+      "noAccount": "Don't have an account yet?"
+    },
+    "register": {
+      "title": "Registration",
+      "subtitle": "Стань частью города Иннополис и меняй его вместе с нами",
+      "haveAccount": "Already have an account?",
+      "chooseProfile": "Choose user profile",
+      "consent": {
+        "byHitting": "Нажимая кнопку “Зарегистрироваться”, я принимаю условия ",
+        "userConsent": "Пользовательского соглашения ",
+        "allow": "и даю согласие на ",
+        "dataProcessing": "обработку персональных данных "
+      },
+      "messages": {
+        "success": "На ваш почтовый ящик выслано письмо с подтверждением",
+        "fail": "При регистрации произошла ошибка"
+      }
     }
   },
   "user": {
     "firstName": "Firstname",
     "lastName": "Lastname",
     "patronymic": "Patronymic",
+    "companyName": "Company name",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "individual": "Физическое лицо",
+    "legalEntity": "Юридическое лицо",
     "profile": {
       "mainForm": {
         "email": "Email",
@@ -61,9 +89,12 @@
   },
   "action": {
     "login": "Login",
+    "register": "Register",
     "goBack": "Go back",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "submit": "Подтвердить"
   },
   "entity": {
     "services": "Services",
@@ -105,11 +136,11 @@
         },
         "update": {
           "success": "Автомобиль успешно обновлен",
-          "fail": "При обновлении автомобиля произошла ошибка"
+          "fail": "При обновлении данных об автомобиле произошла ошибка"
         },
         "delete": {
           "success": "Автомобиль успешно удален",
-          "fail": "при удалении автомобиля произошла ошибка"
+          "fail": "При удалении данных об автомобиле произошла ошибка"
         }
       }
     },
@@ -128,8 +159,9 @@
           "fail": "При обновлении данных о родственнике произошла ошибка"
         },
         "delete": {
-          "success": "Родственник успешно удален",
-          "fail": "При удалении родственника произошла ошибка"
+          "prompt": "Вы уверены, что хотите удалить данные об этом родственнике?",
+          "success": "Данные о родственнике успешно удалены",
+          "fail": "При удалении данных о родственнике произошла ошибка"
         }
       }
     }
