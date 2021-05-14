@@ -22,7 +22,7 @@ export interface TicketsResponse extends PaginationOutput {
 }
 
 export class TicketsService {
-  public static getTicketsLiving (params: unknown): AxiosPromise<TicketsResponse> {
-    return Axios.get("/api/v1/services/apartments/user/tickets", { params });
+  public static getTicketsLiving (params: Partial<TicketsQuery>): AxiosPromise<TicketsResponse> {
+    return Axios.get("/api/v1/services/apartments/tickets", { params, skipAuth: true });
   }
 }
