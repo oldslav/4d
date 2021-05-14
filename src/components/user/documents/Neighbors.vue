@@ -83,10 +83,10 @@
       },
       onRemove (index) {
         this.$q.dialog({
-          title: "Удаление",
-          message: "Вы уверены, что хотите удалить этого родственника?",
-          ok: "Подтвердить",
-          cancel: "Отмена",
+          title: this.$t("action.delete"),
+          message: this.$t("entity.neighbors.messages.delete.prompt"),
+          ok: this.$t("action.submit"),
+          cancel: this.$t("action.cancel"),
           persistent: true
         })
           .onOk(() => this.removeNeighbor(index));
@@ -119,12 +119,6 @@
       }
     },
     watch: {
-      neighbors: {
-        deep: true,
-        handler (value) {
-          this.$emit("input", value);
-        }
-      },
       getNeighbors: {
         deep: true,
         handler (val) {

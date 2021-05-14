@@ -1,6 +1,6 @@
 <svg width="189" height="189" viewBox="0 0 189 189" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <path d="M94.5 188C146.139 188 188 146.139 188 94.5C188 42.8614 146.139 1 94.5 1C42.8614 1 1 42.8614 1 94.5C1 146.139 42.8614 188 94.5 188Z" fill="url(#pattern0)" stroke="#F5F7FA" stroke-width="2"/>
-<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="185" height="185">
+<mask id="mask0" maskUnits="userSpaceOnUse" x="2" y="2" width="185" height="185">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M94.5 187C145.586 187 187 145.586 187 94.5C187 43.4137 145.586 2 94.5 2C43.4137 2 2 43.4137 2 94.5C2 145.586 43.4137 187 94.5 187Z" fill="#6202EE"/>
 </mask>
 <g mask="url(#mask0)">

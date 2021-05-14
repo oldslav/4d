@@ -47,9 +47,6 @@
     }
   },
   "user": {
-    "firstName": "Firstname",
-    "lastName": "Lastname",
-    "patronymic": "Patronymic",
     "tickets": {
       "actions": {
         "create": "Создать новую заявку",
@@ -61,6 +58,9 @@
         "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
       }
     },
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "patronymic": "Patronymic",
     "companyName": "Company name",
     "password": "Password",
     "confirmPassword": "Confirm password",
@@ -93,11 +93,12 @@
   },
   "action": {
     "login": "Login",
+    "register": "Register",
     "goBack": "Go back",
     "save": "Save",
     "cancel": "Cancel",
-    "continue": "Continue",
-    "create": "Create"
+    "delete": "Delete",
+    "submit": "Подтвердить"
   },
   "entity": {
     "services": "Services",
@@ -122,13 +123,9 @@
       "registrationCopy": "Скан-копия прописки",
       "sts": "Свидетельство о регистрации ТС",
       "pts": "Паспорт ТС",
-      "personalAgreement": "Согласие на обработку персональных данных",
-      "employerPetition": "Ходатайство от работодателя"
+      "personalAgreement": "Согласие на обработку персональных данных"
     },
-    "tickets": {
-      "title": "Tickets",
-      "apartments": "Apartment rent"
-    },
+    "tickets": "Tickets",
     "bills": "Bills",
     "main": "Main",
     "playground": "Playground",
