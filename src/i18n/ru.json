@@ -97,7 +97,9 @@
     "goBack": "Назад",
     "save": "Сохранить",
     "cancel": "Отмена",
-    "delete": "Удалить"
+    "delete": "Удалить",
+    "continue": "Продолжить",
+    "create": "Создать"
   },
   "entity": {
     "services": "Сервисы",
@@ -125,7 +127,10 @@
       "personalAgreement": "Согласие на обработку персональных данных",
       "employerPetition": "Ходатайство от работодателя"
     },
-    "tickets": "Заявки",
+    "tickets": {
+      "title": "Заявки",
+      "apartments": "Аренда квартиры"
+    },
     "bills": "Счета",
     "main": "Главная",
     "playground": "Playground",

@@ -85,13 +85,11 @@
         vehicleModels: [],
         loadingTypes: false,
         loadingBrands: false,
-        loadingModels: false
+        loadingModels: false,
+        requiredRule: [val => !!val || "Поле обязательно к заполнению"]
       };
     },
     computed: {
-      requiredRule () {
-        return [val => !!val || this.$t("common.error.validation.required")];
-      },
       isChanged () {
         return !isEqual(this.backup, this.vehicle); // backup
       },

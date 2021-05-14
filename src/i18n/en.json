@@ -98,7 +98,9 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "submit": "Подтвердить"
+    "submit": "Подтвердить",
+    "continue": "Continue",
+    "create": "Create"
   },
   "entity": {
     "services": "Services",
@@ -123,9 +125,13 @@
       "registrationCopy": "Скан-копия прописки",
       "sts": "Свидетельство о регистрации ТС",
       "pts": "Паспорт ТС",
-      "personalAgreement": "Согласие на обработку персональных данных"
+      "personalAgreement": "Согласие на обработку персональных данных",
+      "employerPetition": "Ходатайство от работодателя"
     },
-    "tickets": "Tickets",
+    "tickets": {
+      "title": "Tickets",
+      "apartments": "Apartment rent"
+    },
     "bills": "Bills",
     "main": "Main",
     "playground": "Playground",

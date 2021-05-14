@@ -10,6 +10,7 @@ axios.defaults.baseURL = process.env.SERVER_API_HOST;
 axios.interceptors.request.use(
   config => {
     config.paramsSerializer = (params: any): string => qs.stringify(params, {
+      skipNulls: true,
       allowDots: true,
       arrayFormat: "comma"
     });
@@ -62,9 +63,7 @@ const requestInterceptor = (store: Store<any>) => {
       await store.dispatch(FETCH_ACCESS_TOKEN);
     }
 
-    if(accessToken) {
-      headers.Authorization = `Bearer ${ accessToken }`;
-    }
+    headers.Authorization = `Bearer ${ accessToken }`;
 
     return config;
   };
