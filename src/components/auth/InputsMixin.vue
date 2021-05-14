@@ -19,24 +19,24 @@
     },
     computed: {
       requiredRule () {
-        return [val => !!val || "field is required"];
+        return [val => !!val || this.$t("common.error.validation.required")];
       },
       validateEmail () {
         return [
           ...this.requiredRule,
-          val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || "email not valid"
+          val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || this.$t("common.error.validation.email")
         ];
       },
       validatePassword () {
         return [
           ...this.requiredRule,
-          val => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(val) || "reg" // uppercase, lowercase, 8 symbols, 1 digit
+          val => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(val) || this.$t("common.error.validation.passwordReg") // uppercase, lowercase, 8 symbols, 1 digit
         ];
       },
       validateConfirm () {
         return [
           ...this.requiredRule,
-          val => val === this.model.password || "Пароли не совпадают"
+          val => val === this.model.password || this.$t("common.error.validation.confirmPassword")
         ];
       }
     },

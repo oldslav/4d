@@ -15,6 +15,12 @@
         "title": "Page not found",
         "topSub": "Ищете что-то интересное на нашем сайте?",
         "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
+      },
+      "validation": {
+        "required": "This field is required",
+        "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
+        "email": "Please enter valid email",
+        "confirmPassword": "Password mismatch"
       }
     },
     "theme": "Theme",
@@ -33,6 +39,10 @@
         "userConsent": "Пользовательского соглашения ",
         "allow": "и даю согласие на ",
         "dataProcessing": "обработку персональных данных "
+      },
+      "messages": {
+        "success": "На ваш почтовый ящик выслано письмо с подтверждением",
+        "fail": "При регистрации произошла ошибка"
       }
     }
   },

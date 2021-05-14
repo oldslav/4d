@@ -64,14 +64,14 @@
         this.ACCOUNT_CREATE(this.model)
           .then(() => {
             this.$q.dialog({
-              message: "На ваш почтовый ящик выслано письмо с подтверждением",
+              message: this.$t("common.register.messages.success"),
               ok: "Ok"
             });
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "При регистрации произошла ошибка"
+              message: this.$t("common.register.messages.fail")
             });
           });
       }
