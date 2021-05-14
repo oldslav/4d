@@ -1,7 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { IRootState } from "src/store/types/root";
 import {
-  ACCOUNT_CREATE,
   ACCOUNT_LOGIN,
   FETCH_ACCESS_TOKEN,
   GET_ACCOUNT
@@ -79,11 +78,6 @@ const mutations: MutationTree<IAccountState> = {
 };
 
 const actions: ActionTree<IAccountState, IRootState> = {
-  [ACCOUNT_CREATE] (ctx, payload) {
-    console.log("payload", payload);
-    return AuthService.registration(payload);
-  },
-
   async [ACCOUNT_LOGIN] ({ commit, dispatch }, payload = {
     username: "user",
     password: "user",

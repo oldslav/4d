@@ -47,6 +47,19 @@
     }
   },
   "user": {
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "patronymic": "Отчество",
+    "profile": {},
+    "tickets": {
+      "actions": {
+        "create": "Создать новую заявку",
+        "cancel": "Отменить заявку"
+      },
+      "empty": {
+        "title": "У вас пока нет ни одной заявки",
+        "subtitle1": "Вы можете перейти в раздел ",
+        "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
     "firstName": "Firstname",
     "lastName": "Lastname",
     "patronymic": "Patronymic",
@@ -77,24 +90,16 @@
         "email": "Email",
         "message": "После сохранения на новый адрес будет отправлено письмо для подтверждения электронной почты",
         "save": "Save"
-      },
-      "tickets": {
-        "empty": {
-          "title": "У вас пока нет ни одной заявки",
-          "subtitle1": "Вы можете перейти в раздел ",
-          "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
-        }
       }
     }
   },
   "action": {
     "login": "Login",
-    "register": "Register",
     "goBack": "Go back",
     "save": "Save",
     "cancel": "Cancel",
-    "delete": "Delete",
-    "submit": "Подтвердить"
+    "continue": "Continue",
+    "create": "Create"
   },
   "entity": {
     "services": "Services",
@@ -103,6 +108,11 @@
     "documents": {
       "title": "Documents",
       "data": "My documents"
+    },
+    "contacts": {
+      "title": "Контакты",
+      "phone": "Телефон",
+      "telegram": "Telegram"
     },
     "files": {
       "passportCopy": "Скан-копия паспорта",
@@ -114,9 +124,13 @@
       "registrationCopy": "Скан-копия прописки",
       "sts": "Свидетельство о регистрации ТС",
       "pts": "Паспорт ТС",
-      "personalAgreement": "Согласие на обработку персональных данных"
+      "personalAgreement": "Согласие на обработку персональных данных",
+      "employerPetition": "Ходатайство от работодателя"
     },
-    "tickets": "Tickets",
+    "tickets": {
+      "title": "Tickets",
+      "apartments": "Apartment rent"
+    },
     "bills": "Bills",
     "main": "Main",
     "playground": "Playground",

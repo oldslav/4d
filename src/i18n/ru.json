@@ -50,6 +50,16 @@
     "firstName": "Имя",
     "lastName": "Фамилия",
     "patronymic": "Отчество",
+    "profile": {},
+    "tickets": {
+      "actions": {
+        "create": "Создать новую заявку",
+        "cancel": "Отменить заявку"
+      },
+      "empty": {
+        "title": "У вас пока нет ни одной заявки",
+        "subtitle1": "Вы можете перейти в раздел ",
+        "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
     "companyName": "Название организации",
     "password": "Пароль",
     "confirmPassword": "Повторите пароль",
@@ -93,7 +103,8 @@
     "goBack": "Назад",
     "save": "Сохранить",
     "cancel": "Отмена",
-    "delete": "Удалить"
+    "continue": "Продолжить",
+    "create": "Создать"
   },
   "entity": {
     "services": "Сервисы",
@@ -102,6 +113,11 @@
     "documents": {
       "title": "Документы",
       "data": "Мои документы"
+    },
+    "contacts": {
+      "title": "Контакты",
+      "phone": "Телефон",
+      "telegram": "Telegram"
     },
     "files": {
       "passportCopy": "Скан-копия паспорта",
@@ -113,9 +129,13 @@
       "registrationCopy": "Скан-копия прописки",
       "sts": "Свидетельство о регистрации ТС",
       "pts": "Паспорт ТС",
-      "personalAgreement": "Согласие на обработку персональных данных"
+      "personalAgreement": "Согласие на обработку персональных данных",
+      "employerPetition": "Ходатайство от работодателя"
     },
-    "tickets": "Заявки",
+    "tickets": {
+      "title": "Заявки",
+      "apartments": "Аренда квартиры"
+    },
     "bills": "Счета",
     "main": "Главная",
     "playground": "Playground",

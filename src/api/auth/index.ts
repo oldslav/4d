@@ -6,18 +6,17 @@ export interface RefreshToken {
 }
 
 interface Registration {
-  confirmPassword: string,
-  companyName?: string,
-  firstName: string,
+  confirm_password: string,
+  firstname: string,
   password: string,
-  lastName: string
+  username: string
 }
 
 export default class AuthService extends Service {
   public static registration (payload: Registration): AxiosPromise<any> {
-    return this.api.post("/api/v1/profile", payload);
+    return this.api.post("/signup", payload);
   }
-
+  
   // eslint-disable-next-line @typescript-eslint/ban-types
   public static login (payload: unknown, config: object = {}): AxiosPromise<any> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -29,7 +28,7 @@ export default class AuthService extends Service {
       }
     });
   }
-
+  
   public static getAccount (): AxiosPromise<any> {
     return this.api.get("/api/v1/profile");
   }

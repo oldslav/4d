@@ -47,7 +47,7 @@
             show: this.isUser
           },
           {
-            label: this.$t("entity.tickets"),
+            label: this.$t("entity.tickets.title"),
             action: { name: "user-tickets" },
             icon: "o_library_add_check",
             show: this.isUser

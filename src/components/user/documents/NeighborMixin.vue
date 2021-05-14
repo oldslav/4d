@@ -24,7 +24,7 @@
       return {
         neighbor: { ...this.value },
         nameRules: [
-          val => !!val || this.$t("common.error.validation.required")
+          val => !!val || "Поле обязательно к заполнению"
         ]
       };
     },
