@@ -1,7 +1,7 @@
 <template lang="pug">
   q-input(
     ref="input"
-    v-model="value"
+    :value="value"
     @input="onInput"
     color="primary"
     :type="type"
@@ -40,6 +40,10 @@
         type: String,
         default: null
       },
+      value: {
+        type: String,
+        default: null
+      },
       clearable: {
         type: Boolean,
         default: null
@@ -68,11 +72,6 @@
         type: Boolean,
         default: false
       }
-    },
-    data () {
-      return {
-        value: null
-      };
     },
     methods: {
       onInput (value) {
