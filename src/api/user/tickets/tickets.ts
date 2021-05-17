@@ -1,4 +1,4 @@
-import { PaginationOutput, PaginationParams } from "src/api/common";
+import { PaginationOutput, PaginationParams, Service } from "src/api/common";
 import Axios, { AxiosPromise } from "axios";
 
 interface TicketsRequestFilters {
@@ -21,8 +21,12 @@ export interface TicketsResponse extends PaginationOutput {
   items: TicketResponse[];
 }
 
-export class TicketsService {
+export class TicketsService extends Service {
   public static getTicketsLiving (params: unknown): AxiosPromise<TicketsResponse> {
-    return Axios.get("/api/v1/services/apartments/user/tickets", { params });
+    return this.api.get("/api/v1/services/apartments/user/tickets", { params });
+  }
+  
+  public static deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
+    return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
   }
 }
