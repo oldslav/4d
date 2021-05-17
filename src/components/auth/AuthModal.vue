@@ -13,14 +13,15 @@
     q-card.auth-modal__card
       q-card-actions(align="right")
         q-btn(flat v-close-popup icon="close" color="primary")
-      LoginForm.auth-modal__content(@submit="onSubmit" v-if="isLogin")
-      registration-form.auth-modal__content(v-if="isRegister")
-      q-card-section.auth-modal__content.text-small(v-if="isRegister")
-        | {{ $t("common.register.haveAccount") }}
-        q-btn.q-ml-sm(:label="$t('action.login')" flat color="primary" size="md" no-caps @click="toLogin()")
-      q-card-section.auth-modal__content(v-if="isLogin")
-        | {{ $t("common.login.noAccount") }}
-        q-btn.q-ml-sm(:label="$t('action.register')" flat color="primary" size="md" no-caps @click="toRegister()")
+      q-card-section.auth-modal__card__content
+        LoginForm(@submit="onSubmit" v-if="isLogin")
+        registration-form(v-if="isRegister")
+        q-card-section(v-if="isRegister").text-small.q-px-none
+          | {{ $t("common.register.haveAccount") }}
+          q-btn.q-ml-sm(:label="$t('action.login')" flat color="primary" size="md" no-caps @click="toLogin()")
+        q-card-section(v-if="isLogin").q-px-none
+          | {{ $t("common.login.noAccount") }}
+          q-btn.q-ml-sm(:label="$t('action.register')" flat color="primary" size="md" no-caps @click="toRegister()")
 </template>
 
 <script>
@@ -66,10 +67,26 @@
 
 <style lang="stylus" scoped>
   .auth-modal__card {
+    display: flex;
+    flex-direction: column;
     width: 800px;
-  }
 
-  .auth-modal__content {
-    margin 0 6vw
+    @media only screen and (max-width: $breakpoint-md-max) {
+      width: 100%;
+    }
+
+    &__content {
+      padding: 0 8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-items: center;
+      justify-content: center;
+
+      @media only screen and (max-width: $breakpoint-md-max) {
+        width: 100%;
+        padding: 0 1rem;
+      }
+    }
   }
 </style>
