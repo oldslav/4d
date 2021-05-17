@@ -60,11 +60,12 @@
               mask="# (###) ### - ####"
               unmasked-value
               :label="$t('user.profile.mainForm.phone')"
-              :rules="[ val => val && (val.length === 0 || val.length === 11) ]"
+              :rules="[ val => val.length === 0 || val.length === 11 ]"
             )
             q-input(
               v-model="telegramAlias"
               :label="$t('user.profile.mainForm.telegramAlias')"
+              :rules="[ val => /^[A-z0-9]*$/.test(val) ]"
             )
         .save-btn.flex.items-center.justify-end.q-mt-lg
           q-btn(
@@ -82,7 +83,8 @@
   import ChangePasswordModal from "components/profile/ChangePasswordModal";
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
-  import { mapState } from "vuex";
+  import { mapActions, mapState } from "vuex";
+  import { GET_ACCOUNT, UPDATE_USER_PROFILE, UPDATE_USER_PROFILE_AVATAR } from "@/store/constants/action-constants";
 
   export default {
     name: "UserProfile",
@@ -91,9 +93,6 @@
       BaseModal,
       ChangeEmailModal,
       ChangePasswordModal
-    },
-    mounted () {
-      this.$store.dispatch("user/profileForm/GET_USER_PROFILE_DEFAULT");
     },
     data () {
       return {
@@ -104,7 +103,7 @@
     computed: {
       firstName: {
         get () {
-          return this.$store.state.user.profileForm.name.first;
+          return this.profileForm.name.first !== null ? this.profileForm.name.first : this.account.name.first;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_FIRSTNAME", value);
@@ -112,7 +111,7 @@
       },
       lastName: {
         get () {
-          return this.profileForm.name.last;
+          return this.profileForm.name.last !== null ? this.profileForm.name.last : this.account.name.last;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_LASTNAME", value);
@@ -120,7 +119,7 @@
       },
       patronymic: {
         get () {
-          return this.profileForm.name.patronymic;
+          return this.profileForm.name.patronymic !== null ? this.profileForm.name.patronymic : this.account.name.patronymic;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_PATRONYMIC", value);
@@ -128,12 +127,12 @@
       },
       email: {
         get () {
-          return this.profileForm.contacts.email;
+          return this.account.contacts.email;
         }
       },
       phone: {
         get () {
-          return this.profileForm.contacts.phone;
+          return this.profileForm.contacts.phone !== null ? this.profileForm.contacts.phone : this.account.contacts.phone;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_PHONE", value);
@@ -141,7 +140,7 @@
       },
       telegramAlias: {
         get () {
-          return this.profileForm.contacts.telegramAlias;
+          return this.profileForm.contacts.telegramAlias !== null ? this.profileForm.contacts.telegramAlias : this.account.contacts.telegramAlias;
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_TELEGRAM_ALIAS", value);
@@ -150,7 +149,10 @@
       avatarUrl: {
         get () {
           if (this.profileForm.avatarUrl) {
-            return `${ process.env.SERVER_API_HOST }${ this.profileForm.avatarUrl }`;
+            return this.profileForm.avatarUrl;
+          }
+          else if (this.account.avatar) {
+            return `${ process.env.SERVER_API_HOST }${ this.account.avatar }`;
           }
           return require("@/assets/svg/avatar-placeholder.svg");
         },
@@ -159,10 +161,21 @@
         }
       },
       ...mapState({
+        account: state => state.account.account,
         profileForm: state => state.user.profileForm
       })
     },
     methods: {
+      ...mapActions([
+        GET_ACCOUNT
+      ]),
+      ...mapActions(
+        "user/profileForm",
+        [
+          UPDATE_USER_PROFILE,
+          UPDATE_USER_PROFILE_AVATAR
+        ]
+      ),
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
       },
@@ -171,7 +184,7 @@
       },
       async updateProfile () {
         try {
-          await this.$store.dispatch("user/profileForm/UPDATE_USER_PROFILE");
+          await this.UPDATE_USER_PROFILE();
           this.$q.notify({
             message: "Данные обновлены",
             color: "green",
@@ -192,8 +205,8 @@
           try {
             const data = new FormData();
             data.append("file", image);
-            await this.$store.dispatch("user/profileForm/UPDATE_USER_PROFILE_AVATAR", data);
-            this.avatarUrl = reader.result;
+            await this.UPDATE_USER_PROFILE_AVATAR(data);
+            this.$store.commit("user/profileForm/SET_PROFILE_FORM_AVATAR_URL", reader.result);
             this.$q.notify({
               message: "Аватар изменен",
               color: "green",
@@ -201,7 +214,7 @@
             });
           } catch (error) {
             this.$q.notify({
-              message: error.response.data.message,
+              message: "Ошибка при обновлении аватара",
               color: "red",
               position: "bottom"
             });

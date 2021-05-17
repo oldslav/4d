@@ -15,7 +15,7 @@
           :rules="[ val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val) || this.$t('common.error.validation.email') ]"
         )
 
-      q-card-actions(align="right") 
+      q-card-actions(align="right")
         q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="updateEmail")
 </template>
 
@@ -56,7 +56,7 @@
         try {
           await this.$store.dispatch("user/profileForm/CHANGE_USER_PROFILE_EMAIL");
           this.$q.notify({
-            message: "Почта изменена",
+            message: "Письмо с подтверждением отправлено на новую почту",
             color: "green",
             position: "bottom"
           });
