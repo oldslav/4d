@@ -9,19 +9,25 @@
 
       q-card-section
         | {{ $t('user.profile.changeEmailModal.message') }}
-        BaseInput(v-model="newEmail" :label="$t('user.profile.changeEmailModal.email')")
+        BaseInput(
+          v-model="newEmail"
+          :label="$t('user.profile.changeEmailModal.email')"
+          :rules="validateEmail"
+        )
 
-      q-card-actions(align="right") 
+      q-card-actions(align="right")
         q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="updateEmail")
 </template>
 
 <script>
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
+  import InputsMixin from "components/auth/InputsMixin";
   import { mapState } from "vuex";
 
   export default {
     name: "ChangeEmailModal",
+    mixins: [InputsMixin],
     components: {
       BaseInput,
       BaseModal
@@ -52,7 +58,7 @@
         try {
           await this.$store.dispatch("user/profileForm/CHANGE_USER_PROFILE_EMAIL");
           this.$q.notify({
-            message: "Почта изменена",
+            message: "Письмо с подтверждением отправлено на новую почту",
             color: "green",
             position: "bottom"
           });

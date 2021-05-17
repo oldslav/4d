@@ -8,9 +8,47 @@
       q-separator.q-mb-sm
 
       q-card-section
-        BaseInput(v-model="password" :label="$t('user.profile.changePasswordModal.password')")
-        BaseInput(v-model="newPassword" :label="$t('user.profile.changePasswordModal.newPassword')")
-        BaseInput(v-model="confirmPassword" :label="$t('user.profile.changePasswordModal.confirmPassword')")
+        BaseInput(
+          v-model="password"
+          type="password"
+          :label="$t('user.profile.changePasswordModal.password')"
+          :type="isPasswordVisible ? 'text' : 'password'"
+          append
+        )
+          template(#append)
+            q-icon(
+              :name="isPasswordVisible ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPasswordVisible = !isPasswordVisible"
+            )
+        BaseInput(
+          v-model="newPassword"
+          type="password"
+          :label="$t('user.profile.changePasswordModal.newPassword')"
+          :type="isNewPasswordVisible ? 'text' : 'password'"
+          :rules="validatePassword"
+          append
+        )
+          template(#append)
+            q-icon(
+              :name="isNewPasswordVisible ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isNewPasswordVisible = !isNewPasswordVisible"
+            )
+        BaseInput(
+          v-model="confirmPassword"
+          type="password"
+          :label="$t('user.profile.changePasswordModal.confirmPassword')"
+          :type="isConfirmPasswordVisible ? 'text' : 'password'"
+          :rules="validatePassword"
+          append
+        )
+          template(#append)
+            q-icon(
+              :name="isConfirmPasswordVisible ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isConfirmPasswordVisible = !isConfirmPasswordVisible"
+            )
       q-card-actions(align="right")
         q-btn(v-close-popup color="primary" :label="$t('user.profile.changePasswordModal.save')" @click="updatePassword()")
 </template>
@@ -18,17 +56,22 @@
 <script>
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
+  import InputsMixin from "components/auth/InputsMixin";
   import { mapState } from "vuex";
 
   export default {
     name: "ChangePasswordModal",
+    mixins: [InputsMixin],
     components: {
       BaseInput,
       BaseModal
     },
     data () {
       return {
-        showChangePasswordModal: false
+        showChangePasswordModal: false,
+        isPasswordVisible: false,
+        isNewPasswordVisible: false,
+        isConfirmPasswordVisible: false
       };
     },
     computed: {
