@@ -7,7 +7,7 @@
         | {{ $t("common.error.notFound.topSub") }}
       div
         | {{ $t("common.error.notFound.bottomSub") }}
-    q-btn(flat @click="goBack()" color="primary" :label="$t('action.goBack')")
+    q-btn(flat @click="back()" color="primary" :label="$t('action.back')")
     q-img.q-mt-xl.error404__image(src="@/assets/svg/404.svg")
 </template>
 
@@ -15,7 +15,7 @@
   export default {
     name: "Error404",
     methods: {
-      goBack () {
+      back () {
         this.$router.go(-1);
       }
     }

@@ -1,7 +1,7 @@
 <template lang="pug">
   q-dialog(
     :value="value"
-    @hide="$emit('input', false)"
+    @hide="closeModal"
     transition-show="fade"
     transition-hide="fade"
   )
@@ -40,7 +40,7 @@
           Neighbors(v-model="neighbors")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
-            q-btn(@click="step--" color="primary" :label="$t('action.goBack')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
         q-step(
           title="Контакты"
           :error="!isAdditionalInfo && step > 3"
@@ -53,11 +53,16 @@
           BaseInput(v-model="phone" :label="$t('entity.contacts.phone')" clearable).col
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step++" color="primary" :label="$t('action.continue')")
-            q-btn(@click="step--" color="primary" :label="$t('action.goBack')")
+            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
 </template>
 
 <script>
+  import { mapActions } from "vuex";
+  import {
+    ADD_USER_TICKET_FILE,
+    CREATE_USER_TICKET
+  } from "../../../../store/constants/action-constants";
   import BaseInput from "../../../common/BaseInput";
   import BaseModal from "../../../common/BaseModal";
   import FilePicker from "../../../common/FilePicker";
@@ -90,6 +95,10 @@
       };
     },
     computed: {
+      isValid () {
+        return this.isUserInfo && this.isAdditionalInfo;
+      },
+
       isUserInfo () {
         return !!this.firstname
           && !!this.lastname
@@ -106,8 +115,101 @@
 
       isAdditionalInfo () {
         return !!this.phone
-          && !!this.rooms
-          && !!this.telegram;
+          && !!this.rooms;
+      },
+
+      items () {
+        return [
+          ...this.passport.map(item => ({
+            file: item,
+            typeId: 1
+          })),
+          ...this.inn.map(item => ({
+            file: item,
+            typeId: 2
+          })),
+          ...this.snils.map(item => ({
+            file: item,
+            typeId: 13
+          })),
+          ...this.job.map(item => ({
+            file: item,
+            typeId: 3
+          })),
+          ...this.employerPetition.map(item => ({
+            file: item,
+            typeId: 10
+          }))
+        ].map(item => {
+          const payload = new FormData();
+
+          payload.append("file", item.file);
+          payload.append("typeId", item.typeId);
+
+          return payload;
+        });
+      }
+    },
+    methods: {
+      ...mapActions("user/userTickets", {
+        createUserTicket: CREATE_USER_TICKET,
+        addUserTicketFile: ADD_USER_TICKET_FILE
+      }),
+
+      closeModal () {
+        this.$emit("input", false);
+      },
+
+      async createLivingTicket () {
+        const payload = {
+          name: {
+            first: this.firstname,
+            last: this.lastname,
+            patronymic: this.patronymic
+          },
+          contacts: {
+            phones: [this.phone]
+          },
+          rooms: this.rooms
+        };
+
+        const { id } = await this.createUserTicket(payload);
+        await this.addFiles(id);
+        this.closeModal();
+      },
+
+      async addFiles (id) {
+        const items = [
+          ...this.passport.map(item => ({
+            file: item,
+            typeId: 1
+          })),
+          ...this.inn.map(item => ({
+            file: item,
+            typeId: 2
+          })),
+          ...this.snils.map(item => ({
+            file: item,
+            typeId: 13
+          })),
+          ...this.job.map(item => ({
+            file: item,
+            typeId: 3
+          })),
+          ...this.employerPetition.map(item => ({
+            file: item,
+            typeId: 10
+          }))
+        ];
+
+        await Promise.all(items.map(async item => {
+          const payload = new FormData();
+
+          await payload.append("file", item.file);
+          await payload.append("typeId", item.typeId);
+
+          await this.addUserTicketFile({ id, payload });
+        }));
       }
     }
   };

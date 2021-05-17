@@ -98,7 +98,7 @@
   "action": {
     "login": "Login",
     "register": "Register",
-    "goBack": "Go back",
+    "back": "Back",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
