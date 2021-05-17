@@ -1,76 +1,77 @@
 <template lang="pug">
   q-page
-    q-form.container.q-ma-lg.q-pa-lg.shadow-2.rounded-borders(
+    q-form(
       @validation-success="onValidationSuccess"
     )
-      .main-block.row
-        .col
-          q-input(
-            v-model="lastName"
-            :label="$t('user.lastName')"
-            :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
-          )
-          q-input(
-            v-model="firstName"
-            :label="$t('user.firstName')"
-            :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
-          )
-          q-input(
-            v-model="patronymic"
-            :label="$t('user.patronymic')"
-            :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
-          )
-        .col.flex.items-center.justify-center
-          q-avatar(size="10rem")
-            q-file(
-              :value="avatarImage"
-              accept="image/*"
-              no-error-icon
-              dense
-              ref="picker"
-              bottom-slots
-              borderless
-              append
-              @input="onImageUpload"
+      q-card.container.q-ma-lg.q-pa-lg.shadow-2
+        .main-block.row
+          .col
+            q-input(
+              v-model="lastName"
+              :label="$t('user.lastName')"
+              :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
             )
-              img.full-width(:src="avatarUrl" ref="avatarImg")
-              
-      q-separator.q-my-lg
-      .email-block.row
-        .col
-          q-input(v-model="email" :label="$t('user.profile.mainForm.email')" readonly)
-        .col.flex.items-center.justify-end
-          router-link(:to="{ name: 'change-email' }")
-            | {{ $t('user.profile.mainForm.change') }}
-      q-separator.q-my-lg
-      .password-block.row
-        .col
-          q-input(value="***************" :label="$t('user.profile.mainForm.password')" readonly)
-        .col.flex.items-center.justify-end
-          router-link(:to="{ name: 'change-password' }")
-            | {{ $t('user.profile.mainForm.change') }}
-      q-separator.q-mt-lg
-      .contacts-block.row
-        .col
-          h5.q-my-lg
-            | {{ $t('user.profile.mainForm.contacts') }}
-          q-input(
-            v-model="phone"
-            mask="# (###) ### - ####"
-            unmasked-value
-            :label="$t('user.profile.mainForm.phone')"
-            :rules="[ val => val && (val.length === 0 || val.length === 11) ]"
+            q-input(
+              v-model="firstName"
+              :label="$t('user.firstName')"
+              :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+            )
+            q-input(
+              v-model="patronymic"
+              :label="$t('user.patronymic')"
+              :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+            )
+          .col.flex.items-center.justify-center
+            q-avatar(size="10rem")
+              q-file(
+                :value="avatarImage"
+                accept="image/*"
+                no-error-icon
+                dense
+                ref="picker"
+                bottom-slots
+                borderless
+                append
+                @input="onImageUpload"
+              )
+                img.full-width(:src="avatarUrl" ref="avatarImg")
+                
+        q-separator.q-my-lg
+        .email-block.row
+          .col
+            q-input(v-model="email" :label="$t('user.profile.mainForm.email')" readonly)
+          .col.flex.items-center.justify-end
+            router-link(:to="{ name: 'change-email' }")
+              | {{ $t('user.profile.mainForm.change') }}
+        q-separator.q-my-lg
+        .password-block.row
+          .col
+            q-input(value="***************" :label="$t('user.profile.mainForm.password')" readonly)
+          .col.flex.items-center.justify-end
+            router-link(:to="{ name: 'change-password' }")
+              | {{ $t('user.profile.mainForm.change') }}
+        q-separator.q-mt-lg
+        .contacts-block.row
+          .col
+            h5.q-my-lg
+              | {{ $t('user.profile.mainForm.contacts') }}
+            q-input(
+              v-model="phone"
+              mask="# (###) ### - ####"
+              unmasked-value
+              :label="$t('user.profile.mainForm.phone')"
+              :rules="[ val => val && (val.length === 0 || val.length === 11) ]"
+            )
+            q-input(
+              v-model="telegramAlias"
+              :label="$t('user.profile.mainForm.telegramAlias')"
+            )
+        .save-btn.flex.items-center.justify-end.q-mt-lg
+          q-btn(
+            color="primary"
+            :label="$t('user.profile.mainForm.save')"
+            @click="updateProfile()"
           )
-          q-input(
-            v-model="telegramAlias"
-            :label="$t('user.profile.mainForm.telegramAlias')"
-          )
-      .save-btn.flex.items-center.justify-end.q-mt-lg
-        q-btn(
-          color="primary"
-          :label="$t('user.profile.mainForm.save')"
-          @click="updateProfile()"
-        )
 
     ChangeEmailModal
     ChangePasswordModal

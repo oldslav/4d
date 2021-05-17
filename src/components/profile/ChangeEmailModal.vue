@@ -9,7 +9,11 @@
 
       q-card-section
         | {{ $t('user.profile.changeEmailModal.message') }}
-        BaseInput(v-model="newEmail" :label="$t('user.profile.changeEmailModal.email')")
+        BaseInput(
+          v-model="newEmail"
+          :label="$t('user.profile.changeEmailModal.email')"
+          :rules="[ val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val) || this.$t('common.error.validation.email') ]"
+        )
 
       q-card-actions(align="right") 
         q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="updateEmail")
