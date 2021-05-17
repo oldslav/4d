@@ -15,7 +15,7 @@ interface Registration {
 
 export default class AuthService extends Service {
   public static registration (payload: Registration): AxiosPromise<any> {
-    return this.api.post("/api/v1/profile", payload);
+    return this.api.post("/api/v1/profile", payload, { skipAuth: true });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types

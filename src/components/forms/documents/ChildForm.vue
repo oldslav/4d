@@ -7,7 +7,7 @@
         q-input(:label="$t('user.firstName')" v-model="neighbor.name.first" :rules="nameRules")
       .col-12.col-md-4
         q-input(:label="$t('user.patronymic')" v-model="neighbor.name.patronymic")
-    q-expansion-item.q-mt-sm.full-width(:label="$t('entity.documents.title')" header-class="q-px-none text-subtitle")
+    .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
       file-picker(:label="this.$t('entity.files.birthCertificate')" @remove="onRemove" v-model="neighbor.documents.birth")
       file-picker(:label="this.$t('entity.files.registrationCopy')" @remove="onRemove" v-model="neighbor.documents.children_registration")
       file-picker(:label="this.$t('entity.files.passportCopy')" @remove="onRemove" :max-files="5" v-model="neighbor.documents.passport")
