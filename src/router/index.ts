@@ -9,7 +9,7 @@ import routes from "./routes";
  * directly export the Router instantiation
  */
 
-export default route<Store<IRootState>>(function ({ Vue }) {
+export default route<Store<IRootState>>(function ({ store, Vue }) {
   Vue.use(VueRouter);
 
   const Router = new VueRouter({
@@ -21,6 +21,18 @@ export default route<Store<IRootState>>(function ({ Vue }) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  });
+  
+  Router.beforeEach((to, from, next) => {
+    const isUser = store.getters.getAccount;
+  
+    if (to.name && !to.name.startsWith("profile")) {
+      if (!isUser) {
+        return next({ name: "auth:signIn" });
+      }
+    }
+    
+    next();
   });
 
   return Router;
