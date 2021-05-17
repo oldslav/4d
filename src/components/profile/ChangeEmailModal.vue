@@ -12,7 +12,7 @@
         BaseInput(
           v-model="newEmail"
           :label="$t('user.profile.changeEmailModal.email')"
-          :rules="[ val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val) || this.$t('common.error.validation.email') ]"
+          :rules="validateEmail"
         )
 
       q-card-actions(align="right")
@@ -22,10 +22,12 @@
 <script>
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
+  import InputsMixin from "components/auth/InputsMixin";
   import { mapState } from "vuex";
 
   export default {
     name: "ChangeEmailModal",
+    mixins: [InputsMixin],
     components: {
       BaseInput,
       BaseModal

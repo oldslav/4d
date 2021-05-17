@@ -3,23 +3,26 @@
     q-form(
       @validation-success="onValidationSuccess"
     )
-      q-card.container.q-ma-lg.q-pa-lg.shadow-2
+      q-card.container.q-ma-lg.q-pa-lg
+
+        q-inner-loading(:showing="isLoading")
+
         .main-block.row
           .col
             q-input(
               v-model="lastName"
               :label="$t('user.lastName')"
-              :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+              :rules="validateNames"
             )
             q-input(
               v-model="firstName"
               :label="$t('user.firstName')"
-              :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+              :rules="validateNames"
             )
             q-input(
               v-model="patronymic"
               :label="$t('user.patronymic')"
-              :rules="[ val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val) ]"
+              :rules="validateNames"
             )
           .col.flex.items-center.justify-center
             q-avatar(size="10rem")
@@ -60,12 +63,12 @@
               mask="# (###) ### - ####"
               unmasked-value
               :label="$t('user.profile.mainForm.phone')"
-              :rules="[ val => val.length === 0 || val.length === 11 ]"
+              :rules="validatePhone"
             )
             q-input(
               v-model="telegramAlias"
               :label="$t('user.profile.mainForm.telegramAlias')"
-              :rules="[ val => /^[A-z0-9]*$/.test(val) ]"
+              :rules="validateTelegram"
             )
         .save-btn.flex.items-center.justify-end.q-mt-lg
           q-btn(
@@ -160,6 +163,24 @@
           this.$refs.avatarImg.src = value;
         }
       },
+      validateNames () {
+        return [
+          val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
+        ];
+      },
+      validatePhone () {
+        return [
+          val => val.length === 0 || val.length === 11
+        ];
+      },
+      validateTelegram () {
+        return [
+          [ val => /^[A-z0-9]*$/.test(val) ]
+        ];
+      },
+      isLoading () {
+        return this.$store.state.wait[GET_ACCOUNT];
+      },
       ...mapState({
         account: state => state.account.account,
         profileForm: state => state.user.profileForm
@@ -169,13 +190,10 @@
       ...mapActions([
         GET_ACCOUNT
       ]),
-      ...mapActions(
-        "user/profileForm",
-        [
-          UPDATE_USER_PROFILE,
-          UPDATE_USER_PROFILE_AVATAR
-        ]
-      ),
+      ...mapActions("user/profileForm", [
+        UPDATE_USER_PROFILE,
+        UPDATE_USER_PROFILE_AVATAR
+      ]),
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
       },

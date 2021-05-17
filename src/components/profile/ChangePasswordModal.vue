@@ -26,7 +26,7 @@
           type="password"
           :label="$t('user.profile.changePasswordModal.newPassword')"
           :type="isNewPasswordVisible ? 'text' : 'password'"
-          :rules="[ val => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(val) || this.$t('common.error.validation.passwordReg') ]"
+          :rules="validatePassword"
           append
         )
           template(#append)
@@ -40,7 +40,7 @@
           type="password"
           :label="$t('user.profile.changePasswordModal.confirmPassword')"
           :type="isConfirmPasswordVisible ? 'text' : 'password'"
-          :rules="[ val => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(val) || this.$t('common.error.validation.passwordReg') ]"
+          :rules="validatePassword"
           append
         )
           template(#append)
@@ -56,10 +56,12 @@
 <script>
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
+  import InputsMixin from "components/auth/InputsMixin";
   import { mapState } from "vuex";
 
   export default {
     name: "ChangePasswordModal",
+    mixins: [InputsMixin],
     components: {
       BaseInput,
       BaseModal
