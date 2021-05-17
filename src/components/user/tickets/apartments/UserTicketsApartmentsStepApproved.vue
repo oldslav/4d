@@ -15,7 +15,7 @@
 
 <script>
   export default {
-    name: "UserTicketsApartmentsStepAccept"
+    name: "UserTicketsApartmentsStepApproved"
   };
 </script>
 

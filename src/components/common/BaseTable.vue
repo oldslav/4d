@@ -42,15 +42,14 @@
         type: Array,
         required: true
       },
+      expanded: {
+        type: Array,
+        default: []
+      },
       isLoading: {
         type: Boolean,
         default: false
       }
-    },
-    data () {
-      return {
-        expanded: []
-      };
     }
   };
 </script>

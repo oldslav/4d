@@ -10,6 +10,7 @@
       :data="data"
       :loading="isLoading"
       :getData="getUserTickets"
+      :expanded.sync="expanded"
     )
       template(v-slot:top-right)
         q-btn(
@@ -57,12 +58,13 @@
                 :done="props.row.status.id > 1"
                 :name="1"
               )
-                UserTicketsApartmentsStepAccept
+                UserTicketsApartmentsStepReceived
               q-step(
                 title="В работе"
                 :done="props.row.status.id > 2"
                 :name="2"
               )
+                UserTicketsApartmentsStepApproved
               q-step(
                 title="Действие договора"
                 :done="props.row.status.id > 3"
@@ -83,18 +85,21 @@
   import BaseTabs from "../components/common/BaseTabs";
   import UserTicketsApartmentsNewTicketModal
     from "../components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
-  import UserTicketsApartmentsStepAccept from "../components/user/tickets/apartments/UserTicketsApartmentsStepAccept";
+  import UserTicketsApartmentsStepDraft from "../components/user/tickets/apartments/UserTicketsApartmentsStepDraft";
+  import UserTicketsApartmentsStepReceived
+    from "../components/user/tickets/apartments/UserTicketsApartmentsStepReceived";
   import { DELETE_USER_TICKET, GET_USER_TICKETS } from "../store/constants/action-constants";
 
   export default {
     name: "UserTickets",
-    components: { BaseStatus, UserTicketsApartmentsStepAccept, UserTicketsApartmentsNewTicketModal, BaseTable, BaseTabs },
+    components: { UserTicketsApartmentsStepReceived, UserTicketsApartmentsStepDraft, BaseStatus, UserTicketsApartmentsNewTicketModal, BaseTable, BaseTabs },
     async created () {
       await this.getUserTickets();
     },
     data () {
       return {
         isModalVisible: false,
+        expanded: [],
         columns: [
           {
             name: "address",
@@ -176,7 +181,13 @@
       }),
 
       expandRow (props) {
-        props.expand = !props.expand;
+        const row = this.expanded.indexOf(props.key);
+
+        if (row === -1) {
+          this.expanded.push(props.key);
+        } else {
+          this.expanded.splice(row, 1);
+        }
       },
 
       cancelTicket (id) {

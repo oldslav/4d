@@ -5,7 +5,7 @@
         q-item-section.list-item-avatar(avatar)
           q-icon.text-primary(name="arrow_back")
         q-item-section(avatar)
-          | {{ $t("action.goBack") }}
+          | {{ $t("action.back") }}
       q-separator
       q-item.q-py-md.text-subtitle(
         v-for="(item, index) in items"
