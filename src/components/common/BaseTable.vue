@@ -51,11 +51,6 @@
       return {
         expanded: []
       };
-    },
-    methods: {
-      expandRow (props) {
-        props.expand = !props.expand;
-      }
     }
   };
 </script>
