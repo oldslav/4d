@@ -2,7 +2,7 @@ import { ActionTree, Module, MutationTree } from "vuex";
 import { IRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
-import { GET_USER_TICKETS } from "src/store/constants/action-constants";
+import { DELETE_USER_TICKET, GET_USER_TICKETS } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
 const state: IUserTicketsState = {
@@ -25,6 +25,12 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
     });
     
     commit(SET_USER_TICKETS, data);
+  },
+  
+  async [DELETE_USER_TICKET] ({ dispatch }, payload) {
+    await TicketsService.deleteTicketLiving(payload);
+    
+    dispatch(GET_USER_TICKETS);
   }
 };
 

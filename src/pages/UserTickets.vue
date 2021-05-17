@@ -36,7 +36,7 @@
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup disable)
+                  q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
                   q-item(clickable v-close-popup disable)
@@ -84,7 +84,7 @@
   import UserTicketsApartmentsNewTicketModal
     from "../components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
   import UserTicketsApartmentsStepAccept from "../components/user/tickets/apartments/UserTicketsApartmentsStepAccept";
-  import { GET_USER_TICKETS } from "../store/constants/action-constants";
+  import { DELETE_USER_TICKET, GET_USER_TICKETS } from "../store/constants/action-constants";
 
   export default {
     name: "UserTickets",
@@ -171,11 +171,16 @@
     },
     methods: {
       ...mapActions("user/userTickets", {
-        getUserTickets: GET_USER_TICKETS
+        getUserTickets: GET_USER_TICKETS,
+        deleteUserTicket: DELETE_USER_TICKET
       }),
 
       expandRow (props) {
         props.expand = !props.expand;
+      },
+
+      cancelTicket (id) {
+        this.deleteUserTicket(id);
       },
 
       moment
