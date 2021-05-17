@@ -54,6 +54,7 @@
 </template>
 
 <script>
+  import moment from "moment";
   import { mapActions } from "vuex";
   import AsideProfile from "./components/aside/AsideProfile";
   import AuthModal from "./components/auth/AuthModal";
@@ -65,6 +66,8 @@
     name: "App",
     components: { AuthModal, LoginForm, AsideProfile, BaseToolbar },
     async created () {
+      await moment.locale(this.locale.value);
+
       try {
         await this.GET_ACCOUNT();
         await this.GET_REFERENCES();

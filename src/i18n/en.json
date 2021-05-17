@@ -47,10 +47,14 @@
     }
   },
   "user": {
+    "messages": {
+      "apartmentNotSelected": "Адрес появится после выбора квартиры"
+    },
     "tickets": {
       "actions": {
-        "create": "Создать новую заявку",
-        "cancel": "Отменить заявку"
+        "create": "Create new ticket",
+        "details": "Show ticket details",
+        "cancel": "Cancel ticket"
       },
       "empty": {
         "title": "У вас пока нет ни одной заявки",
@@ -98,7 +102,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "submit": "Подтвердить",
+    "submit": "Submit",
     "continue": "Continue",
     "create": "Create"
   },
@@ -134,6 +138,10 @@
     },
     "bills": "Bills",
     "main": "Main",
+    "maps": "Maps",
+    "data": "Data",
+    "about": "About",
+    "design": "Design code",
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Password",

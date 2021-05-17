@@ -23,7 +23,8 @@
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="address" :props="props" @click="expandRow(props)")
-            | {{ props.row.apartment ? props.row.apartment.address : "Null" }}
+            span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
+            span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props" @click="expandRow(props)")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
@@ -35,9 +36,12 @@
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup)
+                  q-item(clickable v-close-popup disable)
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
+                  q-item(clickable v-close-popup disable)
+                    q-item-section(no-wrap).text-red
+                      | {{ $t("user.tickets.actions.details") }}
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
@@ -97,8 +101,6 @@
             required: true,
             label: "Address",
             align: "left",
-            field: row => row.apartment && row.apartment.address || "Null",
-            format: val => `${ val }`,
             sortable: true
           },
           {
@@ -106,8 +108,6 @@
             required: true,
             label: "Rent price",
             align: "left",
-            field: row => row.apartment && row.apartment.price || "0",
-            format: val => `${ val }`,
             sortable: true
           },
           {
@@ -173,6 +173,10 @@
       ...mapActions("user/userTickets", {
         getUserTickets: GET_USER_TICKETS
       }),
+
+      expandRow (props) {
+        props.expand = !props.expand;
+      },
 
       moment
     }

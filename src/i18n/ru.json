@@ -48,8 +48,12 @@
   },
   "user": {
     "tickets": {
+      "messages": {
+        "apartmentNotSelected": "Адрес появится после выбора квартиры"
+      },
       "actions": {
         "create": "Создать новую заявку",
+        "details": "Просмотреть детали заявки",
         "cancel": "Отменить заявку"
       },
       "empty": {
@@ -133,6 +137,10 @@
     },
     "bills": "Счета",
     "main": "Главная",
+    "maps": "Карты",
+    "data": "Данные",
+    "about": "О проекте",
+    "design": "Дизайн-код",
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Пароль",

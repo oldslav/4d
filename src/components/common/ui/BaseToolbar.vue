@@ -1,18 +1,20 @@
 <template lang="pug">
   q-toolbar
     template(v-if="isMobile")
-      BaseTabs(v-model="tab" isFullWidth)
-        q-route-tab(:to="{ name: 'main' }" name="main" icon="o_account_circle" :label="$t('entity.main')").col
-        q-route-tab(:to="{ name: 'playground' }" name="playground" icon="o_account_circle" :label="$t('entity.playground')").col
-        q-route-tab(:to="{ name: 'user-profile' }" name="profile" icon="o_account_circle"  :label="$t('entity.profile')").col
-        q-route-tab(:to="{ name: 'error-page' }" name="error-page" icon="o_account_circle" label="Ошибка").col
+      BaseTabs(v-model="tab" isFullWidth :dense="false")
+        q-route-tab(:to="{ name: 'main' }" name="main" :label="$t('entity.about')").col
+        q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')").col
+        q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')").col
+        q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')").col
+        q-route-tab(:to="{ name: 'error-page' }" name="error-page" :label="$t('entity.services')").col
 
     template(v-else)
-      BaseTabs(v-model="tab")
-        q-route-tab(:to="{ name: 'main' }" name="main" icon="o_account_circle" :label="$t('entity.main')")
-        q-route-tab(:to="{ name: 'playground' }" name="playground" icon="o_account_circle" :label="$t('entity.playground')")
-        q-route-tab(:to="{ name: 'user-profile' }" name="profile" icon="o_account_circle"  :label="$t('entity.profile')")
-        q-route-tab(:to="{ name: 'error-page' }" name="error-page" icon="o_account_circle" label="Ошибка")
+      BaseTabs(v-model="tab" :dense="false")
+        q-route-tab(:to="{ name: 'main' }" name="main" :label="$t('entity.about')")
+        q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')")
+        q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')")
+        q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')")
+        q-route-tab(:to="{ name: 'error-page' }" name="error-page" :label="$t('entity.services')")
       q-space
       q-btn(round dense icon="o_account_circle" text-color="primary")
         q-menu

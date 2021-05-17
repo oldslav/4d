@@ -28,7 +28,7 @@ export default route<Store<IRootState>>(function ({ store, Vue }) {
   
     if (to.name && !to.name.startsWith("profile")) {
       if (!isUser) {
-        return next({ name: "auth:signIn" });
+        return next({ name: "main" });
       }
     }
     
