@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-card-section
+  div
     h3.text-title
       | {{ $t("common.register.title") }}
     h3.text-subtitle
