@@ -3,7 +3,7 @@
     v-model="currentTab"
     @input="onChange"
     align="left"
-    dense
+    :dense="dense"
     mobile-arrows
     :class="{ 'full-width': isFullWidth }"
   )
@@ -17,6 +17,10 @@
       isFullWidth: {
         type: Boolean,
         default: false
+      },
+      dense: {
+        type: Boolean,
+        default: true
       }
     },
     data () {

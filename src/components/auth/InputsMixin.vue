@@ -24,7 +24,7 @@
       validateEmail () {
         return [
           ...this.requiredRule,
-          val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || this.$t("common.error.validation.email")
+          val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val) || this.$t("common.error.validation.email")
         ];
       },
       validatePassword () {
