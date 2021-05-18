@@ -75,7 +75,32 @@
       value: {
         type: Boolean,
         default: false
+      },
+      data: {
+        type: Object,
+        default: null
       }
+    },
+    created () {
+      this.$watch("data", val => {
+        if (val) {
+          const {
+            name: {
+              first,
+              last,
+              patronymic
+            },
+            contacts: {
+              phones
+            }
+          } = val;
+
+          this.firstname = first;
+          this.lastname = last;
+          this.patronymic = patronymic;
+          this.phone = phones[0];
+        }
+      });
     },
     data () {
       return {
@@ -160,6 +185,10 @@
         this.$emit("input", false);
       },
 
+      updateModal () {
+        this.$emit("update");
+      },
+
       async createLivingTicket () {
         const payload = {
           name: {
@@ -175,6 +204,7 @@
 
         const { id } = await this.createUserTicket(payload);
         await this.addFiles(id);
+        this.updateModal();
         this.closeModal();
       },
 

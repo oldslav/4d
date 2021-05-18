@@ -26,8 +26,8 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/apartments/user/tickets", { params });
   }
   
-  public static createTicketLiving (params: unknown): AxiosPromise<TicketsResponse> {
-    return this.api.post("/api/v1/services/apartments/user/tickets", { params });
+  public static createTicketLiving (params: any): AxiosPromise<TicketsResponse> {
+    return this.api.post("/api/v1/services/apartments/user/tickets", { ...params });
   }
   
   public static addTicketLivingFile (id: number, params: unknown): AxiosPromise<TicketsResponse> {
