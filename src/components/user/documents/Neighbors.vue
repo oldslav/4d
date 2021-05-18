@@ -84,7 +84,7 @@
       onRemove (index) {
         this.$q.dialog({
           title: this.$t("action.delete"),
-          message: this.$t("entity.neighbors.messages.prompt"),
+          message: this.$t("entity.neighbors.messages.delete.prompt"),
           ok: this.$t("action.submit"),
           cancel: this.$t("action.cancel"),
           persistent: true
