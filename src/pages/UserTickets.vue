@@ -20,7 +20,7 @@
           @click="isModalVisible = true"
           :label="$t('user.tickets.actions.create')"
         )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible")
+        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" :data="currentRow" @update="getUserTickets")
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="address" :props="props" @click="expandRow(props)")
@@ -40,8 +40,8 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup disable)
-                    q-item-section(no-wrap).text-red
+                  q-item(clickable v-close-popup @click="openDetails(props.row)")
+                    q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
         q-tr(v-show="props.expand" :props="props")
@@ -75,6 +75,7 @@
                 :done="props.row.status.id > 10"
                 :name="4"
               )
+    q-inner-loading(v-else showing)
 </template>
 
 <script>
@@ -100,6 +101,7 @@
       return {
         isModalVisible: false,
         expanded: [],
+        currentRow: null,
         columns: [
           {
             name: "address",
@@ -179,6 +181,11 @@
         getUserTickets: GET_USER_TICKETS,
         deleteUserTicket: DELETE_USER_TICKET
       }),
+
+      openDetails (data) {
+        this.currentRow = data;
+        this.isModalVisible = true;
+      },
 
       expandRow (props) {
         const row = this.expanded.indexOf(props.key);
