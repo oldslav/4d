@@ -159,7 +159,19 @@ const routes: RouteConfig[] = [
             path: "apartments",
             name: "user-tickets-apartments",
             components: {
-              default: (): Promise<any> => import("pages/UserTickets.vue")
+              default: (): Promise<any> => import("pages/tickets/ApartmentRent.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
+            path: "ideas",
+            name: "user-tickets-ideas",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/Ideas.vue")
             },
             meta: {
               toolbar: true,
