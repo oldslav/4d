@@ -134,7 +134,8 @@
     },
     "tickets": {
       "title": "Tickets",
-      "apartments": "Apartment rent"
+      "apartments": "Apartment rent",
+      "ideas": "Ideas and suggestions"
     },
     "bills": "Bills",
     "main": "Main",
