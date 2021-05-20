@@ -31,7 +31,8 @@ module.exports = configure(function () {
       "i18n",
       "axios",
       "cookies",
-      "notify-defaults"
+      "notify-defaults",
+      "filters"
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
