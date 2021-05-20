@@ -5,6 +5,7 @@ import {
   SET_PROFILE_FORM_FIRSTNAME,
   SET_PROFILE_FORM_LASTNAME,
   SET_PROFILE_FORM_PATRONYMIC,
+  SET_PROFILE_FORM_NO_PATRONYMIC,
   SET_PROFILE_FORM_EMAIL,
   SET_PROFILE_FORM_PHONE,
   SET_PROFILE_FORM_TELEGRAM_ALIAS,
@@ -24,7 +25,8 @@ const state: IProfileFormState = {
     first: null,
     full: null,
     last: null,
-    patronymic: null
+    patronymic: null,
+    noPatronymic: null
   },
   contacts: {
     email: null,
@@ -47,6 +49,10 @@ const mutations: MutationTree<IProfileFormState> = {
   
   [SET_PROFILE_FORM_PATRONYMIC] (state, payload) {
     state.name.patronymic = payload;
+  },
+  
+  [SET_PROFILE_FORM_NO_PATRONYMIC] (state, payload) {
+    state.name.noPatronymic = payload;
   },
   
   [SET_PROFILE_FORM_EMAIL] (state, payload) {
@@ -76,7 +82,8 @@ const actions: ActionTree<IProfileFormState, IRootState> = {
     const { name, contacts, avatar } = rootGetters["getAccount"];
     commit(SET_PROFILE_FORM_FIRSTNAME, name.first);
     commit(SET_PROFILE_FORM_LASTNAME, name.last);
-    commit(SET_PROFILE_FORM_PATRONYMIC, name.last);
+    commit(SET_PROFILE_FORM_PATRONYMIC, name.patronymic);
+    commit(SET_PROFILE_FORM_NO_PATRONYMIC, name.noPatronymic);
     commit(SET_PROFILE_FORM_EMAIL, contacts.email);
     commit(SET_PROFILE_FORM_PHONE, contacts.phone);
     commit(SET_PROFILE_FORM_TELEGRAM_ALIAS, contacts.telegramAlias);

@@ -65,6 +65,7 @@
     "firstName": "Имя",
     "lastName": "Фамилия",
     "patronymic": "Отчество",
+    "noPatronymic": "Без отчества",
     "companyName": "Название организации",
     "password": "Пароль",
     "confirmPassword": "Повторите пароль",

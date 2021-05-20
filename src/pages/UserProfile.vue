@@ -19,25 +19,27 @@
               :label="$t('user.firstName')"
               :rules="validateNames"
             )
-            q-input(
-              v-model="patronymic"
-              :label="$t('user.patronymic')"
-              :rules="validateNames"
-            )
+            .row
+              q-input.col-grow(
+                v-model="patronymic"
+                :label="$t('user.patronymic')"
+                :rules="validatePatronymic"
+                :readonly="noPatronymic"
+              )
+              q-checkbox(
+                v-model="noPatronymic"
+                :label="$t('user.noPatronymic')"
+              )
           .col.flex.items-center.justify-center
             q-avatar(size="10rem")
               q-file(
                 :value="avatarImage"
                 accept="image/*"
-                no-error-icon
-                dense
-                ref="picker"
-                bottom-slots
-                borderless
-                append
                 @input="onImageUpload"
               )
-                img.full-width(:src="avatarUrl" ref="avatarImg")
+                img.avatar-img.full-width.full-height(
+                  :src="avatarUrl"
+                )
                 
         q-separator.q-my-lg
         .email-block.row
@@ -73,6 +75,7 @@
         .save-btn.flex.items-center.justify-end.q-mt-lg
           q-btn(
             color="primary"
+            :disabled="!isFormChanged"
             :label="$t('user.profile.mainForm.save')"
             @click="updateProfile()"
           )
@@ -100,6 +103,7 @@
     data () {
       return {
         isFormValidated: false,
+        isFormChanged: false,
         avatarImage: null
       };
     },
@@ -110,6 +114,8 @@
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_FIRSTNAME", value);
+
+          this.checkFormChange(value, this.account.name.first);
         }
       },
       lastName: {
@@ -118,6 +124,8 @@
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_LASTNAME", value);
+
+          this.checkFormChange(value, this.account.name.last);
         }
       },
       patronymic: {
@@ -126,6 +134,19 @@
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_PATRONYMIC", value);
+
+          this.checkFormChange(value, this.account.name.patronymic);
+        }
+      },
+      noPatronymic: {
+        get () {
+          return this.profileForm.name.noPatronymic !== null ? this.profileForm.name.noPatronymic : this.account.name.noPatronymic;
+        },
+        set (value) {
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_NO_PATRONYMIC", value);
+          this.$store.commit("user/profileForm/SET_PROFILE_FORM_PATRONYMIC", null);
+
+          this.checkFormChange(value, this.account.name.noPatronymic);
         }
       },
       email: {
@@ -139,6 +160,8 @@
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_PHONE", value);
+
+          this.checkFormChange(value, this.account.contacts.phone);
         }
       },
       telegramAlias: {
@@ -147,26 +170,32 @@
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_TELEGRAM_ALIAS", value);
+
+          this.checkFormChange(value, this.account.contacts.telegramAlias);
         }
       },
-      avatarUrl: {
-        get () {
-          if (this.profileForm.avatarUrl) {
-            return this.profileForm.avatarUrl;
-          }
-          else if (this.account.avatar) {
-            return `${ process.env.SERVER_API_HOST }${ this.account.avatar }`;
-          }
-          return require("@/assets/svg/avatar-placeholder.svg");
-        },
-        set (value) {
-          this.$refs.avatarImg.src = value;
+      avatarUrl () {
+        if (this.profileForm.avatarUrl) {
+          return this.profileForm.avatarUrl;
         }
+        else if (this.account.avatar) {
+          return `${ process.env.SERVER_API_HOST }${ this.account.avatar }`;
+        }
+        return require("@/assets/svg/avatar-placeholder.svg");
       },
       validateNames () {
         return [
           val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
         ];
+      },
+      validatePatronymic () {
+        if (this.noPatronymic) {
+          return [];
+        } else {
+          return [
+            val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
+          ];
+        }
       },
       validatePhone () {
         return [
@@ -203,6 +232,8 @@
       async updateProfile () {
         try {
           await this.UPDATE_USER_PROFILE();
+          await this.GET_ACCOUNT();
+          this.isFormChanged = false;
           this.$q.notify({
             message: "Данные обновлены",
             color: "green",
@@ -240,6 +271,13 @@
         };
 
         reader.readAsDataURL(image);
+      },
+      checkFormChange (value, defaultValue) {
+        if (!this.isFormChanged && value !== defaultValue){
+          this.isFormChanged = true;
+        } else if (this.isFormChanged && value === defaultValue) {
+          this.isFormChanged = false;
+        }
       }
     }
   };
