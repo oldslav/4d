@@ -38,17 +38,14 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
     dispatch(GET_USER_TICKETS);
   },
   
-  async [CREATE_USER_TICKET] ({ dispatch }, payload) {
+  async [CREATE_USER_TICKET] (_, payload) {
     const { data } = await TicketsService.createTicketLiving(payload);
     
-    dispatch(GET_USER_TICKETS);
     return data;
   },
   
-  async [ADD_USER_TICKET_FILE] ({ dispatch }, { id, payload }) {
+  async [ADD_USER_TICKET_FILE] (_, { id, payload }) {
     await TicketsService.addTicketLivingFile(id, payload);
-    
-    dispatch(GET_USER_TICKETS);
   }
 };
 
