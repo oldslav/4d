@@ -1,22 +1,33 @@
 <template lang="pug">
   BaseModal(:value="showChangeEmailModal" position="standard" @input="toggleModal")
     q-card.modal-container
-      q-card-section.row.justify-between.items-center.text-h6
-        | {{ $t('user.profile.changeEmailModal.title') }}
-        q-icon.cursor-pointer(name="o_close" @click="toggleModal(false)")
+      q-form(
+        greedy
+        @submit="updateEmail()"
+        @validation-error="onValidationError()"
+      )
+        q-card-section.row.justify-between.items-center.text-h6
+          | {{ $t('user.profile.changeEmailModal.title') }}
+          q-icon.cursor-pointer(name="o_close" @click="toggleModal(false)")
 
-      q-separator.q-mb-sm
+        q-separator.q-mb-sm
 
-      q-card-section
-        | {{ $t('user.profile.changeEmailModal.message') }}
-        BaseInput(
-          v-model="newEmail"
-          :label="$t('user.profile.changeEmailModal.email')"
-          :rules="validateEmail"
-        )
+        q-card-section
+          | {{ $t('user.profile.changeEmailModal.message') }}
+          BaseInput(
+            v-model="newEmail"
+            :label="$t('user.profile.changeEmailModal.email')"
+            :rules="validateEmail"
+          )
 
-      q-card-actions(align="right")
-        q-btn(v-close-popup color="primary" :label="$t('user.profile.changeEmailModal.save')" @click="updateEmail")
+        q-card-actions(align="right")
+          q-btn(
+            v-close-popup
+            :label="$t('user.profile.changeEmailModal.save')"
+            :disabled="newEmail.length === 0"
+            type="submit"
+            color="primary"
+          )
 </template>
 
 <script>
@@ -40,7 +51,7 @@
     computed: {
       newEmail: {
         get () {
-          return this.profileForm.newEmail;
+          return this.profileForm.newEmail || "";
         },
         set (value) {
           this.$store.commit("user/profileForm/SET_PROFILE_FORM_NEW_EMAIL", value);
@@ -53,6 +64,13 @@
     methods: {
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
+      },
+      onValidationError () {
+        this.$q.notify({
+          message: "Ошибка при валидации",
+          color: "red",
+          position: "bottom"
+        });
       },
       async updateEmail () {
         try {

@@ -1,7 +1,9 @@
 <template lang="pug">
   q-page
     q-form(
-      @validation-success="onValidationSuccess"
+      greedy
+      @submit="updateProfile()"
+      @validation-error="onValidationError()"
     )
       .container(
         :is="isMobile ? 'div' : 'q-card'"
@@ -133,10 +135,10 @@
             )
         .save-btn.flex.items-center.justify-end.q-mt-lg
           q-btn(
-            color="primary"
             :disabled="!isFormChanged"
             :label="$t('user.profile.mainForm.save')"
-            @click="updateProfile()"
+            type="submit"
+            color="primary"
           )
 
     ChangeEmailModal
@@ -161,7 +163,6 @@
     },
     data () {
       return {
-        isFormValidated: false,
         isFormChanged: false,
         avatarImage: null
       };
@@ -189,6 +190,7 @@
       },
       patronymic: {
         get () {
+          if (this.noPatronymic) return "";
           return this.profileForm.name.patronymic !== null ? this.profileForm.name.patronymic : this.account.name.patronymic;
         },
         set (value) {
@@ -263,7 +265,8 @@
       },
       validateTelegram () {
         return [
-          [ val => /^[A-z0-9]*$/.test(val) ]
+          val => val.length === 0 || val.length >= 5 && val.length <= 32,
+          val => /^[a-zA-Z0-9_.]*$/.test(val)
         ];
       },
       isLoading () {
@@ -288,8 +291,12 @@
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
       },
-      onValidationSuccess () {
-        this.isFormValidated = true;
+      onValidationError () {
+        this.$q.notify({
+          message: "Ошибка при валидации",
+          color: "red",
+          position: "bottom"
+        });
       },
       async updateProfile () {
         try {
