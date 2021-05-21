@@ -3,12 +3,40 @@
     q-form(
       @validation-success="onValidationSuccess"
     )
-      q-card.container.q-ma-lg.q-pa-lg
+      .container(
+        :is="isMobile ? 'div' : 'q-card'"
+        :class="isMobile ? 'q-pa-md' : 'q-ma-lg q-pa-lg'"
+      )
 
         q-inner-loading(:showing="isLoading")
 
-        .main-block.row
-          .col
+        .main-block(
+          :class="isMobile ? 'column reverse' : 'row'"
+        )
+          .col-xs-12(v-if="isMobile")
+            q-expansion-item(:label="$t('user.profile.mainForm.nameSection')")
+              q-input(
+                v-model="lastName"
+                :label="$t('user.lastName')"
+                :rules="validateNames"
+              )
+              q-input(
+                v-model="firstName"
+                :label="$t('user.firstName')"
+                :rules="validateNames"
+              )
+              q-input.col-grow(
+                v-model="patronymic"
+                :label="$t('user.patronymic')"
+                :rules="validatePatronymic"
+                :readonly="noPatronymic"
+              )
+              q-checkbox(
+                v-model="noPatronymic"
+                :label="$t('user.noPatronymic')"
+                left-label
+              )
+          .col-sm-6(v-else)
             q-input(
               v-model="lastName"
               :label="$t('user.lastName')"
@@ -30,7 +58,9 @@
                 v-model="noPatronymic"
                 :label="$t('user.noPatronymic')"
               )
-          .col.flex.items-center.justify-center
+          .col-xs-12.col-sm-6.column.flex.items-center.justify-center(
+            :class="isMobile ? 'mobile-avatar' : ''"
+          )
             q-avatar(size="10rem")
               q-file(
                 :value="avatarImage"
@@ -40,24 +70,53 @@
                 img.avatar-img.full-width.full-height(
                   :src="avatarUrl"
                 )
+
                 
         q-separator.q-my-lg
         .email-block.row
           .col
-            q-input(v-model="email" :label="$t('user.profile.mainForm.email')" readonly)
+            div(v-if="isMobile")
+              | {{ $t('user.profile.mainForm.email') }}
+            q-input(
+              v-else
+              v-model="email"
+              :label="$t('user.profile.mainForm.email')"
+              readonly
+            )
           .col.flex.items-center.justify-end
             router-link(:to="{ name: 'change-email' }")
               | {{ $t('user.profile.mainForm.change') }}
         q-separator.q-my-lg
         .password-block.row
           .col
-            q-input(value="***************" :label="$t('user.profile.mainForm.password')" readonly)
+            div(v-if="isMobile")
+              | {{ $t('user.profile.mainForm.password') }}
+            q-input(
+              v-else
+              value="***************"
+              :label="$t('user.profile.mainForm.password')"
+              readonly
+            )
           .col.flex.items-center.justify-end
             router-link(:to="{ name: 'change-password' }")
               | {{ $t('user.profile.mainForm.change') }}
         q-separator.q-mt-lg
         .contacts-block.row
-          .col
+          .col-xs-12(v-if="isMobile")
+            q-expansion-item(:label="$t('user.profile.mainForm.contacts')")
+              q-input(
+                v-model="phone"
+                mask="# (###) ### - ####"
+                unmasked-value
+                :label="$t('user.profile.mainForm.phone')"
+                :rules="validatePhone"
+              )
+              q-input(
+                v-model="telegramAlias"
+                :label="$t('user.profile.mainForm.telegramAlias')"
+                :rules="validateTelegram"
+              )
+          .col(v-else)
             h5.q-my-lg
               | {{ $t('user.profile.mainForm.contacts') }}
             q-input(
@@ -210,6 +269,9 @@
       isLoading () {
         return this.$store.state.wait[GET_ACCOUNT];
       },
+      isMobile () {
+        return this.$q.platform.is.mobile;
+      },
       ...mapState({
         account: state => state.account.account,
         profileForm: state => state.user.profileForm
@@ -284,4 +346,6 @@
 </script>
 
 <style lang="stylus" scoped>
+::v-deep .q-item
+  padding: 0
 </style>

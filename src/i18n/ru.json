@@ -73,6 +73,7 @@
     "legalEntity": "Юридическое лицо",
     "profile": {
       "mainForm": {
+        "nameSection": "Имя пользователя",
         "email": "Email",
         "password": "Пароль",
         "contacts": "Контакты",
