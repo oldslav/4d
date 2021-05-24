@@ -65,6 +65,7 @@
     "firstName": "Firstname",
     "lastName": "Lastname",
     "patronymic": "Patronymic",
+    "noPatronymic": "No patronymic",
     "companyName": "Company name",
     "password": "Password",
     "confirmPassword": "Confirm password",
@@ -72,6 +73,7 @@
     "legalEntity": "Юридическое лицо",
     "profile": {
       "mainForm": {
+        "nameSection": "User name",
         "email": "Email",
         "password": "Password",
         "contacts": "Contacts",
