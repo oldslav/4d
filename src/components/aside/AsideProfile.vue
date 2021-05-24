@@ -29,7 +29,10 @@
     computed: {
       ...mapGetters(["getUserRolesNames"]),
       isUser () {
-        return this.getUserRolesNames.includes("ROLE_USER");
+        return this.getUserRolesNames.includes("ROLE_USER") || this.isJuristic;
+      },
+      isJuristic () {
+        return this.getUserRolesNames.includes("ROLE_USER_JURISTIC");
       },
 
       items () {
@@ -39,6 +42,12 @@
             action: { name: "user-profile" },
             icon: "o_person",
             show: this.isUser
+          },
+          {
+            label: this.$t("entity.companyProfile"),
+            action: { name: "user-company" },
+            icon: "o_business_center",
+            show: this.isJuristic
           },
           {
             label: this.$t("entity.documents.title"),

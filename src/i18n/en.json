@@ -110,6 +110,7 @@
     "services": "Services",
     "dashboard": "Personal account",
     "profile": "Profile",
+    "companyProfile": "Company profile",
     "documents": {
       "title": "Documents",
       "data": "My documents"
