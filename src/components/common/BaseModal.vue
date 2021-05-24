@@ -2,6 +2,7 @@
   q-dialog(
     :value="value"
     :full-height="fullHeight"
+    :full-width="isMobile"
     :square="square"
     :position="position"
     :maximized="maximized"
@@ -35,6 +36,11 @@
       maximized: {
         type: Boolean,
         defailt: false
+      }
+    },
+    computed: {
+      isMobile () {
+        return this.$q.platform.is.mobile;
       }
     }
   }; 
