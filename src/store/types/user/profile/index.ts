@@ -9,7 +9,8 @@ export interface IProfileFormState {
     first: string | null,
     full: string | null,
     last: string | null,
-    patronymic: string | null
+    patronymic: string | null,
+    noPatronymic: boolean | null
   },
   contacts: {
     email: string | null,
