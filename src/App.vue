@@ -66,7 +66,18 @@
     name: "App",
     components: { AuthModal, LoginForm, AsideProfile, BaseToolbar },
     async created () {
-      await moment.locale(this.locale.value);
+      await moment.locale(this.$i18n.locale);
+
+      const darkMode = this.$q.localStorage.getItem("darkMode");
+      const locale = this.$q.localStorage.getItem("locale");
+
+      if (darkMode) {
+        this.darkMode = darkMode;
+      }
+
+      if (locale) {
+        this.locale = locale;
+      }
 
       try {
         await this.GET_ACCOUNT();
@@ -76,7 +87,6 @@
           this.auth = true;
         }
       }
-      this.$q.dark.set(false);
     },
     data () {
       return {
@@ -97,8 +107,9 @@
           return this.$q.dark.isActive;
         },
 
-        set () {
-          this.$q.dark.toggle();
+        set (value) {
+          this.$q.localStorage.set("darkMode", value);
+          this.$q.dark.set(value);
         }
       },
 
@@ -107,8 +118,9 @@
           return this.locales.find(locale => this.$i18n.locale === locale.value);
         },
 
-        set ({ value }) {
-          this.$i18n.locale = value;
+        set (value) {
+          this.$q.localStorage.set("locale", value);
+          this.$i18n.locale = value.value;
         }
       },
 

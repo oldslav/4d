@@ -6,8 +6,6 @@
     square
     position="right"
     maximized
-    transition-show="fade"
-    transition-hide="fade"
     @toggleModal="(value) => $emit('input', value)"
   )
     q-card.auth-modal__card

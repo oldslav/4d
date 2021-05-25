@@ -8,7 +8,7 @@
     :maximized="maximized"
     transition-show="fade"
     transition-hide="fade"
-    @input="(value) => $emit('toggleModal', value)"
+    @input="toggleModal"
   )
     slot
 </template>
@@ -23,11 +23,11 @@
       },
       fullHeight: {
         type: Boolean,
-        defailt: false
+        default: false
       },
       square: {
         type: Boolean,
-        defailt: false
+        default: false
       },
       position: {
         type: String,
@@ -35,15 +35,20 @@
       },
       maximized: {
         type: Boolean,
-        defailt: false
+        default: false
       }
     },
     computed: {
       isMobile () {
         return this.$q.platform.is.mobile;
       }
+    },
+    methods: {
+      toggleModal (value) {
+        this.$emit("input", value);
+      }
     }
-  }; 
+  };
 </script>
 
 <style lang="stylus" scoped>

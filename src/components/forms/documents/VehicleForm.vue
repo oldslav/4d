@@ -39,7 +39,7 @@
     .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
       file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
       file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
-    div.text-right.q-mt-md(v-show="isChanged")
+    div.text-right.q-mt-md(v-show="isChanged && !unmanaged")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
 </template>
@@ -68,6 +68,10 @@
       backup: {
         type: Object,
         default: () => ({})
+      },
+      unmanaged: {
+        type: Boolean,
+        default: false
       }
     },
     mounted () {
