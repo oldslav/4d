@@ -8,19 +8,20 @@
         q-input(v-model="model.profile_site" label="Сайт")
         q-input(v-model="model.profile_work_time" label="Рабочее время")
       .col-12.col-md-6.text-center
-        q-avatar(size="185px" icon="o_person" color="teal")
+        AvatarUploadable(:src="null" @input="onUploadLogo")
       .col-12
         .text-caption.text-primary-light.q-mb-sm Описание
         q-input(type="textarea" v-model="model.profile_description" outlined)
-    div.text-right.q-gutter-md.q-mt-md(v-if="isChanged")
-      q-btn(flat :label="this.$t('action.cancel')" @click="onCancel()")
-      q-btn(color="primary" :label="this.$t('action.save')" type="submit")
+    div.text-right.q-gutter-md.q-mt-md
+      q-btn(flat :label="this.$t('action.cancel')" @click="onCancel()" :disable="!isChanged")
+      q-btn(color="primary" :label="this.$t('action.save')" type="submit" :disable="!isChanged")
 </template>
 
 <script>
   import { isEqual } from "lodash";
+  import AvatarUploadable from "components/common/AvatarUploadable";
   import { mapGetters, mapActions } from "vuex";
-  import { UPDATE_COMPANY_PROFILE } from "@/store/constants/action-constants";
+  import { UPDATE_COMPANY_LOGO, UPDATE_COMPANY_PROFILE } from "@/store/constants/action-constants";
 
   const defaultModel = () => ({
     profile_address: "",
@@ -34,6 +35,7 @@
 
   export default {
     name: "CompanyForm",
+    components: { AvatarUploadable },
     created () {
       this.assignModel();
     },
@@ -55,25 +57,40 @@
       }
     },
     methods: {
-      ...mapActions("user/company", [UPDATE_COMPANY_PROFILE]),
+      ...mapActions("user/company", [UPDATE_COMPANY_PROFILE, UPDATE_COMPANY_LOGO]),
       assignModel () {
         this.model = Object.assign(defaultModel(), this.getCompanyProfile);
       },
       onCancel () {
         this.assignModel();
       },
-      onSubmit () {
-        return this.UPDATE_COMPANY_PROFILE(this.model)
+      onUploadLogo (image) {
+        return this.UPDATE_COMPANY_LOGO(image)
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Company profile updated"
+              message: this.$t("entity.companyProfile.messages.logoUpdate.success")
             });
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "Update error"
+              message: this.$t("entity.companyProfile.messages.logoUpdate.fail")
+            });
+          });
+      },
+      onSubmit () {
+        return this.UPDATE_COMPANY_PROFILE(this.model)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t("entity.companyProfile.messages.update.success")
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t("entity.companyProfile.messages.update.fail")
             });
           });
       }

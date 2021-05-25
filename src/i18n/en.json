@@ -153,7 +153,19 @@
     },
     "dashboard": "Personal account",
     "profile": "Profile",
-    "companyProfile": "Company profile",
+    "companyProfile": {
+      "title": "Company profile",
+      "messages": {
+        "logoUpdate": {
+          "success": "Company logo updated successfully",
+          "fail": "Company logo failed to update"
+        },
+        "update": {
+          "success": "Company data updated successfully",
+          "fail": "Error while updating company data"
+        }
+      }
+    },
     "documents": {
       "title": "Documents",
       "data": "My documents"

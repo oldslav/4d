@@ -63,22 +63,13 @@
           .col-xs-12.col-sm-6.column.flex.items-center.justify-center(
             :class="isMobile ? 'mobile-avatar' : ''"
           )
-            q-avatar(size="10rem")
-              q-file(
-                :value="avatarImage"
-                accept="image/*"
-                @input="onImageUpload"
-              )
-                img.avatar-img.full-width.full-height(
-                  :src="avatarUrl"
-                )
+            AvatarUploadable(:src="avatarUrl" @input="onImageUpload")
 
-                
         q-separator.q-my-lg
         .email-block.row
           .col
             div(v-if="isMobile")
-              | {{ $t('user.profile.mainForm.email') }}
+              | {{ $t("user.profile.mainForm.email") }}
             q-input(
               v-else
               v-model="email"
@@ -87,12 +78,12 @@
             )
           .col.flex.items-center.justify-end
             router-link(:to="{ name: 'change-email' }")
-              | {{ $t('user.profile.mainForm.change') }}
+              | {{ $t("user.profile.mainForm.change") }}
         q-separator.q-my-lg
         .password-block.row
           .col
             div(v-if="isMobile")
-              | {{ $t('user.profile.mainForm.password') }}
+              | {{ $t("user.profile.mainForm.password") }}
             q-input(
               v-else
               value="***************"
@@ -101,7 +92,7 @@
             )
           .col.flex.items-center.justify-end
             router-link(:to="{ name: 'change-password' }")
-              | {{ $t('user.profile.mainForm.change') }}
+              | {{ $t("user.profile.mainForm.change") }}
         q-separator.q-mt-lg
         .contacts-block.row
           .col-xs-12(v-if="isMobile")
@@ -120,7 +111,7 @@
               )
           .col(v-else)
             h5.q-my-lg
-              | {{ $t('user.profile.mainForm.contacts') }}
+              | {{ $t("user.profile.mainForm.contacts") }}
             q-input(
               v-model="phone"
               mask="# (###) ### - ####"
@@ -150,6 +141,7 @@
   import ChangePasswordModal from "components/profile/ChangePasswordModal";
   import BaseInput from "components/common/BaseInput";
   import BaseModal from "components/common/BaseModal";
+  import AvatarUploadable from "components/common/AvatarUploadable";
   import { mapActions, mapState } from "vuex";
   import { GET_ACCOUNT, UPDATE_USER_PROFILE, UPDATE_USER_PROFILE_AVATAR } from "@/store/constants/action-constants";
 
@@ -159,12 +151,12 @@
       BaseInput,
       BaseModal,
       ChangeEmailModal,
-      ChangePasswordModal
+      ChangePasswordModal,
+      AvatarUploadable
     },
     data () {
       return {
-        isFormChanged: false,
-        avatarImage: null
+        isFormChanged: false
       };
     },
     computed: {
@@ -238,11 +230,10 @@
       avatarUrl () {
         if (this.profileForm.avatarUrl) {
           return this.profileForm.avatarUrl;
-        }
-        else if (this.account.avatar) {
+        } else if (this.account.avatar) {
           return `${ process.env.SERVER_API_HOST }${ this.account.avatar }`;
         }
-        return require("@/assets/svg/avatar-placeholder.svg");
+        return null;
       },
       validateNames () {
         return [
@@ -342,7 +333,7 @@
         reader.readAsDataURL(image);
       },
       checkFormChange (value, defaultValue) {
-        if (!this.isFormChanged && value !== defaultValue){
+        if (!this.isFormChanged && value !== defaultValue) {
           this.isFormChanged = true;
         } else if (this.isFormChanged && value === defaultValue) {
           this.isFormChanged = false;
@@ -353,6 +344,6 @@
 </script>
 
 <style lang="stylus" scoped>
-::v-deep .q-item
-  padding: 0
+  ::v-deep .q-item
+    padding: 0
 </style>

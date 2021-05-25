@@ -44,7 +44,7 @@
             show: this.isUser
           },
           {
-            label: this.$t("entity.companyProfile"),
+            label: this.$t("entity.companyProfile.title"),
             action: { name: "user-company" },
             icon: "o_business_center",
             show: this.isJuristic

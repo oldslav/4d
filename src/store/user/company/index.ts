@@ -1,11 +1,16 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import { SET_COMPANY_BANK, SET_COMPANY_PROFILE, SET_COMPANY_CARD } from "src/store/constants/mutation-constants";
+import {
+  SET_COMPANY_BANK,
+  SET_COMPANY_PROFILE,
+  SET_COMPANY_CARD,
+  SET_COMPANY_LOGO
+} from "src/store/constants/mutation-constants";
 import { ICompanyState } from "src/store/types/user/company";
 import { IRootState } from "src/store/types/root";
 import {
   GET_COMPANY,
   UPDATE_COMPANY_BANK,
-  UPDATE_COMPANY_CARD,
+  UPDATE_COMPANY_CARD, UPDATE_COMPANY_LOGO,
   UPDATE_COMPANY_PROFILE
 } from "src/store/constants/action-constants";
 import { UserCompanyService } from "src/api/user/company";
@@ -55,6 +60,9 @@ const mutations: MutationTree<ICompanyState> = {
   },
   [SET_COMPANY_BANK] (state, payload) {
     state.bankDetails = payload;
+  },
+  [SET_COMPANY_LOGO] (state, payload) {
+    state.profile.profile_logo = payload;
   }
 };
 
@@ -69,6 +77,14 @@ const actions: ActionTree<ICompanyState, IRootState> = {
     return UserCompanyService.updateCompanyProfile(payload)
       .then(() => {
         // set profile
+      });
+  },
+  [UPDATE_COMPANY_LOGO] ({ commit }, payload) {
+    const data = new FormData();
+    data.append("file", payload);
+    return UserCompanyService.updateCompanyLogo(data)
+      .then(() => {
+        // set logo
       });
   },
   [UPDATE_COMPANY_BANK] ({ commit }, payload) {
