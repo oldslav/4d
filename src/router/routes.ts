@@ -171,7 +171,7 @@ const routes: RouteConfig[] = [
             path: "ideas",
             name: "user-tickets-ideas",
             components: {
-              default: (): Promise<any> => import("pages/tickets/Ideas.vue")
+              default: (): Promise<any> => import("pages/tickets/UserTicketsIdeas.vue")
             },
             meta: {
               toolbar: true,

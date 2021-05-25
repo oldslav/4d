@@ -26,7 +26,7 @@
           q-td(key="price" :props="props" @click="expandRow(props)")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).fromNow() }}
+            | {{ props.row.created | fromNow }}
           q-td(key="status" :props="props" @click="expandRow(props)")
             | {{ props.row.status.description }}
             BaseStatus(:value="props.row.status.id")
