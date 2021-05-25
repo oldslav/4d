@@ -158,6 +158,4 @@
 </script>
 
 <style lang="stylus" scoped>
-.modal-container
-  min-width: 35vw
 </style>

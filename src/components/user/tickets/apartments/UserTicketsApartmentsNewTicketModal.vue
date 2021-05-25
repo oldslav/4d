@@ -1,9 +1,8 @@
 <template lang="pug">
-  q-dialog(
+  BaseModal(
     :value="value"
-    @hide="closeModal"
-    transition-show="fade"
-    transition-hide="fade"
+    position="standard"
+    @input="toggleModal"
   )
     q-card.full-width
       q-stepper(
@@ -185,8 +184,8 @@
         this.$emit("input", false);
       },
 
-      updateModal () {
-        this.$emit("update");
+      toggleModal (value) {
+        this.$emit("input", value);
       },
 
       async createLivingTicket () {

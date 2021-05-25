@@ -5,7 +5,7 @@
     .text-subtitle.text-center.q-px-lg
       | {{ $t("user.tickets.empty.subtitle1") }}
       router-link.text-primary(to="/")
-        | {{ $t("entity.services") }}
+        | {{ $t("entity.services.title") }}
       | {{ $t("user.tickets.empty.subtitle2") }}
     q-img.tickets-empty__image.q-mt-xl(src="@/assets/svg/empty-placeholder.svg")
 </template>

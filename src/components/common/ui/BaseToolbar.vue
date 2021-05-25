@@ -6,7 +6,7 @@
         q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')").col
         q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')").col
         q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')").col
-        q-route-tab(:to="{ name: 'error-page' }" name="error-page" :label="$t('entity.services')").col
+        q-route-tab(:to="{ name: 'services' }" name="services" :label="$t('entity.services.title')").col
 
     template(v-else)
       BaseTabs(v-model="tab" :dense="false")
@@ -14,7 +14,7 @@
         q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')")
         q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')")
         q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')")
-        q-route-tab(:to="{ name: 'error-page' }" name="error-page" :label="$t('entity.services')")
+        q-route-tab(:to="{ name: 'services' }" name="services" :label="$t('entity.services.title')")
       q-space
       q-btn(round dense icon="o_account_circle" text-color="primary")
         q-menu
@@ -59,8 +59,9 @@
           return this.$q.dark.isActive;
         },
 
-        set () {
-          this.$q.dark.toggle();
+        set (value) {
+          this.$q.localStorage.set("darkMode", value);
+          this.$q.dark.set(value);
         }
       },
 
@@ -69,8 +70,9 @@
           return this.locales.find(locale => this.$i18n.locale === locale.value);
         },
 
-        set ({ value }) {
-          this.$i18n.locale = value;
+        set (value) {
+          this.$q.localStorage.set("locale", value);
+          this.$i18n.locale = value.value;
         }
       },
 
