@@ -2,7 +2,7 @@
   q-page.documents.q-pa-lg.column.q-gutter-y-lg
     q-card
       q-card-section.q-pa-lg
-        company-form
+        CompanyForm
 </template>
 
 <script>
