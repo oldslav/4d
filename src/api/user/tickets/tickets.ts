@@ -1,17 +1,17 @@
-import { PaginationOutput, PaginationParams, Service } from "src/api/common";
+import { PaginationOutput, Service } from "src/api/common";
 import { AxiosPromise } from "axios";
 
-interface TicketsRequestFilters {
-  statusId: Array<number>;
-  dateStart: Date;
-  dateEnd: Date;
-}
+// interface TicketsRequestFilters {
+//   statusId: Array<number>;
+//   dateStart: Date;
+//   dateEnd: Date;
+// }
 
-interface TicketsQuery extends PaginationParams {
-  filters: Partial<TicketsRequestFilters>;
-  sort: string;
-  order: string;
-}
+// interface TicketsQuery extends PaginationParams {
+//   filters: Partial<TicketsRequestFilters>;
+//   sort: string;
+//   order: string;
+// }
 
 interface TicketResponse {
 
@@ -36,5 +36,9 @@ export class TicketsService extends Service {
   
   public static deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
+  }
+  
+  public static getTicketsParking (params: unknown): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/services/parking/rent/request", { params });
   }
 }

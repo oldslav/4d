@@ -178,12 +178,131 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               content: true
             }
+          },
+          {
+            path: "parking",
+            name: "user-tickets-parking",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsParking.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
           }
         ]
       }
     ]
   },
-
+  {
+    path: "/data",
+    name: "data",
+    components: {
+      default: (): Promise<any> => import("pages/Services.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
+    },
+    meta: {
+      asideLeft: true,
+      toolbar: true,
+      asideRight: false,
+      content: true
+    }
+  },
+  {
+    path: "/services",
+    name: "services",
+    components: {
+      default: { render: (c) => c("router-view") }, // STUB
+      asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
+    },
+    meta: {
+      asideLeft: true,
+      toolbar: true,
+      asideRight: false,
+      content: true
+    },
+    children: [
+      {
+        path: "living",
+        name: "services-living",
+        components: {
+          default: (): Promise<any> => import("pages/Services.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "commerce",
+        name: "services-commerce",
+        components: {
+          default: (): Promise<any> => import("pages/Services.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "parking",
+        name: "services-parking",
+        components: {
+          default: (): Promise<any> => import("components/services/parking/ServiceParking.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "warehouse",
+        name: "services-warehouse",
+        components: {
+          default: (): Promise<any> => import("pages/Services.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "ideas",
+        name: "services-ideas",
+        components: {
+          default: (): Promise<any> => import("pages/Services.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      },
+      {
+        path: "vacancies",
+        name: "services-vacancies",
+        components: {
+          default: (): Promise<any> => import("pages/Services.vue")
+        },
+        meta: {
+          asideLeft: true,
+          toolbar: true,
+          asideRight: false,
+          content: true
+        }
+      }
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
