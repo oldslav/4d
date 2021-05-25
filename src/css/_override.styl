@@ -67,6 +67,8 @@
 .bg-secondary-light
   background $background-secondary
 
+.modal-container
+  min-width: 40vw
 
 .mobile
   .q-toolbar
@@ -93,6 +95,9 @@
 
 .body
   &--light
+    .bg-white
+      background: $illustration-white !important
+
     .error
       @extend .bg-secondary-light
 
@@ -107,6 +112,9 @@
       background: $background-secondary
 
   &--dark
+    .bg-white
+      background: $dark-secondary !important
+
     .q-header, .q-drawer, .q-footer
       background: $dark-secondary
 

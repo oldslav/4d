@@ -1,6 +1,6 @@
 import { ActionTree, Module, MutationTree } from "vuex";
 import { IRootState } from "src/store/types/root";
-import userTickets from "src/store/user/tickets";
+import tickets from "src/store/user/tickets";
 import neighbors from "src/store/user/neighbors";
 import documents from "src/store/user/documents";
 import vehicles from "src/store/user/vehicles";
@@ -57,7 +57,7 @@ const user: Module<IUserState, IRootState> = {
   mutations,
   actions,
   modules: {
-    userTickets,
+    tickets,
     documents,
     vehicles,
     neighbors,

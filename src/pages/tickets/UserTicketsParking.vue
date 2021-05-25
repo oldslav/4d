@@ -55,13 +55,11 @@
                 :done="props.row.status.id > 1"
                 :name="1"
               )
-                UserTicketsApartmentsStepReceived
               q-step(
                 title="В работе"
                 :done="props.row.status.id > 2"
                 :name="2"
               )
-                UserTicketsApartmentsStepApproved
               q-step(
                 title="Действие договора"
                 :done="props.row.status.id > 3"
@@ -78,23 +76,15 @@
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
-  import BaseStatus from "components/common/BaseStatus";
-  import BaseTable from "components/common/BaseTable";
-  import UserTicketsApartmentsNewTicketModal
-    from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
-  import UserTicketsApartmentsStepDraft from "components/user/tickets/apartments/UserTicketsApartmentsStepDraft";
-  import UserTicketsApartmentsStepReceived from "components/user/tickets/apartments/UserTicketsApartmentsStepReceived";
-  import { DELETE_USER_TICKET_LIVING, GET_USER_TICKETS_LIVING } from "../../store/constants/action-constants";
+  import BaseTable from "../../components/common/BaseTable";
+  import {
+    DELETE_USER_TICKET_PARKING,
+    GET_USER_TICKETS_PARKING
+  } from "../../store/constants/action-constants";
 
   export default {
-    name: "ApartmentRent",
-    components: {
-      UserTicketsApartmentsStepReceived,
-      UserTicketsApartmentsStepDraft,
-      BaseStatus,
-      UserTicketsApartmentsNewTicketModal,
-      BaseTable
-    },
+    name: "UserTicketsParking",
+    components: { BaseTable },
     async created () {
       await this.getUserTickets();
     },
@@ -142,45 +132,18 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/living", {
+      ...mapState("user/tickets/parking", {
         data: state => state.data
-        // data: () => ({
-        //   items: [
-        //     {
-        //       apartment: {
-        //         address: "Address 1",
-        //         number: "1",
-        //         price: 3000,
-        //         created: new Date("2020.11.12"),
-        //         status: 5
-        //       }
-        //     },
-        //     {
-        //       apartment: {
-        //         address: "Address 2",
-        //         number: "2",
-        //         price: 55000,
-        //         created: new Date("2021.1.1"),
-        //         status: 3
-        //       }
-        //     }
-        //   ],
-        //   pagination: {
-        //     page: 1,
-        //     rowsPerPage: 1,
-        //     rowsNumber: 2
-        //   }
-        // })
       }),
 
       isLoading () {
-        return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKETS_LIVING }`];
+        return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKETS_PARKING }`];
       }
     },
     methods: {
-      ...mapActions("user/tickets/living", {
-        getUserTickets: GET_USER_TICKETS_LIVING,
-        deleteUserTicket: DELETE_USER_TICKET_LIVING
+      ...mapActions("user/tickets/parking", {
+        getUserTickets: GET_USER_TICKETS_PARKING,
+        deleteUserTicket: DELETE_USER_TICKET_PARKING
       }),
 
       openDetails (data) {
@@ -207,6 +170,6 @@
   };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 </style>

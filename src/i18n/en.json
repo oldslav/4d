@@ -13,8 +13,8 @@
     "error": {
       "notFound": {
         "title": "Page not found",
-        "topSub": "Ищете что-то интересное на нашем сайте?",
-        "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
+        "topSub": "Looking for something interesting?",
+        "bottomSub": "Unfortunately, the page you are requesting does not exist…"
       },
       "validation": {
         "required": "This field is required",
@@ -31,24 +31,24 @@
     },
     "register": {
       "title": "Registration",
-      "subtitle": "Стань частью города Иннополис и меняй его вместе с нами",
+      "subtitle": "Become a part of the Innopolis city and change it with us",
       "haveAccount": "Already have an account?",
       "chooseProfile": "Choose user profile",
       "consent": {
-        "byHitting": "Нажимая кнопку “Зарегистрироваться”, я принимаю условия ",
-        "userConsent": "Пользовательского соглашения ",
-        "allow": "и даю согласие на ",
-        "dataProcessing": "обработку персональных данных "
+        "byHitting": "By clicking the \"Register\" button, I accept the terms and conditions ",
+        "userConsent": "User agreement ",
+        "allow": "and I give my consent to ",
+        "dataProcessing": "processing of personal data "
       },
       "messages": {
-        "success": "На ваш почтовый ящик выслано письмо с подтверждением",
-        "fail": "При регистрации произошла ошибка"
+        "success": "A confirmation email has been sent to your mailbox",
+        "fail": "An error occurred during registration"
       }
     }
   },
   "user": {
     "messages": {
-      "apartmentNotSelected": "Адрес появится после выбора квартиры"
+      "apartmentNotSelected": "Address will appear after the apartment selection"
     },
     "tickets": {
       "actions": {
@@ -57,9 +57,9 @@
         "cancel": "Cancel ticket"
       },
       "empty": {
-        "title": "У вас пока нет ни одной заявки",
-        "subtitle1": "Вы можете перейти в раздел ",
-        "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
+        "title": "You don't have any applications yet",
+        "subtitle1": "You can go to the section ",
+        "subtitle2": " and get acquainted with the opportunities and offers of Innopolis"
       }
     },
     "firstName": "Firstname",
@@ -69,8 +69,8 @@
     "companyName": "Company name",
     "password": "Password",
     "confirmPassword": "Confirm password",
-    "individual": "Физическое лицо",
-    "legalEntity": "Юридическое лицо",
+    "individual": "Natural person",
+    "legalEntity": "Legal entity",
     "profile": {
       "mainForm": {
         "nameSection": "User name",
@@ -92,7 +92,7 @@
       "changeEmailModal": {
         "title": "Change email",
         "email": "Email",
-        "message": "После сохранения на новый адрес будет отправлено письмо для подтверждения электронной почты",
+        "message": "After saving, a confirmation email will be sent to the new address.",
         "save": "Save"
       }
     }
@@ -109,7 +109,48 @@
     "create": "Create"
   },
   "entity": {
-    "services": "Services",
+    "services": {
+      "title": "Services",
+      "living": "Residential real estate",
+      "commerce": "Commercial real estate",
+      "parking": {
+        "title": "Parking lots",
+        "types": {
+          "common": "Parking",
+          "social": "Social parking",
+          "guest": "Guest parking"
+        },
+        "rentTypes": {
+          "title": "Rent types",
+          "description": "Choose one of the suggested rental types. Only the frequency of payment for the service depends on the type of rental.",
+          "short": {
+            "title": "1 month rent",
+            "price": {
+              "title": "1 500 rubles"
+            }
+          },
+          "mid": {
+            "title": "6 months rent",
+            "description": "The payment is made once in 6 months",
+            "price": {
+              "title": "7 200 rubles",
+              "description": "or 1 200 rubles per month"
+            }
+          },
+          "long": {
+            "title": "11 months rent",
+            "description": "The payment is made once in 11 months",
+            "price": {
+              "title": "11 000 rubles",
+              "description": "or 1 000 rubles per month"
+            }
+          }
+        }
+      },
+      "warehouse": "Warehouse",
+      "ideas": "Ideas and suggestions",
+      "vacancies": "Jobs"
+    },
     "dashboard": "Personal account",
     "profile": "Profile",
     "companyProfile": "Company profile",
@@ -118,27 +159,28 @@
       "data": "My documents"
     },
     "contacts": {
-      "title": "Контакты",
-      "phone": "Телефон",
+      "title": "Contacts",
+      "phone": "Phone",
       "telegram": "Telegram"
     },
     "files": {
-      "passportCopy": "Скан-копия паспорта",
-      "snilsCopy": "Скан-копия СНИЛС",
-      "innCopy": "Скан-копия ИНН",
-      "workCertificate": "Справка с места работы",
-      "birthCertificate": "Скан-копия свидетельства о рождении",
-      "marriageCertificate": "Скан-копия свидетельства о браке",
-      "registrationCopy": "Скан-копия прописки",
-      "sts": "Свидетельство о регистрации ТС",
-      "pts": "Паспорт ТС",
-      "personalAgreement": "Согласие на обработку персональных данных",
-      "employerPetition": "Ходатайство от работодателя"
+      "passportCopy": "Passport scan",
+      "snilsCopy": "SNILS scan",
+      "innCopy": "INN scan",
+      "workCertificate": "Employment certificate",
+      "birthCertificate": "Birth certificate scan",
+      "marriageCertificate": "Marriage certificate scan",
+      "registrationCopy": "Residence permit scan",
+      "sts": "Vehicle registration certificate scan",
+      "pts": "Vehicle passport scan",
+      "personalAgreement": "Consent to the processing of personal data",
+      "employerPetition": "Application from the employer"
     },
     "tickets": {
       "title": "Tickets",
       "apartments": "Apartment rent",
-      "ideas": "Ideas and suggestions"
+      "ideas": "Ideas and suggestions",
+      "parking": "Parking rent"
     },
     "bills": "Bills",
     "main": "Main",
@@ -150,45 +192,45 @@
     "email": "E-mail / Login",
     "password": "Password",
     "vehicles": {
-      "title": "Автомобили",
-      "data": "Данные об автомобилях",
-      "type": "Тип",
-      "brand": "Марка",
-      "model": "Модель",
-      "plates": "Номер",
+      "title": "Vehicles",
+      "data": "Vehicles data",
+      "type": "Type",
+      "brand": "Brand",
+      "model": "Model",
+      "plates": "Plate number",
       "messages": {
         "create": {
-          "success": "Автомобиль успешно создан",
-          "fail": "При создании автомобиля произошла ошибка"
+          "success": "Vehicle has been created",
+          "fail": "An error occurred during vehicle creation"
         },
         "update": {
-          "success": "Автомобиль успешно обновлен",
-          "fail": "При обновлении данных об автомобиле произошла ошибка"
+          "success": "Vehicle has been updated",
+          "fail": "An error occurred during vehicle update"
         },
         "delete": {
-          "success": "Автомобиль успешно удален",
-          "fail": "При удалении данных об автомобиле произошла ошибка"
+          "success": "Vehicle has been deleted",
+          "fail": "An error occurred during vehicle deletion"
         }
       }
     },
     "neighbors": {
-      "title": "Родственники",
-      "child": "Ребенок",
-      "spouse": "Супруг (а)",
-      "data": "Данные о семье",
+      "title": "Relatives",
+      "child": "Child",
+      "spouse": "Spouse (а)",
+      "data": "Relatives data",
       "messages": {
         "create": {
-          "success": "Родственник успешно создан",
-          "fail": "При создании родственника произошла ошибка"
+          "success": "Relative has been created",
+          "fail": "An error occurred during relative creation"
         },
         "update": {
-          "success": "Данные о родственнике успешно обновлены",
-          "fail": "При обновлении данных о родственнике произошла ошибка"
+          "success": "Relative has been updated",
+          "fail": "An error occurred during relative update"
         },
         "delete": {
-          "prompt": "Вы уверены, что хотите удалить данные об этом родственнике?",
-          "success": "Данные о родственнике успешно удалены",
-          "fail": "При удалении данных о родственнике произошла ошибка"
+          "prompt": "Are you sure you want to delete the data about this relative?",
+          "success": "Relative has been deleted",
+          "fail": "An error occurred during relative deletion"
         }
       }
     }
