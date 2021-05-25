@@ -1,10 +1,10 @@
 <template lang="pug">
-  q-form(@submit="onSubmit()")
+  q-form(@submit="onSubmit()" greedy)
     .row.q-col-gutter-md
       .col-12.col-md-6
-        q-input(v-model="model.profile_name" label="Название")
+        q-input(v-model="model.profile_name" label="Название" :rules="fieldRequired")
         q-input(v-model="model.profile_address" label="Адрес")
-        q-input(v-model="model.profile_phone" label="Телефон")
+        q-input(v-model="model.profile_phone" label="Телефон" :rules="fieldRequired")
         q-input(v-model="model.profile_site" label="Сайт")
         q-input(v-model="model.profile_work_time" label="Рабочее время")
       .col-12.col-md-6.text-center
@@ -44,6 +44,9 @@
     },
     computed: {
       ...mapGetters("user/company", ["getCompanyProfile"]),
+      fieldRequired () {
+        return [val => !!val || this.$t("common.error.validation.required")];
+      },
       avatarUrl () {
         return require("@/assets/svg/avatar-placeholder.svg");
       },
@@ -60,7 +63,19 @@
         this.assignModel();
       },
       onSubmit () {
-        // return this.UPDATE_COMPANY_PROFILE(this.model);
+        return this.UPDATE_COMPANY_PROFILE(this.model)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: "Company profile updated"
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: "Update error"
+            });
+          });
       }
     },
     watch: {
