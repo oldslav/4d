@@ -192,7 +192,19 @@ const routes: RouteConfig[] = [
             }
           }
         ]
-      }
+      },
+      {
+        path: "company",
+        name: "user-company",
+        components: {
+          default: (): Promise<any> => import("pages/UserCompanyProfile.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          content: true
+        }
+      },
     ]
   },
   {
