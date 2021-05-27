@@ -24,23 +24,23 @@
             .flex.row.q-pa-md
               .col-xs-12.col-md-4.row.q-pa-sm
                 .title
-                  | Номер договора
+                  | {{ $t("user.bills.contractNumber") }}
                 | {{ props.row.contractNumber }}
               .col-xs-12.col-md-4.q-pa-sm
                 .row.justify-between
                   .title
-                    | Сумма ежемесячной аренды
+                    | {{ $t("user.bills.monthlyPrice") }}
                   | {{ props.row.monthlyPrice }}
                 .row.justify-between
                   .title
-                    | Сумма обеспечительного платежа
+                    | {{ $t("user.bills.depositPrice") }}
                   | {{ props.row.secondPrice }}
               .col-xs-12.col-md-4.column.q-pa-sm
                 .title
-                  | Итоговая сумма
+                    | {{ $t("user.bills.totalPrice") }}
                 .text-weight-bold
                   | {{ props.row.totalPrice }}
-                q-btn.q-mt-lg(color="primary" label="Оплатить")
+                q-btn.q-mt-lg(color="primary" :label="$t('action.pay')")
     q-inner-loading(v-else showing)
 </template>
 
