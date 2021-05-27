@@ -187,7 +187,7 @@
       "snilsCopy": "SNILS scan",
       "innCopy": "INN scan",
       "workCertificate": "Employment certificate",
-      "birthCertificate": "Birth certificate scan",
+      "birthCertificate": "Birth certificater scan",
       "marriageCertificate": "Marriage certificate scan",
       "registrationCopy": "Residence permit scan",
       "sts": "Vehicle registration certificate scan",
@@ -205,7 +205,62 @@
     "main": "Main",
     "maps": "Maps",
     "data": "Data",
-    "about": "About",
+    "about": {
+      "title": "About",
+      "toMap": "Go to map",
+      "model": {
+        "title": "Digital model of the city of Innopolis",
+        "caption": "A platform aimed at automating tasks in the activities of local governments and organizations that manage urban facilities, as well as creating effective interaction with the residents of Innopolis. The platform provides storage, processing and visualization of data about urban infrastructure objects and provides statistical information about the current state of the city."
+      },
+      "inno": {
+        "title": "Innopolis",
+        "caption": "The first city built in Russia in the 21st century, the infrastructure of which is created from scratch in accordance with the principles of «Smart City». Innopolis aims to make a qualitative change in the situation with a shortage of IT-specialists in Russia. Innopolis is one of the pilot cities selected for integration of solutions in the direction of “Smart city”.",
+        "people": "people are constantly in the city",
+        "companies": "companies registered",
+        "events": "major events are held annually"
+      },
+      "sections": {
+        "title": "Sections",
+        "estate": "Estate Object",
+        "transport": "Transport Infrastructure",
+        "landscape": "Urban Landscaping",
+        "lighting": "Urban Lighting",
+        "tourism": "Tourism Infrastructure",
+        "ideas": "Ideas and Propositions",
+        "planning": "Urban Planning",
+        "engineering": "Engineering and Municipal Infrastructure",
+        "environment": "Environment Conditions",
+        "safety": "The Safety of the City"
+      },
+      "service": {
+        "title": "Services for residents and guests of the city",
+        "subtitle": "Services are available for registered users only",
+        "estate": {
+          "title": "Estate object",
+          "caption": "Estate object service allows you to rent or buy an apartment in residential complexes in Innopolis. You can use it to select the apartment you are interested in, view the necessary information about the room, sign a contract and pay for the apartment."
+        },
+        "commercialEstate": {
+          "title": "Commercial Real Estate",
+          "caption": "With the help of the commercial real estate service, you can rent non-residential premises, namely: choose the room you are interested in, get detailed information about it and the terms of the lease, sign a contract and start a business in Innopolis."
+        },
+        "parking": {
+          "title": "Inno-Parking",
+          "caption": "With the help of the Parking space rental service, you can choose a Parking space for residential complexes in the city of Innopolis, view information about the space and conditions of Parking rental, as well as sign a contract and pay for the lease."
+        },
+        "tires": {
+          "title": "Tires and Bicycles Storage",
+          "caption": "The tire and Bicycle storage service offers you to book your storage space, view information about the space, storage capabilities of your equipment, and no longer worry about the safety of your tires and bicycles."
+        },
+        "ideas": {
+          "title": "Ideas and Propositions",
+          "caption": "The ideas and suggestions service provides an opportunity to share your ideas and suggestions for improving the city, as well as to get acquainted with current projects of the city. In addition, all residents can evaluate ideas by viewing them on the interactive map of Innopolis."
+        },
+        "jobs": {
+          "title": "City Jobs",
+          "caption": "The city vacancies service helps non-IT professionals find jobs, ensuring interaction between the service operator, job seekers and employers. Here you can view the Bank of vacancies, post a resume or find a job."
+        }
+      }
+    },
     "design": "Design code",
     "playground": "Playground",
     "email": "E-mail / Login",
