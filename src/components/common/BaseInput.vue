@@ -1,9 +1,9 @@
 <template lang="pug">
   q-input(
     ref="input"
-    :value="value"
-    @input="onInput"
+    v-model="computedValue"
     color="primary"
+    :filled="filled"
     :type="type"
     :label="label"
     :clearable="clearable"
@@ -29,6 +29,10 @@
         default: null
       },
       append: {
+        type: Boolean,
+        default: null
+      },
+      filled: {
         type: Boolean,
         default: null
       },
@@ -73,12 +77,33 @@
         default: false
       }
     },
-    methods: {
-      onInput (value) {
-        this.$emit("input", value);
-        if (this.rules.length > 0) this.$refs.input.validate();
+    data () {
+      return {
+        innerValue: null
+      };
+    },
+    computed: {
+      computedValue: {
+        get () {
+          if (this.innerValue) {
+            return this.innerValue;
+          } else {
+            return this.value;
+          }
+        },
+
+        set (value) {
+          this.innerValue = value;
+          this.$emit("input", value);
+        }
       }
     }
+    // methods: {
+    //   onInput (value) {
+    //     this.$emit("input", value);
+    //     if (this.rules.length > 0) this.$refs.input.validate();
+    //   }
+    // }
   };
 </script>
 

@@ -59,22 +59,6 @@
         innerValue: null
       };
     },
-    computed: {
-      computedValue: {
-        get () {
-          if (this.innerValue) {
-            return this.innerValue;
-          } else {
-            return this.value;
-          }
-        },
-
-        set (value) {
-          this.innerValue = value;
-          this.$emit("input", value);
-        }
-      }
-    },
     methods: {
       onInput (value) {
         this.innerValue = value;

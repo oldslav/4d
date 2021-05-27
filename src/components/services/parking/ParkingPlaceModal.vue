@@ -11,7 +11,7 @@
         BaseSelect(
           v-model="parkingPlace"
           :options="parkingPlaces"
-          label="Выберите парковочное место"
+          :label="$t('action.select.parking.lot')"
           @input="onParkingPlaceChange"
           outlined
         )

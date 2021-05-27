@@ -24,8 +24,6 @@
             BaseInput(v-model="lastname" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
             BaseInput(v-model="firstname" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
             BaseInput(v-model="patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
-          FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
-          FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -47,56 +45,26 @@
           :name="3"
           icon="schedule"
         )
-          p
-            | {{ $t("entity.services.parking.rentTypes.description") }}
+          .row
+            BaseDatepicker(
+              v-model="period"
+              :options="dateOptions"
+            ).col-12
 
-          q-list
-            q-item(tag="label" v-ripple)
-              q-item-section(avatar)
-                q-radio(v-model="rentOption" val="1" dense)
-              template(v-if="isMobile")
+            q-list.col-12
+              q-item(tag="label" v-ripple)
+                q-item-section(avatar)
+                  q-radio(v-model="isGuestCard" :val="false" dense)
                 q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
-              template(v-else)
-                q-item-section
-                 q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
-                q-item-section(side)
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
+                  q-item-label {{ $t("entity.guestCard.necessary.false") }}
 
-            q-item(tag="label" v-ripple)
-              q-item-section(avatar)
-                q-radio(v-model="rentOption" val="2" dense)
-              template(v-if="isMobile")
+              q-item(tag="label" v-ripple)
+                q-item-section(avatar)
+                  q-radio(v-model="isGuestCard" :val="true" dense)
                 q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.mid.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.mid.description") }}
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.mid.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.mid.price.description") }}
-              template(v-else)
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.mid.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.mid.description") }}
+                  q-item-label {{ $t("entity.guestCard.necessary.true") }}
                 q-item-section(side)
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.mid.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.mid.price.description") }}
-
-            q-item(tag="label" v-ripple)
-              q-item-section(avatar)
-                q-radio(v-model="rentOption" val="3" dense)
-              template(v-if="isMobile")
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.long.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.long.description") }}
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.long.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.long.price.description") }}
-              template(v-else)
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.long.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.long.description") }}
-                q-item-section(side)
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.long.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.long.price.description") }}
+                  q-item-label.text-primary {{ $t("entity.guestCard.price") }}
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
@@ -116,15 +84,18 @@
 </template>
 
 <script>
+  import moment from "moment";
+  import BaseDatepicker from "../../common/BaseDatepicker";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
+  import FormContacts from "../../common/form/FormContacts";
   import VehicleForm from "../../forms/documents/VehicleForm";
   import Vehicles from "../../user/documents/Vehicles";
 
   export default {
-    name: "NewParkingTicket",
-    components: { VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
+    name: "NewGuestParkingTicket",
+    components: { FormContacts, BaseDatepicker, VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
     props: {
       value: {
         type: Boolean,
@@ -158,7 +129,9 @@
           phone: null
         },
         telegram: null,
-        rentOption: null
+        isGuestCard: null,
+        period: null,
+        dateOptions: date => moment(date).diff(moment(), "days") >= 0 && moment(date).diff(moment(), "days") <= 30
       };
     },
     computed: {
@@ -176,6 +149,11 @@
           && !!this.auto;
       },
 
+      isDate () {
+        return !!this.period
+          && this.isGuestCard !== null;
+      },
+
       isUserInfo () {
         return !!this.firstname
           && !!this.lastname
@@ -183,6 +161,8 @@
       }
     },
     methods: {
+      moment,
+
       createParkingTicket () {
         this.updateModal(true);
       },
