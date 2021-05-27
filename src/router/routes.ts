@@ -15,6 +15,17 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/about",
+    name: "about",
+    component: (): Promise<any> => import("pages/About.vue"),
+    meta: {
+      asideLeft: false,
+      toolbar: true,
+      asideRight: false,
+      content: true
+    }
+  },
+  {
     path: "/playground",
     name: "playground",
     redirect: {
@@ -204,7 +215,7 @@ const routes: RouteConfig[] = [
           asideLeft: true,
           content: true
         }
-      },
+      }
     ]
   },
   {

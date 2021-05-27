@@ -7,7 +7,7 @@
       router-link.text-primary(to="/")
         | {{ $t("entity.services.title") }}
       | {{ $t("user.tickets.empty.subtitle2") }}
-    q-img.tickets-empty__image.q-mt-xl(src="@/assets/svg/empty-placeholder.svg")
+    q-img.tickets-empty__image.q-mt-xl(src="@/assets/svg/lady-tag.svg")
 </template>
 
 <script>

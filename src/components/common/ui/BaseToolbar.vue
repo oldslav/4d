@@ -2,7 +2,7 @@
   q-toolbar
     template(v-if="isMobile")
       BaseTabs(v-model="tab" isFullWidth :dense="false")
-        q-route-tab(:to="{ name: 'main' }" name="main" :label="$t('entity.about')").col
+        q-route-tab(:to="{ name: 'about' }" name="main" :label="$t('entity.about.title')").col
         q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')").col
         q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')").col
         q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')").col
@@ -10,7 +10,7 @@
 
     template(v-else)
       BaseTabs(v-model="tab" :dense="false")
-        q-route-tab(:to="{ name: 'main' }" name="main" :label="$t('entity.about')")
+        q-route-tab(:to="{ name: 'about' }" name="main" :label="$t('entity.about.title')")
         q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')")
         q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')")
         q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')")
