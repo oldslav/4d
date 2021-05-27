@@ -26,6 +26,7 @@
             BaseInput(v-model="patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
           FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
           FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
+          FilePicker(v-model="social" :label="$t('entity.files.social')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -47,56 +48,29 @@
           :name="3"
           icon="schedule"
         )
-          p
-            | {{ $t("entity.services.parking.rentTypes.description") }}
+          p {{ $t("entity.socialTypes.title") }}
 
           q-list
             q-item(tag="label" v-ripple)
               q-item-section(avatar)
-                q-radio(v-model="rentOption" val="1" dense)
-              template(v-if="isMobile")
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
-              template(v-else)
-                q-item-section
-                 q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
-                q-item-section(side)
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
-
+                q-radio(v-model="socialType" val="1" dense)
+              q-item-section
+                q-item-label {{ $t("entity.socialTypes.largeFamily") }}
             q-item(tag="label" v-ripple)
               q-item-section(avatar)
-                q-radio(v-model="rentOption" val="2" dense)
-              template(v-if="isMobile")
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.mid.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.mid.description") }}
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.mid.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.mid.price.description") }}
-              template(v-else)
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.mid.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.mid.description") }}
-                q-item-section(side)
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.mid.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.mid.price.description") }}
-
+                q-radio(v-model="socialType" val="2" dense)
+              q-item-section
+                q-item-label {{ $t("entity.socialTypes.disability") }}
             q-item(tag="label" v-ripple)
               q-item-section(avatar)
-                q-radio(v-model="rentOption" val="3" dense)
-              template(v-if="isMobile")
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.long.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.long.description") }}
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.long.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.long.price.description") }}
-              template(v-else)
-                q-item-section
-                  q-item-label {{ $t("entity.services.parking.rentTypes.long.title") }}
-                  q-item-label(caption) {{ $t("entity.services.parking.rentTypes.long.description") }}
-                q-item-section(side)
-                  q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.long.price.title") }}
-                  q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.long.price.description") }}
+                q-radio(v-model="socialType" val="3" dense)
+              q-item-section
+                q-item-label {{ $t("entity.socialTypes.retired") }}
+            q-item(tag="label" v-ripple)
+              q-item-section(avatar)
+                q-radio(v-model="socialType" val="4" dense)
+              q-item-section
+                q-item-label {{ $t("entity.socialTypes.veteran") }}
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
@@ -119,12 +93,13 @@
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
+  import FormContacts from "../../common/form/FormContacts";
   import VehicleForm from "../../forms/documents/VehicleForm";
   import Vehicles from "../../user/documents/Vehicles";
 
   export default {
-    name: "NewParkingTicket",
-    components: { VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
+    name: "NewSocialParkingTicket",
+    components: { FormContacts, VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
     props: {
       value: {
         type: Boolean,
@@ -144,6 +119,7 @@
         patronymic: null,
         passport: null,
         snils: null,
+        social: null,
         auto: {
           type: null,
           brand: null,
@@ -158,7 +134,7 @@
           phone: null
         },
         telegram: null,
-        rentOption: null
+        socialType: null
       };
     },
     computed: {

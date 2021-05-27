@@ -113,9 +113,23 @@
     "submit": "Submit",
     "continue": "Continue",
     "create": "Create",
-    "pay": "Pay"
+    "pay": "Pay",
+    "select": {
+      "building": "Select a building",
+      "parking": {
+        "type": "Select a parking type",
+        "lot": "Select a parking lot"
+      }
+    }
   },
   "entity": {
+    "socialTypes": {
+      "title": "Категория граждан, имеющих право на льготы",
+      "largeFamily": "Large family",
+      "disability": "A person with a disability",
+      "retired": "Retired people",
+      "veteran": "Veteran"
+    },
     "services": {
       "title": "Services",
       "living": "Residential real estate",
@@ -151,12 +165,28 @@
               "title": "11 000 rubles",
               "description": "or 1 000 rubles per month"
             }
+          },
+          "guest": {
+            "title": "Guest visit",
+            "description": "",
+            "price": {
+              "title": "100 rubles per day",
+              "description": ""
+            }
           }
         }
       },
       "warehouse": "Warehouse",
       "ideas": "Ideas and suggestions",
       "vacancies": "Jobs"
+    },
+    "guestCard": {
+      "title": "Guest card",
+      "necessary": {
+        "true": "I need to issue a guest card",
+        "false": "I already have a guest card"
+      },
+      "price": "100 rubles"
     },
     "dashboard": "Personal account",
     "profile": "Profile",
@@ -187,13 +217,14 @@
       "snilsCopy": "SNILS scan",
       "innCopy": "INN scan",
       "workCertificate": "Employment certificate",
-      "birthCertificate": "Birth certificater scan",
+      "birthCertificate": "Birth certificate scan",
       "marriageCertificate": "Marriage certificate scan",
       "registrationCopy": "Residence permit scan",
       "sts": "Vehicle registration certificate scan",
       "pts": "Vehicle passport scan",
       "personalAgreement": "Consent to the processing of personal data",
-      "employerPetition": "Application from the employer"
+      "employerPetition": "Application from the employer",
+      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц"
     },
     "tickets": {
       "title": "Tickets",
