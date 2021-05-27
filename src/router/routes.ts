@@ -204,7 +204,7 @@ const routes: RouteConfig[] = [
           asideLeft: true,
           content: true
         }
-      },
+      }
     ]
   },
   {
