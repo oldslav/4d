@@ -95,6 +95,12 @@
         "message": "After saving, a confirmation email will be sent to the new address.",
         "save": "Save"
       }
+    },
+    "bills": {
+      "contractNumber": "Contract number",
+      "monthlyPrice": "Payment per month",
+      "depositPrice": "Deposit payment",
+      "totalPrice": "Total amount"
     }
   },
   "action": {
@@ -106,7 +112,8 @@
     "delete": "Delete",
     "submit": "Submit",
     "continue": "Continue",
-    "create": "Create"
+    "create": "Create",
+    "pay": "Pay"
   },
   "entity": {
     "services": {

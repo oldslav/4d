@@ -1,5 +1,5 @@
 <template lang="pug">
-  BaseModal(:value="showChangePasswordModal" position="standard" @input="toggleModal")
+  BaseModal(:value="showChangePasswordModal" position="standard")
     q-card.modal-container
       q-form(
         greedy
