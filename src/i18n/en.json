@@ -20,7 +20,8 @@
         "required": "This field is required",
         "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
         "email": "Please enter valid email",
-        "confirmPassword": "Password mismatch"
+        "confirmPassword": "Password mismatch",
+        "letters": "Only letters allowed"
       }
     },
     "theme": "Theme",
