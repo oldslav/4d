@@ -15,6 +15,17 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/about",
+    name: "about",
+    component: (): Promise<any> => import("pages/About.vue"),
+    meta: {
+      asideLeft: false,
+      toolbar: true,
+      asideRight: false,
+      content: true
+    }
+  },
+  {
     path: "/playground",
     name: "playground",
     redirect: {
@@ -194,17 +205,17 @@ const routes: RouteConfig[] = [
         ]
       },
       {
-        path: "company",
-        name: "user-company",
+        path: "bills",
+        name: "user-bills",
         components: {
-          default: (): Promise<any> => import("pages/UserCompanyProfile.vue")
+          default: (): Promise<any> => import("pages/UserBills.vue")
         },
         meta: {
           toolbar: true,
           asideLeft: true,
           content: true
         }
-      },
+      }
     ]
   },
   {
