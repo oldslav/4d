@@ -276,10 +276,12 @@ const routes: RouteConfig[] = [
         path: "parking",
         name: "services-parking",
         components: {
-          default: (): Promise<any> => import("components/services/parking/ServiceParking.vue")
+          default: (): Promise<any> => import("components/services/parking/ServiceParking.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesParking.vue")
         },
         meta: {
           asideLeft: true,
+          asideServices: true,
           toolbar: true,
           asideRight: false,
           content: true
@@ -289,7 +291,7 @@ const routes: RouteConfig[] = [
         path: "warehouse",
         name: "services-warehouse",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/ServiceWarehouse.vue")
         },
         meta: {
           asideLeft: true,

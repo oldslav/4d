@@ -45,7 +45,10 @@
         "success": "A confirmation email has been sent to your mailbox",
         "fail": "An error occurred during registration"
       }
-    }
+    },
+    "rent": "Rent",
+    "guestVisit": "Guest visit",
+    "description": "Description"
   },
   "user": {
     "messages": {
@@ -183,6 +186,7 @@
     },
     "guestCard": {
       "title": "Guest card",
+      "period": "Permanent",
       "necessary": {
         "true": "I need to issue a guest card",
         "false": "I already have a guest card"

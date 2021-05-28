@@ -67,19 +67,19 @@ const mutations: MutationTree<ICompanyState> = {
 };
 
 const actions: ActionTree<ICompanyState, IRootState> = {
-  [GET_COMPANY] ({ commit }) {
+  [GET_COMPANY] () {
     return UserCompanyService.getCompany()
       .then(() => {
         // set state
       });
   },
-  [UPDATE_COMPANY_PROFILE] ({ commit }, payload) {
+  [UPDATE_COMPANY_PROFILE] (_ , payload) {
     return UserCompanyService.updateCompanyProfile(payload)
       .then(() => {
         // set profile
       });
   },
-  [UPDATE_COMPANY_LOGO] ({ commit }, payload) {
+  [UPDATE_COMPANY_LOGO] (_ , payload) {
     const data = new FormData();
     data.append("file", payload);
     return UserCompanyService.updateCompanyLogo(data)
@@ -87,13 +87,13 @@ const actions: ActionTree<ICompanyState, IRootState> = {
         // set logo
       });
   },
-  [UPDATE_COMPANY_BANK] ({ commit }, payload) {
+  [UPDATE_COMPANY_BANK] (_ , payload) {
     return UserCompanyService.updateCompanyBank(payload)
       .then(() => {
         // set bank
       });
   },
-  [UPDATE_COMPANY_CARD] ({ commit }, payload) {
+  [UPDATE_COMPANY_CARD] (_ , payload) {
     return UserCompanyService.updateCompanyCard(payload)
       .then(() => {
         // set card
