@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-list
+  q-list(v-if="!meta.asideServices")
     q-item.q-py-lg.text-subtitle(clickable @click="$router.back()")
       q-item-section.list-item-avatar(avatar)
         q-icon.text-primary(name="arrow_back")
@@ -18,6 +18,8 @@
         q-icon(:name="item.icon")
       q-item-section
         | {{ item.label }}
+
+  router-view(name="asideServices" v-else)
 </template>
 
 <script>
@@ -29,6 +31,10 @@
       ...mapGetters(["getUserRolesNames"]),
       isUser () {
         return this.getUserRolesNames.includes("ROLE_USER");
+      },
+
+      meta () {
+        return this.$route.meta;
       },
 
       items () {

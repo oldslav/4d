@@ -19,7 +19,7 @@ export class UserCompanyService extends Service {
     return this.api.put("/api/v1/account/company/bank_details", payload);
   }
 
-  public static updateCompanyLogo (payload: any): AxiosPromise<any> {
+  public static updateCompanyLogo (payload: unknown): AxiosPromise<any> {
     return this.api.put("/api/v1/account/company/profile/logo", payload);
   }
 }
