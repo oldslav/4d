@@ -63,7 +63,7 @@
           },
           {
             label: this.$t("entity.bills"),
-            action: { name: "playground" },
+            action: { name: "user-bills" },
             icon: "o_article",
             show: this.isUser
           }

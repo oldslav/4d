@@ -1,5 +1,5 @@
 <template lang="pug">
-  BaseModal(:value="showChangeEmailModal" position="standard" @input="toggleModal")
+  BaseModal(:value="showChangeEmailModal" position="standard")
     q-card.modal-container
       q-form(
         greedy

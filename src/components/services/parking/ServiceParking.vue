@@ -1,23 +1,41 @@
 <template lang="pug">
   q-page.q-pa-lg.bg-white
-    BaseSelect(
-      v-model="buildingId"
-      :options="buildings"
-      label="Выберите здание"
-      @input="onBuildingChange"
-      outlined
-    )
+    .q-gutter-md
+      BaseSelect(
+        v-model="rentType"
+        :options="rentTypes"
+        :label="$t('action.select.parking.type')"
+        outlined
+      )
+      BaseSelect(
+        v-model="buildingId"
+        :disable="!rentType"
+        :options="buildings"
+        :label="$t('action.select.building')"
+        @input="onBuildingChange"
+        outlined
+      )
 
     ParkingPlaceModal(
       v-model="isParkingPlaceModal"
       @update="onParkingPlaceChange"
     )
-    NewParkingTicket(
-      v-model="isNewTicketModal"
-      v-if="parkingPlaceId"
-      :parkingPlaceId="parkingPlaceId"
-      @update="onTicketChange"
-    )
+    template(v-if="parkingPlaceId")
+      NewParkingTicket(
+        v-model="isNewTicketModal"
+        :parkingPlaceId="parkingPlaceId"
+        @update="onTicketChange"
+      )
+      NewGuestParkingTicket(
+        v-model="isGuestTicketModal"
+        :parkingPlaceId="parkingPlaceId"
+        @update="onTicketChange"
+      )
+      NewSocialParkingTicket(
+        v-model="isSocialTicketModal"
+        :parkingPlaceId="parkingPlaceId"
+        @update="onTicketChange"
+      )
 </template>
 
 <script>
@@ -27,19 +45,30 @@
   import BaseSelect from "../../common/BaseSelect";
   import FilePicker from "../../common/FilePicker";
   import Vehicles from "../../user/documents/Vehicles";
+  import NewGuestParkingTicket from "./NewGuestParkingTicket";
   import NewParkingTicket from "./NewParkingTicket";
+  import NewSocialParkingTicket from "./NewSocialParkingTicket";
   import ParkingPlaceModal from "./ParkingPlaceModal";
 
   export default {
     name: "ServiceParking",
-    components: { ParkingPlaceModal, NewParkingTicket, ParkingPlacesScheme, Vehicles, FilePicker, BaseInput, BaseModal, BaseSelect },
+    components: { NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, ParkingPlacesScheme, Vehicles, FilePicker, BaseInput, BaseModal, BaseSelect },
     data () {
       return {
         isNewTicketModal: false,
+        isGuestTicketModal: false,
+        isSocialTicketModal: false,
         isParkingPlaceModal: false,
         buildingId: null,
         parkingPlaceId: null,
-        buildings: [1, 2, 3]
+        buildings: [1, 2, 3],
+
+        rentType: null,
+        rentTypes: [
+          "Guest",
+          "Common",
+          "Social"
+        ]
       };
     },
     methods: {
@@ -51,7 +80,14 @@
       onParkingPlaceChange (value) {
         this.parkingPlaceId = value;
         this.isParkingPlaceModal = false;
-        this.isNewTicketModal = Boolean(value);
+
+        if (this.rentType === "Common") {
+          this.isNewTicketModal = Boolean(value);
+        } else if (this.rentType === "Guest") {
+          this.isGuestTicketModal = Boolean(value);
+        } else {
+          this.isSocialTicketModal = Boolean(value);
+        }
       },
 
       onTicketChange (value) {
