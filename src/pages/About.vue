@@ -1,15 +1,15 @@
 <template lang="pug">
   .about.full-width.full-height.bg-white
-    .about__model.row.q-pa-xl
+    .about__model.row.q-py-xl.q-px-md.q-px-md-xl
       .col-12.col-md-6.flex.items-center.justify-center
         img.about__model-image(src="@/assets/svg/lady-tablet.svg")
-      .col-12.col-md-6.q-px-md.flex.justify-center.items-center
+      .col-12.col-md-6.flex.justify-center.items-center
         div
           h1.about__header
             | {{$t("entity.about.model.title")}}
           .about__caption-large
             | {{$t("entity.about.model.caption")}}
-    .about__inno.row.q-pa-xl.q-col-gutter-lg
+    .about__inno.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
       img.about__inno-image(src="@/assets/svg/noon.svg")
       .col-12.col-md-6.flex.items-center.justify-center.z-fab
         div
@@ -19,13 +19,13 @@
             | {{$t("entity.about.inno.caption")}}
       .col-12.col-md-6.flex.items-center.z-fab
         div.flex.column.justify-between
-          .about__stats(v-for="(stat, index) in innoInfo" :key="index")
-            h2.about__title.q-my-sm
+          .about__stats(v-for="(stat, index) in innoInfo" :key="index").q-mb-md
+            h2.about__title.no-margin
               | {{ stat.amount }}
             .about__caption-small
               | {{ stat.caption }}
             q-separator(v-if="index < innoInfo.length - 1").q-mt-lg
-    .about__sections.relative-position.q-pa-xl
+    .about__sections.relative-position.q-py-xl.q-px-md.q-px-md-xl
       img.about__sections-blob.rotate-180(src="@/assets/svg/blob.svg")
       h2.about__title.z-fab
         | {{$t("entity.about.sections.title")}}
@@ -35,7 +35,7 @@
           q-card-section
             .about__caption-medium.text-weight-bold
               | {{ card.title }}
-    .about__services.relative-position.q-pa-xl
+    .about__services.relative-position.q-py-xl.q-px-md.q-px-md-xl
       img.about__services-blob(src="@/assets/svg/blob.svg")
       img.about__services-image(src="@/assets/svg/big-tablet.svg")
       h2.about__title.z-fab
@@ -50,8 +50,8 @@
               | {{ service.title }}
             .about__caption-medium
               | {{ service.caption }}
-    .about__map.q-pa-xl.flex.items-center.justify-center
-      q-btn(:label="$t('entity.about.toMap')" outline color="primary" @click="goTo('map')").q-px-xl
+    .about__map.q-py-xl.flex.items-center.justify-center.q-px-md
+      q-btn(:label="$t('entity.about.toMap')" outline color="primary" @click="goTo('map')").q-px-lg.text-no-wrap
 </template>
 
 <script>
@@ -189,6 +189,7 @@
 
     &__title {
       font-size 40px
+      line-height 120%
     }
 
     &__model {
@@ -253,50 +254,65 @@
       flex-wrap nowrap
       width 100%
     }
+  }
 
-    @media (max-width: 1400px) {
-      .about__header {
-        font-size 32px
-      }
 
-      .about__title {
-        font-size 24px
-      }
-
-      .about__caption-large {
-        font-size 20px
-      }
-
-      .about__caption-medium {
-        font-size 16px
-      }
+  @media (max-width: 1400px) {
+    .about__header {
+      font-size 32px
     }
 
-    @media (max-width: 900px) {
-      .about__model {
-        min-height unset
-      }
+    .about__services-image {
+      max-width 40%
+    }
 
+    .about__title {
+      font-size 24px
+    }
+
+    .about__caption-large {
+      font-size 20px
+    }
+
+    .about__caption-medium {
+      font-size 16px
+    }
+  }
+
+  @media (max-width: 900px) {
+    .about__model-image {
+      max-width 100%
+    }
+
+    .about__model {
+      min-height unset
+    }
+
+    .about__cards {
+      grid-template-columns: repeat(2, 1fr)
+    }
+
+    .about__services-grid {
+      grid-template-columns repeat(1, 1fr)
+      grid-template-rows repeat(6, 1fr)
+    }
+
+    .about__inno-image {
+      max-width 90%
+    }
+
+    .about__services-blob {
+      max-width 80%
+      right 0
+    }
+
+    .about__services-image {
+      display none
+    }
+
+    @media (max-width: 400px) {
       .about__cards {
-        grid-template-columns: repeat(2, 1fr)
-      }
-
-      .about__services-grid {
-        grid-template-columns repeat(1, 1fr)
-        grid-template-rows repeat(6, 1fr)
-      }
-
-      .about__inno-image {
-        max-width 90%
-      }
-
-      .about__services-blob {
-        max-width 80%
-        right 0
-      }
-
-      .about__services-image {
-        display none
+        grid-template-columns: repeat(1, 1fr)
       }
     }
   }
