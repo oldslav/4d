@@ -39,15 +39,15 @@
 </template>
 
 <script>
-  import BaseSelect from "../../common/BaseSelect";
-  import NewGuestParkingTicket from "./NewGuestParkingTicket";
-  import NewParkingTicket from "./NewParkingTicket";
-  import NewSocialParkingTicket from "./NewSocialParkingTicket";
-  import ParkingPlaceModal from "./ParkingPlaceModal";
+  import BaseSelect from "../../components/common/BaseSelect";
+  import NewGuestParkingTicket from "../../components/services/parking/NewGuestParkingTicket";
+  import NewParkingTicket from "../../components/services/parking/NewParkingTicket";
+  import NewSocialParkingTicket from "../../components/services/parking/NewSocialParkingTicket";
+  import ParkingPlaceModal from "../../components/services/parking/ParkingPlaceModal";
 
   export default {
-    name: "ServiceParking",
-    components: { NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect },
+    name: "ServiceWarehouse",
+    components: { ParkingPlaceModal, BaseSelect, NewParkingTicket, NewGuestParkingTicket, NewSocialParkingTicket },
     data () {
       return {
         isNewTicketModal: false,

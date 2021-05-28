@@ -39,7 +39,7 @@
         q-header(:value="meta.toolbar" elevated)
           transition(name="fade" mode="out-in")
             BaseToolbar
-        q-drawer(:value="meta.asideLeft" side="left" elevated)
+        q-drawer(:value="meta.asideLeft" side="left" :width="400" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideLeft")
         q-drawer(:value="meta.asideRight" side="right" elevated)
