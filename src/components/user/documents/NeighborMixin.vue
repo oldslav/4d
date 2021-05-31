@@ -24,7 +24,8 @@
       return {
         neighbor: { ...this.value },
         nameRules: [
-          val => !!val || this.$t("common.error.validation.required")
+          val => !!val || this.$t("common.error.validation.required"),
+          val => /^[a-zA-Zа-бА-б-]+$/.test(val) || this.$t("common.error.validation.letters")
         ]
       };
     },
