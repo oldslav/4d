@@ -2,11 +2,13 @@
   q-select(
     :value="value"
     color="primary"
-    fill-input
-    use-input
+    :fill-input="fillInput"
+    :loading="loading"
+    :use-input="useInput"
     option-disable="inactive"
-    emit-value
-    map-options
+    :emit-value="emitValue"
+    :map-options="mapOptions"
+    :rules="rules"
     :option-value="prop"
     :option-label="field"
     :options="computedOptions"
@@ -34,8 +36,12 @@
         type: String,
         default: null
       },
+      fillInput: {
+        type: Boolean,
+        default: null
+      },
       value: {
-        type: [Array, String],
+        type: [Array, String, Object],
         default: null
       },
       field: {
@@ -70,8 +76,28 @@
         type: Boolean,
         default: null
       },
+      emitValue: {
+        type: Boolean,
+        default: null
+      },
+      useInput: {
+        type: Boolean,
+        default: null
+      },
+      mapOptions: {
+        type: Boolean,
+        default: null
+      },
       hideSelected: {
         type: Boolean,
+        default: null
+      },
+      loading: {
+        type: Boolean,
+        default: null
+      },
+      rules: {
+        type: Array,
         default: null
       }
     },

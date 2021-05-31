@@ -24,21 +24,36 @@
     padding: 0 16px
 
 
-.text-primary-flat
-  background: $primary-light
-  color: $primary
+.text
+  &-title
+    margin-top: 20px
+    margin-bottom: 20px
 
-  &__bordered
-    @extend .text-primary-flat
-    background: inherit
-    border: 2px solid $primary
+  &-subtitle
+    margin-top: 20px
+    margin-bottom: 20px
 
-  .q-btn
-    &__content
-      text-transform: none
-
-  i
+  &-primary-flat
+    background: $primary-light
     color: $primary
+
+    &__bordered
+      @extend .text-primary-flat
+      background: inherit
+      border: 2px solid $primary
+
+    .q-btn
+      &__content
+        text-transform: none
+
+    i
+      color: $primary
+
+.is-paddingless
+  padding: 0 !important
+
+.text-wrap
+  white-space: pre-wrap
 
 .text-primary-light
   color: $grey
@@ -52,6 +67,20 @@
 .bg-secondary-light
   background $background-secondary
 
+.modal-container
+  min-width: 40vw
+
+.mobile
+  .q-toolbar
+    padding: 0
+
+    .q-tabs
+
+      .q-tab
+        padding: 0 10px
+
+        &__label
+          font-size: 10px
 
 .q-tab
   &__label
@@ -59,14 +88,42 @@
   &__indicator
     background-color: $primary
 
+.q-stepper
+  &__nav
+    display: flex;
+    justify-content: flex-end;
+
+.text-caption
+  font-size: 10px !important
+
 .body
   &--light
+    .bg-white
+      background: $illustration-white !important
+
     .error
       @extend .bg-secondary-light
 
-    .q-header, .q-drawer
+    .q-header, .q-drawer, .q-footer
       background: $background
 
+    .q-tab
+      &__label, &__icon
+        color: $grey
+
+    .q-layout
+      background: $background-secondary
+
   &--dark
-    .q-header, .q-drawer
+    .bg-white
+      background: $dark-secondary !important
+
+    .q-header, .q-drawer, .q-footer
       background: $dark-secondary
+
+    .q-tab
+      &__label
+        color: $primary
+
+    .q-layout
+      background: initial

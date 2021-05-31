@@ -11,7 +11,7 @@ const { configure } = require("quasar/wrappers");
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
-module.exports = configure(function (ctx) {
+module.exports = configure(function () {
   return {
     sourceMap: true,
     // https://quasar.dev/quasar-cli/supporting-ts
@@ -30,7 +30,9 @@ module.exports = configure(function (ctx) {
     boot: [
       "i18n",
       "axios",
-      "cookies"
+      "cookies",
+      "notify-defaults",
+      "filters"
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -109,8 +111,8 @@ module.exports = configure(function (ctx) {
         });
       },
       env: {
-        SERVER_API_HOST: "https://iuul.innopolis.university",
-        BROWSER_API_HOST: "/"
+        SERVER_API_HOST: "https://4d-dev.innopolis.university",
+        BROWSER_API_HOST: "https://4d-dev.innopolis.university"
       }
     },
 
@@ -134,9 +136,12 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
+      cssAddon: true,
       iconSet: "material-icons", // Quasar icon set
-      lang: "en-us", // Quasar language pack
-      config: {},
+      lang: "ru", // Quasar language pack
+      config: {
+
+      },
 
       // Possible values for "importStrategy":
       // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
@@ -152,7 +157,10 @@ module.exports = configure(function (ctx) {
 
       // Quasar plugins
       plugins: [
-        "Cookies"
+        "Cookies",
+        "LocalStorage",
+        "Dialog",
+        "Notify"
       ]
     },
 

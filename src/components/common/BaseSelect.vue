@@ -21,6 +21,10 @@
   export default {
     name: "BaseSelect",
     props: {
+      value: {
+        type: [String, Number, null],
+        default: null
+      },
       label: {
         type: String,
         default: null
@@ -52,11 +56,12 @@
     },
     data () {
       return {
-        value: null
+        innerValue: null
       };
     },
     methods: {
       onInput (value) {
+        this.innerValue = value;
         this.$emit("input", value);
       }
     }

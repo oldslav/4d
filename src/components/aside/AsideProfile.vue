@@ -5,7 +5,7 @@
         q-item-section.list-item-avatar(avatar)
           q-icon.text-primary(name="arrow_back")
         q-item-section(avatar)
-          | {{ $t("action.goBack") }}
+          | {{ $t("action.back") }}
       q-separator
       q-item.q-py-md.text-subtitle(
         v-for="(item, index) in items"
@@ -22,48 +22,52 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+
   export default {
     name: "AsideProfile",
-    data () {
-      return {
-        items: [
+    computed: {
+      ...mapGetters(["getUserRolesNames"]),
+      isUser () {
+        return this.getUserRolesNames.includes("ROLE_USER") || this.isJuristic;
+      },
+      isJuristic () {
+        return this.getUserRolesNames.includes("ROLE_USER_JURISTIC");
+      },
+
+      items () {
+        return [
           {
             label: this.$t("entity.profile"),
-            action: "/profile",
+            action: { name: "user-profile" },
             icon: "o_person",
-            show: true
+            show: this.isUser
           },
           {
-            label: this.$t("entity.documents"),
-            action: "/stub",
+            label: this.$t("entity.companyProfile.title"),
+            action: { name: "user-company" },
+            icon: "o_business_center",
+            show: this.isJuristic
+          },
+          {
+            label: this.$t("entity.documents.title"),
+            action: { name: "user-documents" },
             icon: "o_text_snippet",
-            show: true
+            show: this.isUser
           },
           {
-            label: this.$t("entity.tickets"),
-            action: "/stub",
+            label: this.$t("entity.tickets.title"),
+            action: { name: "user-tickets" },
             icon: "o_library_add_check",
-            show: true
+            show: this.isUser
           },
           {
             label: this.$t("entity.bills"),
-            action: "/stub",
+            action: { name: "user-bills" },
             icon: "o_article",
-            show: true
-          },
-          {
-            label: "Hidden stuff",
-            action: "/stub",
-            icon: "o_article",
-            show: this.role === "admin"
+            show: this.isUser
           }
-        ]
-      };
-    },
-    computed: {
-      // stub
-      role () {
-        return "user";
+        ];
       }
     }
   };

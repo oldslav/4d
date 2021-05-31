@@ -1,37 +1,348 @@
 {
   "common": {
     "locales": {
-      "ru": "Russian",
-      "en-us": "English"
+      "ru": {
+        "alias": "RU",
+        "full": "Russian"
+      },
+      "en-us": {
+        "alias": "EN",
+        "full": "English"
+      }
     },
     "error": {
       "notFound": {
         "title": "Page not found",
-        "topSub": "Ищете что-то интересное на нашем сайте?",
-        "bottomSub": "К сожалению, страница, которую Вы запрашиваете, не существует…"
+        "topSub": "Looking for something interesting?",
+        "bottomSub": "Unfortunately, the page you are requesting does not exist…"
+      },
+      "validation": {
+        "required": "This field is required",
+        "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
+        "email": "Please enter valid email",
+        "confirmPassword": "Password mismatch",
+        "letters": "Only letters allowed"
       }
-    }
+    },
+    "theme": "Theme",
+    "login": {
+      "title": "Login",
+      "subtitle": "It's good to be at the forefront of various technologies",
+      "noAccount": "Don't have an account yet?"
+    },
+    "register": {
+      "title": "Registration",
+      "subtitle": "Become a part of the Innopolis city and change it with us",
+      "haveAccount": "Already have an account?",
+      "chooseProfile": "Choose user profile",
+      "consent": {
+        "byHitting": "By clicking the \"Register\" button, I accept the terms and conditions ",
+        "userConsent": "User agreement ",
+        "allow": "and I give my consent to ",
+        "dataProcessing": "processing of personal data "
+      },
+      "messages": {
+        "success": "A confirmation email has been sent to your mailbox",
+        "fail": "An error occurred during registration"
+      }
+    },
+    "rent": "Rent",
+    "guestVisit": "Guest visit",
+    "description": "Description"
   },
-  "employee": {
-    "profile": {
-      "tickets": {
-        "empty": {
-          "title": "У вас пока нет ни одной заявки",
-          "subtitle1": "Вы можете перейти в раздел ",
-          "subtitle2": " и ознакомиться с возможностями и предложениями Иннополиса"
-        }
+  "user": {
+    "messages": {
+      "apartmentNotSelected": "Address will appear after the apartment selection"
+    },
+    "tickets": {
+      "actions": {
+        "create": "Create new ticket",
+        "details": "Show ticket details",
+        "cancel": "Cancel ticket"
+      },
+      "empty": {
+        "title": "You don't have any applications yet",
+        "subtitle1": "You can go to the section ",
+        "subtitle2": " and get acquainted with the opportunities and offers of Innopolis"
       }
+    },
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "patronymic": "Patronymic",
+    "noPatronymic": "No patronymic",
+    "companyName": "Company name",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "individual": "Natural person",
+    "legalEntity": "Legal entity",
+    "profile": {
+      "mainForm": {
+        "nameSection": "User name",
+        "email": "Email",
+        "password": "Password",
+        "contacts": "Contacts",
+        "phone": "Phone",
+        "telegramAlias": "Telegram (alias)",
+        "change": "Change",
+        "save": "Save"
+      },
+      "changePasswordModal": {
+        "title": "Change password",
+        "password": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "save": "Save"
+      },
+      "changeEmailModal": {
+        "title": "Change email",
+        "email": "Email",
+        "message": "After saving, a confirmation email will be sent to the new address.",
+        "save": "Save"
+      }
+    },
+    "bills": {
+      "contractNumber": "Contract number",
+      "monthlyPrice": "Payment per month",
+      "depositPrice": "Deposit payment",
+      "totalPrice": "Total amount"
     }
   },
   "action": {
-    "goBack": "Go back"
+    "login": "Login",
+    "register": "Register",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "submit": "Submit",
+    "continue": "Continue",
+    "create": "Create",
+    "pay": "Pay",
+    "select": {
+      "building": "Select a building",
+      "parking": {
+        "type": "Select a parking type",
+        "lot": "Select a parking lot"
+      }
+    }
   },
   "entity": {
-    "services": "Сервисы",
-    "dashboard": "Личный кабинет",
-    "profile": "Профиль пользователя",
-    "documents": "Документы",
-    "tickets": "Заявки",
-    "bills": "Оплата счетов"
+    "socialTypes": {
+      "title": "Категория граждан, имеющих право на льготы",
+      "largeFamily": "Large family",
+      "disability": "A person with a disability",
+      "retired": "Retired people",
+      "veteran": "Veteran"
+    },
+    "services": {
+      "title": "Services",
+      "living": "Residential real estate",
+      "commerce": "Commercial real estate",
+      "parking": {
+        "title": "Parking lots",
+        "types": {
+          "common": "Parking",
+          "social": "Social parking",
+          "guest": "Guest parking"
+        },
+        "rentTypes": {
+          "title": "Rent types",
+          "description": "Choose one of the suggested rental types. Only the frequency of payment for the service depends on the type of rental.",
+          "short": {
+            "title": "1 month rent",
+            "price": {
+              "title": "1 500 rubles"
+            }
+          },
+          "mid": {
+            "title": "6 months rent",
+            "description": "The payment is made once in 6 months",
+            "price": {
+              "title": "7 200 rubles",
+              "description": "or 1 200 rubles per month"
+            }
+          },
+          "long": {
+            "title": "11 months rent",
+            "description": "The payment is made once in 11 months",
+            "price": {
+              "title": "11 000 rubles",
+              "description": "or 1 000 rubles per month"
+            }
+          },
+          "guest": {
+            "title": "Guest visit",
+            "description": "",
+            "price": {
+              "title": "100 rubles per day",
+              "description": ""
+            }
+          }
+        }
+      },
+      "warehouse": "Warehouse",
+      "ideas": "Ideas and suggestions",
+      "vacancies": "Jobs"
+    },
+    "guestCard": {
+      "title": "Guest card",
+      "period": "Permanent",
+      "necessary": {
+        "true": "I need to issue a guest card",
+        "false": "I already have a guest card"
+      },
+      "price": "100 rubles"
+    },
+    "dashboard": "Personal account",
+    "profile": "Profile",
+    "companyProfile": {
+      "title": "Company profile",
+      "messages": {
+        "logoUpdate": {
+          "success": "Company logo updated successfully",
+          "fail": "Company logo failed to update"
+        },
+        "update": {
+          "success": "Company data updated successfully",
+          "fail": "Error while updating company data"
+        }
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "data": "My documents"
+    },
+    "contacts": {
+      "title": "Contacts",
+      "phone": "Phone",
+      "telegram": "Telegram"
+    },
+    "files": {
+      "passportCopy": "Passport scan",
+      "snilsCopy": "SNILS scan",
+      "innCopy": "INN scan",
+      "workCertificate": "Employment certificate",
+      "birthCertificate": "Birth certificate scan",
+      "marriageCertificate": "Marriage certificate scan",
+      "registrationCopy": "Residence permit scan",
+      "sts": "Vehicle registration certificate scan",
+      "pts": "Vehicle passport scan",
+      "personalAgreement": "Consent to the processing of personal data",
+      "employerPetition": "Application from the employer",
+      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц"
+    },
+    "tickets": {
+      "title": "Tickets",
+      "apartments": "Apartment rent",
+      "ideas": "Ideas and suggestions",
+      "parking": "Parking rent"
+    },
+    "bills": "Bills",
+    "main": "Main",
+    "maps": "Maps",
+    "data": "Data",
+    "about": {
+      "title": "About",
+      "toMap": "Go to map",
+      "model": {
+        "title": "Digital model of the city of Innopolis",
+        "caption": "A platform aimed at automating tasks in the activities of local governments and organizations that manage urban facilities, as well as creating effective interaction with the residents of Innopolis. The platform provides storage, processing and visualization of data about urban infrastructure objects and provides statistical information about the current state of the city."
+      },
+      "inno": {
+        "title": "Innopolis",
+        "caption": "The first city built in Russia in the 21st century, the infrastructure of which is created from scratch in accordance with the principles of «Smart City». Innopolis aims to make a qualitative change in the situation with a shortage of IT-specialists in Russia. Innopolis is one of the pilot cities selected for integration of solutions in the direction of “Smart city”.",
+        "people": "people are constantly in the city",
+        "companies": "companies registered",
+        "events": "major events are held annually"
+      },
+      "sections": {
+        "title": "Sections",
+        "estate": "Estate Object",
+        "transport": "Transport Infrastructure",
+        "landscape": "Urban Landscaping",
+        "lighting": "Urban Lighting",
+        "tourism": "Tourism Infrastructure",
+        "ideas": "Ideas and Propositions",
+        "planning": "Urban Planning",
+        "engineering": "Engineering and Municipal Infrastructure",
+        "environment": "Environment Conditions",
+        "safety": "The Safety of the City"
+      },
+      "service": {
+        "title": "Services for residents and guests of the city",
+        "subtitle": "Services are available for registered users only",
+        "estate": {
+          "title": "Estate object",
+          "caption": "Estate object service allows you to rent or buy an apartment in residential complexes in Innopolis. You can use it to select the apartment you are interested in, view the necessary information about the room, sign a contract and pay for the apartment."
+        },
+        "commercialEstate": {
+          "title": "Commercial Real Estate",
+          "caption": "With the help of the commercial real estate service, you can rent non-residential premises, namely: choose the room you are interested in, get detailed information about it and the terms of the lease, sign a contract and start a business in Innopolis."
+        },
+        "parking": {
+          "title": "Inno-Parking",
+          "caption": "With the help of the Parking space rental service, you can choose a Parking space for residential complexes in the city of Innopolis, view information about the space and conditions of Parking rental, as well as sign a contract and pay for the lease."
+        },
+        "tires": {
+          "title": "Tires and Bicycles Storage",
+          "caption": "The tire and Bicycle storage service offers you to book your storage space, view information about the space, storage capabilities of your equipment, and no longer worry about the safety of your tires and bicycles."
+        },
+        "ideas": {
+          "title": "Ideas and Propositions",
+          "caption": "The ideas and suggestions service provides an opportunity to share your ideas and suggestions for improving the city, as well as to get acquainted with current projects of the city. In addition, all residents can evaluate ideas by viewing them on the interactive map of Innopolis."
+        },
+        "jobs": {
+          "title": "City Jobs",
+          "caption": "The city vacancies service helps non-IT professionals find jobs, ensuring interaction between the service operator, job seekers and employers. Here you can view the Bank of vacancies, post a resume or find a job."
+        }
+      }
+    },
+    "design": "Design code",
+    "playground": "Playground",
+    "email": "E-mail / Login",
+    "password": "Password",
+    "vehicles": {
+      "title": "Vehicles",
+      "data": "Vehicles data",
+      "type": "Type",
+      "brand": "Brand",
+      "model": "Model",
+      "plates": "Plate number",
+      "messages": {
+        "create": {
+          "success": "Vehicle has been created",
+          "fail": "An error occurred during vehicle creation"
+        },
+        "update": {
+          "success": "Vehicle has been updated",
+          "fail": "An error occurred during vehicle update"
+        },
+        "delete": {
+          "success": "Vehicle has been deleted",
+          "fail": "An error occurred during vehicle deletion"
+        }
+      }
+    },
+    "neighbors": {
+      "title": "Relatives",
+      "child": "Child",
+      "spouse": "Spouse (а)",
+      "data": "Relatives data",
+      "messages": {
+        "create": {
+          "success": "Relative has been created",
+          "fail": "An error occurred during relative creation"
+        },
+        "update": {
+          "success": "Relative has been updated",
+          "fail": "An error occurred during relative update"
+        },
+        "delete": {
+          "prompt": "Are you sure you want to delete the data about this relative?",
+          "success": "Relative has been deleted",
+          "fail": "An error occurred during relative deletion"
+        }
+      }
+    }
   }
 }
