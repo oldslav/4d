@@ -10,123 +10,98 @@
       q-tabs(v-model="currentTab")
         q-tab(name="tires" :label="$t('entity.services.warehouse.tabs.tires')")
         q-tab(name="bikes" :label="$t('entity.services.warehouse.tabs.bicycles')")
+      div.q-px-md.q-pt-md
+        .text-caption.text-primary-light
+          | Адрес
+        q-item.q-px-none.q-mb-md.items-start
+          q-item-section
+            q-item-label
+              | ул. Спортивная, 130, паркинг
+        .text-caption.text-primary-light
+          | {{ $t('entity.services.warehouse.workTime.title') }}
+        q-item.q-px-none.items-start
+          q-item-section
+            q-item-label
+              | {{ $t('entity.services.warehouse.workTime.season.label') }}
+          q-item-section.text-right
+            q-item-label.text-primary
+              | {{ $t('entity.services.warehouse.workTime.season.schedule') }}
+            q-item-label(caption)
+              | {{ $t('entity.services.warehouse.workTime.season.caption') }}
+        q-item.q-px-none.items-start
+          q-item-section
+            q-item-label
+              | {{ $t('entity.services.warehouse.workTime.noSeason.label') }}
+          q-item-section.text-right
+            q-item-label.text-primary
+              | {{ $t('entity.services.warehouse.workTime.season.schedule') }}
+            q-item-label(caption)
+              | {{ $t('entity.services.warehouse.workTime.season.caption') }}
       q-tab-panels(v-model="currentTab")
         q-tab-panel(name="tires")
           .text-caption.text-primary-light
-            | Адрес
-          q-item.q-px-none.q-mb-md.items-start
-            q-item-section
-              q-item-label
-                | ул. Спортивная, 130, паркинг
-          .text-caption.text-primary-light
-            | Время работы
+            | {{ $t('entity.services.warehouse.storagePrice.title') }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | Сезон (весна, осень)
+                | {{ $t('entity.services.warehouse.storagePrice.tires.short.label') }}
             q-item-section.text-right
               q-item-label.text-primary
-                | 9:00 - 21:00
-              q-item-label(caption)
-                | без выходных
-          q-item.q-px-none.items-start.q-mb-md
-            q-item-section
-              q-item-label
-                | Не сезон (зима, лето)
-            q-item-section.text-right
-              q-item-label.text-primary
-                | 9:00 - 18:00
-              q-item-label(caption)
-                | с понедельника по пятницу
-          .text-caption.text-primary-light
-            | Время работы
+                | {{ $t('entity.services.warehouse.storagePrice.tires.short.price') }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | Хранение на 1 месяц
+                | {{ $t('entity.services.warehouse.storagePrice.tires.mid.label') }}
             q-item-section.text-right
               q-item-label.text-primary
-                | от 200 руб.
-          q-item.q-px-none.items-start
-            q-item-section
-              q-item-label
-                | Хранение на 6 месяцев
-            q-item-section.text-right
-              q-item-label.text-primary
-                | от 1 000 руб.
+                | {{ $t('entity.services.warehouse.storagePrice.tires.mid.price') }}
               q-item-label(caption)
-                | или от 166 руб./мес.
+                | {{ $t('entity.services.warehouse.storagePrice.tires.mid.caption') }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
-                | Хранение на 11 месяцев
+                | {{ $t('entity.services.warehouse.storagePrice.tires.long.label') }}
             q-item-section.text-right
               q-item-label.text-primary
-                | от 2 000 руб.
+                | {{ $t('entity.services.warehouse.storagePrice.tires.long.price') }}
               q-item-label(caption)
-                | или от 181 руб./мес.
+                | {{ $t('entity.services.warehouse.storagePrice.tires.long.caption') }}
           .text-caption.text-primary-light
-            | Тип хранения
+            | {{ $t('entity.services.warehouse.storageTypes.title') }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
-                | На стеллажах
+                | {{ $t('entity.services.warehouse.storageTypes.rack') }}
         q-tab-panel(name="bikes")
           .text-caption.text-primary-light
-            | Адрес
-          q-item.q-px-none.q-mb-md.items-start
-            q-item-section
-              q-item-label
-                | ул. Спортивная, 130, паркинг
-          .text-caption.text-primary-light
-            | Время работы
+            | {{ $t('entity.services.warehouse.storagePrice.title') }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | Сезон (весна, осень)
+                | {{ $t('entity.services.warehouse.storagePrice.bikes.child.label') }}
             q-item-section.text-right
               q-item-label.text-primary
-                | 9:00 - 21:00
-              q-item-label(caption)
-                | без выходных
-          q-item.q-px-none.items-start.q-mb-md
-            q-item-section
-              q-item-label
-                | Не сезон (зима, лето)
-            q-item-section.text-right
-              q-item-label.text-primary
-                | 9:00 - 18:00
-              q-item-label(caption)
-                | с понедельника по пятницу
-          .text-caption.text-primary-light
-            | Время работы
+                | {{ $t('entity.services.warehouse.storagePrice.bikes.child.price') }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | Детский
+                | {{ $t('entity.services.warehouse.storagePrice.bikes.adult.label') }}
             q-item-section.text-right
               q-item-label.text-primary
-                | 130 руб./мес.
-          q-item.q-px-none.items-start
-            q-item-section
-              q-item-label
-                | Взрослый
-            q-item-section.text-right
-              q-item-label.text-primary
-                | 160 руб./мес.
+                | {{ $t('entity.services.warehouse.storagePrice.bikes.adult.price') }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
-                | Тандем
+                | {{ $t('entity.services.warehouse.storagePrice.bikes.tandem.label') }}
             q-item-section.text-right
               q-item-label.text-primary
-                | 200 руб./мес.
+                | {{ $t('entity.services.warehouse.storagePrice.bikes.tandem.price') }}
           .text-caption.text-primary-light
-            | Тип хранения
+            | {{ $t('entity.services.warehouse.storageTypes.title') }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
-                | На велосипедной парковке
+                | {{ $t('entity.services.warehouse.storageTypes.bikePark') }}
     q-space
     div.text-center
       q-btn.full-width(color="primary" label="Оформить заявку" :style="{maxWidth: '90%'}" @click="onCreate()")
