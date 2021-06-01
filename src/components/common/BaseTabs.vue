@@ -1,6 +1,6 @@
 <template lang="pug">
   q-tabs(
-    v-model="currentTab"
+    :value="value"
     @input="onChange"
     align="left"
     :dense="dense"
@@ -14,6 +14,10 @@
   export default {
     name: "BaseTabs",
     props: {
+      value: {
+        type: [String, Number],
+        default: null
+      },
       isFullWidth: {
         type: Boolean,
         default: false
@@ -22,11 +26,6 @@
         type: Boolean,
         default: true
       }
-    },
-    data () {
-      return {
-        currentTab: null
-      };
     },
     methods: {
       onChange (event) {

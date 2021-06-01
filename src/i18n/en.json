@@ -180,7 +180,13 @@
           }
         }
       },
-      "warehouse": "Warehouse",
+      "warehouse": {
+        "title": "Warehouse",
+        "tabs": {
+          "tires": "Tires warehouse",
+          "bicycles": "Bicycles warehouse"
+        }
+      },
       "ideas": "Ideas and suggestions",
       "vacancies": "Jobs"
     },
