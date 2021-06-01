@@ -5,7 +5,7 @@ const routes: RouteConfig[] = [
     path: "/",
     name: "main",
     components: {
-      default: (): Promise<any> => import("pages/Index.vue")
+      default: (): Promise<any> => import("pages/Presentation.vue")
     },
     meta: {
       asideLeft: false,
@@ -286,12 +286,10 @@ const routes: RouteConfig[] = [
         path: "parking",
         name: "services-parking",
         components: {
-          default: (): Promise<any> => import("components/services/parking/ServiceParking.vue"),
-          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesParking.vue")
+          default: (): Promise<any> => import("components/services/parking/ServiceParking.vue")
         },
         meta: {
           asideLeft: true,
-          asideServices: true,
           toolbar: true,
           asideRight: false,
           content: true
@@ -301,7 +299,7 @@ const routes: RouteConfig[] = [
         path: "warehouse",
         name: "services-warehouse",
         components: {
-          default: (): Promise<any> => import("pages/services/ServiceWarehouse.vue")
+          default: (): Promise<any> => import("pages/Services.vue")
         },
         meta: {
           asideLeft: true,
