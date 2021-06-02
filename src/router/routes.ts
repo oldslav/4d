@@ -5,7 +5,7 @@ const routes: RouteConfig[] = [
     path: "/",
     name: "main",
     components: {
-      default: (): Promise<any> => import("pages/Index.vue")
+      default: (): Promise<any> => import("pages/Presentation.vue")
     },
     meta: {
       asideLeft: false,
