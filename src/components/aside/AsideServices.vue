@@ -61,7 +61,7 @@
             show: this.isUserNature
           },
           {
-            label: this.$t("entity.services.warehouse"),
+            label: this.$t("entity.services.warehouse.title"),
             action: {
               name: "services-warehouse"
             },
