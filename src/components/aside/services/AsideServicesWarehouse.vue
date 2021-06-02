@@ -102,8 +102,8 @@
             q-item-section
               q-item-label
                 | {{ $t('entity.services.warehouse.storageTypes.bikePark') }}
-    q-space
-    div.text-center
+    q-space(v-if="false")
+    div.text-center(v-if="false")
       q-btn.full-width(color="primary" label="Оформить заявку" :style="{maxWidth: '90%'}" @click="onCreate()")
 </template>
 
