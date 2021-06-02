@@ -250,7 +250,7 @@
 
       validateNames () {
         return [
-          val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
+          val => val && val.length > 0 && val.length < 50, val => val && /^[A-zА-яЁё\-]*$/.test(val)
         ];
       },
 
@@ -266,7 +266,7 @@
 
       validatePhone () {
         return [
-          val => val.length === 0 || val.length === 11
+          val => val && val.length === 11
         ];
       },
 
