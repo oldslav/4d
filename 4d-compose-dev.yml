@@ -8,7 +8,7 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    image: harbor.stageogip.ru/4d-innopolis/frontend:$(Build.BuildId)
+    image: harbor.stageogip.ru/4d-innopolis/frontend:$BUILD_BUILDID
     container_name: 4d_frontend
 
 networks:
