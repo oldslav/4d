@@ -1,105 +1,28 @@
 <template lang="pug">
   q-page.q-pa-lg.bg-white
-    .q-gutter-md
-      BaseSelect(
-        v-model="rentType"
-        :options="rentTypes"
-        :label="$t('action.select.parking.type')"
-        outlined
-      )
-      BaseSelect(
-        v-model="buildingId"
-        :disable="!rentType"
-        :options="buildings"
-        :label="$t('action.select.building')"
-        @input="onBuildingChange"
-        outlined
-      )
-
-    ParkingPlaceModal(
-      v-model="isParkingPlaceModal"
-      @update="onParkingPlaceChange"
-    )
-    template(v-if="parkingPlaceId")
-      NewParkingTicket(
-        v-model="isNewTicketModal"
-        :parkingPlaceId="parkingPlaceId"
-        @update="onTicketChange"
-      )
-      NewGuestParkingTicket(
-        v-model="isGuestTicketModal"
-        :parkingPlaceId="parkingPlaceId"
-        @update="onTicketChange"
-      )
-      NewSocialParkingTicket(
-        v-model="isSocialTicketModal"
-        :parkingPlaceId="parkingPlaceId"
-        @update="onTicketChange"
-      )
+    q-btn(color="primary" label="Шины" @click="showTiresModal()")
+    q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
+    NewTiresTicket(v-model="tiresVisible")
 </template>
 
 <script>
-  import BaseSelect from "../../components/common/BaseSelect";
-  import NewGuestParkingTicket from "../../components/services/parking/NewGuestParkingTicket";
-  import NewParkingTicket from "../../components/services/parking/NewParkingTicket";
-  import NewSocialParkingTicket from "../../components/services/parking/NewSocialParkingTicket";
-  import ParkingPlaceModal from "../../components/services/parking/ParkingPlaceModal";
+  import NewTiresTicket from "components/services/warehouse/NewTiresTicket";
 
   export default {
     name: "ServiceWarehouse",
-    components: { ParkingPlaceModal, BaseSelect, NewParkingTicket, NewGuestParkingTicket, NewSocialParkingTicket },
+    components: { NewTiresTicket },
     data () {
       return {
-        isNewTicketModal: false,
-        isGuestTicketModal: false,
-        isSocialTicketModal: false,
-        isParkingPlaceModal: false,
-        buildingId: null,
-        parkingPlaceId: null,
-        buildings: [1, 2, 3],
-
-        rentType: null,
-        rentTypes: [
-          "Guest",
-          "Common",
-          "Social"
-        ]
+        tiresVisible: false,
+        bikeVisible: false
       };
     },
     methods: {
-      onBuildingChange (value) {
-        this.buildingId = value;
-        this.isParkingPlaceModal = true;
+      showTiresModal () {
+        this.tiresVisible = true;
       },
-
-      onParkingPlaceChange (value) {
-        this.parkingPlaceId = value;
-        this.isParkingPlaceModal = false;
-
-        if (this.rentType === "Common") {
-          this.isNewTicketModal = Boolean(value);
-        } else if (this.rentType === "Guest") {
-          this.isGuestTicketModal = Boolean(value);
-        } else {
-          this.isSocialTicketModal = Boolean(value);
-        }
-      },
-
-      onTicketChange (value) {
-        if (value) {
-          this.buildingId = null;
-          this.parkingPlaceId = null;
-          this.isParkingPlaceModal = false;
-          this.isNewTicketModal = false;
-        } else {
-          this.isParkingPlaceModal = true;
-        }
-      },
-
-      toggleTicketModal (value) {
-        if (!value) {
-          this.parkingPlace = null;
-        }
+      showBikeModal () {
+        this.bikeVisible = true;
       }
     }
   };
