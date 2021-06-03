@@ -46,46 +46,6 @@
         "fail": "An error occurred during registration"
       }
     },
-    "welcomePresentation": {
-      "firstSlide": {
-        "title": "Welcome to the site of the Digital Model of the city of Innopolis",
-        "description": "Here you can get the necessary information and suggest ideas for the development of our city. We suggest that you familiarize yourself with the capabilities of the Digital Model or go directly to the interactive map of the city of Innopolis."
-      },
-      "secondSlide": {
-        "title": "Find out what objects and services are already in the city",
-        "description": "All information about social, business and service real estate in one place. You can now choose an institution for lunch, see how many hours a pharmacy is open or find out the area of ​​a kindergarten in one click."
-      },
-      "thirdSlide": {
-        "title": "Watch your city change",
-        "description": "Visual graphs will show you city changes in various parameters: landscaping, lighting, transport infrastructure and much more. The data is updated in real time."
-      },
-      "fourthSlide": {
-        "title": "Understand if the city is green enough",
-        "description": "On the city map, we marked each tree, described its properties and determined the city's greening index. Stay tuned for changes in this index and join the tree care."
-      },
-      "fifthSlide": {
-        "title": "Explore the city in a convenient way",
-        "description": "A motorist, pedestrian or cyclist will find useful information on routes, road signs and crossings here. Feel free to build new routes and explore interesting places."
-      },
-      "sixthSlide": {
-        "title": "Dress for the weather",
-        "description": "We have placed meteorological sensors around the city, which will show the current weather in Innopolis, as well as draw up a graph of changes in the average temperature."
-      },
-      "seventhSlide": {
-        "title": "Change the world around you",
-        "description": "Mark problem areas and suggest your ideas for the development of public spaces and the city as a whole."
-      },
-      "eighthSlide": {
-        "title": "Discover new places and routes",
-        "description": "On an interactive city map, you will find attractions and popular routes near Innopolis. Explore the city and its surroundings using the Digital Model."
-      },
-      "ninthSlide": {
-        "title": "Start exploring the city now",
-        "description": "Register and change the city with us!"
-      },
-      "toMapBtn": "Go to the map",
-      "nextSlideBtn": "Onwards"
-    },
     "rent": "Rent",
     "guestVisit": "Guest visit",
     "description": "Description"
@@ -220,64 +180,7 @@
           }
         }
       },
-      "warehouse": {
-        "title": "Warehouse",
-        "tabs": {
-          "tires": "Tires warehouse",
-          "bicycles": "Bicycles warehouse"
-        },
-        "workTime": {
-          "title": "Schedule",
-          "season": {
-            "label": "Season (spring, autumn)",
-            "schedule": "9:00 - 21:00",
-            "caption": "no weekends"
-          },
-          "noSeason": {
-            "label": "Not a season (winter, summer)",
-            "schedule": "9:00 - 18:00",
-            "caption": "monday to friday"
-          }
-        },
-        "storagePrice": {
-          "title": "Storage price",
-          "tires": {
-            "short": {
-              "label": "Store for 1 month",
-              "price": "from 200 rubles"
-            },
-            "mid": {
-              "label": "Store for 6 months",
-              "price": "from 1 000 rubles",
-              "caption": "or 166 rubles/month"
-            },
-            "long": {
-              "label": "Store for 11 months",
-              "price": "from 2 000 rubles",
-              "caption": "or 181 rubles/month"
-            }
-          },
-          "bikes": {
-            "child": {
-              "label": "Children",
-              "price": "130 rubles/month"
-            },
-            "adult": {
-              "label": "Adult",
-              "price": "160 rubles/month"
-            },
-            "tandem": {
-              "label": "Tandem",
-              "price": "200 rubles/month"
-            }
-          }
-        },
-        "storageTypes": {
-          "title": "Storage type",
-          "rack": "On a rack",
-          "bikePark": "On a bicycle parking"
-        }
-      },
+      "warehouse": "Warehouse",
       "ideas": "Ideas and suggestions",
       "vacancies": "Jobs"
     },

@@ -27,7 +27,13 @@
   export default {
     name: "AsideProfile",
     computed: {
-      ...mapGetters(["getUserRolesNames", "isUserLegal", "isUserNature"]),
+      ...mapGetters(["getUserRolesNames"]),
+      isUser () {
+        return this.getUserRolesNames.includes("ROLE_USER") || this.isJuristic;
+      },
+      isJuristic () {
+        return this.getUserRolesNames.includes("ROLE_USER_JURISTIC");
+      },
 
       items () {
         return [
@@ -35,31 +41,31 @@
             label: this.$t("entity.profile"),
             action: { name: "user-profile" },
             icon: "o_person",
-            show: this.isUserNature
+            show: this.isUser
           },
           {
             label: this.$t("entity.companyProfile.title"),
             action: { name: "user-company" },
             icon: "o_business_center",
-            show: this.isUserLegal
+            show: this.isJuristic
           },
           {
             label: this.$t("entity.documents.title"),
             action: { name: "user-documents" },
             icon: "o_text_snippet",
-            show: this.isUserNature
+            show: this.isUser
           },
           {
             label: this.$t("entity.tickets.title"),
             action: { name: "user-tickets" },
             icon: "o_library_add_check",
-            show: this.isUserNature
+            show: this.isUser
           },
           {
             label: this.$t("entity.bills"),
             action: { name: "user-bills" },
             icon: "o_article",
-            show: this.isUserNature
+            show: this.isUser
           }
         ];
       }
