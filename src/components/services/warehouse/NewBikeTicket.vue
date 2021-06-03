@@ -58,36 +58,36 @@
               template(v-if="isMobile")
                 q-item-section
                   q-item-label 1 месяц
-                  q-item-label.text-primary {{ prices.short }} рублей
+                  q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
               template(v-else)
                 q-item-section
                   q-item-label 1 месяц
                 q-item-section(side)
-                  q-item-label.text-primary {{ prices.short }} рублей
+                  q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
                 q-radio(v-model="storeOption" val="1" dense)
               template(v-if="isMobile")
                 q-item-section
                   q-item-label 6 месяцев
-                  q-item-label.text-primary {{ prices.mid }} рублей
+                  q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
               template(v-else)
                 q-item-section
                   q-item-label 6 месяцев
                 q-item-section(side)
-                  q-item-label.text-primary {{ prices.mid }} рублей
+                  q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
                 q-radio(v-model="storeOption" val="2" dense)
               template(v-if="isMobile")
                 q-item-section
                   q-item-label 12 месяцев
-                  q-item-label.text-primary {{ prices.long }} рублей
+                  q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
               template(v-else)
                 q-item-section
                   q-item-label 12 месяцев
                 q-item-section(side)
-                  q-item-label.text-primary {{ prices.long }} рублей
+                  q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
@@ -162,23 +162,23 @@
       },
       childPrices () {
         return {
-          short: "130",
-          mid: "650",
-          long: "1300"
+          short: 130,
+          mid: 650,
+          long: 1300
         };
       },
       adultPrices () {
         return {
-          short: "160",
-          mid: "800",
-          long: "1600"
+          short: 160,
+          mid: 800,
+          long: 1600
         };
       },
       tandemPrices () {
         return {
-          short: "200",
-          mid: "1000",
-          long: "2000"
+          short: 200,
+          mid: 1000,
+          long: 2000
         };
       }
     },
