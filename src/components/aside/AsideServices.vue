@@ -28,10 +28,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["getUserRolesNames"]),
-      isUser () {
-        return this.getUserRolesNames.includes("ROLE_USER");
-      },
+      ...mapGetters(["isUserNature"]),
 
       meta () {
         return this.$route.meta;
@@ -45,7 +42,7 @@
               name: "services-living"
             },
             icon: "o_person",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.commerce"),
@@ -53,7 +50,7 @@
               name: "services-commerce"
             },
             icon: "o_text_snippet",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.parking.title"),
@@ -61,15 +58,15 @@
               name: "services-parking"
             },
             icon: "o_library_add_check",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
-            label: this.$t("entity.services.warehouse"),
+            label: this.$t("entity.services.warehouse.title"),
             action: {
               name: "services-warehouse"
             },
             icon: "o_article",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.ideas"),
@@ -77,7 +74,7 @@
               name: "services-ideas"
             },
             icon: "o_article",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.vacancies"),
@@ -85,7 +82,7 @@
               name: "services-vacancies"
             },
             icon: "o_article",
-            show: this.isUser
+            show: this.isUserNature
           }
         ];
       }
