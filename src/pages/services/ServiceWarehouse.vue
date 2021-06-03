@@ -3,14 +3,16 @@
     q-btn(color="primary" label="Шины" @click="showTiresModal()")
     q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
     NewTiresTicket(v-model="tiresVisible")
+    NewBikeTicket(v-model="bikeVisible")
 </template>
 
 <script>
   import NewTiresTicket from "components/services/warehouse/NewTiresTicket";
+  import NewBikeTicket from "components/services/warehouse/NewBikeTicket";
 
   export default {
     name: "ServiceWarehouse",
-    components: { NewTiresTicket },
+    components: { NewTiresTicket, NewBikeTicket },
     data () {
       return {
         tiresVisible: false,
