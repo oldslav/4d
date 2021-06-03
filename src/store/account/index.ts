@@ -173,24 +173,6 @@ const getters: GetterTree<IAccountState, IRootState> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return state.account.roles.map((role) => role.name);
-  },
-  
-  isUserNature (state) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return state.account.roles.some(role => role.name === "ROLE_USER");
-  },
-  
-  isUserLegal (state) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return state.account.roles.some(role => role.name === "ROLE_USER_JURISTIC");
-  },
-  
-  isEmployee (state) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return state.account.roles.some(role => role.name === "ROLE_EMPLOYEE");
   }
 };
 
