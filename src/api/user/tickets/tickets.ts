@@ -45,4 +45,12 @@ export class TicketsService extends Service {
   public static getTicketsIdeas (params: any): AxiosPromise<any> {
     return this.api.get("api/v1/services/crowdsourcing/all", params);
   }
+
+  public static createTicketWarehouse (payload: unknown): AxiosPromise<any> {
+    return this.api.post("/api/v1/services/warehouse/user/tickets", payload);
+  }
+
+  public static addTicketsWarehouseFile (id: number, file: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/warehouse/user/tickets/${ id }/file`, file);
+  }
 }
