@@ -1,27 +1,7 @@
 <template lang="pug">
   q-page.q-pa-lg.bg-white
-    q-dialog(v-model="failVisible")
-      q-card
-        q-card-section.row.items-center.q-pb-none
-          .text-primary.text-medium
-            | {{ $t("common.error.response.oops") }}
-          q-space
-          q-btn(icon="close" flat round dense v-close-popup)
-        q-card-section
-          | {{ $t('common.error.response.tryLater') }}
-    q-dialog(v-model="successVisible")
-      q-card
-        q-card-section.row.items-center.q-pb-none
-          .text-primary.text-medium
-            | {{ $t('user.tickets.messages.create.success.title') }}
-          q-space
-          q-btn(icon="close" flat round dense v-close-popup)
-        q-card-section
-          | {{ $t('user.tickets.messages.create.success.label') }}
-          q-separator.q-my-md
-          | {{ $t('user.tickets.messages.create.success.caption') }}
-        q-card-actions(align="right").q-pa-md
-          q-btn(outline color="primary" :label="$t('action.toProfile')")
+    ModalFail(v-model="failVisible")
+    ModalSuccess(v-model="successVisible")
     .row.q-gutter-lg.justify-center
       q-btn(color="primary" label="Шины" @click="showTiresModal()")
       q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
@@ -30,12 +10,14 @@
 </template>
 
 <script>
+  import ModalFail from "components/services/ModalFail";
+  import ModalSuccess from "components/services/ModalSuccess";
   import NewTiresTicket from "components/services/warehouse/NewTiresTicket";
   import NewBikeTicket from "components/services/warehouse/NewBikeTicket";
 
   export default {
     name: "ServiceWarehouse",
-    components: { NewTiresTicket, NewBikeTicket },
+    components: { NewTiresTicket, NewBikeTicket, ModalFail, ModalSuccess },
     data () {
       return {
         tiresVisible: false,

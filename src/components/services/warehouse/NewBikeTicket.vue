@@ -12,56 +12,57 @@
         contracted
         flat
         animated
-        header-class="modal-header"
       )
         q-step(
           title="Основная информация"
           :done="step > 1"
+          :error="!mainInfoDone && step > 1"
           :name="1"
           icon="edit"
         )
           .text-medium.q-mb-sm
-            | Основная информация
+            | {{ $t("entity.services.mainInfo") }}
           .row.q-col-gutter-md
             q-input(v-model="name.lastname" :label="$t('user.lastName')").col-12.col-sm-6.col-md-4
             q-input(v-model="name.firstname" :label="$t('user.firstName')").col-12.col-sm-6.col-md-4
             q-input(v-model="name.patronymic" :label="$t('user.patronymic')").col-12.col-sm-6.col-md-4
-          q-separator.q-my-lg
+          .text-medium.q-my-md
+            | {{ $t("entity.documents.title") }}
           FilePicker(v-model="documents.passport" :label="$t('entity.files.passportCopy')" :max-files="5")
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Тип аренды"
           :done="step > 2"
+          :error="!optionsDone && step > 2"
           :name="2"
-          icon="edit"
+          icon="pedal_bike"
         )
           .text-medium.q-mb-sm
-            | Тип велосипеда
+            | {{ $t("entity.services.warehouse.bikeType") }}
           q-option-group(
             v-model="serviceOption.serviceTypeId"
             color="primary"
             inline
             :options="bikesOptions"
           )
-          q-separator.q-my-lg
-          .text-medium.q-mb-sm
-            | Тип хранения
+          .text-medium.q-mb-sm.q-mt-md
+            | {{ $t("entity.services.warehouse.storageTypes.title") }}
           .text-small
-            | Выберите один из предложенных типов хранения.
+            | {{ $t("entity.services.warehouse.storageTypes.subtitle.top") }}
             br
-            | От типа хранения зависит только периодичность оплаты сервиса.
+            | {{ $t("entity.services.warehouse.storageTypes.subtitle.bottom") }}
           q-list.q-mt-md
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
                 q-radio(v-model="serviceOption.storagePeriod" val="1" dense)
               template(v-if="isMobile")
                 q-item-section
-                  q-item-label 1 месяц
+                  q-item-label {{ $t("entity.services.warehouse.month.one") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
               template(v-else)
                 q-item-section
-                  q-item-label 1 месяц
+                  q-item-label {{ $t("entity.services.warehouse.month.one") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
             q-item(tag="label" v-ripple).q-px-none
@@ -69,11 +70,11 @@
                 q-radio(v-model="serviceOption.storagePeriod" val="6" dense)
               template(v-if="isMobile")
                 q-item-section
-                  q-item-label 6 месяцев
+                  q-item-label {{ $t("entity.services.warehouse.month.six") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
               template(v-else)
                 q-item-section
-                  q-item-label 6 месяцев
+                  q-item-label {{ $t("entity.services.warehouse.month.six") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
             q-item(tag="label" v-ripple).q-px-none
@@ -81,11 +82,11 @@
                 q-radio(v-model="serviceOption.storagePeriod" val="12" dense)
               template(v-if="isMobile")
                 q-item-section
-                  q-item-label 12 месяцев
+                  q-item-label {{ $t("entity.services.warehouse.month.twelve") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
               template(v-else)
                 q-item-section
-                  q-item-label 12 месяцев
+                  q-item-label {{ $t("entity.services.warehouse.month.twelve") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
 
@@ -95,13 +96,14 @@
         q-step(
           title="Контакты"
           :name="3"
-          icon="edit"
+          icon="call"
         )
           .text-medium.q-mb-sm
-            | Контакты
+            | {{ $t("entity.contacts.title") }}
           FormContacts(v-model="contacts")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="onSubmit()" color="primary" :label="$t('action.submit')")
+            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="onSubmit()" color="primary" :disable="!formDone" :label="$t('action.submit')")
       q-inner-loading(:showing="isLoading")
         q-spinner(size="50px" color="primary")
 </template>

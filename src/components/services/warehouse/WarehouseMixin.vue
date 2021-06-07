@@ -18,6 +18,11 @@
           lastname: "",
           patronymic: ""
         },
+        serviceOption: {
+          serviceId: null,
+          serviceTypeId: null,
+          storagePeriod: null
+        },
         documents: {
           passport: null
         },
@@ -32,12 +37,25 @@
       },
       isMobile () {
         return this.$q.platform.is.mobile;
+      },
+      mainInfoDone () {
+        return !!this.name.firstname && this.name.lastname;
+      },
+      optionsDone () {
+        return !!this.serviceOption.serviceTypeId && !!this.serviceOption.storagePeriod;
+      },
+      contactsDone () {
+        return !!this.contacts.phone;
+      },
+      formDone () {
+        return this.mainInfoDone && this.optionsDone && this.contactsDone;
       }
     },
     methods: {
       ...mapActions("user/tickets/warehouse", [CREATE_USER_TICKET_WAREHOUSE]),
       toggleModal (value) {
         this.$emit("input", value);
+        Object.assign(this.$data, this.$options.data.apply(this)); // default data
       },
       onSubmit () {
         const { name, documents, serviceOption } = this;
