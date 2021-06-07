@@ -4,24 +4,24 @@
       q-card
         q-card-section.row.items-center.q-pb-none
           .text-primary.text-medium
-            | Упс! Произошла ошибка
+            | {{ $t("common.error.response.oops") }}
           q-space
           q-btn(icon="close" flat round dense v-close-popup)
         q-card-section
-          | Пожалуйста, повторите попытку позже
+          | {{ $t('common.error.response.tryLater') }}
     q-dialog(v-model="successVisible")
       q-card
         q-card-section.row.items-center.q-pb-none
           .text-primary.text-medium
-            | Спасибо! Ваша заявка успешно отправлена
+            | {{ $t('user.tickets.messages.create.success.title') }}
           q-space
           q-btn(icon="close" flat round dense v-close-popup)
         q-card-section
-          | В ближайшее время с вами свяжется представитель фонда развития города Иннополис для уточнения деталей.
+          | {{ $t('user.tickets.messages.create.success.label') }}
           q-separator.q-my-md
-          | Отследить статус заявки можно в личном кабинете
+          | {{ $t('user.tickets.messages.create.success.caption') }}
         q-card-actions(align="right").q-pa-md
-          q-btn(outline color="primary" label="Перейти в личный кабинет")
+          q-btn(outline color="primary" :label="$t('action.toProfile')")
     .row.q-gutter-lg.justify-center
       q-btn(color="primary" label="Шины" @click="showTiresModal()")
       q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
