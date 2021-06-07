@@ -3,7 +3,7 @@
   import { CREATE_USER_TICKET_WAREHOUSE } from "@/store/constants/action-constants";
 
   export default {
-    name: "WarehouseMixin",
+    name: "WarehouseTicketMixin",
     props: {
       value: {
         type: Boolean,
