@@ -116,14 +116,14 @@
 </template>
 
 <script>
-  import WarehouseMixin from "components/services/warehouse/WarehouseMixin";
+  import WarehouseTicketMixin from "components/services/warehouse/WarehouseTicketMixin";
   import BaseModal from "components/common/BaseModal";
   import FilePicker from "components/common/FilePicker";
   import FormContacts from "components/common/form/FormContacts";
 
   export default {
     name: "NewTiresTicket",
-    mixins: [WarehouseMixin],
+    mixins: [WarehouseTicketMixin],
     components: { FilePicker, BaseModal, FormContacts },
     props: {
       value: {
