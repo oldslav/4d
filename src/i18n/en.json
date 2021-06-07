@@ -22,6 +22,10 @@
         "email": "Please enter valid email",
         "confirmPassword": "Password mismatch",
         "letters": "Only letters allowed"
+      },
+      "response": {
+        "oops": "Упс! Произошла ошибка",
+        "tryLater": "Пожалуйста, повторите попытку позже"
       }
     },
     "theme": "Theme",
@@ -104,6 +108,15 @@
         "title": "You don't have any applications yet",
         "subtitle1": "You can go to the section ",
         "subtitle2": " and get acquainted with the opportunities and offers of Innopolis"
+      },
+      "messages": {
+        "create": {
+          "success": {
+            "title": "Спасибо! Ваша заявка успешно отправлена",
+            "label": "В ближайшее время с вами свяжется представитель фонда развития города Иннополис для уточнения деталей.",
+            "caption": "Отследить статус заявки можно в личном кабинете"
+          }
+        }
       }
     },
     "firstName": "Firstname",
@@ -158,6 +171,7 @@
     "continue": "Continue",
     "create": "Create",
     "pay": "Pay",
+    "toProfile": "Перейти в личный кабинет",
     "select": {
       "building": "Select a building",
       "parking": {
@@ -243,6 +257,10 @@
         "storagePrice": {
           "dynamic": "%{price} rubles",
           "title": "Storage price",
+          "schedule": {
+            "six": "Платеж осуществляется 1 раз в 6 месяцев",
+            "twelve": "Платеж осуществляется 1 раз в 12 месяцев"
+          },
           "tires": {
             "short": {
               "label": "Store for 1 month",

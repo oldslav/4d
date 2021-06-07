@@ -37,7 +37,7 @@
           icon="edit"
         )
           .text-medium.q-mb-sm
-            | Радиус колеса
+            | {{ $t("entity.service.warehouse.radius") }}
           q-option-group(
             v-model="serviceOption.serviceTypeId"
             color="primary"
@@ -47,11 +47,11 @@
           ).q-mt-md
           q-separator.q-my-lg
           .text-medium.q-mb-sm
-            | Тип хранения
+            | {{ $t("entity.service.warehouse.storageTypes.title") }}
           .text-small
-            | Выберите один из предложенных типов хранения.
+            | {{ $t("entity.service.warehouse.storageTypes.subtitle.top") }}
             br
-            | От типа хранения зависит только периодичность оплаты сервиса.
+            | {{ $t("entity.service.warehouse.storageTypes.subtitle.bottom") }}
           q-list.q-mt-md
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
@@ -72,12 +72,12 @@
               template(v-if="isMobile")
                 q-item-section
                   q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.mid.label") }}
-                  q-item-label(caption) Платеж осуществляется 1 раз в 6 месяцев
+                  q-item-label(caption) {{ $t("entity.service.warehouse.storagePrice.schedule.six") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
               template(v-else)
                 q-item-section
                   q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.mid.label") }}
-                  q-item-label(caption) Платеж осуществляется 1 раз в 6 месяцев
+                  q-item-label(caption) {{ $t("entity.service.warehouse.storagePrice.schedule.six") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
 
@@ -87,12 +87,12 @@
               template(v-if="isMobile")
                 q-item-section
                   q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.long.label") }}
-                  q-item-label(caption) Платеж осуществляется 1 раз в 12 месяцев
+                  q-item-label(caption) {{ $t("entity.service.warehouse.storagePrice.schedule.twelve") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
               template(v-else)
                 q-item-section
                   q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.long.label") }}
-                  q-item-label(caption) Платеж осуществляется 1 раз в 12 месяцев
+                  q-item-label(caption) {{ $t("entity.service.warehouse.storagePrice.schedule.twelve") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
 
