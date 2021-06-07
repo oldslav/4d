@@ -1,7 +1,8 @@
 <template lang="pug">
   q-page.q-pa-lg.bg-white
-    q-btn(color="primary" label="Шины" @click="showTiresModal()")
-    q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
+    .row.q-gutter-lg.justify-center
+      q-btn(color="primary" label="Шины" @click="showTiresModal()")
+      q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
     NewTiresTicket(v-model="tiresVisible")
     NewBikeTicket(v-model="bikeVisible")
 </template>
