@@ -23,11 +23,11 @@
           .text-medium.q-mb-sm
             | Основная информация
           .row.q-col-gutter-md
-            q-input(v-model="lastname" :label="$t('user.lastName')").col-12.col-sm-6.col-md-4
-            q-input(v-model="firstname" :label="$t('user.firstName')").col-12.col-sm-6.col-md-4
-            q-input(v-model="patronymic" :label="$t('user.patronymic')").col-12.col-sm-6.col-md-4
+            q-input(v-model="name.lastname" :label="$t('user.lastName')").col-12.col-sm-6.col-md-4
+            q-input(v-model="name.firstname" :label="$t('user.firstName')").col-12.col-sm-6.col-md-4
+            q-input(v-model="name.patronymic" :label="$t('user.patronymic')").col-12.col-sm-6.col-md-4
           q-separator.q-my-lg
-          FilePicker(v-model="passport" :label="$t('entity.files.passportCopy')" :max-files="5")
+          FilePicker(v-model="documents.passport" :label="$t('entity.files.passportCopy')" :max-files="5")
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
@@ -39,7 +39,7 @@
           .text-medium.q-mb-sm
             | Тип велосипеда
           q-option-group(
-            v-model="bikeType"
+            v-model="serviceOption.serviceTypeId"
             color="primary"
             inline
             :options="bikesOptions"
@@ -54,7 +54,7 @@
           q-list.q-mt-md
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
-                q-radio(v-model="storeOption" val="0" dense)
+                q-radio(v-model="serviceOption.storagePeriod" val="1" dense)
               template(v-if="isMobile")
                 q-item-section
                   q-item-label 1 месяц
@@ -66,7 +66,7 @@
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
-                q-radio(v-model="storeOption" val="1" dense)
+                q-radio(v-model="serviceOption.storagePeriod" val="6" dense)
               template(v-if="isMobile")
                 q-item-section
                   q-item-label 6 месяцев
@@ -78,7 +78,7 @@
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
-                q-radio(v-model="storeOption" val="2" dense)
+                q-radio(v-model="serviceOption.storagePeriod" val="12" dense)
               template(v-if="isMobile")
                 q-item-section
                   q-item-label 12 месяцев
@@ -102,15 +102,19 @@
           FormContacts(v-model="contacts")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="onSubmit()" color="primary" :label="$t('action.submit')")
+      q-inner-loading(:showing="isLoading")
+        q-spinner(size="50px" color="primary")
 </template>
 
 <script>
+  import WarehouseMixin from "components/services/warehouse/WarehouseMixin";
   import BaseModal from "components/common/BaseModal";
   import FormContacts from "components/common/form/FormContacts";
   import FilePicker from "components/common/FilePicker";
 
   export default {
     name: "NewBikeTicket",
+    mixins: [WarehouseMixin],
     components: { BaseModal, FormContacts, FilePicker },
     props: {
       value: {
@@ -120,42 +124,34 @@
     },
     data () {
       return {
-        step: 1,
-        firstname: "",
-        lastname: "",
-        patronymic: "",
-        passport: null,
-        bikeType: 0,
-        storeOption: null,
-        contacts: {
-          phone: null
+        serviceOption: {
+          serviceId: 2,
+          serviceTypeId: 4,
+          storagePeriod: null
         }
       };
     },
     computed: {
-      isMobile () {
-        return this.$q.platform.is.mobile;
-      },
       bikesOptions () {
         return [
           {
             label: this.$t("entity.services.warehouse.storagePrice.bikes.child.label"),
-            value: 0
+            value: 4
           },
           {
             label: this.$t("entity.services.warehouse.storagePrice.bikes.adult.label"),
-            value: 1
+            value: 5
           },
           {
             label: this.$t("entity.services.warehouse.storagePrice.bikes.tandem.label"),
-            value: 2
+            value: 6
           }
         ];
       },
       prices () {
-        if (this.bikeType === 1) {
+        if (this.serviceTypeId === 1) {
           return this.adultPrices;
-        } else if (this.bikeType === 2) {
+        } else if (this.serviceTypeId === 2) {
           return this.tandemPrices;
         }
         return this.childPrices;
@@ -180,13 +176,6 @@
           mid: 1000,
           long: 2000
         };
-      }
-    },
-    methods: {
-      toggleModal (value) {
-        this.$emit("input", value);
-      },
-      onSubmit () {
       }
     }
   };

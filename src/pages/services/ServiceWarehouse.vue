@@ -25,8 +25,8 @@
     .row.q-gutter-lg.justify-center
       q-btn(color="primary" label="Шины" @click="showTiresModal()")
       q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
-    NewBikeTicket(v-model="bikeVisible")
     NewTiresTicket(v-model="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
+    NewBikeTicket(v-model="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
 </template>
 
 <script>
