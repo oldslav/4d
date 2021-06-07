@@ -13,7 +13,7 @@ const mutations: MutationTree<any> = {
 
 const actions: ActionTree<any, any> = {
   [GET_REFERENCES] ({ commit }) {
-    const type = ["docTypes", "roles", "docTypes", "neighborTypes", "rentStatuses", "requestStatuses"].toString();
+    const type = ["docTypes", "roles", "warehouseServices", "neighborTypes", "rentStatuses", "requestStatuses"].toString();
     return ReferencesService.getReferences(type)
       .then(({ data }) => {
         commit(SET_STATE, data);
