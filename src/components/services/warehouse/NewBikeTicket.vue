@@ -32,21 +32,20 @@
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
-          title="Тип хранения"
+          title="Тип аренды"
           :done="step > 2"
           :error="!optionsDone && step > 2"
           :name="2"
           icon="pedal_bike"
         )
           .text-medium.q-mb-sm
-            | {{ $t("entity.services.warehouse.radius") }}
+            | {{ $t("entity.services.warehouse.bikeType") }}
           q-option-group(
             v-model="serviceOption.serviceTypeId"
             color="primary"
             inline
-            :options="tiresOptions"
-            dense
-          ).q-mt-md
+            :options="bikesOptions"
+          )
           .text-medium.q-mb-sm.q-mt-md
             | {{ $t("entity.services.warehouse.storageTypes.title") }}
           .text-small
@@ -56,44 +55,38 @@
           q-list.q-mt-md
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
-                q-radio(v-model="serviceOption.storagePeriod" :val="1" dense)
+                q-radio(v-model="serviceOption.storagePeriod" val="1" dense)
               template(v-if="isMobile")
                 q-item-section
-                  q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.short.label") }}
+                  q-item-label {{ $t("entity.services.warehouse.month.one") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
               template(v-else)
                 q-item-section
-                  q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.short.label") }}
+                  q-item-label {{ $t("entity.services.warehouse.month.one") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.short}) }}
-
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
-                q-radio(v-model="serviceOption.storagePeriod" :val="6" dense)
+                q-radio(v-model="serviceOption.storagePeriod" val="6" dense)
               template(v-if="isMobile")
                 q-item-section
-                  q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.mid.label") }}
-                  q-item-label(caption) {{ $t("entity.services.warehouse.storagePrice.schedule.six") }}
+                  q-item-label {{ $t("entity.services.warehouse.month.six") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
               template(v-else)
                 q-item-section
-                  q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.mid.label") }}
-                  q-item-label(caption) {{ $t("entity.services.warehouse.storagePrice.schedule.six") }}
+                  q-item-label {{ $t("entity.services.warehouse.month.six") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.mid}) }}
-
             q-item(tag="label" v-ripple).q-px-none
               q-item-section(avatar)
-                q-radio(v-model="serviceOption.storagePeriod" :val="12" dense)
+                q-radio(v-model="serviceOption.storagePeriod" val="12" dense)
               template(v-if="isMobile")
                 q-item-section
-                  q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.long.label") }}
-                  q-item-label(caption) {{ $t("entity.services.warehouse.storagePrice.schedule.twelve") }}
+                  q-item-label {{ $t("entity.services.warehouse.month.twelve") }}
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
               template(v-else)
                 q-item-section
-                  q-item-label {{ $t("entity.services.warehouse.storagePrice.tires.long.label") }}
-                  q-item-label(caption) {{ $t("entity.services.warehouse.storagePrice.schedule.twelve") }}
+                  q-item-label {{ $t("entity.services.warehouse.month.twelve") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
 
@@ -118,13 +111,13 @@
 <script>
   import WarehouseTicketMixin from "components/services/warehouse/WarehouseTicketMixin";
   import BaseModal from "components/common/BaseModal";
-  import FilePicker from "components/common/FilePicker";
   import FormContacts from "components/common/form/FormContacts";
+  import FilePicker from "components/common/FilePicker";
 
   export default {
-    name: "NewTiresTicket",
+    name: "NewBikeTicket",
     mixins: [WarehouseTicketMixin],
-    components: { FilePicker, BaseModal, FormContacts },
+    components: { BaseModal, FormContacts, FilePicker },
     props: {
       value: {
         type: Boolean,
@@ -134,56 +127,56 @@
     data () {
       return {
         serviceOption: {
-          serviceId: 1,
-          serviceTypeId: 1,
+          serviceId: 2,
+          serviceTypeId: 4,
           storagePeriod: null
         }
       };
     },
     computed: {
-      tiresOptions () {
+      bikesOptions () {
         return [
           {
-            label: "R10 - R14",
-            value: 1
+            label: this.$t("entity.services.warehouse.storagePrice.bikes.child.label"),
+            value: 4
           },
           {
-            label: "R15 - R17",
-            value: 2
+            label: this.$t("entity.services.warehouse.storagePrice.bikes.adult.label"),
+            value: 5
           },
           {
-            label: "R18+",
-            value: 3
+            label: this.$t("entity.services.warehouse.storagePrice.bikes.tandem.label"),
+            value: 6
           }
         ];
       },
       prices () {
-        if (this.serviceTypeId === 2) {
-          return this.mediumPrices;
-        } else if (this.serviceTypeId === 3) {
-          return this.largePrices;
+        if (this.serviceTypeId === 1) {
+          return this.adultPrices;
+        } else if (this.serviceTypeId === 2) {
+          return this.tandemPrices;
         }
-        return this.smallPrices;
+        return this.childPrices;
       },
-      smallPrices () {
+      childPrices () {
+        return {
+          short: 130,
+          mid: 650,
+          long: 1300
+        };
+      },
+      adultPrices () {
+        return {
+          short: 160,
+          mid: 800,
+          long: 1600
+        };
+      },
+      tandemPrices () {
         return {
           short: 200,
           mid: 1000,
           long: 2000
-        };
-      },
-      mediumPrices () {
-        return {
-          short: 250,
-          mid: 1250,
-          long: 2500
-        };
-      },
-      largePrices () {
-        return {
-          short: 300,
-          mid: 1500,
-          long: 3000
         };
       }
     }

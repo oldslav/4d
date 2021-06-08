@@ -189,6 +189,7 @@
       "veteran": "Veteran"
     },
     "services": {
+      "mainInfo": "Main information",
       "title": "Services",
       "living": "Residential real estate",
       "commerce": "Commercial real estate",
@@ -235,8 +236,14 @@
         }
       },
       "warehouse": {
+        "month": {
+          "one": "1 month",
+          "six": "6 months",
+          "twelve": "12 months"
+        },
         "title": "Warehouse",
-        "radius": "Радиус колеса",
+        "radius": "Tire radius",
+        "bikeType": "Bicycle type",
         "tabs": {
           "tires": "Tires warehouse",
           "bicycles": "Bicycles warehouse"
