@@ -22,6 +22,10 @@
         "email": "Please enter valid email",
         "confirmPassword": "Password mismatch",
         "letters": "Only letters allowed"
+      },
+      "response": {
+        "oops": "Упс! Произошла ошибка",
+        "tryLater": "Пожалуйста, повторите попытку позже"
       }
     },
     "theme": "Theme",
@@ -104,6 +108,15 @@
         "title": "You don't have any applications yet",
         "subtitle1": "You can go to the section ",
         "subtitle2": " and get acquainted with the opportunities and offers of Innopolis"
+      },
+      "messages": {
+        "create": {
+          "success": {
+            "title": "Спасибо! Ваша заявка успешно отправлена",
+            "label": "В ближайшее время с вами свяжется представитель фонда развития города Иннополис для уточнения деталей.",
+            "caption": "Отследить статус заявки можно в личном кабинете"
+          }
+        }
       }
     },
     "firstName": "Firstname",
@@ -158,6 +171,7 @@
     "continue": "Continue",
     "create": "Create",
     "pay": "Pay",
+    "toProfile": "Перейти в личный кабинет",
     "select": {
       "building": "Select a building",
       "parking": {
@@ -175,6 +189,7 @@
       "veteran": "Veteran"
     },
     "services": {
+      "mainInfo": "Main information",
       "title": "Services",
       "living": "Residential real estate",
       "commerce": "Commercial real estate",
@@ -220,7 +235,80 @@
           }
         }
       },
-      "warehouse": "Warehouse",
+      "warehouse": {
+        "month": {
+          "one": "1 month",
+          "six": "6 months",
+          "twelve": "12 months"
+        },
+        "title": "Warehouse",
+        "radius": "Tire radius",
+        "bikeType": "Bicycle type",
+        "tabs": {
+          "tires": "Tires warehouse",
+          "bicycles": "Bicycles warehouse"
+        },
+        "workTime": {
+          "title": "Schedule",
+          "season": {
+            "label": "Season (spring, autumn)",
+            "schedule": "9:00 - 21:00",
+            "caption": "no weekends"
+          },
+          "noSeason": {
+            "label": "Not a season (winter, summer)",
+            "schedule": "9:00 - 18:00",
+            "caption": "monday to friday"
+          }
+        },
+        "storagePrice": {
+          "dynamic": "%{price} rubles",
+          "title": "Storage price",
+          "schedule": {
+            "six": "Платеж осуществляется 1 раз в 6 месяцев",
+            "twelve": "Платеж осуществляется 1 раз в 12 месяцев"
+          },
+          "tires": {
+            "short": {
+              "label": "Store for 1 month",
+              "price": "from 200 rubles"
+            },
+            "mid": {
+              "label": "Store for 6 months",
+              "price": "from 1 000 rubles",
+              "caption": "or 166 rubles/month"
+            },
+            "long": {
+              "label": "Store for 11 months",
+              "price": "from 2 000 rubles",
+              "caption": "or 181 rubles/month"
+            }
+          },
+          "bikes": {
+            "child": {
+              "label": "Children",
+              "price": "130 rubles/month"
+            },
+            "adult": {
+              "label": "Adult",
+              "price": "160 rubles/month"
+            },
+            "tandem": {
+              "label": "Tandem",
+              "price": "200 rubles/month"
+            }
+          }
+        },
+        "storageTypes": {
+          "title": "Storage type",
+          "rack": "On a rack",
+          "bikePark": "On a bicycle parking",
+          "subtitle": {
+            "top": "Выберите один из предложенных типов хранения.",
+            "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
+          }
+        }
+      },
       "ideas": "Ideas and suggestions",
       "vacancies": "Jobs"
     },
