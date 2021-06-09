@@ -366,4 +366,13 @@
 <style lang="stylus" scoped>
   ::v-deep .q-item
     padding: 0
+  .avatar-uploadable__input
+    ::v-deep .q-field
+      width: 10rem
+    ::v-deep .q-field__control-container
+      justify-content: center
+    ::v-deep .q-field__native
+      display: none
+    .avatar-uploadable__image
+      object-fit: cover
 </style>
