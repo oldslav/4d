@@ -143,6 +143,9 @@
   height: calc(100vh - 50px)
   .nav-btns
     height: 40vh
+  .description
+    height: 10vh
+    text-align: center
 
   @media (min-width: 1921px)
     .title

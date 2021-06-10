@@ -250,7 +250,7 @@
 
       validateNames () {
         return [
-          val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
+          val => val && val.length > 0 && val.length < 50, val => val && /^[A-zА-яЁё\-]*$/.test(val)
         ];
       },
 
@@ -266,7 +266,7 @@
 
       validatePhone () {
         return [
-          val => val.length === 0 || val.length === 11
+          val => val && val.length === 11
         ];
       },
 
@@ -366,4 +366,13 @@
 <style lang="stylus" scoped>
   ::v-deep .q-item
     padding: 0
+  .avatar-uploadable__input
+    ::v-deep .q-field
+      width: 10rem
+    ::v-deep .q-field__control-container
+      justify-content: center
+    ::v-deep .q-field__native
+      display: none
+    .avatar-uploadable__image
+      object-fit: cover
 </style>
