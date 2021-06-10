@@ -21,11 +21,7 @@
           :name="1"
           icon="edit"
         )
-          .text-medium.q-mb-sm
-            | {{ $t("entity.services.mainInfo") }}
           FormName(v-model="name")
-          .text-medium.q-my-md
-            | {{ $t("entity.documents.title") }}
           FilePicker(v-model="documents.passport" :label="$t('entity.files.passportCopy')" :max-files="5")
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -103,8 +99,6 @@
           :name="3"
           icon="call"
         )
-          .text-medium.q-mb-sm
-            | {{ $t("entity.contacts.title") }}
           FormContacts(v-model="contacts")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
