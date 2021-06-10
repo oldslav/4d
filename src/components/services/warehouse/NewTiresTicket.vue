@@ -6,6 +6,7 @@
   )
     q-card.modal-container
       q-stepper(
+        keep-alive
         ref="stepper"
         v-model="step"
         color="primary"
