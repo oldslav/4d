@@ -34,9 +34,9 @@
               | {{ $t('entity.services.warehouse.workTime.noSeason.label') }}
           q-item-section.text-right
             q-item-label.text-primary
-              | {{ $t('entity.services.warehouse.workTime.season.schedule') }}
+              | {{ $t('entity.services.warehouse.workTime.noSeason.schedule') }}
             q-item-label(caption)
-              | {{ $t('entity.services.warehouse.workTime.season.caption') }}
+              | {{ $t('entity.services.warehouse.workTime.noSeason.caption') }}
       q-tab-panels(v-model="currentTab")
         q-tab-panel(name="tires")
           .text-caption.text-primary-light
