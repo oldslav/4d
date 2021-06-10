@@ -22,10 +22,7 @@
         )
           .text-medium.q-mb-sm
             | {{ $t("entity.services.mainInfo") }}
-          .row.q-col-gutter-md
-            q-input(v-model="name.lastname" :label="$t('user.lastName')").col-12.col-sm-6.col-md-4
-            q-input(v-model="name.firstname" :label="$t('user.firstName')").col-12.col-sm-6.col-md-4
-            q-input(v-model="name.patronymic" :label="$t('user.patronymic')").col-12.col-sm-6.col-md-4
+          FormName(v-model="name")
           .text-medium.q-my-md
             | {{ $t("entity.documents.title") }}
           FilePicker(v-model="documents.passport" :label="$t('entity.files.passportCopy')" :max-files="5")
@@ -113,11 +110,12 @@
   import BaseModal from "components/common/BaseModal";
   import FormContacts from "components/common/form/FormContacts";
   import FilePicker from "components/common/FilePicker";
+  import FormName from "components/common/form/FormName";
 
   export default {
     name: "NewBikeTicket",
     mixins: [WarehouseTicketMixin],
-    components: { BaseModal, FormContacts, FilePicker },
+    components: { FormName, BaseModal, FormContacts, FilePicker },
     props: {
       value: {
         type: Boolean,

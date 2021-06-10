@@ -14,8 +14,8 @@
       return {
         step: 1,
         name: {
-          firstname: "",
-          lastname: "",
+          first: "",
+          last: "",
           patronymic: ""
         },
         serviceOption: {
@@ -39,7 +39,7 @@
         return this.$q.platform.is.mobile;
       },
       mainInfoDone () {
-        return !!this.name.firstname && this.name.lastname;
+        return !!this.name.first && this.name.last;
       },
       optionsDone () {
         return !!this.serviceOption.serviceTypeId && !!this.serviceOption.storagePeriod;
@@ -62,8 +62,6 @@
         const contacts = {
           phones: [this.contacts.phone]
         }; // временно, пока не решим с контактами
-        // eslint-disable-next-line no-console
-        console.log("result", { name, documents, contacts, serviceOption });
         return this.CREATE_USER_TICKET_WAREHOUSE({ warehouse: null, name, documents, contacts, serviceOption })
           .then(() => {
             this.$emit("success");
