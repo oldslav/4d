@@ -1,8 +1,8 @@
 <template lang="pug">
   .row.q-col-gutter-md
-    q-input(v-model.trim="model.last" :rules="rules" :label="$t('user.lastName')").col-12.col-sm-6.col-md-4
-    q-input(v-model.trim="model.first" :rules="rules" :label="$t('user.firstName')").col-12.col-sm-6.col-md-4
-    q-input(v-model.trim="model.patronymic" :label="$t('user.patronymic')").col-12.col-sm-6.col-md-4
+    q-input(v-model="model.last" @input="onInput()" :rules="rules" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
+    q-input(v-model="model.first" @input="onInput()" :rules="rules" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
+    q-input(v-model="model.patronymic" @input="onInput()" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
 </template>
 
 <script>
@@ -16,8 +16,12 @@
         default: () => ({})
       }
     },
-    mounted () {
-      this.model = this.defaultModel();
+    created () {
+      const unwatch = this.$watch("value", () => {
+        this.model = this.defaultModel();
+      }, { immediate: true });
+      unwatch();
+      this.$emit("input", this.model);
     },
     data () {
       return {
@@ -42,15 +46,9 @@
           first: this.name.first || "",
           patronymic: this.name.patronymic || ""
         };
-      }
-    },
-    watch: {
-      model: {
-        deep: true,
-        immediate: true,
-        handler (val) {
-          this.$emit("input", val);
-        }
+      },
+      onInput () {
+        this.$emit("input", this.model);
       }
     }
   };
