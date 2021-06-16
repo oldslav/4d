@@ -39,7 +39,7 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
   },
   
   async [CREATE_USER_TICKET_PARKING] (_, payload) {
-    const { data } = await TicketsService.createTicketLiving(payload);
+    const { data } = await TicketsService.createTicketParking(payload);
     
     return data;
   },

@@ -39,7 +39,15 @@ export class TicketsService extends Service {
   }
 
   public static getTicketsParking (params: unknown): AxiosPromise<TicketsResponse> {
-    return this.api.get("/api/v1/services/parking/rent/request", { params });
+    return this.api.get("/api/v1/services/parking/user/tickets", { params });
+  }
+
+  public static createTicketParking (params: any): AxiosPromise<TicketsResponse> {
+    return this.api.post("/api/v1/services/parking/user/tickets", { ...params });
+  }
+
+  public static addTicketsParkingFile (id: number, file: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/parking/user/tickets/${ id }/file`, file);
   }
 
   public static getTicketsIdeas (params: any): AxiosPromise<any> {

@@ -37,8 +37,8 @@
       .col-12.col-sm-6.col-md-3
         q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number")
     .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
-      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
-      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
+      file-picker(:max-files="2" v-model="vehicleDocuments.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
+      file-picker(:max-files="2" v-model="vehicleDocuments.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
     div.text-right.q-mt-md(v-show="isChanged && !unmanaged")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
@@ -87,6 +87,10 @@
         vehicleTypes: [],
         vehicleBrands: [],
         vehicleModels: [],
+        vehicleDocuments: {
+          pts: null,
+          sts: null
+        },
         loadingTypes: false,
         loadingBrands: false,
         loadingModels: false,
