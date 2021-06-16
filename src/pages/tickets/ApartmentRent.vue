@@ -34,7 +34,7 @@
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
                   q-item(clickable v-close-popup @click="openDetails(props.row)")
@@ -189,6 +189,8 @@
       },
 
       expandRow (props) {
+        // eslint-disable-next-line no-console
+        console.log("props", props);
         const row = this.expanded.indexOf(props.key);
 
         if (row === -1) {
@@ -198,8 +200,31 @@
         }
       },
 
+      onCancel (id) {
+        this.$q.dialog({
+          title: this.$t("user.tickets.actions.cancel"),
+          message: "Вы уверены, что хотите отменить эту заявку?",
+          ok: this.$t("action.submit"),
+          cancel: this.$t("action.cancel"),
+          persistent: true
+        })
+          .onOk(() => this.cancelTicket(id));
+      },
+
       cancelTicket (id) {
-        this.deleteUserTicket(id);
+        return this.deleteUserTicket(id)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: "Заявка отменена"
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: "При отмене заявки произошла ошибка"
+            });
+          });
       },
 
       moment

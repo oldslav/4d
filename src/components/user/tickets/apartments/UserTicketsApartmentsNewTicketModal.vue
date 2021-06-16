@@ -59,9 +59,8 @@
 <script>
   import { mapActions } from "vuex";
   import {
-    ADD_USER_TICKET_FILE,
-    CREATE_USER_TICKET
-  } from "../../../../store/constants/action-constants";
+    ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
+  } from "@/store/constants/action-constants";
   import BaseInput from "../../../common/BaseInput";
   import BaseModal from "../../../common/BaseModal";
   import FilePicker from "../../../common/FilePicker";
@@ -175,9 +174,9 @@
       }
     },
     methods: {
-      ...mapActions("user/userTickets", {
-        createUserTicket: CREATE_USER_TICKET,
-        addUserTicketFile: ADD_USER_TICKET_FILE
+      ...mapActions("user/tickets/living", {
+        createUserTicket: CREATE_USER_TICKET_LIVING,
+        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING
       }),
 
       closeModal () {
@@ -203,7 +202,7 @@
 
         const { id } = await this.createUserTicket(payload);
         await this.addFiles(id);
-        this.updateModal();
+        // this.updateModal();
         this.closeModal();
       },
 
