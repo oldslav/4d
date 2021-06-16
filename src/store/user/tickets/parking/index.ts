@@ -6,7 +6,9 @@ import {
   ADD_USER_TICKET_FILE_PARKING,
   CREATE_USER_TICKET_PARKING,
   DELETE_USER_TICKET_PARKING,
-  GET_USER_TICKETS_PARKING
+  GET_USER_TICKETS_PARKING,
+  GET_USER_PARKING_BUILDINGS,
+  GET_USER_PARKING_PLACES
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
@@ -22,6 +24,18 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, IRootState> = {
+  async [GET_USER_PARKING_BUILDINGS] () {
+    const data = await TicketsService.getParkingBuildings();
+
+    return data;
+  },
+
+  async [GET_USER_PARKING_PLACES] (_, payload) {
+    const data = await TicketsService.getParkingPlaces(payload);
+
+    return data;
+  },
+
   async [GET_USER_TICKETS_PARKING] ({ state, commit }) {
     const { filters } = state;
     
@@ -39,7 +53,7 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
   },
   
   async [CREATE_USER_TICKET_PARKING] (_, payload) {
-    const { data } = await TicketsService.createTicketLiving(payload);
+    const { data } = await TicketsService.createTicketParking(payload);
     
     return data;
   },
