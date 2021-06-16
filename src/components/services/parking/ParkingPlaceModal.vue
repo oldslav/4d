@@ -10,7 +10,7 @@
       q-card-section
         BaseSelect(
           v-model="parkingPlace"
-          :options="parkingPlaces"
+          :options="parkingPlacesID"
           :label="$t('action.select.parking.lot')"
           @input="onParkingPlaceChange"
           outlined
@@ -28,12 +28,15 @@
       value: {
         type: Boolean,
         required: true
+      },
+      parkingPlacesID: {
+        type: Array,
+        required: true
       }
     },
     data () {
       return {
-        parkingPlace: null,
-        parkingPlaces: [1, 2, 3]
+        parkingPlace: null
       };
     },
     methods: {

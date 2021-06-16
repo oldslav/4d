@@ -1,5 +1,7 @@
 <template lang="pug">
   q-page.q-pa-lg.bg-white
+    ModalSuccess(v-model="isTicketSuccess")
+    ModalFail(v-model="isTicketFail")
     .q-gutter-md
       BaseSelect(
         v-model="rentType"
@@ -10,7 +12,7 @@
       BaseSelect(
         v-model="buildingId"
         :disable="!rentType"
-        :options="buildings"
+        :options="filteredBuildingsID"
         :label="$t('action.select.building')"
         @input="onBuildingChange"
         outlined
@@ -18,6 +20,7 @@
 
     ParkingPlaceModal(
       v-model="isParkingPlaceModal"
+      :parkingPlacesID="parkingPlacesID"
       @update="onParkingPlaceChange"
     )
     template(v-if="parkingPlaceId")
@@ -25,29 +28,43 @@
         v-model="isNewTicketModal"
         :parkingPlaceId="parkingPlaceId"
         @update="onTicketChange"
+        @success="showSuccessPopup"
+        @fail="showFailPopup"
       )
       NewGuestParkingTicket(
         v-model="isGuestTicketModal"
         :parkingPlaceId="parkingPlaceId"
         @update="onTicketChange"
+        @success="showSuccessPopup"
+        @fail="showFailPopup"
       )
       NewSocialParkingTicket(
         v-model="isSocialTicketModal"
         :parkingPlaceId="parkingPlaceId"
         @update="onTicketChange"
+        @success="showSuccessPopup"
+        @fail="showFailPopup"
       )
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import BaseSelect from "../../common/BaseSelect";
   import NewGuestParkingTicket from "./NewGuestParkingTicket";
   import NewParkingTicket from "./NewParkingTicket";
   import NewSocialParkingTicket from "./NewSocialParkingTicket";
   import ParkingPlaceModal from "./ParkingPlaceModal";
+  import ModalFail from "components/services/ModalFail";
+  import ModalSuccess from "components/services/ModalSuccess";
+  import { GET_USER_PARKING_BUILDINGS, GET_USER_PARKING_PLACES } from "@/store/constants/action-constants";
 
   export default {
     name: "ServiceParking",
-    components: { NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect },
+    components: { NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect, ModalFail, ModalSuccess },
+    async mounted () {
+      const data = await this.GET_USER_PARKING_BUILDINGS();
+      this.buildings = data.data.features;
+    },
     data () {
       return {
         isNewTicketModal: false,
@@ -56,18 +73,38 @@
         isParkingPlaceModal: false,
         buildingId: null,
         parkingPlaceId: null,
-        buildings: [1, 2, 3],
-
+        buildings: [],
+        parkingPlacesID: [],
         rentType: null,
         rentTypes: [
           "Guest",
           "Common",
           "Social"
-        ]
+        ],
+        isTicketSuccess: false,
+        isTicketFail: false
       };
     },
+    computed: {
+      filteredBuildingsID () {
+        if (this.rentType === "Social") {
+          const filteredBuildings = this.buildings.filter(building => building.properties.free > 0 && building.properties.parking_places_type === "Льготное");
+          return filteredBuildings.map(building => building.id);
+        } else {
+          const filteredBuildings = this.buildings.filter(building => building.properties.free > 0 && building.properties.parking_places_type === "Обычное");
+          return filteredBuildings.map(building => building.id);
+        }
+      }
+    },
     methods: {
-      onBuildingChange (value) {
+      ...mapActions("user/tickets/parking", [
+        GET_USER_PARKING_BUILDINGS,
+        GET_USER_PARKING_PLACES
+      ]),
+
+      async onBuildingChange (value) {
+        const parkingPlaces = await this.GET_USER_PARKING_PLACES(value);
+        this.parkingPlacesID = parkingPlaces.data.items.map(place => place.id);
         this.buildingId = value;
         this.isParkingPlaceModal = true;
       },
@@ -100,6 +137,13 @@
         if (!value) {
           this.parkingPlace = null;
         }
+      },
+
+      showSuccessPopup () {
+        this.isTicketSuccess = true;
+      },
+      showFailPopup () {
+        this.isTicketFail = true;
       }
     }
   };
