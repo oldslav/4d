@@ -1,30 +1,19 @@
 <template lang="pug">
-  q-page.q-pa-lg.bg-white
-    ModalFail(v-model="failVisible")
-    ModalSuccess(v-model="successVisible")
-    .row.q-gutter-lg.justify-center
-      q-btn(color="primary" label="Шины" @click="showTiresModal()")
-      q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
-    NewTiresTicket(v-model="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
-    NewBikeTicket(v-model="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
+  div
+    BaseMap(:data="parkingData")
+    router-view
 </template>
 
 <script>
-  import ModalFail from "components/services/ModalFail";
-  import ModalSuccess from "components/services/ModalSuccess";
-  import NewTiresTicket from "components/services/warehouse/NewTiresTicket";
-  import NewBikeTicket from "components/services/warehouse/NewBikeTicket";
   import BaseMap from "../../components/common/BaseMap";
-
   export default {
-    name: "ServiceWarehouse",
-    components: { BaseMap, NewTiresTicket, NewBikeTicket, ModalFail, ModalSuccess },
+    name: "BaseService",
+    components: { BaseMap },
+    created () {
+      this.prepareParkingData();
+    },
     data () {
       return {
-        tiresVisible: false,
-        bikeVisible: false,
-        successVisible: false,
-        failVisible: false,
         parkingData: null
       };
     },
@@ -842,24 +831,11 @@
             return i;
           })
         };
-      },
-
-      showTiresModal () {
-        this.tiresVisible = true;
-      },
-      showBikeModal () {
-        this.bikeVisible = true;
-      },
-      showSuccessPopup () {
-        this.successVisible = true;
-      },
-      showFailPopup () {
-        this.failVisible = true;
       }
     }
   };
 </script>
 
-<style lang="stylus">
+<style scoped>
 
 </style>

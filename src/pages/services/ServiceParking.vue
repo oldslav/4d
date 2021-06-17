@@ -1,31 +1,70 @@
 <template lang="pug">
-  q-page.q-pa-lg.bg-white
-    ModalFail(v-model="failVisible")
-    ModalSuccess(v-model="successVisible")
-    .row.q-gutter-lg.justify-center
-      q-btn(color="primary" label="Шины" @click="showTiresModal()")
-      q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
-    NewTiresTicket(v-model="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
-    NewBikeTicket(v-model="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
+  q-page.bg-white.full-height
+    //.q-gutter-md
+    //  BaseSelect(
+    //    v-model="rentType"
+    //    :options="rentTypes"
+    //    :label="$t('action.select.parking.type')"
+    //    outlined
+    //  )
+    //  BaseSelect(
+    //    v-model="buildingId"
+    //    :disable="!rentType"
+    //    :options="buildings"
+    //    :label="$t('action.select.building')"
+    //    @input="onBuildingChange"
+    //    outlined
+    //  )
+
+    ParkingPlaceModal(
+      v-model="isParkingPlaceModal"
+      @update="onParkingPlaceChange"
+    )
+    template(v-if="parkingPlaceId")
+      NewParkingTicket(
+        v-model="isNewTicketModal"
+        :parkingPlaceId="parkingPlaceId"
+        @update="onTicketChange"
+      )
+      NewGuestParkingTicket(
+        v-model="isGuestTicketModal"
+        :parkingPlaceId="parkingPlaceId"
+        @update="onTicketChange"
+      )
+      NewSocialParkingTicket(
+        v-model="isSocialTicketModal"
+        :parkingPlaceId="parkingPlaceId"
+        @update="onTicketChange"
+      )
 </template>
 
 <script>
-  import ModalFail from "components/services/ModalFail";
-  import ModalSuccess from "components/services/ModalSuccess";
-  import NewTiresTicket from "components/services/warehouse/NewTiresTicket";
-  import NewBikeTicket from "components/services/warehouse/NewBikeTicket";
   import BaseMap from "../../components/common/BaseMap";
+  import BaseSelect from "../../components/common/BaseSelect";
+  import NewGuestParkingTicket from "../../components/services/parking/NewGuestParkingTicket";
+  import NewParkingTicket from "../../components/services/parking/NewParkingTicket";
+  import NewSocialParkingTicket from "../../components/services/parking/NewSocialParkingTicket";
+  import ParkingPlaceModal from "../../components/services/parking/ParkingPlaceModal";
 
   export default {
-    name: "ServiceWarehouse",
-    components: { BaseMap, NewTiresTicket, NewBikeTicket, ModalFail, ModalSuccess },
+    name: "ServiceParking",
+    components: { BaseMap, NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect },
     data () {
       return {
-        tiresVisible: false,
-        bikeVisible: false,
-        successVisible: false,
-        failVisible: false,
-        parkingData: null
+        isNewTicketModal: false,
+        isGuestTicketModal: false,
+        isSocialTicketModal: false,
+        isParkingPlaceModal: false,
+        buildingId: null,
+        parkingPlaceId: null,
+        buildings: [1, 2, 3],
+        parkingData: null,
+        rentType: null,
+        rentTypes: [
+          "Guest",
+          "Common",
+          "Social"
+        ]
       };
     },
     methods: {
@@ -844,22 +883,44 @@
         };
       },
 
-      showTiresModal () {
-        this.tiresVisible = true;
+      onBuildingChange (value) {
+        this.buildingId = value;
+        this.isParkingPlaceModal = true;
       },
-      showBikeModal () {
-        this.bikeVisible = true;
+
+      onParkingPlaceChange (value) {
+        this.parkingPlaceId = value;
+        this.isParkingPlaceModal = false;
+
+        if (this.rentType === "Common") {
+          this.isNewTicketModal = Boolean(value);
+        } else if (this.rentType === "Guest") {
+          this.isGuestTicketModal = Boolean(value);
+        } else {
+          this.isSocialTicketModal = Boolean(value);
+        }
       },
-      showSuccessPopup () {
-        this.successVisible = true;
+
+      onTicketChange (value) {
+        if (value) {
+          this.buildingId = null;
+          this.parkingPlaceId = null;
+          this.isParkingPlaceModal = false;
+          this.isNewTicketModal = false;
+        } else {
+          this.isParkingPlaceModal = true;
+        }
       },
-      showFailPopup () {
-        this.failVisible = true;
+
+      toggleTicketModal (value) {
+        if (!value) {
+          this.parkingPlace = null;
+        }
       }
     }
   };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 </style>

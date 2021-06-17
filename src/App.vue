@@ -3,7 +3,7 @@
     q-layout(view="hHh Lpr lFf")
       template(v-if="isMobile")
         q-drawer(
-          v-show="meta.asideLeft"
+          v-show="isComponentPassed('asideLeft')"
           :width="300"
           :breakpoint="500"
           overlay
@@ -25,10 +25,10 @@
                   color="dark" icon-color="yellow" keep-color size="md" dense
                 )
 
-        q-drawer(:value="meta.asideRight" side="right" elevated)
+        q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideRight")
-        q-page-container(:value="meta.content")
+        q-page-container(:value="isComponentPassed('default')")
           transition(name="fade" mode="out-in")
             router-view
         q-footer(:value="meta.toolbar" elevated)
@@ -39,13 +39,13 @@
         q-header(:value="meta.toolbar" elevated)
           transition(name="fade" mode="out-in")
             BaseToolbar
-        q-drawer(:value="meta.asideLeft" side="left" :width="400" elevated)
+        q-drawer(:value="isComponentPassed('asideLeft')" side="left" :width="400" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideLeft")
-        q-drawer(:value="meta.asideRight" side="right" elevated)
+        q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideRight")
-        q-page-container(:value="meta.content")
+        q-page-container(:value="isComponentPassed('default')")
           transition(name="fade" mode="out-in")
             router-view
 
@@ -98,6 +98,10 @@
         return this.$route.meta;
       },
 
+      components () {
+        return this.$route.matched[0].components;
+      },
+
       isMobile () {
         return this.$q.platform.is.mobile;
       },
@@ -141,7 +145,12 @@
       ...mapActions([
         GET_ACCOUNT
       ]),
-      ...mapActions("references", [GET_REFERENCES])
+
+      ...mapActions("references", [GET_REFERENCES]),
+
+      isComponentPassed (viewName) {
+        return Boolean(this.components[viewName]);
+      }
     }
   };
 </script>
