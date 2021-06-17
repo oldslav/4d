@@ -24,7 +24,7 @@
             BaseInput(v-model="name.last" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
             BaseInput(v-model="name.first" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
             BaseInput(v-model="name.patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
-          FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
+          FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passportCopy')").q-mt-sm
           FilePicker(v-model="documents.snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
           FilePicker(v-model="documents.social" :label="$t('entity.files.social')").q-mt-sm
 
@@ -129,6 +129,7 @@
         },
         documents: {
           social: null,
+          passport: null,
           snils: null
         },
         contacts: {
