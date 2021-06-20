@@ -28,8 +28,9 @@
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ props.row.created | fromNow }}
           q-td(key="status" :props="props" @click="expandRow(props)")
-            | {{ props.row.status.description }}
-            BaseStatus(:value="props.row.status.id")
+            // | {{ props.row.status.description }}
+            // BaseStatus(:value="props.row.status.id")
+            ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
               q-menu
@@ -55,13 +56,14 @@
                 :done="props.row.status.id > 1"
                 :name="1"
               )
-                UserTicketsApartmentsStepReceived
+                UserTicketsApartmentsStepDraft(@send="sendOnApproval(props.row.id)")
               q-step(
                 title="В работе"
                 :done="props.row.status.id > 2"
                 :name="2"
               )
-                UserTicketsApartmentsStepApproved
+                UserTicketsApartmentsStepReceived
+                //UserTicketsApartmentsStepApproved
               q-step(
                 title="Действие договора"
                 :done="props.row.status.id > 3"
@@ -84,7 +86,12 @@
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
   import UserTicketsApartmentsStepDraft from "components/user/tickets/apartments/UserTicketsApartmentsStepDraft";
   import UserTicketsApartmentsStepReceived from "components/user/tickets/apartments/UserTicketsApartmentsStepReceived";
-  import { DELETE_USER_TICKET_LIVING, GET_USER_TICKETS_LIVING } from "../../store/constants/action-constants";
+  import {
+    REQUEST_APPROVAL_LIVING,
+    DELETE_USER_TICKET_LIVING,
+    GET_USER_TICKETS_LIVING
+  } from "../../store/constants/action-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
 
   export default {
     name: "ApartmentRent",
@@ -92,6 +99,7 @@
       UserTicketsApartmentsStepReceived,
       UserTicketsApartmentsStepDraft,
       BaseStatus,
+      ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       BaseTable
     },
@@ -180,7 +188,8 @@
     methods: {
       ...mapActions("user/tickets/living", {
         getUserTickets: GET_USER_TICKETS_LIVING,
-        deleteUserTicket: DELETE_USER_TICKET_LIVING
+        deleteUserTicket: DELETE_USER_TICKET_LIVING,
+        requestApproval: REQUEST_APPROVAL_LIVING
       }),
 
       openDetails (data) {
@@ -188,9 +197,25 @@
         this.isModalVisible = true;
       },
 
+      globalStatus (id) {
+        const inWork = [3, 5, 6, 7, 10, 11, 12];
+        const complete = [9, 4];
+        if (inWork.includes(id)) {
+          return 2;
+        }
+        if (complete.includes(id)) {
+          return 4;
+        }
+        if (id === 2) {
+          return 1;
+        }
+        if (id === 8) {
+          return 3;
+        }
+        return 0;
+      },
+
       expandRow (props) {
-        // eslint-disable-next-line no-console
-        console.log("props", props);
         const row = this.expanded.indexOf(props.key);
 
         if (row === -1) {
@@ -225,6 +250,10 @@
               message: "При отмене заявки произошла ошибка"
             });
           });
+      },
+
+      sendOnApproval (id) {
+        id && this.requestApproval(id);
       },
 
       moment

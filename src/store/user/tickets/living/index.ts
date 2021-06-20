@@ -3,6 +3,7 @@ import { IRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
+  REQUEST_APPROVAL_LIVING,
   ADD_USER_TICKET_FILE_LIVING,
   CREATE_USER_TICKET_LIVING,
   DELETE_USER_TICKET_LIVING,
@@ -24,28 +25,33 @@ const mutations: MutationTree<IUserTicketsState> = {
 const actions: ActionTree<IUserTicketsState, IRootState> = {
   async [GET_USER_TICKETS_LIVING] ({ state, commit }) {
     const { filters } = state;
-    
+
     const { data } = await TicketsService.getTicketsLiving({
       filters
     });
-    
+
     commit(SET_USER_TICKETS, data);
   },
-  
+
   async [DELETE_USER_TICKET_LIVING] ({ dispatch }, payload) {
     await TicketsService.deleteTicketLiving(payload);
-    
+
     dispatch(GET_USER_TICKETS_LIVING);
   },
-  
+
   async [CREATE_USER_TICKET_LIVING] (_, payload) {
     const { data } = await TicketsService.createTicketLiving(payload);
-    
+
     return data;
   },
-  
+
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
     await TicketsService.addTicketLivingFile(id, payload);
+  },
+
+  [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {
+    return TicketsService.requestApprovalLiving(id)
+      .then(() => dispatch(GET_USER_TICKETS_LIVING));
   }
 };
 

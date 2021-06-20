@@ -38,6 +38,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
   }
 
+  public static requestApprovalLiving (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/send_on_approval`);
+  }
+
   public static getTicketsParking (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/parking/rent/request", { params });
   }
