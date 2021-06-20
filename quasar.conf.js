@@ -32,7 +32,8 @@ module.exports = configure(function () {
       "axios",
       "cookies",
       "notify-defaults",
-      "filters"
+      "filters",
+      "cesium"
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

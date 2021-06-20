@@ -21,12 +21,12 @@
           icon="edit"
         )
           div.row.q-col-gutter-md
-            BaseInput(v-model="lastname" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="firstname" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
-          FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
-          FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
-          FilePicker(v-model="social" :label="$t('entity.files.social')").q-mt-sm
+            BaseInput(v-model="name.last" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
+            BaseInput(v-model="name.first" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
+            BaseInput(v-model="name.patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
+          FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passportCopy')").q-mt-sm
+          FilePicker(v-model="documents.snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
+          FilePicker(v-model="documents.social" :label="$t('entity.files.social')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -37,7 +37,7 @@
           :name="2"
           icon="directions_car"
         )
-          VehicleForm(v-model="auto" unmanaged)
+          VehicleForm(v-model="vehicle" unmanaged)
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -90,12 +90,14 @@
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
   import FormContacts from "../../common/form/FormContacts";
   import VehicleForm from "../../forms/documents/VehicleForm";
   import Vehicles from "../../user/documents/Vehicles";
+  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
 
   export default {
     name: "NewSocialParkingTicket",
@@ -114,30 +116,33 @@
       return {
         step: 1,
         neighbors: {},
-        firstname: null,
-        lastname: null,
-        patronymic: null,
-        passport: null,
-        snils: null,
-        social: null,
-        auto: {
+        name: {
+          first: null,
+          last: null,
+          patronymic: null
+        },
+        vehicle: {
           type: null,
           brand: null,
           model: null,
-          number: null,
-          documents: {
-            sts: [],
-            pts: []
-          }
+          number: null
+        },
+        documents: {
+          social: null,
+          passport: null,
+          snils: null
         },
         contacts: {
           phone: null
         },
-        telegram: null,
         socialType: null
       };
     },
     computed: {
+      isLoading () {
+        return this.$store.state.wait[`user/tickets/parking/${ CREATE_USER_TICKET_PARKING }`];
+      },
+
       isMobile () {
         return this.$q.platform.is.mobile;
       },
@@ -147,20 +152,35 @@
       },
 
       isCarInfo () {
-        return !!this.firstname
-          && !!this.lastname
-          && !!this.auto;
+        return !!this.name.first
+          && !!this.name.last
+          && !!this.vehicle;
       },
 
       isUserInfo () {
-        return !!this.firstname
-          && !!this.lastname
-          && !!this.auto;
+        return !!this.name.first
+          && !!this.name.last
+          && !!this.vehicle;
       }
     },
     methods: {
+      ...mapActions("user/tickets/parking", [CREATE_USER_TICKET_PARKING]),
+
       createParkingTicket () {
-        this.updateModal(true);
+        const { parkingPlaceId, name, documents, vehicle, socialType } = this;
+        const contacts = {
+          phones: [this.contacts.phone]
+        }; // временно, пока не решим с контактами
+        return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle, contacts, personCategoryId: socialType })
+          .then(() => {
+            this.$emit("success");
+          })
+          .catch(() => {
+            this.$emit("fail");
+          })
+          .finally(() => {
+            this.updateModal(true);
+          });
       },
 
       toggleModal (value) {

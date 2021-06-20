@@ -14,6 +14,31 @@ interface DocType {
   name: string
 }
 
+export interface GeoState {
+  geoJson: GeoJsonCollection | null
+}
+
+export interface GeoJsonCollection {
+  type: string,
+  feature: GeoJsonFeature
+}
+
+export interface GeoJsonFeature {
+  type: string
+  geometry: GeoJsonFeatureGeometry
+  properties: GeoJsonFeatureProperties
+  id: number
+}
+
+export interface GeoJsonFeatureGeometry {
+  type: string
+  coordinates: Array<any>
+}
+
+export interface GeoJsonFeatureProperties {
+  [key: string]: any
+}
+
 export interface Document {
   lastModified: string,
   lastModifiedDate: Date,
