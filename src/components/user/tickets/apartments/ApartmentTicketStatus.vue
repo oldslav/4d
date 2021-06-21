@@ -18,8 +18,8 @@
     },
     computed: {
       globalStatus () {
-        const inWork = [3, 5, 6, 7, 10, 11, 12];
-        if (inWork.includes(this.value)) {
+        const inProgress = [3, 5, 6, 7, 10, 11, 12];
+        if (inProgress.includes(this.value)) {
           return {
             color: "orange",
             value: 0.5,

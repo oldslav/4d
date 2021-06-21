@@ -28,8 +28,6 @@
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ props.row.created | fromNow }}
           q-td(key="status" :props="props" @click="expandRow(props)")
-            // | {{ props.row.status.description }}
-            // BaseStatus(:value="props.row.status.id")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
@@ -44,63 +42,45 @@
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
-            q-stepper(
-              ref="stepper"
-              :value="props.row.status.id"
-              color="primary"
-              flat
-              animated
-            )
-              q-step(
-                title="Новая"
-                :done="props.row.status.id > 1"
-                :name="1"
-              )
-                UserTicketsApartmentsStepDraft(@send="sendOnApproval(props.row.id)")
-              q-step(
-                title="В работе"
-                :done="props.row.status.id > 2"
-                :name="2"
-              )
-                UserTicketsApartmentsStepReceived
-                //UserTicketsApartmentsStepApproved
-              q-step(
-                title="Действие договора"
-                :done="props.row.status.id > 3"
-                :name="3"
-              )
-              q-step(
-                title="Завершена"
-                :done="props.row.status.id > 10"
-                :name="4"
-              )
+            div.column(v-if="props.row.status.id === 1").q-pa-md
+              div.text-body1.text-wrap
+                | Для подачи заявки продолжите заполнение формы.
+              div.text-right
+                q-btn(color="primary" label="Отправить на рассмотрение" @click="sendOnApproval(props.row.id)")
+            div.column(v-if="props.row.status.id === 2").q-pa-md
+              div.text-body1.text-wrap
+                | Дождитесь рассмотрения вашей заявки
+            UserTicketsApartmentProgressState(:value="props.row.status" v-if="[6,7,3,5,11,12].includes(props.row.status.id)")
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
+              div.text-body1.text-wrap
+                | Работа над заявкой завершена
     q-inner-loading(v-else showing)
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
-  import BaseStatus from "components/common/BaseStatus";
-  import BaseTable from "components/common/BaseTable";
-  import UserTicketsApartmentsNewTicketModal
-    from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
-  import UserTicketsApartmentsStepDraft from "components/user/tickets/apartments/UserTicketsApartmentsStepDraft";
-  import UserTicketsApartmentsStepReceived from "components/user/tickets/apartments/UserTicketsApartmentsStepReceived";
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
     GET_USER_TICKETS_LIVING
   } from "@/store/constants/action-constants";
+  import BaseStatus from "components/common/BaseStatus";
+  import BaseTable from "components/common/BaseTable";
+  import UserTicketsApartmentsNewTicketModal
+    from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
+  import UserTicketsApartmentsStepReceived from "components/user/tickets/apartments/UserTicketsApartmentsStepReceived";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
 
   export default {
     name: "ApartmentRentUser",
     components: {
       UserTicketsApartmentsStepReceived,
-      UserTicketsApartmentsStepDraft,
       BaseStatus,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
+      UserTicketsApartmentProgressState,
       BaseTable
     },
     async created () {
@@ -152,33 +132,6 @@
     computed: {
       ...mapState("user/tickets/living", {
         data: state => state.data
-        // data: () => ({
-        //   items: [
-        //     {
-        //       apartment: {
-        //         address: "Address 1",
-        //         number: "1",
-        //         price: 3000,
-        //         created: new Date("2020.11.12"),
-        //         status: 5
-        //       }
-        //     },
-        //     {
-        //       apartment: {
-        //         address: "Address 2",
-        //         number: "2",
-        //         price: 55000,
-        //         created: new Date("2021.1.1"),
-        //         status: 3
-        //       }
-        //     }
-        //   ],
-        //   pagination: {
-        //     page: 1,
-        //     rowsPerPage: 1,
-        //     rowsNumber: 2
-        //   }
-        // })
       }),
 
       isLoading () {
@@ -197,27 +150,10 @@
         this.isModalVisible = true;
       },
 
-      globalStatus (id) {
-        const inWork = [3, 5, 6, 7, 10, 11, 12];
-        const complete = [9, 4];
-        if (inWork.includes(id)) {
-          return 2;
-        }
-        if (complete.includes(id)) {
-          return 4;
-        }
-        if (id === 2) {
-          return 1;
-        }
-        if (id === 8) {
-          return 3;
-        }
-        return 0;
-      },
-
       expandRow (props) {
         const row = this.expanded.indexOf(props.key);
-
+        // eslint-disable-next-line no-console
+        console.log("props,riw", props.row.status);
         if (row === -1) {
           this.expanded.push(props.key);
         } else {
