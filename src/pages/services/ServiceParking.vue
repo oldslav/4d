@@ -49,14 +49,14 @@
 
 <script>
   import { mapActions } from "vuex";
-  import BaseSelect from "../../common/BaseSelect";
-  import NewGuestParkingTicket from "./NewGuestParkingTicket";
-  import NewParkingTicket from "./NewParkingTicket";
-  import NewSocialParkingTicket from "./NewSocialParkingTicket";
-  import ParkingPlaceModal from "./ParkingPlaceModal";
-  import ModalFail from "components/services/ModalFail";
-  import ModalSuccess from "components/services/ModalSuccess";
-  import { GET_USER_PARKING_BUILDINGS, GET_USER_PARKING_PLACES } from "@/store/constants/action-constants";
+  import BaseSelect from "../../components/common/BaseSelect";
+  import NewGuestParkingTicket from "../../components/services/parking/NewGuestParkingTicket";
+  import NewParkingTicket from "../../components/services/parking/NewParkingTicket";
+  import NewSocialParkingTicket from "../../components/services/parking/NewSocialParkingTicket";
+  import ParkingPlaceModal from "../../components/services/parking/ParkingPlaceModal";
+  import ModalFail from "../../components/services/ModalFail";
+  import ModalSuccess from "../../components/services/ModalSuccess";
+  import { GET_USER_PARKING_BUILDINGS, GET_USER_PARKING_PLACES } from "../../store/constants/action-constants";
 
   export default {
     name: "ServiceParking",
