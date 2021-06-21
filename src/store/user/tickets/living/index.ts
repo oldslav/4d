@@ -7,7 +7,7 @@ import {
   ADD_USER_TICKET_FILE_LIVING,
   CREATE_USER_TICKET_LIVING,
   DELETE_USER_TICKET_LIVING,
-  GET_USER_TICKETS_LIVING
+  GET_USER_TICKETS_LIVING, GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
@@ -31,6 +31,20 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
     });
 
     commit(SET_USER_TICKETS, data);
+  },
+
+  async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {
+    const { filters } = state;
+
+    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }); // no draft
+
+    const { data } = await TicketsService.getEmployeeTicketsLiving({ filters: f });
+
+    commit(SET_USER_TICKETS, data);
+  },
+
+  [REJECT_TICKET_LIVING] (_, { id, reason }) {
+    return TicketsService.rejectTicketLiving(id, reason);
   },
 
   async [DELETE_USER_TICKET_LIVING] ({ dispatch }, payload) {
