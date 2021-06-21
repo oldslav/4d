@@ -7,7 +7,7 @@ import {
   ADD_USER_TICKET_FILE_LIVING,
   CREATE_USER_TICKET_LIVING,
   DELETE_USER_TICKET_LIVING,
-  GET_USER_TICKETS_LIVING, GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING
+  GET_USER_TICKETS_LIVING, GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING, APPROVE_TICKET_LIVING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
@@ -45,6 +45,10 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
 
   [REJECT_TICKET_LIVING] (_, { id, reason }) {
     return TicketsService.rejectTicketLiving(id, reason);
+  },
+
+  [APPROVE_TICKET_LIVING] (_, { id, payload }) {
+    return TicketsService.approveTicketLiving(id, payload);
   },
 
   async [DELETE_USER_TICKET_LIVING] ({ dispatch }, payload) {

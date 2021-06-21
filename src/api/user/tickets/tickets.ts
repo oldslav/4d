@@ -46,6 +46,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/send_on_approval`);
   }
 
+  public static approveTicketLiving (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/approve`, payload);
+  }
+
   public static rejectTicketLiving (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/reject`, reason);
   }

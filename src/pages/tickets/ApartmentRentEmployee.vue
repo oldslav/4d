@@ -31,27 +31,30 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
     q-inner-loading(v-else showing)
+    ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
   import BaseTable from "components/common/BaseTable";
   import {
+    APPROVE_TICKET_LIVING,
     GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING
   } from "@/store/constants/action-constants";
 
   export default {
     name: "ApartmentRentEmployee",
-    components: { BaseTable, ApartmentTicketStatus },
+    components: { BaseTable, ApartmentTicketStatus, ApproveTicketModal },
     async created () {
       await this.getEmployeeTickets();
-      // eslint-disable-next-line no-console
-      console.log("data", this.data);
     },
     data () {
       return {
+        approvedId: null,
+        showApprove: false,
         rejectionReason: "",
         expanded: [],
         columns: [
@@ -111,15 +114,14 @@
     methods: {
       ...mapActions("user/tickets/living", {
         getEmployeeTickets: GET_EMPLOYEE_TICKETS_LIVING,
-        REJECT_TICKET_LIVING
+        REJECT_TICKET_LIVING,
+        APPROVE_TICKET_LIVING
       }),
       moment,
       onReject (id) {
-        // eslint-disable-next-line no-console
-        console.log("on reject", id);
         this.$q.dialog({
-          title: this.$t("user.tickets.actions.cancel"),
-          message: "Вы уверены, что хотите отклонить эту заявку?",
+          title: this.$t("Отклонение заявки"),
+          message: "Статус заявки обновится автоматически.",
           ok: this.$t("action.submit"),
           cancel: this.$t("action.cancel"),
           prompt: {
@@ -130,7 +132,7 @@
             outlined: true,
             stackLabel: true
           },
-          persistent: true
+          persistent: false
         })
           .onOk((reason) => this.rejectTicket(id, reason));
       },
@@ -148,14 +150,30 @@
               type: "negative",
               message: "При отклонении заявки произошла ошибка"
             });
-          })
-          .finally(() => {
-            this.rejectionReason = "";
           });
       },
       onApprove (id) {
-        // eslint-disable-next-line no-console
-        console.log("on approve", id);
+        this.approvedId = id;
+        this.showApprove = true;
+      },
+      approveTicket (payload) {
+        return this.APPROVE_TICKET_LIVING({ id: this.approvedId, payload })
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: "Заявка одобрена"
+            });
+            return this.getEmployeeTickets();
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: "При одобрении заявки произошла ошибка"
+            });
+          })
+          .finally(() => {
+            this.approvedId = null;
+          });
       },
       showDetails (id) {
         // eslint-disable-next-line no-console
