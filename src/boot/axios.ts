@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
-import { IRootState } from "../store/types/root";
+import { TRootState } from "../store/types/root";
 import qs from "qs";
 import { ACCESS_TOKEN_COOKIE, FETCH_ACCESS_TOKEN } from "src/store/constants/action-constants";
 import { LocalStorage } from "quasar";
@@ -70,7 +70,7 @@ const requestInterceptor = (store: Store<any>) => {
 };
 
 export default boot(({ app }) => {
-  axios.interceptors.request.use(requestInterceptor(app.store as Store<IRootState>));
+  axios.interceptors.request.use(requestInterceptor(app.store as Store<TRootState>));
   if (app.store) {
     app.store.$local = LocalStorage;
   }

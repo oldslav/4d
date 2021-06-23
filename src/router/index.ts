@@ -1,7 +1,7 @@
 import { route } from "quasar/wrappers";
 import VueRouter from "vue-router";
 import { Store } from "vuex";
-import { IRootState } from "../store/types/root";
+import { TRootState } from "../store/types/root";
 import routes from "./routes";
 
 /*
@@ -9,7 +9,7 @@ import routes from "./routes";
  * directly export the Router instantiation
  */
 
-export default route<Store<IRootState>>(function ({ store, Vue }) {
+export default route<Store<TRootState>>(function ({ store, Vue }) {
   Vue.use(VueRouter);
 
   const Router = new VueRouter({

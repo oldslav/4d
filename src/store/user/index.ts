@@ -1,5 +1,5 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import tickets from "src/store/user/tickets";
 import neighbors from "src/store/user/neighbors";
 import documents from "src/store/user/documents";
@@ -37,7 +37,7 @@ const mutations: MutationTree<IUserState> = {
   [SET_EMPTY]: state => Object.assign(state, initialState())
 };
 
-const actions: ActionTree<IUserState, IRootState> = {
+const actions: ActionTree<IUserState, TRootState> = {
   async [USER_LOGIN] ({ commit }) {
     const payload = new FormData();
 
@@ -51,7 +51,7 @@ const actions: ActionTree<IUserState, IRootState> = {
   }
 };
 
-const user: Module<IUserState, IRootState> = {
+const user: Module<IUserState, TRootState> = {
   namespaced: true,
   state,
   mutations,

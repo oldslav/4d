@@ -1,14 +1,12 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
   ADD_USER_TICKET_FILE_PARKING,
   CREATE_USER_TICKET_PARKING,
   DELETE_USER_TICKET_PARKING,
-  GET_USER_TICKETS_PARKING,
-  GET_USER_PARKING_BUILDINGS,
-  GET_USER_PARKING_PLACES
+  GET_USER_TICKETS_PARKING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
@@ -23,19 +21,7 @@ const mutations: MutationTree<IUserTicketsState> = {
   }
 };
 
-const actions: ActionTree<IUserTicketsState, IRootState> = {
-  async [GET_USER_PARKING_BUILDINGS] () {
-    const data = await TicketsService.getParkingBuildings();
-
-    return data;
-  },
-
-  async [GET_USER_PARKING_PLACES] (_, payload) {
-    const data = await TicketsService.getParkingPlaces(payload);
-
-    return data;
-  },
-
+const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_PARKING] ({ state, commit }) {
     const { filters } = state;
     
@@ -63,7 +49,7 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
   }
 };
 
-const parking: Module<IUserTicketsState, IRootState> = {
+const parking: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,

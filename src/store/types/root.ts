@@ -1,3 +1,1 @@
-export interface IRootState {
-
-}
+export type TRootState = any;

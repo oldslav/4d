@@ -195,6 +195,7 @@
       "commerce": "Commercial real estate",
       "parking": {
         "title": "Parking lots",
+        "parkingType": "Parking type",
         "types": {
           "common": "Parking",
           "social": "Social parking",
@@ -230,6 +231,14 @@
             "description": "",
             "price": {
               "title": "100 rubles per day",
+              "description": ""
+            }
+          },
+          "social": {
+            "title": "Rent price",
+            "description": "",
+            "price": {
+              "title": "Free",
               "description": ""
             }
           }

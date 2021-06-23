@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import {
   ACCOUNT_CREATE,
   ACCOUNT_LOGIN,
@@ -78,7 +78,7 @@ const mutations: MutationTree<IAccountState> = {
   [SET_EMPTY]: state => Object.assign(state, initialState())
 };
 
-const actions: ActionTree<IAccountState, IRootState> = {
+const actions: ActionTree<IAccountState, TRootState> = {
   [ACCOUNT_CREATE] (ctx, payload) {
     return AuthService.registration(payload);
   },
@@ -111,7 +111,7 @@ const actions: ActionTree<IAccountState, IRootState> = {
     commit(SET_ACCOUNT, data);
   },
 
-  async getAccessToken ({ getters, dispatch }: ActionContext<IAccountState, IRootState>) {
+  async getAccessToken ({ getters, dispatch }: ActionContext<IAccountState, TRootState>) {
     if (getters.getAccessToken !== null && getters.getAccessToken.expiresIn > Date.now() + 3600) {
       return getters.getAccessToken.token;
     }
@@ -124,7 +124,7 @@ const actions: ActionTree<IAccountState, IRootState> = {
     }
   },
 
-  async [FETCH_ACCESS_TOKEN] ({ commit }: ActionContext<IAccountState, IRootState>) {
+  async [FETCH_ACCESS_TOKEN] ({ commit }: ActionContext<IAccountState, TRootState>) {
     const refreshToken = this.$cookies.get(REFRESH_TOKEN_COOKIE);
     const accessToken = this.$cookies.get(ACCESS_TOKEN_COOKIE);
 
@@ -152,7 +152,7 @@ const actions: ActionTree<IAccountState, IRootState> = {
   }
 };
 
-const getters: GetterTree<IAccountState, IRootState> = {
+const getters: GetterTree<IAccountState, TRootState> = {
   getAccessToken (state: IAccountState) {
     return state.accessToken;
   },
@@ -194,7 +194,7 @@ const getters: GetterTree<IAccountState, IRootState> = {
   }
 };
 
-const account: Module<IAccountState, IRootState> = {
+const account: Module<IAccountState, TRootState> = {
   state,
   mutations,
   actions,
