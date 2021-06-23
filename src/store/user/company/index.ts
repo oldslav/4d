@@ -6,7 +6,7 @@ import {
   SET_COMPANY_LOGO
 } from "src/store/constants/mutation-constants";
 import { ICompanyState } from "src/store/types/user/company";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import {
   GET_COMPANY,
   UPDATE_COMPANY_BANK,
@@ -66,7 +66,7 @@ const mutations: MutationTree<ICompanyState> = {
   }
 };
 
-const actions: ActionTree<ICompanyState, IRootState> = {
+const actions: ActionTree<ICompanyState, TRootState> = {
   [GET_COMPANY] () {
     return UserCompanyService.getCompany()
       .then(() => {
@@ -101,7 +101,7 @@ const actions: ActionTree<ICompanyState, IRootState> = {
   }
 };
 
-const getters: GetterTree<ICompanyState, IRootState> = {
+const getters: GetterTree<ICompanyState, TRootState> = {
   getCompanyId (state) {
     return state.id;
   },
@@ -116,7 +116,7 @@ const getters: GetterTree<ICompanyState, IRootState> = {
   }
 };
 
-const company: Module<ICompanyState, IRootState> = {
+const company: Module<ICompanyState, TRootState> = {
   namespaced: true,
   state,
   mutations,

@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { IVehiclesState } from "src/store/types/user/vehicles";
 import {
   CREATE_USER_VEHICLE,
@@ -28,17 +28,17 @@ const mutations: MutationTree<IVehiclesState> = {
   }
 };
 
-const actions: ActionTree<IVehiclesState, IRootState> = {
+const actions: ActionTree<IVehiclesState, TRootState> = {
   getVehicleTypes () {
     return DictionariesService.getVehicleTypes();
   },
-  getVehicleBrands (ctx: ActionContext<IRootState, IRootState>, typeId) {
+  getVehicleBrands (ctx: ActionContext<TRootState, TRootState>, typeId) {
     return DictionariesService.getVehicleBrands(typeId);
   },
-  getVehicleModels (ctx: ActionContext<IRootState, IRootState>, { typeId, brandId }) {
+  getVehicleModels (ctx: ActionContext<TRootState, TRootState>, { typeId, brandId }) {
     return DictionariesService.getVehicleModels(typeId, brandId);
   },
-  [CREATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, IRootState>, vehicle) {
+  [CREATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, TRootState>, vehicle) {
     const { documents, ...payload } = vehicle;
     return UserVehiclesService.createVehicle(payload)
       .then(({ data }) => {
@@ -47,7 +47,7 @@ const actions: ActionTree<IVehiclesState, IRootState> = {
       })
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [UPDATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, IRootState>, vehicle) {
+  [UPDATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, TRootState>, vehicle) {
     const { documents, ...payload } = vehicle;
     return UserVehiclesService.updateVehicle(payload)
       .then(({ data }) => {
@@ -56,7 +56,7 @@ const actions: ActionTree<IVehiclesState, IRootState> = {
       })
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [DELETE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, IRootState>, id) {
+  [DELETE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, TRootState>, id) {
     return UserVehiclesService.deleteVehicle(id)
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
@@ -110,13 +110,13 @@ const actions: ActionTree<IVehiclesState, IRootState> = {
   }
 };
 
-const getters: GetterTree<IVehiclesState, IRootState> = {
+const getters: GetterTree<IVehiclesState, TRootState> = {
   getVehicles (state: IVehiclesState) {
     return state.items;
   }
 };
 
-const vehicles: Module<IVehiclesState, IRootState> = {
+const vehicles: Module<IVehiclesState, TRootState> = {
   namespaced: true,
   state,
   mutations,

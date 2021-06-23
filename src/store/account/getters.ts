@@ -1,9 +1,9 @@
 import { GetterTree } from "vuex";
 
-import { IRootState } from "../types/root";
+import { TRootState } from "../types/root";
 import { IAccountState } from "./state";
 
-const getters: GetterTree<IAccountState, IRootState> = {
+const getters: GetterTree<IAccountState, TRootState> = {
   getAccessToken (state: IAccountState) {
     return state.accessToken;
   },
