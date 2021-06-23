@@ -128,7 +128,7 @@
           number: null
         },
         contacts: {
-          phone: null
+          phones: []
         },
         telegram: null,
         isGuestCard: null,
@@ -172,10 +172,7 @@
       moment,
 
       createParkingTicket () {
-        const { parkingPlaceId, name, documents, vehicle, isGuestCard, period } = this;
-        const contacts = {
-          phones: [this.contacts.phone]
-        }; // временно, пока не решим с контактами
+        const { parkingPlaceId, name, documents, vehicle, isGuestCard, period, contacts } = this;
         return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle, contacts, guestCard: isGuestCard, startDate: period.from, endDate: period.to })
           .then(() => {
             this.$emit("success");

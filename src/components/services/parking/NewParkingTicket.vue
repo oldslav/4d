@@ -158,7 +158,7 @@
           snils: null
         },
         contacts: {
-          phone: null
+          phones: []
         },
         rentOption: null
       };
@@ -192,10 +192,7 @@
       ...mapActions("user/tickets/parking", [CREATE_USER_TICKET_PARKING]),
 
       createParkingTicket () {
-        const { parkingPlaceId, name, documents, vehicle, rentOption } = this;
-        const contacts = {
-          phones: [this.contacts.phone]
-        }; // временно, пока не решим с контактами
+        const { parkingPlaceId, name, documents, vehicle, rentOption, contacts } = this;
         return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle, contacts, priceId: rentOption })
           .then(() => {
             this.$emit("success");
