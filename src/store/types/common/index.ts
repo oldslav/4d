@@ -16,11 +16,12 @@ interface DocType {
 
 export interface GeoState {
   geoJson: GeoJsonCollection | null
+  pickedFeatureId: GeoJsonFeature | null
 }
 
 export interface GeoJsonCollection {
   type: string,
-  feature: GeoJsonFeature
+  features: GeoJsonFeature
 }
 
 export interface GeoJsonFeature {

@@ -1,5 +1,5 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { INewPasswordFormState } from "../../types/user/profile";
 import { 
   SET_NEW_PASSWORD_FORM_OLD_PASSWORD,
@@ -29,13 +29,13 @@ const mutations: MutationTree<INewPasswordFormState> = {
   }
 };
 
-const actions: ActionTree<INewPasswordFormState, IRootState> = {
+const actions: ActionTree<INewPasswordFormState, TRootState> = {
   [CHANGE_USER_PROFILE_PASSWORD] ({ state }) {
     return UserProfileService.changePassword(state);
   }
 };
 
-const newPasswordForm: Module<INewPasswordFormState, IRootState> = {
+const newPasswordForm: Module<INewPasswordFormState, TRootState> = {
   namespaced: true,
   state,
   mutations,

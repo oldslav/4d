@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { INeighbor, INeighborsState } from "../../types/user/neighbors";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import {
   CREATE_NEIGHBOR_DOCUMENT,
   CREATE_USER_NEIGHBOR, DELETE_NEIGHBOR_DOCUMENT,
@@ -28,8 +28,8 @@ const mutations: MutationTree<INeighborsState> = {
   }
 };
 
-const actions: ActionTree<INeighborsState, IRootState> = {
-  [CREATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, IRootState>, neighbor) {
+const actions: ActionTree<INeighborsState, TRootState> = {
+  [CREATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, neighbor) {
     const { documents, ...payload } = neighbor;
     return UserNeighborsService.createNeighbor(payload)
       .then(({ data }) => {
@@ -38,7 +38,7 @@ const actions: ActionTree<INeighborsState, IRootState> = {
       })
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [UPDATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, IRootState>, neighbor) {
+  [UPDATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, neighbor) {
     const { documents, ...payload } = neighbor;
     return UserNeighborsService.updateNeighbor(payload)
       .then(({ data }) => {
@@ -47,7 +47,7 @@ const actions: ActionTree<INeighborsState, IRootState> = {
       })
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [DELETE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, IRootState>, id) {
+  [DELETE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, id) {
     return UserNeighborsService.deleteNeighbor(id)
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
@@ -106,13 +106,13 @@ const actions: ActionTree<INeighborsState, IRootState> = {
   }
 };
 
-const getters: GetterTree<INeighborsState, IRootState> = {
+const getters: GetterTree<INeighborsState, TRootState> = {
   getNeighbors (state: INeighborsState) {
     return state.items;
   }
 };
 
-const neighbors: Module<INeighborsState, IRootState> = {
+const neighbors: Module<INeighborsState, TRootState> = {
   namespaced: true,
   state,
   mutations,

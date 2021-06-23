@@ -1,16 +1,20 @@
 <template lang="pug">
-  vc-viewer
-    vc-layer-imagery
-      vc-provider-imagery-openstreetmap(:url="mapUrl")
-      vc-datasource-geojson(
-        @ready="onDatasourceReady"
-        :show="show"
-        :options="options"
-        ref="ds"
-        :data="data"
-        @click="clicked"
-        :entities="entities"
-      )
+  div.cesiumWrapper
+    vc-viewer(
+      :infoBox="false"
+      :selection-indicator="false"
+      @selectedEntityChanged="entitySelected"
+    )
+      vc-layer-imagery
+        vc-provider-imagery-openstreetmap(:url="mapUrl")
+        vc-datasource-geojson(
+          v-if="data"
+          @ready="onDatasourceReady"
+          :show="show"
+          ref="ds"
+          :data="data"
+          :entities="entities"
+        )
 </template>
 
 <script>
@@ -21,6 +25,14 @@
         type: Object,
         default: null
       }
+      // onClick: {
+      //   type: Function,
+      //   default: () => {}
+      // }
+    },
+    mounted () {
+      document.getElementById("cesiumContainer").style.width = "";
+      document.getElementById("cesiumContainer").style.height = "";
     },
     data () {
       return {
@@ -42,13 +54,28 @@
         viewer.zoomTo(cesiumObject);
       },
 
-      clicked (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+      entitySelected (e) {
+        this.$emit("change", e);
       }
     }
   };
 </script>
 
 <style lang="stylus" scoped>
+  .cesiumWrapper
+    #cesiumContainer
+      display: block;
+      position: absolute;
+      top: 50px;
+      left: 400px;
+      border: none;
+      width: calc(100% - 400px);
+      height: calc(100% - 50px);
+
+      @media (max-width: $breakpoint-sm-min)
+        top: 0;
+        bottom: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 50px);
 </style>

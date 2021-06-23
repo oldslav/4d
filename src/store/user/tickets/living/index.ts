@@ -1,5 +1,5 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
@@ -21,7 +21,7 @@ const mutations: MutationTree<IUserTicketsState> = {
   }
 };
 
-const actions: ActionTree<IUserTicketsState, IRootState> = {
+const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_LIVING] ({ state, commit }) {
     const { filters } = state;
     
@@ -49,7 +49,7 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
   }
 };
 
-const living: Module<IUserTicketsState, IRootState> = {
+const living: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,

@@ -1,5 +1,5 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { IProfileFormState } from "../../types/user/profile";
 import { 
   SET_PROFILE_FORM_FIRSTNAME,
@@ -76,7 +76,7 @@ const mutations: MutationTree<IProfileFormState> = {
   }
 };
 
-const actions: ActionTree<IProfileFormState, IRootState> = {
+const actions: ActionTree<IProfileFormState, TRootState> = {
 
   [GET_USER_PROFILE_DEFAULT] ({ commit, rootGetters }) {
     const { name, contacts, avatar } = rootGetters["getAccount"];
@@ -107,7 +107,7 @@ const actions: ActionTree<IProfileFormState, IRootState> = {
   }
 };
 
-const profileForm: Module<IProfileFormState, IRootState> = {
+const profileForm: Module<IProfileFormState, TRootState> = {
   namespaced: true,
   state,
   mutations,

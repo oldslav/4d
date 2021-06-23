@@ -50,14 +50,6 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/parking/user/tickets/${ id }/file`, file);
   }
 
-  public static getParkingBuildings (): AxiosPromise<any> {
-    return this.api.get("/api/v1/services/parking/user");
-  }
-
-  public static getParkingPlaces (id: number): AxiosPromise<any> {
-    return this.api.get(`/api/v1/services/parking/user/${ id }/places`);
-  }
-
   public static getTicketsIdeas (params: any): AxiosPromise<any> {
     return this.api.get("api/v1/services/crowdsourcing/all", params);
   }

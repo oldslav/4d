@@ -1,16 +1,16 @@
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { ActionContext, ActionTree, MutationTree } from "vuex";
 
-const state: IRootState = {
+const state: TRootState = {
 
 };
 
-const mutations: MutationTree<IRootState> = {
+const mutations: MutationTree<TRootState> = {
 
 };
 
-const actions: ActionTree<IRootState, IRootState> = {
-  serverInit ({ dispatch }: ActionContext<IRootState, IRootState>) {
+const actions: ActionTree<TRootState, TRootState> = {
+  serverInit ({ dispatch }: ActionContext<TRootState, TRootState>) {
     return dispatch("account/fetchAccount");
   },
 

@@ -1,26 +1,17 @@
 <template lang="pug">
-  q-page.q-pa-lg.bg-white
+  div
     ModalSuccess(v-model="isTicketSuccess")
     ModalFail(v-model="isTicketFail")
-    .q-gutter-md
-      BaseSelect(
-        v-model="rentType"
-        :options="rentTypes"
-        :label="$t('action.select.parking.type')"
-        outlined
-      )
-      BaseSelect(
-        v-model="buildingId"
-        :disable="!rentType"
-        :options="filteredBuildingsID"
-        :label="$t('action.select.building')"
-        @input="onBuildingChange"
-        outlined
-      )
 
+    ParkingHoverModal(
+      v-if="pickedFeature"
+      v-model="isEntityHoverModal"
+      :data="pickedFeature"
+      @selected="onParkingChange"
+    )
     ParkingPlaceModal(
       v-model="isParkingPlaceModal"
-      :parkingPlacesID="parkingPlacesID"
+      :parkingPlaces="parkingPlaces"
       @update="onParkingPlaceChange"
     )
     template(v-if="parkingPlaceId")
@@ -48,22 +39,27 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
+  import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import BaseSelect from "../../components/common/BaseSelect";
+  import ParkingHoverModal from "../../components/services/ParkingHoverModal";
   import NewGuestParkingTicket from "../../components/services/parking/NewGuestParkingTicket";
   import NewParkingTicket from "../../components/services/parking/NewParkingTicket";
   import NewSocialParkingTicket from "../../components/services/parking/NewSocialParkingTicket";
   import ParkingPlaceModal from "../../components/services/parking/ParkingPlaceModal";
   import ModalFail from "../../components/services/ModalFail";
   import ModalSuccess from "../../components/services/ModalSuccess";
-  import { GET_USER_PARKING_BUILDINGS, GET_USER_PARKING_PLACES } from "../../store/constants/action-constants";
+  import {
+    GET_PARKING_GEO,
+    GET_PARKING_BUILDINGS,
+    GET_PARKING_PLACES
+  } from "../../store/constants/action-constants";
+  import { SET_FEATURE_ID, SET_PARKING_PLACE } from "../../store/constants/mutation-constants";
 
   export default {
     name: "ServiceParking",
-    components: { NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect, ModalFail, ModalSuccess },
-    async mounted () {
-      const data = await this.GET_USER_PARKING_BUILDINGS();
-      this.buildings = data.data.features;
+    components: { ParkingHoverModal, NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect, ModalFail, ModalSuccess },
+    async created () {
+      await this.GET_PARKING_GEO();
     },
     data () {
       return {
@@ -71,41 +67,66 @@
         isGuestTicketModal: false,
         isSocialTicketModal: false,
         isParkingPlaceModal: false,
-        buildingId: null,
-        parkingPlaceId: null,
         buildings: [],
-        parkingPlacesID: [],
         rentType: null,
-        rentTypes: [
-          "Guest",
-          "Common",
-          "Social"
-        ],
         isTicketSuccess: false,
         isTicketFail: false
       };
     },
     computed: {
-      filteredBuildingsID () {
-        if (this.rentType === "Social") {
-          const filteredBuildings = this.buildings.filter(building => building.properties.free > 0 && building.properties.parking_places_type === "Льготное");
-          return filteredBuildings.map(building => building.id);
-        } else {
-          const filteredBuildings = this.buildings.filter(building => building.properties.free > 0 && building.properties.parking_places_type === "Обычное");
-          return filteredBuildings.map(building => building.id);
+      ...mapState("services", {
+        buildingId: state => state.pickedFeatureId
+      }),
+
+      ...mapState("services/parking", {
+        pickedParkingPlace: state => state.pickedParkingPlace,
+        parkingPlaces: state => state.parkingPlaces || []
+      }),
+
+      ...mapGetters("services", [
+        "pickedFeature"
+      ]),
+
+      isEntityHoverModal: {
+        set () {
+          this.SET_FEATURE_ID(null);
+        },
+
+        get () {
+          return Boolean(this.buildingId);
+        }
+      },
+
+      parkingPlaceId: {
+        set (value) {
+          this.SET_PARKING_PLACE(value);
+        },
+
+        get () {
+          return this.pickedParkingPlace;
         }
       }
     },
     methods: {
-      ...mapActions("user/tickets/parking", [
-        GET_USER_PARKING_BUILDINGS,
-        GET_USER_PARKING_PLACES
+      ...mapMutations("services", [
+        SET_FEATURE_ID
       ]),
 
-      async onBuildingChange (value) {
-        const parkingPlaces = await this.GET_USER_PARKING_PLACES(value);
-        this.parkingPlacesID = parkingPlaces.data.items.map(place => place.id);
-        this.buildingId = value;
+      ...mapMutations("services/parking", [
+        SET_PARKING_PLACE
+      ]),
+
+      ...mapActions("services", [
+        GET_PARKING_GEO
+      ]),
+
+      ...mapActions("services/parking", [
+        GET_PARKING_BUILDINGS,
+        GET_PARKING_PLACES
+      ]),
+
+      onParkingChange (value) {
+        this.rentType = value;
         this.isParkingPlaceModal = true;
       },
 
@@ -133,17 +154,19 @@
         }
       },
 
-      toggleTicketModal (value) {
-        if (!value) {
-          this.parkingPlace = null;
-        }
-      },
-
       showSuccessPopup () {
         this.isTicketSuccess = true;
       },
+
       showFailPopup () {
         this.isTicketFail = true;
+      }
+    },
+    watch: {
+      async buildingId (value) {
+        if (value) {
+          await this.GET_PARKING_PLACES();
+        }
       }
     }
   };

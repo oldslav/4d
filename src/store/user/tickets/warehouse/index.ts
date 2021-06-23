@@ -1,5 +1,5 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
@@ -20,7 +20,7 @@ const mutations: MutationTree<IUserTicketsState> = {
   }
 };
 
-const actions: ActionTree<IUserTicketsState, IRootState> = {
+const actions: ActionTree<IUserTicketsState, TRootState> = {
   [CREATE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
     const { documents, ...result } = payload;
     return TicketsService.createTicketWarehouse(result)
@@ -49,7 +49,7 @@ const actions: ActionTree<IUserTicketsState, IRootState> = {
   }
 };
 
-const warehouse: Module<IUserTicketsState, IRootState> = {
+const warehouse: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,

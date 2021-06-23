@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import { IRootState } from "../../types/root";
+import { TRootState } from "../../types/root";
 import { IDocumentsState } from "../../types/user/documents";
 import {
   SET_PASSPORT,
@@ -57,7 +57,7 @@ const mutations: MutationTree<IDocumentsState> = {
   }
 };
 
-const actions: ActionTree<IDocumentsState, IRootState> = {
+const actions: ActionTree<IDocumentsState, TRootState> = {
   [UPDATE_USER_DOCUMENTS] ({ state, rootGetters, dispatch, commit }) {
     const awaitsCreate: any = [];
     const { deletedIds, ...files } = state;
@@ -79,10 +79,10 @@ const actions: ActionTree<IDocumentsState, IRootState> = {
       })
       .then(() => dispatch(GET_USER_DOCUMENTS));
   },
-  [CREATE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, IRootState>, document) {
+  [CREATE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, TRootState>, document) {
     return UserDocumentsService.createDocument(document);
   },
-  [DELETE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, IRootState>, id) {
+  [DELETE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, TRootState>, id) {
     return UserDocumentsService.deleteDocument(id);
   },
   async [GET_USER_DOCUMENTS] ({ dispatch }) {
@@ -110,7 +110,7 @@ const actions: ActionTree<IDocumentsState, IRootState> = {
   }
 };
 
-const getters: GetterTree<IDocumentsState, IRootState> = {
+const getters: GetterTree<IDocumentsState, TRootState> = {
   isChanged (state: IDocumentsState) {
     return JSON.stringify(defaultState) !== JSON.stringify(state);
   },
@@ -119,7 +119,7 @@ const getters: GetterTree<IDocumentsState, IRootState> = {
   }
 };
 
-const documents: Module<IDocumentsState, IRootState> = {
+const documents: Module<IDocumentsState, TRootState> = {
   namespaced: true,
   state,
   mutations,

@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree } from "vuex";
 
-import { IRootState } from "../types/root";
+import { TRootState } from "../types/root";
 import { IAccountState } from "./state";
 import { ILoginPayload, ILoginResponse, IAccount, IAccessToken } from "./models";
 
@@ -11,8 +11,8 @@ const atob = (value: string) => process.env.SERVER ? Buffer.from(value, "base64"
 const formUrlEncoded = (x: { [key: string]: string | number; }) =>
   Object.keys(x).reduce((p, c) => p + `&${ c }=${ encodeURIComponent(x[c]) }`, "");
 
-const actions: ActionTree<IAccountState, IRootState> = {
-  setAccessToken ({ commit }: ActionContext<IAccountState, IRootState>, data: ILoginResponse) {
+const actions: ActionTree<IAccountState, TRootState> = {
+  setAccessToken ({ commit }: ActionContext<IAccountState, TRootState>, data: ILoginResponse) {
     commit("setAccessToken", data);
 
     try {
@@ -30,12 +30,12 @@ const actions: ActionTree<IAccountState, IRootState> = {
     }
   },
 
-  clearAccount ({ commit }: ActionContext<IAccountState, IRootState>) {
+  clearAccount ({ commit }: ActionContext<IAccountState, TRootState>) {
     this.$cookies.remove(REFRESH_TOKEN_COOKIE);
     commit("clearAccount");
   },
 
-  async localLogin ({ dispatch }: ActionContext<IAccountState, IRootState>, { username, password }: ILoginPayload) {
+  async localLogin ({ dispatch }: ActionContext<IAccountState, TRootState>, { username, password }: ILoginPayload) {
     const { data } = await this.$axios.post<ILoginResponse>(
       "/oauth/token",
       formUrlEncoded({
@@ -50,7 +50,7 @@ const actions: ActionTree<IAccountState, IRootState> = {
       .then(() => dispatch("fetchAccount"));
   },
 
-  refreshToken ({ dispatch }: ActionContext<IAccountState, IRootState>) {
+  refreshToken ({ dispatch }: ActionContext<IAccountState, TRootState>) {
     const refreshToken = this.$cookies.get(REFRESH_TOKEN_COOKIE);
 
     if (refreshToken && this.REFRESH_PROMISE === null) {
@@ -73,7 +73,7 @@ const actions: ActionTree<IAccountState, IRootState> = {
     }
   },
 
-  async getAccessToken ({ getters, dispatch }: ActionContext<IAccountState, IRootState>) {
+  async getAccessToken ({ getters, dispatch }: ActionContext<IAccountState, TRootState>) {
     const _getters = getters as {getAccessToken: IAccessToken};
 
     if (_getters.getAccessToken !== null && _getters.getAccessToken.expiresIn > Date.now() + 3600) {
@@ -93,7 +93,7 @@ const actions: ActionTree<IAccountState, IRootState> = {
       .then((res) => res.data);
   },
 
-  async fetchAccount ({ dispatch, commit }: ActionContext<IAccountState, IRootState>) {
+  async fetchAccount ({ dispatch, commit }: ActionContext<IAccountState, TRootState>) {
     try {
       commit("setAccount", await dispatch("getAccount"));
     } catch (e) {

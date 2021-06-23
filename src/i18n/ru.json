@@ -195,6 +195,11 @@
       "commerce": "Коммерческая недвижимость",
       "parking": {
         "title": "Парковки",
+        "lots": {
+          "free": "Парковочных мест свободно",
+          "total": "Парковочных мест всего"
+        },
+        "parkingType": "Тип паркинга",
         "types": {
           "common": "Парковка",
           "social": "Соц. парковка",
@@ -230,6 +235,14 @@
             "description": "",
             "price": {
               "title": "100 руб. в день",
+              "description": ""
+            }
+          },
+          "social": {
+            "title": "Стоимость аренды",
+            "description": "",
+            "price": {
+              "title": "Бесплатно",
               "description": ""
             }
           }
