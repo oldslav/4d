@@ -37,7 +37,7 @@
       items () {
         return [
           {
-            label: this.$t("entity.services.living"),
+            label: this.$t("entity.services.living.title"),
             action: {
               name: "services-living"
             },

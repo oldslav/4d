@@ -6,7 +6,7 @@
   )
     q-card.full-width
       q-card-section.row.items-center.q-pb-none
-        .text-primary.text-medium
+        .text-medium
           | Одобрение заявки
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
@@ -19,14 +19,16 @@
           inline
           :options="termOptions"
         )
-        q-separator.q-my-md
+      q-separator
+      q-card-section
         .text-caption.text-primary-light.q-mb-sm
           | Количество комнат
         div.q-gutter-sm
           q-checkbox(v-model="rooms" val="1" label="1 комната")
           q-checkbox(v-model="rooms" val="2" label="2 комнаты")
           q-checkbox(v-model="rooms" val="3" label="3 комнаты")
-        q-separator.q-my-md
+      q-separator
+      q-card-section
         .text-caption.q-mb-sm
           | Статус заявки обновится автоматически.
         q-input(type="textarea" v-model="text" label="Сообщение" outlined)

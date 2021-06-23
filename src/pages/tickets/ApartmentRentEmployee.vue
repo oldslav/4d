@@ -20,18 +20,19 @@
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
-          q-td(key="controls" auto-width)
-            q-btn(flat icon="close" color="red" @click="onReject(props.row.id)")
-            q-btn(flat icon="done" color="primary" @click="onApprove(props.row.id)")
+          q-td(key="controls")
+            q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click="onReject(props.row.id)")
+            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onApprove(props.row.id)")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup @click="showDetails(props.row.id)")
+                  q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
     q-inner-loading(v-else showing)
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
+    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :info="activeRow" v-if="activeRow" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
@@ -44,17 +45,20 @@
     APPROVE_TICKET_LIVING,
     GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING
   } from "@/store/constants/action-constants";
+  import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
 
   export default {
     name: "ApartmentRentEmployee",
-    components: { BaseTable, ApartmentTicketStatus, ApproveTicketModal },
+    components: { ApartmentsEmployeeDetailsModal, BaseTable, ApartmentTicketStatus, ApproveTicketModal },
     async created () {
       await this.getEmployeeTickets();
     },
     data () {
       return {
+        activeRow: null,
         approvedId: null,
         showApprove: false,
+        showDetailsModal: false,
         rejectionReason: "",
         expanded: [],
         columns: [
@@ -175,9 +179,9 @@
             this.approvedId = null;
           });
       },
-      showDetails (id) {
-        // eslint-disable-next-line no-console
-        console.log("show details", id);
+      showDetails (row) {
+        this.activeRow = row;
+        this.showDetailsModal = true;
       }
     }
   };

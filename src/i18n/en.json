@@ -191,7 +191,12 @@
     "services": {
       "mainInfo": "Main information",
       "title": "Services",
-      "living": "Residential real estate",
+      "living": {
+        "title": "Residential real estate",
+        "info": {
+          "rooms": "{n} room | {n} rooms"
+        }
+      },
       "commerce": "Commercial real estate",
       "parking": {
         "title": "Parking lots",

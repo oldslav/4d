@@ -65,19 +65,15 @@
     DELETE_USER_TICKET_LIVING,
     GET_USER_TICKETS_LIVING
   } from "@/store/constants/action-constants";
-  import BaseStatus from "components/common/BaseStatus";
   import BaseTable from "components/common/BaseTable";
   import UserTicketsApartmentsNewTicketModal
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
-  import UserTicketsApartmentsStepReceived from "components/user/tickets/apartments/UserTicketsApartmentsStepReceived";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
 
   export default {
     name: "ApartmentRentUser",
     components: {
-      UserTicketsApartmentsStepReceived,
-      BaseStatus,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       UserTicketsApartmentProgressState,
