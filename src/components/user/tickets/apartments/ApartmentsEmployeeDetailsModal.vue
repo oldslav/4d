@@ -27,12 +27,13 @@
         div(v-for="(room, index) in info.rooms.length" :key="index").q-mb-sm
           | {{ $tc("entity.services.living.info.rooms", +room) }}
       q-separator
-      q-card-section
+      q-card-section(v-if="contactsPresent")
         .text-medium.q-mb-sm
           | Контакты
         .row
           .col
-            q-input(readonly label="Телефон" :value="info.contacts.phones[0]" borderless)
+            q-input(readonly label="Телефон" :value="info.contacts.phones[0]" borderless v-if="info.contacts.phones.length")
+            q-input(readonly label="Телеграм" :value="info.contacts.telegramAlias" borderless v-if="info.contacts.telegramAlias")
       q-card-actions(align="right")
         q-btn(v-close-popup flat color="red" label="Отклонить" @click="onReject()")
         q-btn(v-close-popup color="primary" label="Принять" @click="onApprove()").q-px-md
@@ -56,7 +57,7 @@
     },
     computed: {
       contactsPresent () {
-        return !!this.info.contacts.phones.length;
+        return !!this.info.contacts.phones.length || this.info.contacts.telegramAlias;
       }
     },
     methods: {

@@ -27,7 +27,7 @@
           passport: null
         },
         contacts: {
-          phone: null
+          phones: []
         }
       };
     },
@@ -45,7 +45,7 @@
         return !!this.serviceOption.serviceTypeId && !!this.serviceOption.storagePeriod;
       },
       contactsDone () {
-        return !!this.contacts.phone;
+        return !!this.contacts.phones[0];
       },
       formDone () {
         return this.mainInfoDone && this.optionsDone && this.contactsDone;
@@ -58,10 +58,7 @@
         Object.assign(this.$data, this.$options.data.apply(this)); // default data
       },
       onSubmit () {
-        const { name, documents, serviceOption } = this;
-        const contacts = {
-          phones: [this.contacts.phone]
-        }; // временно, пока не решим с контактами
+        const { name, documents, serviceOption, contacts } = this;
         return this.CREATE_USER_TICKET_WAREHOUSE({ warehouse: null, name, documents, contacts, serviceOption })
           .then(() => {
             this.$emit("success");

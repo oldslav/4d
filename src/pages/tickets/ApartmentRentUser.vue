@@ -148,8 +148,6 @@
 
       expandRow (props) {
         const row = this.expanded.indexOf(props.key);
-        // eslint-disable-next-line no-console
-        console.log("props,riw", props.row.status);
         if (row === -1) {
           this.expanded.push(props.key);
         } else {
