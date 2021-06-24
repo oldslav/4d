@@ -13,9 +13,9 @@
           q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
           q-td(key="address" :props="props")
-            | -
+            | {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props")
-            | -
+            | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props")
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props")
@@ -124,15 +124,15 @@
       moment,
       onReject (id) {
         this.$q.dialog({
-          title: this.$t("Отклонение заявки"),
-          message: "Статус заявки обновится автоматически.",
+          title: this.$t("entity.services.ticketRejection"),
+          message: this.$t("user.messages.ticketStatusUpdate"),
           ok: this.$t("action.submit"),
           cancel: this.$t("action.cancel"),
           prompt: {
             model: "",
             type: "textarea",
             isValid: val => !!val,
-            label: "Reason",
+            label: this.$t("common.reason"),
             outlined: true,
             stackLabel: true
           },
@@ -145,14 +145,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Заявка отклонена"
+              message: this.$t("entity.services.messages.reject.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "При отклонении заявки произошла ошибка"
+              message: this.$t("entity.services.messages.reject.fail")
             });
           });
       },
@@ -165,14 +165,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Заявка одобрена"
+              message: this.$t("entity.services.messages.approve.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "При одобрении заявки произошла ошибка"
+              message: this.$t("entity.services.messages.approve.fail")
             });
           })
           .finally(() => {

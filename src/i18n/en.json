@@ -92,11 +92,14 @@
     },
     "rent": "Rent",
     "guestVisit": "Guest visit",
-    "description": "Description"
+    "description": "Description",
+    "notice": "Message",
+    "reason": "Reason"
   },
   "user": {
     "messages": {
-      "apartmentNotSelected": "Address will appear after the apartment selection"
+      "apartmentNotSelected": "Address will appear after the apartment selection",
+      "ticketStatusUpdate": "Статус заявки обновится автоматически."
     },
     "tickets": {
       "actions": {
@@ -165,11 +168,14 @@
     "register": "Register",
     "back": "Back",
     "save": "Save",
+    "send": "Send",
     "cancel": "Cancel",
     "delete": "Delete",
     "submit": "Submit",
     "continue": "Continue",
     "create": "Create",
+    "accept": "Accept",
+    "reject": "Reject",
     "pay": "Pay",
     "toProfile": "Перейти в личный кабинет",
     "select": {
@@ -190,11 +196,29 @@
     },
     "services": {
       "mainInfo": "Main information",
+      "ticketApprovement": "Одобрение заявки",
+      "ticketRejection": "Отклонение заявки",
       "title": "Services",
+      "messages": {
+        "approve": {
+          "success": "Заявка одобрена",
+          "fail": "При одобрении заявки произошла ошибка"
+        },
+        "reject": {
+          "success": "Заявка отклонена",
+          "fail": "При отклонении заявки произошла ошибка"
+        }
+      },
       "living": {
         "title": "Residential real estate",
         "info": {
           "rooms": "{n} room | {n} rooms"
+        },
+        "roomsAmount": "Количество комнат",
+        "contractType": {
+          "choose": "Выберите тип договора",
+          "fixedTerm": "Срочный",
+          "termless": "Бессрочный"
         }
       },
       "commerce": "Commercial real estate",

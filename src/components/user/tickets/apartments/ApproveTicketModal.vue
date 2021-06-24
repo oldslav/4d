@@ -7,12 +7,12 @@
     q-card.full-width
       q-card-section.row.items-center.q-pb-none
         .text-medium
-          | Одобрение заявки
+          | {{ $t("entity.services.ticketApprovement") }}
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
       q-card-section
         .text-caption.text-primary-light.q-mb-sm
-          | Выберите тип договора
+          | {{ $t("entity.services.living.contractType.choose") }}
         q-option-group(
           v-model="fixedTermContract"
           color="primary"
@@ -22,7 +22,7 @@
       q-separator
       q-card-section
         .text-caption.text-primary-light.q-mb-sm
-          | Количество комнат
+          | {{ $t("entity.services.living.roomsAmount") }}
         div.q-gutter-sm
           q-checkbox(v-model="rooms" val="1" label="1 комната")
           q-checkbox(v-model="rooms" val="2" label="2 комнаты")
@@ -30,11 +30,11 @@
       q-separator
       q-card-section
         .text-caption.q-mb-sm
-          | Статус заявки обновится автоматически.
-        q-input(type="textarea" v-model="text" label="Сообщение" outlined)
+          | {{ $t("user.messages.ticketStatusUpdate") }}
+        q-input(type="textarea" v-model="text" :label="$t('common.notice')" outlined)
       q-card-actions(align="right").q-gutter-sm
         q-btn(flat size="md" :label="$t('action.cancel')" @click="toggleModal(false)")
-        q-btn(color="primary" size="md" label="Отправить" @click="onApprove()" :disable="!isValid").q-px-md
+        q-btn(color="primary" size="md" :label="$t('action.send')" @click="onApprove()" :disable="!isValid").q-px-md
 </template>
 
 <script>
@@ -64,11 +64,11 @@
       termOptions () {
         return [
           {
-            label: "Срочный",
+            label: this.$t("entity.services.living.contractType.fixedTerm"),
             value: true
           },
           {
-            label: "Бессрочный",
+            label: this.$t("entity.services.living.contractType.termless"),
             value: false
           }
         ];
