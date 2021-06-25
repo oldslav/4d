@@ -26,6 +26,10 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/apartments/user/tickets", { params });
   }
 
+  public static getEmployeeTicketsLiving (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/services/apartments/employee/tickets", { params });
+  }
+
   public static createTicketLiving (params: any): AxiosPromise<TicketsResponse> {
     return this.api.post("/api/v1/services/apartments/user/tickets", { ...params });
   }
@@ -36,6 +40,18 @@ export class TicketsService extends Service {
 
   public static deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
+  }
+
+  public static requestApprovalLiving (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/send_on_approval`);
+  }
+
+  public static approveTicketLiving (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/approve`, payload);
+  }
+
+  public static rejectTicketLiving (id: number, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/reject`, reason);
   }
 
   public static getTicketsParking (params: unknown): AxiosPromise<TicketsResponse> {

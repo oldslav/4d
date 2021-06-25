@@ -11,6 +11,7 @@
         color="primary"
         flat
         animated
+        keep-alive
       )
         q-step(
           title="Основная информация"
@@ -18,10 +19,7 @@
           :error="!isUserInfo && step > 1"
           :name="1"
         )
-          div.row.q-gutter-md
-            BaseInput(v-model="lastname" :label="$t('user.lastName')" clearable).col
-            BaseInput(v-model="firstname" :label="$t('user.firstName')" clearable).col
-            BaseInput(v-model="patronymic" :label="$t('user.patronymic')" clearable).col
+          FormName(v-model="name")
           FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
           FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
           FilePicker(v-model="inn" :label="$t('entity.files.innCopy')").q-mt-sm
@@ -38,8 +36,8 @@
         )
           Neighbors(v-model="neighbors")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step++" color="primary" :label="$t('action.continue')")
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
+            q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
           :error="!isAdditionalInfo && step > 3"
@@ -49,27 +47,28 @@
           q-checkbox(v-model="rooms" val="2" color="primary" label="2 Комнаты")
           q-checkbox(v-model="rooms" val="3" color="primary" label="3 Комнаты")
 
-          BaseInput(v-model="phone" :label="$t('entity.contacts.phone')" clearable).col
+          FormContacts(v-model="contacts").q-mt-sm
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
+            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
 <script>
   import { mapActions } from "vuex";
   import {
-    ADD_USER_TICKET_FILE,
-    CREATE_USER_TICKET
-  } from "../../../../store/constants/action-constants";
+    ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
+  } from "@/store/constants/action-constants";
   import BaseInput from "../../../common/BaseInput";
   import BaseModal from "../../../common/BaseModal";
   import FilePicker from "../../../common/FilePicker";
   import Neighbors from "../../documents/Neighbors";
+  import FormName from "components/common/form/FormName";
+  import FormContacts from "components/common/form/FormContacts";
 
   export default {
     name: "UserTicketsApartmentsNewTicketModal",
-    components: { Neighbors, FilePicker, BaseInput, BaseModal },
+    components: { Neighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
     props: {
       value: {
         type: Boolean,
@@ -84,37 +83,41 @@
       this.$watch("data", val => {
         if (val) {
           const {
-            name: {
-              first,
-              last,
-              patronymic
-            },
-            contacts: {
-              phones
-            }
+            name
+            // contacts: {
+            //   phones
+            // }
           } = val;
 
-          this.firstname = first;
-          this.lastname = last;
-          this.patronymic = patronymic;
-          this.phone = phones[0];
+          this.name = name;
+          // this.firstname = first;
+          // this.lastname = last;
+          // this.patronymic = patronymic;
+          // this.phone = phones[0];
         }
       });
     },
     data () {
       return {
         step: 1,
+        name: {
+          first: "",
+          last: "",
+          patronymic: ""
+        },
         neighbors: {},
-        firstname: null,
-        lastname: null,
-        patronymic: null,
+        // firstname: null,
+        // lastname: null,
+        // patronymic: null,
         passport: null,
         snils: null,
         inn: null,
         job: null,
         employerPetition: null,
-        phone: null,
-        telegram: null,
+        contacts: {
+          phones: [],
+          telegram: null
+        },
         rooms: []
       };
     },
@@ -124,8 +127,8 @@
       },
 
       isUserInfo () {
-        return !!this.firstname
-          && !!this.lastname
+        return !!this.name.first
+          && !!this.name.last
           && !!this.passport
           && !!this.snils
           && !!this.inn
@@ -138,7 +141,7 @@
       },
 
       isAdditionalInfo () {
-        return !!this.phone
+        return !!this.contacts.phones[0]
           && !!this.rooms;
       },
 
@@ -175,12 +178,13 @@
       }
     },
     methods: {
-      ...mapActions("user/userTickets", {
-        createUserTicket: CREATE_USER_TICKET,
-        addUserTicketFile: ADD_USER_TICKET_FILE
+      ...mapActions("user/tickets/living", {
+        createUserTicket: CREATE_USER_TICKET_LIVING,
+        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING
       }),
 
       closeModal () {
+        this.$emit("update");
         this.$emit("input", false);
       },
 
@@ -190,20 +194,12 @@
 
       async createLivingTicket () {
         const payload = {
-          name: {
-            first: this.firstname,
-            last: this.lastname,
-            patronymic: this.patronymic
-          },
-          contacts: {
-            phones: [this.phone]
-          },
+          name: this.name,
+          contacts: this.contacts,
           rooms: this.rooms
         };
-
         const { id } = await this.createUserTicket(payload);
         await this.addFiles(id);
-        this.updateModal();
         this.closeModal();
       },
 

@@ -27,7 +27,7 @@
   export default {
     name: "AsideProfile",
     computed: {
-      ...mapGetters(["getUserRolesNames", "isUserLegal", "isUserNature"]),
+      ...mapGetters(["getUserRolesNames", "isUserLegal", "isUserNature", "isEmployee"]),
 
       items () {
         return [
@@ -35,7 +35,7 @@
             label: this.$t("entity.profile"),
             action: { name: "user-profile" },
             icon: "o_person",
-            show: this.isUserNature
+            show: this.isUserNature || this.isEmployee
           },
           {
             label: this.$t("entity.companyProfile.title"),
@@ -53,7 +53,7 @@
             label: this.$t("entity.tickets.title"),
             action: { name: "user-tickets" },
             icon: "o_library_add_check",
-            show: this.isUserNature
+            show: this.isUserNature || this.isEmployee
           },
           {
             label: this.$t("entity.bills"),
