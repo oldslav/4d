@@ -2,6 +2,7 @@ import { IServiceParkingState } from "src/store/types/parking";
 import { ActionTree, Module, MutationTree } from "vuex";
 import { SET_EMPTY, SET_PARKING_PLACE, SET_PARKING_PLACES } from "src/store/constants/mutation-constants";
 import { TRootState } from "src/store/types/root";
+import { GET_APARTMENTS } from "src/store/constants/action-constants";
 
 const initialState = (): IServiceParkingState => {
   return {
@@ -19,7 +20,9 @@ const mutations: MutationTree<IServiceParkingState> = {
 };
 
 const actions: ActionTree<IServiceParkingState, TRootState> = {
-
+  [GET_APARTMENTS] () {
+    return true;
+  }
 };
 
 const apartments: Module<IServiceParkingState, TRootState> = {
