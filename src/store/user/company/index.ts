@@ -34,13 +34,12 @@ const state: ICompanyState = {
     fullName: "",
     legalAddress: "",
     realAddress: "",
-    inn: "",
-    ogrnip: "",
-    okpo: "",
-    okved: "",
+    documents: {},
     email: "",
     site: "",
-    phone: []
+    phones: [],
+    okpo: "",
+    okved: ""
   },
   bankDetails: {
     account: "",
@@ -85,7 +84,25 @@ const actions: ActionTree<ICompanyState, TRootState> = {
         commit(SET_COMPANY_VERIFY, isVerify);
         commit(SET_COMPANY_BANK, bankDetails);
         commit(SET_COMPANY_PROFILE, companyProfile);
-        commit(SET_COMPANY_CARD, companyCard);
+        const { images, ...cardPayload } = companyCard;
+        const documents: any = {
+          partner_card: [],
+          inn: [],
+          ogrn: [],
+          egrjul: []
+        };
+        if (images.length) {
+          images.forEach((doc: any) => {
+            const { id, imagePath, docType, fileName } = doc;
+            const file = {
+              id,
+              imagePath,
+              name: fileName
+            };
+            documents[docType.name].push(file);
+          });
+        }
+        commit(SET_COMPANY_CARD, { ...cardPayload, documents });
       });
   },
   [UPDATE_COMPANY_PROFILE] ({ dispatch }, payload) {
@@ -104,11 +121,26 @@ const actions: ActionTree<ICompanyState, TRootState> = {
     return UserCompanyService.updateCompanyBank(payload)
       .then(() => dispatch(GET_COMPANY));
   },
-  [UPDATE_COMPANY_CARD] ({ commit }, payload) {
+  [UPDATE_COMPANY_CARD] ({ dispatch, rootGetters }, { card, deletedIds }) {
+    const { documents, ...payload } = card;
     return UserCompanyService.updateCompanyCard(payload)
-      .then(({ data }) => {
-        commit(SET_COMPANY_CARD, data);
-      });
+      .then(() => {
+        const awaitsCreate: any = [];
+        Object.entries(documents).forEach(([key, val]: any) => {
+          val.forEach((file: any) => {
+            if (!file.id) {
+              const type = rootGetters["references/getDocTypeByName"](key);
+              const payload = new FormData();
+              payload.append("file", file);
+              payload.append("typeId", type.id);
+              awaitsCreate.push(payload);
+            }
+          });
+        });
+        return Promise.all(deletedIds.map((id: number) => UserCompanyService.deleteCardFile(id)))
+          .then(() => Promise.all(awaitsCreate.map((f: any) => UserCompanyService.uploadCardFile(f))));
+      })
+      .then(() => dispatch(GET_COMPANY));
   }
 };
 

@@ -377,10 +377,15 @@
     },
     "companyDocuments": {
       "bankDetails": "Банковские реквизиты",
+      "companyCard": "Карточка предприятия",
       "bank": "Банк",
       "inn": "ИНН",
       "bik": "БИК",
       "kpp": "КПП",
+      "okpo": "ОКПО",
+      "legalAddress": "Юридический адрес",
+      "fullCompanyName": "Полное название организации",
+      "okved": "Сфера деятельности ОКВЭД",
       "realAddress": "Фактический адрес",
       "account": "Р/счет",
       "corAccount": "Кор/счет",
@@ -388,6 +393,10 @@
         "bankUpdate": {
           "success": "Банковские реквизиты успешно обновлены",
           "fails": "Ошибка при обновлении банковских реквизитов"
+        },
+        "cardUpdate": {
+          "success": "Карточка предприятия обновлена",
+          "fail": "Ошибка при обновлении карточки предприятия"
         }
       }
     },
@@ -412,7 +421,10 @@
       "pts": "Vehicle passport scan",
       "personalAgreement": "Consent to the processing of personal data",
       "employerPetition": "Application from the employer",
-      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц"
+      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
+      "ogrnCopy": "Скан-копия ОГРН",
+      "egrjulCopy": "Скан-копия выписки из ЕГРЮЛ",
+      "partnerCard": "Скан-копия карты партнера"
     },
     "tickets": {
       "title": "Tickets",

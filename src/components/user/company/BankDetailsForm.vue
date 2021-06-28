@@ -1,6 +1,6 @@
 <template lang="pug">
   q-form(@submit="onSubmit()" greedy)
-    .row.q-col-gutter-md
+    .row.q-col-gutter-sm
       .col-12
         q-input(:label="$t('entity.companyDocuments.bank')" :rules="requiredRule" v-model="model.name")
       .col-12.col-md-4

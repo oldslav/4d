@@ -1,0 +1,116 @@
+<template lang="pug">
+  q-form(@submit="onSubmit()" greedy).q-col-gutter-sm
+    q-input(v-model="model.name" :rules="required" :label="$t('user.companyName')")
+    q-input(v-model="model.fullName" :rules="required" :label="$t('entity.companyDocuments.fullCompanyName')")
+    q-input(v-model="model.legalAddress" :rules="required" :label="$t('entity.companyDocuments.legalAddress')")
+    q-input(v-model="model.realAddress" :rules="required" :label="$t('entity.companyDocuments.realAddress')")
+    q-input(v-model="model.okpo" :rules="okpo" :label="$t('entity.companyDocuments.okpo')")
+    FilePicker(v-model="model.documents.inn" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.innCopy')")
+    FilePicker(v-model="model.documents.ogrn" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.ogrnCopy')")
+    FilePicker(v-model="model.documents.egrjul" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.egrjulCopy')")
+    FilePicker(v-model="model.documents.partner_card" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.partnerCard')")
+    q-input(v-model="model.okved" :rules="required" :label="$t('entity.companyDocuments.okved')")
+    .row.q-col-gutter-sm
+      .col-12.col-md-4
+        q-input(v-model="model.email" :label="$t('user.companyName')")
+      .col-12.col-md-8
+        q-input(v-model="model.site" :label="$t('user.companyName')")
+    FormPhones(v-model="model.phones")
+    div.text-right.q-gutter-md.q-mt-md(v-show="isChanged")
+      q-btn(flat :label="this.$t('action.cancel')" @click="assignModel()")
+      q-btn(color="primary" :label="this.$t('action.save')" type="submit")
+</template>
+
+<script>
+  import { isEqual } from "lodash";
+  import { mapActions, mapGetters } from "vuex";
+  import FilePicker from "components/common/FilePicker";
+  import FormPhones from "components/common/form/FormPhones";
+  import { UPDATE_COMPANY_CARD } from "@/store/constants/action-constants";
+
+  const defaultModel = () => ({
+    name: "",
+    fullName: "",
+    legalAddress: "",
+    realAddress: "",
+    documents: {
+      partner_card: [],
+      inn: [],
+      ogrn: [],
+      egrjul: []
+    },
+    email: "",
+    site: "",
+    phones: [""],
+    okpo: "",
+    okved: ""
+  });
+
+  export default {
+    name: "CompanyCardForm",
+    components: { FilePicker, FormPhones },
+    created () {
+      this.assignModel();
+    },
+    data () {
+      return {
+        deletedIds: [],
+        model: defaultModel()
+      };
+    },
+    computed: {
+      ...mapGetters("user/company", ["getCompanyCard"]),
+      isChanged () {
+        return !isEqual(this.model, this.getCompanyCard);
+      },
+      requiredDocument () {
+        return [
+          val => val.length || this.$t("common.error.validation.required")
+        ];
+      },
+      required () {
+        return [
+          val => !!val || this.$t("common.error.validation.required")
+        ];
+      },
+      okpo () {
+        return [
+          ...this.required,
+          val => String(val).length === 8 || this.$t("common.error.validation.length", { length: 8 })
+        ];
+      }
+    },
+    methods: {
+      ...mapActions("user/company", [UPDATE_COMPANY_CARD]),
+      assignModel () {
+        this.deletedIds = [];
+        this.model = Object.assign(defaultModel(), JSON.parse(JSON.stringify(this.getCompanyCard)));
+      },
+      onRemoveFile (id) {
+        this.deletedIds.push(id);
+      },
+      onSubmit () {
+        const { model, deletedIds } = this;
+        return this.UPDATE_COMPANY_CARD({ card: model, deletedIds })
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t("entity.companyDocuments.messages.cardUpdate.success")
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t("entity.companyDocuments.messages.cardUpdate.fail")
+            });
+          });
+      }
+    },
+    watch: {
+      getCompanyCard: {
+        deep: true,
+        handler: "assignModel"
+      }
+    }
+  };
+</script>

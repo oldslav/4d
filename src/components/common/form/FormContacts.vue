@@ -1,20 +1,6 @@
 <template lang="pug">
   .column
-    .row.q-col-gutter-md.items-baseline
-      .col-6
-        q-input(
-          v-for="(phone, index) in model.phones"
-          v-model="model.phones[index]"
-          mask="# (###) ### - ####"
-          unmasked-value
-          @input="onInput()"
-          :label="$t('user.profile.mainForm.phone')"
-          :rules="validatePhone"
-        )
-          template(#after v-if="index !== 0")
-            q-icon(name="close" @click="removePhone(index)").cursor-pointer
-      .col-6
-        q-btn(label="Добавить телефон" @click="addPhone()" outline color="primary")
+    FormPhones(v-model="model.phones" @input="onInput()")
     q-input(
       v-model="model.telegramAlias"
       @input="onInput()"
@@ -31,9 +17,11 @@
 
 <script>
   import { mapGetters } from "vuex";
+  import FormPhones from "components/common/form/FormPhones";
 
   export default {
     name: "FormContacts",
+    components: { FormPhones },
     props: {
       value: {
         type: Object,
@@ -57,11 +45,6 @@
       contacts () {
         return this.getAccount.contacts;
       },
-      validatePhone () {
-        return [
-          val => val && val.length === 11
-        ];
-      },
       validateTelegram () {
         return [
           val => val.length === 0 || val.length >= 5 && val.length <= 32,
@@ -79,14 +62,6 @@
       },
       onInput () {
         this.$emit("input", this.model);
-      },
-      addPhone () {
-        this.model.phones.push("");
-        this.onInput();
-      },
-      removePhone (index) {
-        this.model.phones.splice(index, 1);
-        this.onInput();
       }
     }
   };
