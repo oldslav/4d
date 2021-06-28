@@ -3,7 +3,9 @@ import {
   SET_COMPANY_BANK,
   SET_COMPANY_PROFILE,
   SET_COMPANY_CARD,
-  SET_COMPANY_LOGO
+  SET_COMPANY_LOGO,
+  SET_COMPANY_ID,
+  SET_COMPANY_VERIFY
 } from "src/store/constants/mutation-constants";
 import { ICompanyState } from "src/store/types/user/company";
 import { TRootState } from "src/store/types/root";
@@ -19,19 +21,19 @@ const state: ICompanyState = {
   id: null,
   isVerify: null,
   profile: {
-    profile_address: "",
-    profile_description: "",
-    profile_logo: "",
-    profile_name: "",
-    profile_phone: "",
-    profile_site: "",
-    profile_work_time: ""
+    address: "",
+    description: "",
+    logo: "",
+    name: "",
+    phone: "",
+    site: "",
+    workTime: ""
   },
   card: {
     name: "",
-    full_name: "",
-    legal_address: "",
-    real_address: "",
+    fullName: "",
+    legalAddress: "",
+    realAddress: "",
     inn: "",
     ogrnip: "",
     okpo: "",
@@ -41,45 +43,56 @@ const state: ICompanyState = {
     phone: []
   },
   bankDetails: {
-    bank_account: "",
-    bank_bik: "",
-    bank_cor_account: "",
-    bank_inn: "",
-    bank_kpp: "",
-    bank_name: "",
-    bank_real_address: ""
+    account: "",
+    bik: "",
+    corAccount: "",
+    inn: "",
+    kpp: "",
+    name: "",
+    realAddress: ""
   }
 };
 
 const mutations: MutationTree<ICompanyState> = {
+  [SET_COMPANY_ID] (state, id) {
+    state.id = id;
+  },
+  [SET_COMPANY_VERIFY] (state, verified) {
+    state.isVerify = verified;
+  },
   [SET_COMPANY_PROFILE] (state, payload) {
-    state.profile = payload;
+    Object.assign(state.profile, payload);
   },
   [SET_COMPANY_CARD] (state, payload) {
-    state.card = payload;
+    Object.assign(state.card, payload);
   },
   [SET_COMPANY_BANK] (state, payload) {
-    state.bankDetails = payload;
+    Object.assign(state.bankDetails, payload);
   },
   [SET_COMPANY_LOGO] (state, payload) {
-    state.profile.profile_logo = payload;
+    state.profile.logo = payload;
   }
 };
 
 const actions: ActionTree<ICompanyState, TRootState> = {
-  [GET_COMPANY] () {
+  [GET_COMPANY] ({ commit }) {
     return UserCompanyService.getCompany()
-      .then(() => {
-        // set state
+      .then(({ data }) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+        const { id, isVerify, bankDetails, companyCard, companyProfile } = data;
+        commit(SET_COMPANY_ID, id);
+        commit(SET_COMPANY_VERIFY, isVerify);
+        commit(SET_COMPANY_BANK, bankDetails);
+        commit(SET_COMPANY_PROFILE, companyProfile);
+        commit(SET_COMPANY_CARD, companyCard);
       });
   },
-  [UPDATE_COMPANY_PROFILE] (_ , payload) {
+  [UPDATE_COMPANY_PROFILE] ({ dispatch }, payload) {
     return UserCompanyService.updateCompanyProfile(payload)
-      .then(() => {
-        // set profile
-      });
+      .then(() => dispatch(GET_COMPANY));
   },
-  [UPDATE_COMPANY_LOGO] (_ , payload) {
+  [UPDATE_COMPANY_LOGO] (_, payload) {
     const data = new FormData();
     data.append("file", payload);
     return UserCompanyService.updateCompanyLogo(data)
@@ -87,16 +100,14 @@ const actions: ActionTree<ICompanyState, TRootState> = {
         // set logo
       });
   },
-  [UPDATE_COMPANY_BANK] (_ , payload) {
+  [UPDATE_COMPANY_BANK] ({ dispatch }, payload) {
     return UserCompanyService.updateCompanyBank(payload)
-      .then(() => {
-        // set bank
-      });
+      .then(() => dispatch(GET_COMPANY));
   },
-  [UPDATE_COMPANY_CARD] (_ , payload) {
+  [UPDATE_COMPANY_CARD] ({ commit }, payload) {
     return UserCompanyService.updateCompanyCard(payload)
-      .then(() => {
-        // set card
+      .then(({ data }) => {
+        commit(SET_COMPANY_CARD, data);
       });
   }
 };

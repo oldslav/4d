@@ -21,7 +21,8 @@
         "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
         "email": "Please enter valid email",
         "confirmPassword": "Password mismatch",
-        "letters": "Only letters allowed"
+        "letters": "Only letters allowed",
+        "length": "Поле должно быть длинной %{length} символов"
       },
       "response": {
         "oops": "Упс! Произошла ошибка",
@@ -371,6 +372,22 @@
         "update": {
           "success": "Company data updated successfully",
           "fail": "Error while updating company data"
+        }
+      }
+    },
+    "companyDocuments": {
+      "bankDetails": "Банковские реквизиты",
+      "bank": "Банк",
+      "inn": "ИНН",
+      "bik": "БИК",
+      "kpp": "КПП",
+      "realAddress": "Фактический адрес",
+      "account": "Р/счет",
+      "corAccount": "Кор/счет",
+      "messages": {
+        "bankUpdate": {
+          "success": "Банковские реквизиты успешно обновлены",
+          "fails": "Ошибка при обновлении банковских реквизитов"
         }
       }
     },
