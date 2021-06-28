@@ -50,7 +50,11 @@
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Дождитесь рассмотрения вашей заявки
-            UserTicketsApartmentProgressState(:value="props.row.status" v-if="[6,7,3,5,11,12].includes(props.row.status.id)")
+            UserTicketsApartmentProgressState(
+              v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
+              :value="props.row.status"
+              @choose="toApartments(props.row.id)"
+            )
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -72,7 +76,7 @@
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
 
   export default {
-    name: "ApartmentRentUser",
+    name: "UserTicketsApartmentsUser",
     components: {
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
@@ -140,6 +144,15 @@
         deleteUserTicket: DELETE_USER_TICKET_LIVING,
         requestApproval: REQUEST_APPROVAL_LIVING
       }),
+
+      toApartments (requestId) {
+        this.$router.push({
+          name: "services-apartments",
+          query: {
+            requestId
+          }
+        });
+      },
 
       openDetails (data) {
         this.currentRow = data;

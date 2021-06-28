@@ -1,10 +1,12 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
-import { GET_PARKING_GEO } from "src/store/constants/action-constants";
+import { GET_APARTMENTS_GEO, GET_PARKING_GEO } from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import { ParkingService } from "src/api/services/parking";
 import parking from "src/store/services/parking";
+import apartments from "src/store/services/apartments";
+import { ApartmentsService } from "src/api/services/apartments";
 
 const initialState = (): GeoState => {
   return {
@@ -47,6 +49,18 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
     
     commit(SET_GEODATA, preparedData);
+  },
+  
+  async [GET_APARTMENTS_GEO] ({ commit }, requestId) {
+    const { data } = await ApartmentsService.getApartmentsGeo(requestId);
+    const { type, features } = data;
+    
+    const preparedData = {
+      type,
+      features
+    };
+    
+    commit(SET_GEODATA, preparedData);
   }
 };
 
@@ -65,7 +79,8 @@ const services: Module<GeoState, TRootState> = {
   actions,
   getters,
   modules: {
-    parking
+    parking,
+    apartments
   }
 };
 
