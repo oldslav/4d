@@ -412,6 +412,8 @@
       "title": "Contacts",
       "phone": "Phone",
       "telegram": "Telegram",
+      "email": "Email",
+      "whatsApp": "WhatsApp",
       "preferred": "Preferred method"
     },
     "files": {

@@ -416,6 +416,8 @@
       "title": "Контакты",
       "phone": "Телефон",
       "telegram": "Telegram",
+      "email": "Email",
+      "whatsApp": "WhatsApp",
       "preferred": "Предпочтительный способ связи"
     },
     "files": {

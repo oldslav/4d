@@ -9,10 +9,10 @@
     )
     .text-caption.text-primary-light
       | {{ $t("entity.contacts.preferred") }}
-    q-checkbox(v-model="model.pcm.email" @input="onInput()" label="Email")
-    q-checkbox(v-model="model.pcm.phone" @input="onInput()" label="Телефон")
-    q-checkbox(v-model="model.pcm.telegram" @input="onInput()" label="Телеграм")
-    q-checkbox(v-model="model.pcm.whatsApp" @input="onInput()" label="WhatsApp")
+    q-checkbox(v-model="model.pcm.email" @input="onInput()" :label="$t('entity.contacts.email')")
+    q-checkbox(v-model="model.pcm.phone" @input="onInput()" :label="$t('entity.contacts.phone')")
+    q-checkbox(v-model="model.pcm.telegram" @input="onInput()" :label="$t('entity.contacts.telegram')")
+    q-checkbox(v-model="model.pcm.whatsApp" @input="onInput()" :label="$t('entity.contacts.whatsApp')")
 </template>
 
 <script>
