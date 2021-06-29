@@ -77,8 +77,6 @@ const actions: ActionTree<ICompanyState, TRootState> = {
   [GET_COMPANY] ({ commit }) {
     return UserCompanyService.getCompany()
       .then(({ data }) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
         const { id, isVerify, bankDetails, companyCard, companyProfile } = data;
         commit(SET_COMPANY_ID, id);
         commit(SET_COMPANY_VERIFY, isVerify);
