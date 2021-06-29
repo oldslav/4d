@@ -365,6 +365,9 @@
     "profile": "Profile",
     "companyProfile": {
       "title": "Company profile",
+      "description": "Description",
+      "workTime": "Work time",
+      "site": "Site",
       "messages": {
         "logoUpdate": {
           "success": "Company logo updated successfully",
@@ -408,7 +411,8 @@
     "contacts": {
       "title": "Contacts",
       "phone": "Phone",
-      "telegram": "Telegram"
+      "telegram": "Telegram",
+      "preferred": "Preferred method"
     },
     "files": {
       "passportCopy": "Passport scan",

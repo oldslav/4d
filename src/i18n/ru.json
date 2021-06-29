@@ -369,6 +369,9 @@
     "profile": "Профиль",
     "companyProfile": {
       "title": "Профиль компании",
+      "description": "Описание",
+      "workTime": "Рабочее время",
+      "site": "Сайт",
       "messages": {
         "logoUpdate": {
           "success": "Логотип компании успешно обновлен",
@@ -412,7 +415,8 @@
     "contacts": {
       "title": "Контакты",
       "phone": "Телефон",
-      "telegram": "Telegram"
+      "telegram": "Telegram",
+      "preferred": "Предпочтительный способ связи"
     },
     "files": {
       "passportCopy": "Скан-копия паспорта",
