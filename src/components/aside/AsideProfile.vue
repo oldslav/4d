@@ -47,7 +47,7 @@
             label: this.$t("entity.documents.title"),
             action: { name: "user-documents" },
             icon: "o_text_snippet",
-            show: this.isUserNature
+            show: this.isUserNature || this.isUserLegal
           },
           {
             label: this.$t("entity.tickets.title"),

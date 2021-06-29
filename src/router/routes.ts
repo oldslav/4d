@@ -109,7 +109,7 @@ const routes: RouteConfig[] = [
         path: "documents",
         name: "user-documents",
         components: {
-          default: (): Promise<any> => import("pages/UserDocuments.vue")
+          default: (): Promise<any> => import("pages/documents/ProfileDocuments.vue")
         },
         meta: {
           toolbar: true
