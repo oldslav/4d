@@ -408,7 +408,8 @@
     "contacts": {
       "title": "Contacts",
       "phone": "Phone",
-      "telegram": "Telegram"
+      "telegram": "Telegram",
+      "preferred": "Preferred method"
     },
     "files": {
       "passportCopy": "Passport scan",

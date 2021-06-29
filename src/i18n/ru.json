@@ -412,7 +412,8 @@
     "contacts": {
       "title": "Контакты",
       "phone": "Телефон",
-      "telegram": "Telegram"
+      "telegram": "Telegram",
+      "preferred": "Предпочтительный способ связи"
     },
     "files": {
       "passportCopy": "Скан-копия паспорта",
