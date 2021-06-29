@@ -16,7 +16,7 @@
           :label="$t('entity.contacts.phone')"
           :rules="validatePhone"
         )
-        q-input(v-model="model.site" :label="$t('entity.companyProfile.site')"))
+        q-input(v-model="model.site" :label="$t('entity.companyProfile.site')")
         q-input(v-model="model.workTime" :label="$t('entity.companyProfile.workTime')")
       .col-12.col-md-6.text-center
         AvatarUploadable(:src="avatarUrl" @input="onUploadLogo")

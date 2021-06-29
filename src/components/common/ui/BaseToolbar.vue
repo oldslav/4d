@@ -35,10 +35,13 @@
                 q-toggle(
                   v-model="darkMode" unchecked-icon="dark_mode" checked-icon="light_mode"
                   color="dark" icon-color="yellow" keep-color :label="$t('common.theme')" )
+      q-btn(round dense icon="logout" @click="onLogout()" text-color="primary" v-if="isAuth").q-ml-md
 </template>
 
 <script>
+  import { mapActions, mapGetters } from "vuex";
   import BaseTabs from "components/common/BaseTabs";
+  import { ACCOUNT_LOGOUT } from "@/store/constants/action-constants";
 
   export default {
     name: "BaseToolbar",
@@ -50,6 +53,10 @@
       };
     },
     computed: {
+      ...mapGetters(["getAccount"]),
+      isAuth () {
+        return this.getAccount.id !== null;
+      },
       isMobile () {
         return this.$q.platform.is.mobile;
       },
@@ -87,6 +94,13 @@
             label: this.$t("common.locales.en-us.alias")
           }
         ];
+      }
+    },
+    methods: {
+      ...mapActions([ACCOUNT_LOGOUT]),
+      onLogout () {
+        this.ACCOUNT_LOGOUT();
+        this.$router.push({ name: "main" });
       }
     }
   };
