@@ -138,7 +138,7 @@
     },
     computed: {
       isLoading () {
-        return this.$store.state.wait[`user/tickets/parking/${ CRATE_USER_TICKET_PARKING }`];
+        return this.$store.state.wait[`user/tickets/parking/${ CREATE_USER_TICKET_PARKING }`];
       },
 
       isMobile () {

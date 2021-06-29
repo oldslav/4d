@@ -58,12 +58,28 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/parking/user/tickets", { params });
   }
 
-  public static createTicketParking (params: any): AxiosPromise<TicketsResponse> {
+  public static getEmployeeTicketsParking (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/services/parking/employee/tickets", { params });
+  }
+
+  public static createTicketParking (params: any): AxiosPromise<any> {
     return this.api.post("/api/v1/services/parking/user/tickets", { ...params });
   }
 
   public static addTicketsParkingFile (id: number, file: unknown): AxiosPromise<any> {
     return this.api.post(`/api/v1/services/parking/user/tickets/${ id }/file`, file);
+  }
+
+  public static requestApprovalParking (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/parking/user/tickets/${ id }/send_on_approval`);
+  }
+
+  public static approveTicketParking (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/approve`);
+  }
+
+  public static rejectTicketParking (id: number, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/reject`, reason);
   }
 
   public static getTicketsIdeas (params: any): AxiosPromise<any> {
@@ -76,5 +92,13 @@ export class TicketsService extends Service {
 
   public static addTicketsWarehouseFile (id: number, file: unknown): AxiosPromise<any> {
     return this.api.post(`/api/v1/services/warehouse/user/tickets/${ id }/file`, file);
+  }
+
+  public static getParkingPayments (params: any): AxiosPromise<any> {
+    return this.api.get("/api/v1/payment/parking/user", params);
+  }
+
+  public static getParkingPaymentLink (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/payment/${ id }/payment`);
   }
 }
