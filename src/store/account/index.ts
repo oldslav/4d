@@ -4,7 +4,7 @@ import {
   ACCOUNT_CREATE,
   ACCOUNT_LOGIN,
   FETCH_ACCESS_TOKEN,
-  GET_ACCOUNT
+  GET_ACCOUNT, ACCOUNT_LOGOUT
 } from "src/store/constants/action-constants";
 import { SET_ACCESS_TOKEN, SET_ACCOUNT, SET_EMPTY, SET_REFRESH_TOKEN } from "src/store/constants/mutation-constants";
 import AuthService from "src/api/auth";
@@ -16,28 +16,6 @@ const REFRESH_TOKEN_COOKIE = "refresh_token";
 const formUrlEncoded = (x: { [key: string]: string | number; }) =>
   Object.keys(x).reduce((p, c) => p + `&${ c }=${ encodeURIComponent(x[c]) }`, "");
 
-// const initialState = (): IAccountState => {
-//   return {
-//     account: {
-//       name: {
-//         first: null,
-//         last: null,
-//         patronymic: null,
-//         full: null
-//       },
-//       email: null,
-//       phones: null,
-//       telegram: null,
-//       uid: null,
-//       login: null,
-//       createdAt: null,
-//       updatedAt: null,
-//       roles: null
-//     },
-//     accessToken: null,
-//     refreshToken: null
-//   };
-// };
 const initialState = (): IAccountState => {
   return {
     account: {
@@ -79,6 +57,12 @@ const mutations: MutationTree<IAccountState> = {
 };
 
 const actions: ActionTree<IAccountState, TRootState> = {
+  [ACCOUNT_LOGOUT] ({ commit }) {
+    commit(SET_EMPTY);
+    this.$local.remove(ACCESS_TOKEN_COOKIE);
+    this.$local.remove(REFRESH_TOKEN_COOKIE);
+  },
+
   [ACCOUNT_CREATE] (ctx, payload) {
     return AuthService.registration(payload);
   },
@@ -158,7 +142,7 @@ const getters: GetterTree<IAccountState, TRootState> = {
   },
 
   isAccessToken (state: IAccountState) {
-    return state.accessToken !== null && state.accessToken.expiresIn > Date.now() + 3600;
+    return state.accessToken !== null && state.accessToken.expiresIn > Date.now() + 1800;
   },
 
   isAuthenticated (state: IAccountState) {
