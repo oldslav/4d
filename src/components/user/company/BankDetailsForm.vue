@@ -26,13 +26,13 @@
   import { UPDATE_COMPANY_BANK } from "@/store/constants/action-constants";
 
   const defaultModel = () => ({
-    account: "",
-    bik: "",
-    corAccount: "",
-    inn: "",
-    kpp: "",
-    name: "",
-    realAddress: ""
+    account: null,
+    bik: null,
+    corAccount: null,
+    inn: null,
+    kpp: null,
+    name: null,
+    realAddress: null
   });
 
   export default {

@@ -32,19 +32,11 @@
   export default {
     name: "CompanyDocuments",
     components: { CompanyCardForm, BankDetailsForm },
-    created () {
-      this.loadingPage = true;
-      return Promise.all([
+    async created () {
+      await Promise.all([
         this.GET_COMPANY(),
         this.GET_REFERENCES()
-      ]).finally(() => {
-        this.loadingPage = false;
-      });
-    },
-    data () {
-      return {
-        loadingPage: false
-      };
+      ]);
     },
     computed: {
       loadingBank () {
@@ -52,6 +44,10 @@
       },
       loadingCard () {
         return this.$store.state.wait[`user/company/${ UPDATE_COMPANY_CARD }`];
+      },
+      loadingPage () {
+        return this.$store.state.wait[`user/company/${ GET_COMPANY }`]
+          || this.$store.state.wait[`references/${ GET_REFERENCES }`];
       }
     },
     methods: {

@@ -165,6 +165,7 @@
     }
   },
   "action": {
+    "addPhone": "Add phone",
     "login": "Login",
     "register": "Register",
     "back": "Back",

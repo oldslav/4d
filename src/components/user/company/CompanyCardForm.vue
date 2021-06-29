@@ -29,21 +29,21 @@
   import { UPDATE_COMPANY_CARD } from "@/store/constants/action-constants";
 
   const defaultModel = () => ({
-    name: "",
-    fullName: "",
-    legalAddress: "",
-    realAddress: "",
+    name: null,
+    fullName: null,
+    legalAddress: null,
+    realAddress: null,
     documents: {
       partner_card: [],
       inn: [],
       ogrn: [],
       egrjul: []
     },
-    email: "",
-    site: "",
-    phones: [""],
-    okpo: "",
-    okved: ""
+    email: null,
+    site: null,
+    phones: [null],
+    okpo: null,
+    okved: null
   });
 
   export default {

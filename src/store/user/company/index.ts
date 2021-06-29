@@ -21,34 +21,34 @@ const state: ICompanyState = {
   id: null,
   isVerify: null,
   profile: {
-    address: "",
-    description: "",
-    logo: "",
-    name: "",
-    phone: "",
-    site: "",
-    workTime: ""
+    address: null,
+    description: null,
+    logo: null,
+    name: null,
+    phone: null,
+    site: null,
+    workTime: null
   },
   card: {
-    name: "",
-    fullName: "",
-    legalAddress: "",
-    realAddress: "",
+    name: null,
+    fullName: null,
+    legalAddress: null,
+    realAddress: null,
     documents: {},
-    email: "",
-    site: "",
+    email: null,
+    site: null,
     phones: [],
-    okpo: "",
-    okved: ""
+    okpo: null,
+    okved: null
   },
   bankDetails: {
-    account: "",
-    bik: "",
-    corAccount: "",
-    inn: "",
-    kpp: "",
-    name: "",
-    realAddress: ""
+    account: null,
+    bik: null,
+    corAccount: null,
+    inn: null,
+    kpp: null,
+    name: null,
+    realAddress: null
   }
 };
 

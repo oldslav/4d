@@ -8,13 +8,13 @@
         unmasked-value
         @input="onInput()"
         :label="$t('user.profile.mainForm.phone')"
-        :rules="validatePhone"
+        :rules="index === 0 ? [...required, ...validatePhone] : validatePhone"
         :key="index"
       )
         template(#after v-if="index !== 0")
           q-icon(name="close" @click="removePhone(index)").cursor-pointer
     .col-6
-      q-btn(label="Добавить телефон" @click="addPhone()" outline color="primary" icon="add")
+      q-btn(:label="$t('action.addPhone')" @click="addPhone()" outline color="primary" icon="add")
 </template>
 
 <script>
@@ -32,9 +32,14 @@
       };
     },
     computed: {
+      required () {
+        return [
+          val => !!val || this.$t("common.error.validation.required")
+        ];
+      },
       validatePhone () {
         return [
-          val => val && val.length === 11
+          val => val.length === 11 || this.$t("common.error.validation.length", { length: 11 })
         ];
       }
     },

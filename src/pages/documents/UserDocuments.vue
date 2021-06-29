@@ -47,17 +47,8 @@
   export default {
     name: "UserDocuments",
     components: { MyDocumentsForm, VehicleForm, FilePicker, Neighbors, Vehicles },
-    created () {
-      this.loadingPage = true;
-      return Promise.all([this.GET_USER_DOCUMENTS(), this.GET_REFERENCES()])
-        .finally(() => {
-          this.loadingPage = false;
-        });
-    },
-    data () {
-      return {
-        loadingPage: false
-      };
+    async created () {
+      await Promise.all([this.GET_USER_DOCUMENTS(), this.GET_REFERENCES()]);
     },
     computed: {
       loadingVehicles () {
@@ -72,6 +63,10 @@
       },
       loadingDocuments () {
         return this.$store.state.wait[`user/documents/${ UPDATE_USER_DOCUMENTS }`];
+      },
+      loadingPage () {
+        return this.$store.state.wait[`user/documents/${ GET_USER_DOCUMENTS }`]
+          || this.$store.state.wait[`references/${ GET_REFERENCES }`];
       }
     },
     methods: {
