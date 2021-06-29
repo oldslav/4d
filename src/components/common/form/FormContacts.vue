@@ -8,7 +8,7 @@
       :rules="validateTelegram"
     )
     .text-caption.text-primary-light
-      | Предпочтительный способ связи
+      | {{ $t("entity.contacts.preferred") }}
     q-checkbox(v-model="model.pcm.email" @input="onInput()" label="Email")
     q-checkbox(v-model="model.pcm.phone" @input="onInput()" label="Телефон")
     q-checkbox(v-model="model.pcm.telegram" @input="onInput()" label="Телеграм")
