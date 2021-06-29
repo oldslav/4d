@@ -20,13 +20,16 @@
         UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" :data="currentRow" @update="getUserTickets")
       template(v-slot:body="props")
         q-tr(:props="props")
-          q-td(key="address" :props="props" @click="expandRow(props)")
-            span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
-            span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
+          q-td(key="parkingAddress" :props="props" @click="expandRow(props)")
+            | {{props.row.parkingPlace.address}}
+          q-td(key="parkingNumber" :props="props" @click="expandRow(props)")
+            | {{props.row.parkingPlace.number}}
+          q-td(key="type" :props="props" @click="expandRow(props)")
+            | {{props.row.parkingPlace.type.description}}
           q-td(key="price" :props="props" @click="expandRow(props)")
-            | {{ props.row.apartment ? props.row.apartment.price : "0" }}
+            | {{ props.row.price ? props.row.price.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).fromNow() }}
+            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props" @click="expandRow(props)")
             | {{ props.row.status.description }}
             BaseStatus(:value="props.row.status.id")
@@ -51,25 +54,37 @@
               animated
             )
               q-step(
-                title="Новая"
-                :done="props.row.status.id > 1"
-                :name="1"
-              )
-              q-step(
-                title="В работе"
-                :done="props.row.status.id > 2"
-                :name="2"
-              )
-              q-step(
-                title="Действие договора"
+                title="Оплата"
                 :done="props.row.status.id > 3"
                 :name="3"
               )
               q-step(
-                title="Завершена"
-                :done="props.row.status.id > 10"
-                :name="4"
+                title="Подписание договора и получение ключа"
+                :done="props.row.status.id === 5"
+                :name="5"
               )
+            div(v-if="props.row.status.id < 3").q-pa-md
+              div.text-body1.text-wrap
+                | Пожалуйста, дождитесь решения по вашей заявки.
+                | Фонд развития города Иннополис
+            div(v-if="props.row.status.id === 3").q-pa-md
+              div.text-body1.text-wrap
+                | Поздравляем, ваша заявка одобрена!
+                | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
+                | Перед оплатой ознакомьтесь с публичной офертой и примите ее.
+                | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
+                | Фонд развития города Иннополис.
+              div.text-right
+                q-btn(
+                  :loading="isPaymentLinkLoading"
+                  color="primary"
+                  label="Перейти к оплате"
+                  @click="getPaymentLink(props.row.id)"
+                )
+            div(v-if="props.row.status.id === 5").q-pa-md
+              div.text-body1.text-wrap
+                | Ваш договор готов к подписанию! 
+                | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
     q-inner-loading(v-else showing)
 </template>
 
@@ -79,7 +94,8 @@
   import BaseTable from "../../components/common/BaseTable";
   import {
     DELETE_USER_TICKET_PARKING,
-    GET_USER_TICKETS_PARKING
+    GET_USER_TICKETS_PARKING,
+    GET_USER_TICKET_PARKING_PAYMENT_LINK
   } from "../../store/constants/action-constants";
 
   export default {
@@ -95,16 +111,30 @@
         currentRow: null,
         columns: [
           {
-            name: "address",
-            required: true,
+            name: "parkingAddress",
+            required: false,
             label: "Address",
             align: "left",
             sortable: true
           },
           {
+            name: "parkingNumber",
+            required: false,
+            label: "Number",
+            align: "left",
+            sortable: true
+          },
+          {
+            name: "type",
+            required: false,
+            label: "Parking type",
+            align: "left",
+            sortable: true
+          },
+          {
             name: "price",
-            required: true,
-            label: "Rent price",
+            required: false,
+            label: "Parking price, rub",
             align: "left",
             sortable: true
           },
@@ -114,7 +144,7 @@
             label: "Ticket created",
             align: "left",
             field: row => row.created,
-            format: val => moment(val).fromNow(),
+            format: val => moment(val).format("DD.MM.YYYY"),
             sortable: true
           },
           {
@@ -138,12 +168,17 @@
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKETS_PARKING }`];
+      },
+
+      isPaymentLinkLoading () {
+        return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKET_PARKING_PAYMENT_LINK }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/parking", {
         getUserTickets: GET_USER_TICKETS_PARKING,
-        deleteUserTicket: DELETE_USER_TICKET_PARKING
+        deleteUserTicket: DELETE_USER_TICKET_PARKING,
+        GET_USER_TICKET_PARKING_PAYMENT_LINK        
       }),
 
       openDetails (data) {
@@ -163,6 +198,19 @@
 
       cancelTicket (id) {
         this.deleteUserTicket(id);
+      },
+
+      getPaymentLink (id) {
+        return this.GET_USER_TICKET_PARKING_PAYMENT_LINK(id)
+          .then(({ data }) => {
+            window.open(data);
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: "Ошибка при получении ссылки на оплату"
+            });
+          });
       },
 
       moment
