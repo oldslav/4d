@@ -88,7 +88,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
   },
   [STORE_USER_VEHICLES] ({ commit }, vehicles) {
     const result = vehicles.map((v: any) => {
-      const documents = {
+      const documents: any = {
         sts: [],
         pts: []
       };
@@ -100,8 +100,6 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
           imagePath,
           name: fileName
         };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         documents[docType.name].push(file);
       });
       return { id, model, brand, type, number, documents };

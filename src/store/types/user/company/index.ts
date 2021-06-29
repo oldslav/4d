@@ -1,3 +1,5 @@
+import { Document } from "src/store/types/common";
+
 export interface ICompanyState {
   id: number | null,
   isVerify: boolean | null,
@@ -21,13 +23,14 @@ export interface CompanyCard {
   fullName: string | null,
   legalAddress: string | null,
   realAddress: string | null,
-  inn: string | null,
-  ogrnip: string | null,
-  okpo: string | null,
-  okved: string | null,
+  documents: {
+    [key: string]: Partial<Document>[];
+  } | null,
   email: string | null,
   site: string | null,
-  phone: string[] | null
+  phones: string[] | null,
+  okpo: string | null,
+  okved: string | null
 }
 
 export interface CompanyBank {

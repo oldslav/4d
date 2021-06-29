@@ -21,35 +21,34 @@ const state: ICompanyState = {
   id: null,
   isVerify: null,
   profile: {
-    address: "",
-    description: "",
-    logo: "",
-    name: "",
-    phone: "",
-    site: "",
-    workTime: ""
+    address: null,
+    description: null,
+    logo: null,
+    name: null,
+    phone: null,
+    site: null,
+    workTime: null
   },
   card: {
-    name: "",
-    fullName: "",
-    legalAddress: "",
-    realAddress: "",
-    inn: "",
-    ogrnip: "",
-    okpo: "",
-    okved: "",
-    email: "",
-    site: "",
-    phone: []
+    name: null,
+    fullName: null,
+    legalAddress: null,
+    realAddress: null,
+    documents: {},
+    email: null,
+    site: null,
+    phones: [],
+    okpo: null,
+    okved: null
   },
   bankDetails: {
-    account: "",
-    bik: "",
-    corAccount: "",
-    inn: "",
-    kpp: "",
-    name: "",
-    realAddress: ""
+    account: null,
+    bik: null,
+    corAccount: null,
+    inn: null,
+    kpp: null,
+    name: null,
+    realAddress: null
   }
 };
 
@@ -78,14 +77,30 @@ const actions: ActionTree<ICompanyState, TRootState> = {
   [GET_COMPANY] ({ commit }) {
     return UserCompanyService.getCompany()
       .then(({ data }) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
         const { id, isVerify, bankDetails, companyCard, companyProfile } = data;
         commit(SET_COMPANY_ID, id);
         commit(SET_COMPANY_VERIFY, isVerify);
         commit(SET_COMPANY_BANK, bankDetails);
         commit(SET_COMPANY_PROFILE, companyProfile);
-        commit(SET_COMPANY_CARD, companyCard);
+        const { images, ...cardPayload } = companyCard;
+        const documents: any = {
+          partner_card: [],
+          inn: [],
+          ogrn: [],
+          egrjul: []
+        };
+        if (images.length) {
+          images.forEach((doc: any) => {
+            const { id, imagePath, docType, fileName } = doc;
+            const file = {
+              id,
+              imagePath,
+              name: fileName
+            };
+            documents[docType.name].push(file);
+          });
+        }
+        commit(SET_COMPANY_CARD, { ...cardPayload, documents });
       });
   },
   [UPDATE_COMPANY_PROFILE] ({ dispatch }, payload) {
@@ -104,11 +119,26 @@ const actions: ActionTree<ICompanyState, TRootState> = {
     return UserCompanyService.updateCompanyBank(payload)
       .then(() => dispatch(GET_COMPANY));
   },
-  [UPDATE_COMPANY_CARD] ({ commit }, payload) {
+  [UPDATE_COMPANY_CARD] ({ dispatch, rootGetters }, { card, deletedIds }) {
+    const { documents, ...payload } = card;
     return UserCompanyService.updateCompanyCard(payload)
-      .then(({ data }) => {
-        commit(SET_COMPANY_CARD, data);
-      });
+      .then(() => {
+        const awaitsCreate: any = [];
+        Object.entries(documents).forEach(([key, val]: any) => {
+          val.forEach((file: any) => {
+            if (!file.id) {
+              const type = rootGetters["references/getDocTypeByName"](key);
+              const payload = new FormData();
+              payload.append("file", file);
+              payload.append("typeId", type.id);
+              awaitsCreate.push(payload);
+            }
+          });
+        });
+        return Promise.all(deletedIds.map((id: number) => UserCompanyService.deleteCardFile(id)))
+          .then(() => Promise.all(awaitsCreate.map((f: any) => UserCompanyService.uploadCardFile(f))));
+      })
+      .then(() => dispatch(GET_COMPANY));
   }
 };
 

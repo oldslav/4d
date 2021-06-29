@@ -4,7 +4,7 @@
       .col-12.col-md-6
         q-input(
           v-model="model.name"
-          label="Название"
+          :label="$t('user.companyName')"
           :rules="fieldRequired"
         )
         q-input(v-model="model.address" label="Адрес")
@@ -13,15 +13,15 @@
           mask="# (###) ### - ####"
           unmasked-value
           type="tel"
-          label="Телефон"
+          :label="$t('entity.contacts.phone')"
           :rules="validatePhone"
         )
-        q-input(v-model="model.site" label="Сайт")
-        q-input(v-model="model.workTime" label="Рабочее время")
+        q-input(v-model="model.site" :label="$t('entity.companyProfile.site')"))
+        q-input(v-model="model.workTime" :label="$t('entity.companyProfile.workTime')")
       .col-12.col-md-6.text-center
         AvatarUploadable(:src="avatarUrl" @input="onUploadLogo")
       .col-12
-        .text-caption.text-primary-light.q-mb-sm Описание
+        .text-caption.text-primary-light.q-mb-sm {{ $t("entity.companyProfile.description") }}
         q-input(type="textarea" v-model="model.description" outlined)
     div.text-right.q-gutter-md.q-mt-md
       q-btn(flat :label="this.$t('action.cancel')" @click="assignModel()" :disable="!isChanged")
