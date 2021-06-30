@@ -21,6 +21,7 @@
     :hide-selected="hideSelected && !multiple"
     @filter="filter"
     @input="onInput"
+    @clear="onInput(null)"
   )
     template(v-slot:prepend)
       slot(name="prepend")
@@ -108,9 +109,7 @@
     },
     methods: {
       onInput (value) {
-        if (!!value) {
-          this.$emit("input", value);
-        }
+        this.$emit("input", value);
       },
 
       filter (val, update) {

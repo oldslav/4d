@@ -35,7 +35,7 @@
             label: this.$t("entity.profile"),
             action: { name: "user-profile" },
             icon: "o_person",
-            show: this.isUserNature || this.isEmployee
+            show: this.isUserNature || this.isEmployee || this.isUserLegal
           },
           {
             label: this.$t("entity.companyProfile.title"),

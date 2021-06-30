@@ -2,30 +2,35 @@
   q-toolbar
     template(v-if="isMobile")
       BaseTabs(v-model="tab" isFullWidth :dense="false")
-        q-route-tab(:to="{ name: 'about' }" name="main" :label="$t('entity.about.title')").col
-        q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')").col
-        q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')").col
-        q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')").col
-        q-route-tab(:to="{ name: 'services' }" name="services" :label="$t('entity.services.title')").col
+        q-route-tab(
+          v-for="(route, index) in tabs"
+          :key="index"
+          :to="{name: route.name}"
+          :name="route.name"
+          :label="route.label"
+        ).col
 
     template(v-else)
       BaseTabs(v-model="tab" :dense="false")
-        q-route-tab(:to="{ name: 'about' }" name="main" :label="$t('entity.about.title')")
-        q-route-tab(:to="{ name: 'playground' }" name="playground" :label="$t('entity.maps')")
-        q-route-tab(:to="{ name: 'data' }" name="data" :label="$t('entity.data')")
-        q-route-tab(:to="{ name: 'user-profile' }" name="profile"  :label="$t('entity.design')")
-        q-route-tab(:to="{ name: 'services' }" name="services" :label="$t('entity.services.title')")
+        q-route-tab(
+          v-for="(route, index) in tabs"
+          :key="index"
+          :to="{name: route.name}"
+          :name="route.name"
+          :label="route.label"
+          v-if="!route.hide"
+        )
       q-space
       q-btn(round dense icon="o_account_circle" text-color="primary")
         q-menu
-          q-list(dense)
-            q-item(:to="{ name: 'user-profile' }" exact)
+          q-list
+            q-item(:to="{ name: 'user' }" v-if="isAuth")
               q-item-section(avatar)
                 q-icon(name="o_account_circle")
               q-item-section
                 | {{ $t("entity.profile") }}
 
-            q-separator(spaced)
+            q-separator()
 
             q-item(tag="label" v-ripple)
               q-item-section
@@ -35,7 +40,16 @@
                 q-toggle(
                   v-model="darkMode" unchecked-icon="dark_mode" checked-icon="light_mode"
                   color="dark" icon-color="yellow" keep-color :label="$t('common.theme')" )
-      q-btn(round dense icon="logout" @click="onLogout()" text-color="primary" v-if="isAuth").q-ml-md
+            q-item(clickable @click="onLogout()" v-if="isAuth")
+              q-item-section(avatar)
+                q-icon(name="logout")
+              q-item-section
+                | Выход
+            q-item(clickable @click="onAuth()" v-else)
+              q-item-section(avatar)
+                q-icon(name="login")
+              q-item-section
+                | Войти
 </template>
 
 <script>
@@ -59,6 +73,32 @@
       },
       isMobile () {
         return this.$q.platform.is.mobile;
+      },
+
+      tabs () {
+        return [
+          {
+            name: "about",
+            label: this.$t("entity.about.title")
+          },
+          {
+            name: "map",
+            label: this.$t("entity.maps")
+          },
+          {
+            name: "data",
+            label: this.$t("entity.data")
+          },
+          {
+            name: "design",
+            label: this.$t("entity.design")
+          },
+          {
+            name: "services",
+            label: this.$t("entity.services.title"),
+            hide: !this.isAuth
+          }
+        ];
       },
 
       darkMode: {
@@ -101,6 +141,9 @@
       onLogout () {
         this.ACCOUNT_LOGOUT();
         this.$router.push({ name: "main" });
+      },
+      onAuth () {
+        this.$emit("auth");
       }
     }
   };
