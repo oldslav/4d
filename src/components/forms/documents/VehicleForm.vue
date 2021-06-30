@@ -92,7 +92,7 @@
         vehicleModels: [],
         loadingTypes: false,
         loadingBrands: false,
-        loadingModels: false,
+        loadingModels: false
       };
     },
     computed: {
