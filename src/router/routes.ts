@@ -109,7 +109,7 @@ const routes: RouteConfig[] = [
         path: "documents",
         name: "user-documents",
         components: {
-          default: (): Promise<any> => import("pages/UserDocuments.vue")
+          default: (): Promise<any> => import("pages/documents/ProfileDocuments.vue")
         },
         meta: {
           toolbar: true
@@ -154,7 +154,7 @@ const routes: RouteConfig[] = [
             path: "parking",
             name: "user-tickets-parking",
             components: {
-              default: (): Promise<any> => import("pages/tickets/UserTicketsParking.vue")
+              default: (): Promise<any> => import("pages/tickets/ParkingRent.vue")
             },
             meta: {
               toolbar: true,

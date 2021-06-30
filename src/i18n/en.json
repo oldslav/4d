@@ -21,7 +21,8 @@
         "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
         "email": "Please enter valid email",
         "confirmPassword": "Password mismatch",
-        "letters": "Only letters allowed"
+        "letters": "Only letters allowed",
+        "length": "Поле должно быть длинной %{length} символов"
       },
       "response": {
         "oops": "Упс! Произошла ошибка",
@@ -164,6 +165,7 @@
     }
   },
   "action": {
+    "addPhone": "Add phone",
     "login": "Login",
     "register": "Register",
     "back": "Back",
@@ -363,6 +365,9 @@
     "profile": "Profile",
     "companyProfile": {
       "title": "Company profile",
+      "description": "Description",
+      "workTime": "Work time",
+      "site": "Site",
       "messages": {
         "logoUpdate": {
           "success": "Company logo updated successfully",
@@ -374,6 +379,31 @@
         }
       }
     },
+    "companyDocuments": {
+      "bankDetails": "Банковские реквизиты",
+      "companyCard": "Карточка предприятия",
+      "bank": "Банк",
+      "inn": "ИНН",
+      "bik": "БИК",
+      "kpp": "КПП",
+      "okpo": "ОКПО",
+      "legalAddress": "Юридический адрес",
+      "fullCompanyName": "Полное название организации",
+      "okved": "Сфера деятельности ОКВЭД",
+      "realAddress": "Фактический адрес",
+      "account": "Р/счет",
+      "corAccount": "Кор/счет",
+      "messages": {
+        "bankUpdate": {
+          "success": "Банковские реквизиты успешно обновлены",
+          "fails": "Ошибка при обновлении банковских реквизитов"
+        },
+        "cardUpdate": {
+          "success": "Карточка предприятия обновлена",
+          "fail": "Ошибка при обновлении карточки предприятия"
+        }
+      }
+    },
     "documents": {
       "title": "Documents",
       "data": "My documents"
@@ -381,7 +411,10 @@
     "contacts": {
       "title": "Contacts",
       "phone": "Phone",
-      "telegram": "Telegram"
+      "telegram": "Telegram",
+      "email": "Email",
+      "whatsApp": "WhatsApp",
+      "preferred": "Preferred method"
     },
     "files": {
       "passportCopy": "Passport scan",
@@ -395,7 +428,10 @@
       "pts": "Vehicle passport scan",
       "personalAgreement": "Consent to the processing of personal data",
       "employerPetition": "Application from the employer",
-      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц"
+      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
+      "ogrnCopy": "Скан-копия ОГРН",
+      "egrjulCopy": "Скан-копия выписки из ЕГРЮЛ",
+      "partnerCard": "Скан-копия карты партнера"
     },
     "tickets": {
       "title": "Tickets",
