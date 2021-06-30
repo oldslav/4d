@@ -188,11 +188,21 @@ const routes: RouteConfig[] = [
     path: "/data",
     name: "data",
     components: {
-      default: (): Promise<any> => import("pages/Services.vue"),
-      asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
-    },
-    meta: {
-      toolbar: true
+      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+    }
+  },
+  {
+    path: "/design",
+    name: "design",
+    components: {
+      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+    }
+  },
+  {
+    path: "/map",
+    name: "map",
+    components: {
+      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
     }
   },
   {
@@ -275,8 +285,7 @@ const routes: RouteConfig[] = [
   // Always leave this as last one,
   // but you can also remove it
   {
-    path: "/error",
-    alias: "*",
+    path: "*",
     name: "error-page",
     components: {
       default: (): Promise<any> => import("pages/Error404.vue")

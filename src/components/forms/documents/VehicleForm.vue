@@ -6,27 +6,30 @@
           :label="$t('entity.vehicles.type')"
           v-model="vehicle.type"
           :options="vehicleTypes"
+          clearable
           field="name"
           prop="id"
           :rules="requiredRule"
-          @input="loadBrands()"
+          @input="onInputType()"
         )
       .col-12.col-sm-6.col-md-3
         base-autocomplete(
           :label="$t('entity.vehicles.brand')"
           :disable="!vehicle.type"
           :options="vehicleBrands"
+          clearable
           field="name"
           prop="id"
           v-model="vehicle.brand"
           use-input
-          @input="loadModels()"
+          @input="onInputBrand()"
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
         base-autocomplete(
           :label="$t('entity.vehicles.model')"
           :disable="!vehicle.brand"
+          clearable
           :options="vehicleModels"
           field="name"
           prop="id"
@@ -35,10 +38,10 @@
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" maxlength="12")
     .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
-      file-picker(:max-files="2" v-model="vehicleDocuments.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
-      file-picker(:max-files="2" v-model="vehicleDocuments.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
+      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
+      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
     div.text-right.q-mt-md(v-show="isChanged && !unmanaged")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
@@ -74,8 +77,8 @@
         default: false
       }
     },
-    mounted () {
-      return Promise.allSettled([
+    async mounted () {
+      await Promise.allSettled([
         this.loadTypes(),
         ...this.vehicle.type ? [this.loadBrands()] : [],
         ...this.vehicle.brand ? [this.loadModels()] : []
@@ -87,17 +90,17 @@
         vehicleTypes: [],
         vehicleBrands: [],
         vehicleModels: [],
-        vehicleDocuments: {
-          pts: null,
-          sts: null
-        },
         loadingTypes: false,
         loadingBrands: false,
         loadingModels: false,
-        requiredRule: [val => !!val || "Поле обязательно к заполнению"]
       };
     },
     computed: {
+      requiredRule () {
+        return [
+          val => !!val || this.$t("common.error.validation.required")
+        ];
+      },
       isChanged () {
         return !isEqual(this.backup, this.vehicle); // backup
       },
@@ -149,6 +152,21 @@
           .finally(() => {
             this.loadingTypes = false;
           });
+      },
+      onInputType () {
+        if (this.vehicle.type) {
+          this.loadBrands();
+        } else {
+          this.vehicle.brand = null;
+          this.vehicle.model = null;
+        }
+      },
+      onInputBrand () {
+        if (this.vehicle.type && this.vehicle.brand) {
+          this.loadModels();
+        } else {
+          this.vehicle.model = null;
+        }
       },
       loadBrands () {
         this.loadingBrands = true;
