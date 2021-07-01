@@ -167,7 +167,9 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle;
+          && !!this.vehicle
+          && !!this.documents.passport
+          && !!this.documents.snils;
       }
     },
     methods: {

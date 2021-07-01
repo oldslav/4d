@@ -164,7 +164,10 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle;
+          && !!this.vehicle
+          && !!this.documents.social
+          && !!this.documents.passport
+          && !!this.documents.snils;
       }
     },
     methods: {
