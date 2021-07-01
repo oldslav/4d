@@ -10,7 +10,7 @@
   )
     q-card.auth-modal__card
       q-card-actions(align="right")
-        q-btn(flat v-close-popup icon="close" color="primary")
+        q-btn(flat v-close-popup icon="close" color="primary" @click="closeModal")
       q-card-section.auth-modal__card__content
         LoginForm(@submit="onSubmit" v-if="isLogin")
         registration-form(v-if="isRegister")
@@ -51,11 +51,18 @@
     },
     methods: {
       onSubmit () {
+        this.$router.push({ name: "user-profile" });
+        this.closeModal();
+      },
+
+      closeModal () {
         this.$emit("input", false);
       },
+
       toLogin () {
         this.mode = "login";
       },
+
       toRegister () {
         this.mode = "register";
       }

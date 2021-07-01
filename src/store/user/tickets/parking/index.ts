@@ -81,8 +81,8 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   
   async [GET_USER_TICKET_PARKING_PAYMENT_LINK] (_, id) {
     const { data } = await TicketsService.getParkingPayments({ paid:false });
-
-    const paymentId = data[0].id;
+    
+    const paymentId = data.find((i: any) => i.id === id).id;
     return BillsService.getPaymentLink(paymentId);
   }
 };

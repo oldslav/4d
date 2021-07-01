@@ -39,7 +39,7 @@
         )
       .col-12.col-sm-6.col-md-3
         q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" maxlength="12")
-    .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
+    .text-subtitle.q-my-sm
       file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
       file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
     div.text-right.q-mt-md(v-show="isChanged && !unmanaged")

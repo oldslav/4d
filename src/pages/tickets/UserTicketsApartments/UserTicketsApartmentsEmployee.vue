@@ -30,6 +30,25 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
+        q-tr(v-show="props.expand" :props="props")
+          q-td(colspan="100%").is-paddingless
+            div.column(v-if="props.row.status.id === 1").q-pa-md
+              div.text-body1.text-wrap
+                | Для подачи заявки продолжите заполнение формы.
+              div.text-right
+                q-btn(color="primary" label="Отправить на рассмотрение" @click="sendOnApproval(props.row.id)")
+            div.column(v-if="props.row.status.id === 2").q-pa-md
+              div.text-body1.text-wrap
+                | Дождитесь рассмотрения вашей заявки
+            UserTicketsApartmentProgressState(
+              v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
+              :value="props.row.status"
+              @choose="toApartments(props.row.id)"
+              @viewed="apartmentViewed(props.row.id)"
+            )
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
+              div.text-body1.text-wrap
+                | Работа над заявкой завершена
     q-inner-loading(v-else showing)
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
     ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :info="activeRow" v-if="activeRow" @reject="onReject" @approve="onApprove")
