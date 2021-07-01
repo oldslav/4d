@@ -68,7 +68,7 @@
                   q-item-section
                     q-item-label {{ $t("entity.socialTypes.veteran") }}
           .full-width.q-pa-md
-            q-btn(outline color="primary" @click="selectedParkingType('Common')").full-width
+            q-btn(outline color="primary" @click="selectedParkingType('Common')" :disable="!data.properties.free").full-width
               | {{ $t('action.rent') }}
         q-tab-panel(name="guest").is-paddingless
           q-list
@@ -84,7 +84,7 @@
               q-item-section(side)
                 q-item-label.text-primary {{ $t(`entity.guestCard.price`) }}
           .full-width.q-pa-md
-            q-btn(outline type="submit" color="primary" @click="selectedParkingType('Guest')").full-width
+            q-btn(outline type="submit" color="primary" @click="selectedParkingType('Guest')" :disable="!data.properties.free").full-width
               | {{ $t('common.guestVisit') }}
         q-tab-panel(name="description").is-paddingless
           q-list
