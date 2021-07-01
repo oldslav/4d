@@ -14,9 +14,14 @@ import {
   ADD_PARKING_FILES
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
+import { BillsService } from "src/api/user/bills";
 
 const state: IUserTicketsState = {
   filters: null,
+  pagination: {
+    limit: 10,
+    offset: 1
+  },
   data: null
 };
 
@@ -93,9 +98,9 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   
   async [GET_USER_TICKET_PARKING_PAYMENT_LINK] (_, id) {
     const { data } = await TicketsService.getParkingPayments({ paid:false });
-
-    const paymentId = data[0].id;
-    return TicketsService.getParkingPaymentLink(paymentId);
+    
+    const paymentId = data.find((i: any) => i.id === id).id;
+    return BillsService.getPaymentLink(paymentId);
   }
 };
 

@@ -125,14 +125,14 @@
           model: null,
           number: null,
           documents: {
-            pts: [],
-            sts: []
+            pts: null,
+            sts: null
           }
         },
         documents: {
-          social: [],
-          passport: [],
-          snils: []
+          social: null,
+          passport: null,
+          snils: null
         },
         contacts: {
           phones: []
@@ -162,7 +162,10 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle;
+          && !!this.vehicle
+          && !!this.documents.social
+          && !!this.documents.passport
+          && !!this.documents.snils;
       }
     },
     methods: {

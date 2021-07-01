@@ -151,6 +151,7 @@
       isComponentPassed (viewName) {
         return Boolean(this.components[viewName]);
       },
+
       toAuth () {
         this.auth = true;
       }

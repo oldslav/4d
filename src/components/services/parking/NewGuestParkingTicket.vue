@@ -115,8 +115,8 @@
           patronymic: null
         },
         documents: {
-          passport: [],
-          snils: []
+          passport: null,
+          snils: null
         },
         vehicle: {
           type: null,
@@ -124,8 +124,8 @@
           model: null,
           number: null,
           documents: {
-            pts: [],
-            sts: []
+            pts: null,
+            sts: null
           }
         },
         contacts: {
@@ -164,7 +164,9 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle;
+          && !!this.vehicle
+          && !!this.documents.passport
+          && !!this.documents.snils;
       }
     },
     methods: {

@@ -151,13 +151,13 @@
           model: null,
           number: null,
           documents: {
-            pts: [],
-            sts: []
+            pts: null,
+            sts: null
           }
         },
         documents: {
-          passport: [],
-          snils: []
+          passport: null,
+          snils: null
         },
         contacts: {
           phones: []
@@ -187,7 +187,9 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle;
+          && !!this.vehicle
+          && !!this.documents.passport
+          && !!this.documents.snils;
       }
     },
     methods: {

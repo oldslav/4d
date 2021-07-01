@@ -11,11 +11,10 @@
     )
       template(v-slot:top-right)
         q-btn(
-          icon="add"
           outline
           color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
+          @click="toServiceParking"
+          :label="$t('action.toMap')"
         )
         TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
@@ -83,7 +82,7 @@
                 )
             div(v-if="props.row.status.id === 7").q-pa-md
               div.text-body1.text-wrap
-                | Ваш договор готов к подписанию! 
+                | Ваш договор готов к подписанию!
                 | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
     q-inner-loading(v-else showing)
 </template>
@@ -180,12 +179,16 @@
       ...mapActions("user/tickets/parking", {
         getUserTickets: GET_USER_TICKETS_PARKING,
         deleteUserTicket: DELETE_USER_TICKET_PARKING,
-        GET_USER_TICKET_PARKING_PAYMENT_LINK        
+        GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
 
       openDetails (data) {
         this.currentRow = data;
         this.isModalVisible = true;
+      },
+
+      toServiceParking () {
+        this.$router.push({ name: "services-parking" });
       },
 
       expandRow (props) {

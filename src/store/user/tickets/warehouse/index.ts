@@ -11,6 +11,10 @@ import { TicketsService } from "src/api/user/tickets/tickets";
 
 const state: IUserTicketsState = {
   filters: null,
+  pagination: {
+    limit: 10,
+    offset: 1
+  },
   data: null
 };
 
