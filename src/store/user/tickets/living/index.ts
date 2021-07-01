@@ -7,12 +7,20 @@ import {
   ADD_USER_TICKET_FILE_LIVING,
   CREATE_USER_TICKET_LIVING,
   DELETE_USER_TICKET_LIVING,
-  GET_USER_TICKETS_LIVING, GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING, APPROVE_TICKET_LIVING
+  GET_USER_TICKETS_LIVING,
+  GET_EMPLOYEE_TICKETS_LIVING,
+  REJECT_TICKET_LIVING,
+  APPROVE_TICKET_LIVING,
+  UPDATE_TICKET_APARTMENT, UPDATE_TICKET_APARTMENT_VIEWED
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
 const state: IUserTicketsState = {
   filters: null,
+  pagination: {
+    limit: 10,
+    offset: 1
+  },
   data: null
 };
 
@@ -49,6 +57,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   [APPROVE_TICKET_LIVING] (_, { id, payload }) {
     return TicketsService.approveTicketLiving(id, payload);
+  },
+  
+  async [UPDATE_TICKET_APARTMENT] (_, { requestId, apartmentId }) {
+    await TicketsService.choiceApartment(requestId, apartmentId);
+  },
+  
+  async [UPDATE_TICKET_APARTMENT_VIEWED] (_, { requestId, apartmentViewed }) {
+    await TicketsService.viewedApartment(requestId, apartmentViewed);
   },
 
   async [DELETE_USER_TICKET_LIVING] ({ dispatch }, payload) {

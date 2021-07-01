@@ -5,6 +5,7 @@ import neighbors from "src/store/user/neighbors";
 import documents from "src/store/user/documents";
 import vehicles from "src/store/user/vehicles";
 import company from "src/store/user/company";
+import bills from "src/store/user/bills";
 import { profileForm, newPasswordForm } from "src/store/user/profile";
 import { IUserState } from "src/store/types/user";
 import { USER_LOGIN } from "src/store/constants/action-constants";
@@ -63,7 +64,8 @@ const user: Module<IUserState, TRootState> = {
     neighbors,
     profileForm,
     newPasswordForm,
-    company
+    company,
+    bills
   }
 };
 

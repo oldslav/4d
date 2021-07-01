@@ -39,7 +39,7 @@
           {
             label: this.$t("entity.services.living.title"),
             action: {
-              name: "services-living"
+              name: "services-apartments"
             },
             icon: "o_person",
             show: this.isUserNature

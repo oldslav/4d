@@ -11,13 +11,11 @@
     )
       template(v-slot:top-right)
         q-btn(
-          icon="add"
           outline
           color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
+          @click="toServiceParking"
+          :label="$t('action.toMap')"
         )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" :data="currentRow" @update="getUserTickets")
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="parkingAddress" :props="props" @click="expandRow(props)")
@@ -83,7 +81,7 @@
                 )
             div(v-if="props.row.status.id === 5").q-pa-md
               div.text-body1.text-wrap
-                | Ваш договор готов к подписанию! 
+                | Ваш договор готов к подписанию!
                 | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
     q-inner-loading(v-else showing)
 </template>
@@ -91,7 +89,10 @@
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
+  import BaseStatus from "../../components/common/BaseStatus";
   import BaseTable from "../../components/common/BaseTable";
+  import UserTicketsApartmentsNewTicketModal
+    from "../../components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
   import {
     DELETE_USER_TICKET_PARKING,
     GET_USER_TICKETS_PARKING,
@@ -100,7 +101,7 @@
 
   export default {
     name: "UserTicketsParking",
-    components: { BaseTable },
+    components: { UserTicketsApartmentsNewTicketModal, BaseStatus, BaseTable },
     async created () {
       await this.getUserTickets();
     },
@@ -178,12 +179,16 @@
       ...mapActions("user/tickets/parking", {
         getUserTickets: GET_USER_TICKETS_PARKING,
         deleteUserTicket: DELETE_USER_TICKET_PARKING,
-        GET_USER_TICKET_PARKING_PAYMENT_LINK        
+        GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
 
       openDetails (data) {
         this.currentRow = data;
         this.isModalVisible = true;
+      },
+
+      toServiceParking () {
+        this.$router.push({ name: "services-parking" });
       },
 
       expandRow (props) {

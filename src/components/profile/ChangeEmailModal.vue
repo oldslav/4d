@@ -65,6 +65,7 @@
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
       },
+
       onValidationError () {
         this.$q.notify({
           message: "Ошибка при валидации",

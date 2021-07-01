@@ -48,7 +48,7 @@
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
 
   export default {
-    name: "ApartmentRentEmployee",
+    name: "UserTicketsApartmentsEmployee",
     components: { ApartmentsEmployeeDetailsModal, BaseTable, ApartmentTicketStatus, ApproveTicketModal },
     async created () {
       await this.getEmployeeTickets();
