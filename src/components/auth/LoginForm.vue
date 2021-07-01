@@ -45,16 +45,21 @@
       }
     },
     methods: {
-      onSubmit () {
+      async onSubmit () {
         try {
-          this.$store.dispatch(ACCOUNT_LOGIN, {
+          await this.$store.dispatch(ACCOUNT_LOGIN, {
             ...this.form,
             grant_type: "password"
           });
 
           this.$emit("submit");
         } catch (e) {
-
+          if (e.response.status === 401) {
+            this.$q.notify({
+              type: "negative",
+              message: "Неправильно введён логин или пароль"
+            });
+          }
         }
       }
     }

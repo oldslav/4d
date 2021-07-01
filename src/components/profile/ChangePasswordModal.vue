@@ -29,9 +29,10 @@
           BaseInput(
             v-model="password"
             type="password"
+            reactive-rules
             :label="$t('user.profile.changePasswordModal.newPassword')"
             :type="isNewPasswordVisible ? 'text' : 'password'"
-            :rules="validatePassword"
+            :rules="[...validatePassword, val => val === password]"
             append
           )
             template(#append)
@@ -43,9 +44,10 @@
           BaseInput(
             v-model="confirmPassword"
             type="password"
+            reactive-rules
             :label="$t('user.profile.changePasswordModal.confirmPassword')"
             :type="isConfirmPasswordVisible ? 'text' : 'password'"
-            :rules="validatePassword"
+            :rules="[...validatePassword, val => val === password]"
             append
           )
             template(#append)
