@@ -30,7 +30,6 @@
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props" @click="expandRow(props)")
-            | {{ props.row.status.description }}
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
