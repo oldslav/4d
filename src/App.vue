@@ -38,7 +38,7 @@
       template(v-else)
         q-header(:value="meta.toolbar" elevated)
           transition(name="fade" mode="out-in")
-            BaseToolbar
+            BaseToolbar(@auth="toAuth()")
         q-drawer(:value="isComponentPassed('asideLeft')" side="left" :width="400" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideLeft")
@@ -150,6 +150,9 @@
 
       isComponentPassed (viewName) {
         return Boolean(this.components[viewName]);
+      },
+      toAuth () {
+        this.auth = true;
       }
     }
   };
