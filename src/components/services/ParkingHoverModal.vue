@@ -140,7 +140,7 @@
       },
 
       selectedParkingType (value) {
-        this.$emit("selected", value);
+        this.$emit("selected", this.isParkingSocial ? "Social" : value);
       }
     }
   };
