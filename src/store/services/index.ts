@@ -52,6 +52,7 @@ const actions: ActionTree<GeoState, TRootState> = {
   },
   
   async [GET_APARTMENTS_GEO] ({ commit }, requestId) {
+    // TODO: Это не гео, но здесь должен быть гео в будущем
     const { data } = await ApartmentsService.getApartmentsGeo(requestId);
     const { type, features } = data;
     

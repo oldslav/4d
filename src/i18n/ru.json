@@ -95,7 +95,17 @@
     "guestVisit": "Гостевой визит",
     "description": "Описание",
     "notice": "Сообщение",
-    "reason": "Причина"
+    "reason": "Причина",
+    "rentPrice": "Стоимость аренды, руб",
+    "quantity": {
+      "area": "Площадь, кв.м",
+      "rooms": "Комнаты",
+      "floor": "Этаж",
+      "entrance": "Подъезд"
+    },
+    "address": "Адрес",
+    "status": "Статус",
+    "created": "Дата создания"
   },
   "user": {
     "messages": {
@@ -161,12 +171,17 @@
       "contractNumber": "Номер договора",
       "monthlyPrice": "Сумма ежемесячной аренды",
       "depositPrice": "Сумма обеспечительного платежа",
-      "totalPrice": "Итоговая сумма"
+      "totalPrice": "Итоговая сумма",
+      "columns": {
+        "paymentAmount": "Сумма к оплате"
+      }
     }
   },
   "action": {
     "addPhone": "Добавить телефон",
     "login": "Войти",
+    "rent": "Арендовать",
+    "details": "Подробнее",
     "register": "Зарегистрироваться",
     "back": "Назад",
     "save": "Сохранить",
@@ -180,6 +195,7 @@
     "reject": "Отклонить",
     "pay": "Оплатить",
     "toProfile": "Перейти в личный кабинет",
+    "toMap": "Перейти к карте",
     "select": {
       "building": "Выберите здание",
       "parking": {
@@ -216,6 +232,7 @@
         "info": {
           "rooms": "{n} комната | {n} комнаты | {n} комнат"
         },
+        "apartment": "Квартира",
         "roomsAmount": "Количество комнат",
         "contractType": {
           "choose": "Выберите тип договора",

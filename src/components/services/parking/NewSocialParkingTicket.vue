@@ -125,7 +125,11 @@
           type: null,
           brand: null,
           model: null,
-          number: null
+          number: null,
+          documents: {
+            pts: null,
+            sts: null
+          }
         },
         documents: {
           social: null,

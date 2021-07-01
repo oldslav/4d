@@ -54,11 +54,20 @@
               v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
               :value="props.row.status"
               @choose="toApartments(props.row.id)"
+              @viewed="apartmentViewed(props.row.id)"
             )
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
     q-inner-loading(v-else showing)
+
+    BaseModal(
+      v-model="isApartmentsListModal"
+      position="standard"
+    )
+      ApartmentsList(
+        :requestId="requestId"
+      )
 </template>
 
 <script>
@@ -74,10 +83,15 @@
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
+  import BaseModal from "../../../components/common/BaseModal";
+  import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
+  import { UPDATE_TICKET_APARTMENT_VIEWED } from "../../../store/constants/action-constants";
 
   export default {
     name: "UserTicketsApartmentsUser",
     components: {
+      BaseModal,
+      ApartmentsList,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       UserTicketsApartmentProgressState,
@@ -89,27 +103,29 @@
     data () {
       return {
         isModalVisible: false,
+        isApartmentsListModal: false,
+        requestId: null,
         expanded: [],
         currentRow: null,
         columns: [
           {
             name: "address",
             required: true,
-            label: "Address",
+            label: this.$t("common.address"),
             align: "left",
             sortable: true
           },
           {
             name: "price",
             required: true,
-            label: "Rent price",
+            label: this.$t("common.rentPrice"),
             align: "left",
             sortable: true
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
             format: val => moment(val).fromNow(),
@@ -118,7 +134,7 @@
           {
             name: "status",
             required: true,
-            label: "Ticket status",
+            label: this.$t("common.status"),
             align: "left",
             sortable: true
           },
@@ -142,16 +158,23 @@
       ...mapActions("user/tickets/living", {
         getUserTickets: GET_USER_TICKETS_LIVING,
         deleteUserTicket: DELETE_USER_TICKET_LIVING,
-        requestApproval: REQUEST_APPROVAL_LIVING
+        requestApproval: REQUEST_APPROVAL_LIVING,
+        setApartmentViewed: UPDATE_TICKET_APARTMENT_VIEWED
       }),
 
       toApartments (requestId) {
-        this.$router.push({
-          name: "services-apartments",
-          query: {
-            requestId
-          }
-        });
+        this.isApartmentsListModal = true;
+        this.requestId = requestId;
+        // this.$router.push({
+        //   name: "services-apartments",
+        //   query: {
+        //     requestId
+        //   }
+        // });
+      },
+
+      apartmentViewed (requestId) {
+        this.setApartmentViewed({ requestId, apartmentViewed: true });
       },
 
       openDetails (data) {

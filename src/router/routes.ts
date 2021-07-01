@@ -175,12 +175,22 @@ const routes: RouteConfig[] = [
       {
         path: "bills",
         name: "user-bills",
-        components: {
-          default: (): Promise<any> => import("pages/UserBills.vue")
+        redirect: {
+          name: "user-bills-apartments"
         },
-        meta: {
-          toolbar: true
-        }
+        component: (): Promise<any> => import("pages/UserBills.vue"),
+        children: [
+          {
+            path: "apartments",
+            name: "user-bills-apartments",
+            component: (): Promise<any> => import("src/components/user/bills/UserBillsApartments.vue")
+          },
+          {
+            path: "parking",
+            name: "user-bills-parking",
+            component: (): Promise<any> => import("src/components/user/bills/UserBillsParking.vue")
+          }
+        ]
       }
     ]
   },
