@@ -75,7 +75,15 @@ export class TicketsService extends Service {
   }
 
   public static addTicketsParkingFile (id: number, file: unknown): AxiosPromise<any> {
-    return this.api.post(`/api/v1/services/parking/user/tickets/${ id }/file`, file);
+    return this.api.post(
+      `/api/v1/services/parking/user/tickets/${ id }/file`,
+      file,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
   }
 
   public static requestApprovalParking (id: number): AxiosPromise<any> {

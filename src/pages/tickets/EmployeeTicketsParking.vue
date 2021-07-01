@@ -50,20 +50,21 @@
               )
               q-step(
                 title="Подписание договора и получение ключа"
-                :done="props.row.status.id === 5"
-                :name="5"
+                :done="props.row.status.id > 7"
+                :name="7"
               )
             div(v-if="props.row.status.id === 3").q-pa-md
               div.text-body1.text-wrap
                 | Для продолжения оформления документов дождитесь оплаты.
     q-inner-loading(v-else showing)
-    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :info="activeRow" v-if="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
+    TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
   import BaseTable from "components/common/BaseTable";
   import {
     GET_EMPLOYEE_TICKETS_PARKING,
@@ -74,7 +75,7 @@
 
   export default {
     name: "EmployeeTicketsParking",
-    components: { ApartmentsEmployeeDetailsModal, BaseTable, ApartmentTicketStatus },
+    components: { ApartmentsEmployeeDetailsModal, BaseTable, ApartmentTicketStatus, TicketDetailsModal },
     async created () {
       await this.getEmployeeTickets();
     },
