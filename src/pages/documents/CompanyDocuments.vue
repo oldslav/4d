@@ -14,8 +14,8 @@
         CompanyCardForm
       q-inner-loading(:showing="loadingCard")
         q-spinner(size="50px" color="primary")
-    q-inner-loading(:showing="loadingPage")
-      q-spinner(size="50px" color="primary")
+    //q-inner-loading(:showing="loadingPage") возможно тоже все роняет
+      //q-spinner(size="50px" color="primary")
 </template>
 
 <script>

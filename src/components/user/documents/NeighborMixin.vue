@@ -47,27 +47,11 @@
     methods: {
       ...mapActions("user/neighbors", [CREATE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR]),
       onSubmit () {
-        let action;
-        let actionLabel = "create";
+        let label = "create";
         if (this.isUpdate) {
-          actionLabel = "update";
-          action = this[UPDATE_USER_NEIGHBOR];
-        } else {
-          action = this[CREATE_USER_NEIGHBOR];
+          label = "update";
         }
-        return action.call(this, this.neighbor)
-          .then(() => {
-            this.$q.notify({
-              type: "positive",
-              message: this.$t(`entity.neighbors.messages.${ actionLabel }.success`)
-            });
-          })
-          .catch(() => {
-            this.$q.notify({
-              type: "negative",
-              message: this.$t(`entity.neighbors.messages.${ actionLabel }.fail`)
-            });
-          });
+        this.$emit("submit", { label, neighbor: this.neighbor });
       },
       onCancel () {
         if (this.isUpdate) {
