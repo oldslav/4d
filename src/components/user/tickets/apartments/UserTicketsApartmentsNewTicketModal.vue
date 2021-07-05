@@ -35,7 +35,8 @@
           :error="!isFamilyInfo && step > 2"
           :name="2"
         )
-          Neighbors(v-model="neighbors")
+          TicketNeighbors(v-model="neighbors")
+
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -60,18 +61,19 @@
   import {
     ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
   } from "@/store/constants/action-constants";
+  import { GET_USER_DOCUMENTS } from "@/store/constants/action-constants";
+  import TicketNeighbors from "components/user/tickets/TicketNeighbors";
   import BaseInput from "../../../common/BaseInput";
   import BaseModal from "../../../common/BaseModal";
   import FilePicker from "../../../common/FilePicker";
-  import Neighbors from "../../documents/Neighbors";
   import FormName from "components/common/form/FormName";
   import FormContacts from "components/common/form/FormContacts";
   import MyDocumentsForm from "../../../forms/documents/MyDocumentsForm";
-  import { GET_USER_DOCUMENTS } from "../../../../store/constants/action-constants";
+
 
   export default {
     name: "UserTicketsApartmentsNewTicketModal",
-    components: { MyDocumentsForm, Neighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
+    components: { MyDocumentsForm, TicketNeighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
     props: {
       value: {
         type: Boolean,
@@ -99,10 +101,6 @@
           } = val;
 
           this.name = name;
-          // this.firstname = first;
-          // this.lastname = last;
-          // this.patronymic = patronymic;
-          // this.phone = phones[0];
         }
       });
     },
@@ -114,10 +112,7 @@
           last: "",
           patronymic: ""
         },
-        neighbors: {},
-        // firstname: null,
-        // lastname: null,
-        // patronymic: null,
+        neighbors: [],
         documents: {
           passport: null,
           snils: null,
@@ -211,7 +206,7 @@
           }))
         ];
 
-        console.log(items);
+        // console.log(items);
 
         await Promise.all(items.map(async item => {
           const payload = new FormData();

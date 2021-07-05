@@ -7,6 +7,10 @@
 
   export default {
     props: {
+      readonly: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Object,
         default: () => ({})

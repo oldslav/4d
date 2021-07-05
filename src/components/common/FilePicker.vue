@@ -10,6 +10,7 @@
     borderless
     multiple
     append
+    :readonly="readonly"
     :lazy-rules="lazy"
     :accept="accept"
     :max-files="maxFiles"
@@ -21,7 +22,7 @@
     template(#hint)
       | {{ description }}
     template(#file="{ index, file }")
-      q-chip.file-picker__chip.q-pl-none.q-ml-none(removable color="transparent" @remove="removeFile(index)" icon-remove="o_delete")
+      q-chip.file-picker__chip.q-pl-none.q-ml-none(removable color="transparent" @remove="removeFile(index)" :disable="readonly" icon-remove="o_delete")
         div.ellipsis
           | {{ file.name }}
       .flex-break
@@ -30,6 +31,10 @@
 <script>
   export default {
     props: {
+      readonly: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Array,
         default: () => []
