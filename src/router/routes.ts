@@ -72,7 +72,6 @@ const routes: RouteConfig[] = [
           asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
         },
         meta: {
-          asideLeft: true,
           toolbar: true
         },
         children: [

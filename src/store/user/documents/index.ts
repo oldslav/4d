@@ -2,11 +2,7 @@ import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vue
 import { TRootState } from "../../types/root";
 import { IDocumentsState } from "../../types/user/documents";
 import {
-  SET_PASSPORT,
-  SET_INN,
-  SET_SNILS,
-  SET_JOB,
-  SET_STATE, SET_DELETED_ID, CLEAR_DELETED_IDS, SET_STATE_DEFAULT
+  SET_STATE, CLEAR_DELETED_IDS, SET_STATE_DEFAULT, SET_DOCUMENTS
 } from "src/store/constants/mutation-constants";
 import {
   CREATE_USER_DOCUMENT,
@@ -15,14 +11,17 @@ import {
   UPDATE_USER_DOCUMENTS
 } from "src/store/constants/action-constants";
 import { UserDocumentsService } from "src/api/user/documents";
+import { Service } from "src/api/common";
 
 const initialState = (): IDocumentsState => {
   return {
-    passport: [],
-    snils: [],
-    inn: [],
-    job: [],
-    deletedIds: []
+   documents: {
+     passport: [],
+     snils: [],
+     inn: [],
+     job: [],
+     deletedIds: []
+   }
   };
 };
 
@@ -31,26 +30,14 @@ const defaultState = {};
 const state: () => IDocumentsState = initialState;
 
 const mutations: MutationTree<IDocumentsState> = {
-  [SET_PASSPORT] (state: IDocumentsState, payload) {
-    state.passport = payload;
-  },
-  [SET_SNILS] (state: IDocumentsState, payload) {
-    state.snils = payload;
-  },
-  [SET_INN] (state: IDocumentsState, payload) {
-    state.inn = payload;
-  },
-  [SET_JOB] (state: IDocumentsState, payload) {
-    state.job = payload;
+  [SET_DOCUMENTS] (state: IDocumentsState, payload) {
+    state.documents = { ...state.documents, ...payload };
   },
   [SET_STATE] (state: IDocumentsState, payload) {
     Object.assign(state, payload);
   },
-  [SET_DELETED_ID] (state: IDocumentsState, id) {
-    state.deletedIds.push(id);
-  },
   [CLEAR_DELETED_IDS] (state: IDocumentsState) {
-    state.deletedIds = [];
+    state.documents.deletedIds = [];
   },
   [SET_STATE_DEFAULT] (state) {
     Object.assign(state, defaultState);
@@ -60,7 +47,7 @@ const mutations: MutationTree<IDocumentsState> = {
 const actions: ActionTree<IDocumentsState, TRootState> = {
   [UPDATE_USER_DOCUMENTS] ({ state, rootGetters, dispatch, commit }) {
     const awaitsCreate: any = [];
-    const { deletedIds, ...files } = state;
+    const { documents: { deletedIds }, documents: { ...files } } = state;
     Object.entries(files).forEach(([key, val]) => {
       val.forEach((file: any) => {
         if (!file.id) {
@@ -88,23 +75,20 @@ const actions: ActionTree<IDocumentsState, TRootState> = {
   async [GET_USER_DOCUMENTS] ({ dispatch }) {
     const { data } = await UserDocumentsService.getDocuments();
     const { cars, neighbors, images } = data;
-    dispatch(STORE_USER_DOCUMENTS, images);
+    await dispatch(STORE_USER_DOCUMENTS, images);
     dispatch(`user/vehicles/${ STORE_USER_VEHICLES }`, cars, { root: true });
     dispatch(`user/neighbors/${ STORE_USER_NEIGHBORS }`, neighbors, { root: true });
   },
-  [STORE_USER_DOCUMENTS] ({ commit }, documents) {
+  async [STORE_USER_DOCUMENTS] ({ commit }, documents) {
     const result = initialState();
-    documents.forEach((doc: any) => {
-      const { id, imagePath, docType, fileName } = doc;
-      const file = {
-        id,
-        imagePath,
-        name: fileName
-      };
+    await Promise.all(documents.map(async (doc: any) => {
+      const { imagePath, docType, fileName } = doc;
+      const { data } = await Service.getFile(imagePath);
+      const file = new File([data], fileName);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      result[docType.name].push(file);
-    });
+      result.documents[docType.name].push(file);
+    }));
     Object.assign(defaultState, result);
     commit(SET_STATE, result);
   }
@@ -114,8 +98,9 @@ const getters: GetterTree<IDocumentsState, TRootState> = {
   isChanged (state: IDocumentsState) {
     return JSON.stringify(defaultState) !== JSON.stringify(state);
   },
+
   getDocuments (state: IDocumentsState) {
-    return state;
+    return state.documents;
   }
 };
 

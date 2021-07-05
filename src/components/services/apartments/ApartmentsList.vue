@@ -127,8 +127,9 @@
         return process.env.SERVER_API_HOST + src;
       },
 
-      setTicketApartment (apartmentId) {
-        this.UPDATE_TICKET_APARTMENT({ requestId: this.requestId, apartmentId });
+      async setTicketApartment (apartmentId) {
+        await this.UPDATE_TICKET_APARTMENT({ requestId: this.requestId, apartmentId });
+        this.$emit("close");
       },
 
       async getApartments (props) {

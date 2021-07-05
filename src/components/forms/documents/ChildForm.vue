@@ -10,7 +10,7 @@
     .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
       file-picker(:label="this.$t('entity.files.birthCertificate')" @remove="onRemove" v-model="neighbor.documents.birth")
       file-picker(:label="this.$t('entity.files.registrationCopy')" @remove="onRemove" v-model="neighbor.documents.children_registration")
-      file-picker(:label="this.$t('entity.files.passportCopy')" @remove="onRemove" :max-files="5" v-model="neighbor.documents.passport")
+      file-picker(:label="this.$t('entity.files.passport')" @remove="onRemove" :max-files="5" v-model="neighbor.documents.passport")
       file-picker(:label="this.$t('entity.files.personalAgreement')" @remove="onRemove" v-model="neighbor.documents.consent_processing_personal_data")
     div.text-right.q-mt-md(v-show="isChanged")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
