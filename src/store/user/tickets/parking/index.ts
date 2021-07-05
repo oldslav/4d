@@ -10,12 +10,18 @@ import {
   GET_EMPLOYEE_TICKETS_PARKING,
   REJECT_TICKET_PARKING,
   APPROVE_TICKET_PARKING,
-  GET_USER_TICKET_PARKING_PAYMENT_LINK
+  GET_USER_TICKET_PARKING_PAYMENT_LINK,
+  ADD_PARKING_FILES
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
+import { BillsService } from "src/api/user/bills";
 
 const state: IUserTicketsState = {
   filters: null,
+  pagination: {
+    limit: 10,
+    offset: 1
+  },
   data: null
 };
 
@@ -60,25 +66,41 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     dispatch(GET_USER_TICKETS_PARKING);
   },
   
-  async [CREATE_USER_TICKET_PARKING] (_, payload) {
-    const { data } = await TicketsService.createTicketParking(payload);
+  async [CREATE_USER_TICKET_PARKING] ({ dispatch }, payload) {
+    const { documents, ...result } = payload;
+    return TicketsService.createTicketParking(result)
+      .then(({ data }) => {
+        const { id } = data;
+        return dispatch(ADD_PARKING_FILES, { id, documents })
+          .then(() => {
+            return TicketsService.requestApprovalParking(id);
+          });
+      });
+  },
 
-    if (data.id) {
-      return TicketsService.requestApprovalParking(data.id);
-    }
-    
-    return data;
+  [ADD_PARKING_FILES] ({ dispatch, rootGetters }, { id, documents }) {
+    const awaits: any = [];
+    Object.entries(documents).forEach(([key, val]: any) => {
+      val.forEach((file: any) => {
+        const type = rootGetters["references/getDocTypeByName"](key);
+        const payload = new FormData();
+        payload.append("file", file);
+        payload.append("typeId", type.id);
+        awaits.push(payload);
+      });
+    });
+    return Promise.all(awaits.map((f: any) => dispatch(ADD_USER_TICKET_FILE_PARKING, { id, payload: f })));
   },
   
   async [ADD_USER_TICKET_FILE_PARKING] (_, { id, payload }) {
-    await TicketsService.addTicketLivingFile(id, payload);
+    await TicketsService.addTicketsParkingFile(id, payload);
   },
   
   async [GET_USER_TICKET_PARKING_PAYMENT_LINK] (_, id) {
     const { data } = await TicketsService.getParkingPayments({ paid:false });
-
-    const paymentId = data[0].id;
-    return TicketsService.getParkingPaymentLink(paymentId);
+    
+    const paymentId = data.find((i: any) => i.id === id).id;
+    return BillsService.getPaymentLink(paymentId);
   }
 };
 

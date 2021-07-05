@@ -132,7 +132,7 @@ const routes: RouteConfig[] = [
             path: "apartments",
             name: "user-tickets-apartments",
             components: {
-              default: (): Promise<any> => import("pages/tickets/ApartmentRent.vue")
+              default: (): Promise<any> => import("pages/tickets/UserTicketsApartments.vue")
             },
             meta: {
               toolbar: true
@@ -175,12 +175,22 @@ const routes: RouteConfig[] = [
       {
         path: "bills",
         name: "user-bills",
-        components: {
-          default: (): Promise<any> => import("pages/UserBills.vue")
+        redirect: {
+          name: "user-bills-apartments"
         },
-        meta: {
-          toolbar: true
-        }
+        component: (): Promise<any> => import("pages/UserBills.vue"),
+        children: [
+          {
+            path: "apartments",
+            name: "user-bills-apartments",
+            component: (): Promise<any> => import("src/components/user/bills/UserBillsApartments.vue")
+          },
+          {
+            path: "parking",
+            name: "user-bills-parking",
+            component: (): Promise<any> => import("src/components/user/bills/UserBillsParking.vue")
+          }
+        ]
       }
     ]
   },
@@ -217,10 +227,10 @@ const routes: RouteConfig[] = [
     },
     children: [
       {
-        path: "living",
-        name: "services-living",
+        path: "apartments",
+        name: "services-apartments",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/ServiceApartments.vue")
         },
         meta: {
           toolbar: true

@@ -21,22 +21,31 @@
       requiredRule () {
         return [val => !!val || this.$t("common.error.validation.required")];
       },
+
       validateEmail () {
         return [
           ...this.requiredRule,
           val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val) || this.$t("common.error.validation.email")
         ];
       },
+
       validatePassword () {
         return [
           ...this.requiredRule,
           val => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(val) || this.$t("common.error.validation.passwordReg") // uppercase, lowercase, 8 symbols, 1 digit
         ];
       },
+
       validateConfirm () {
         return [
           ...this.requiredRule,
           val => val === this.model.password || this.$t("common.error.validation.confirmPassword")
+        ];
+      },
+
+      validateName () {
+        return [
+          val => val && val.length > 0 && val.length < 50, val => val && /^[A-zА-яЁё '.-]*$/.test(val)
         ];
       }
     },

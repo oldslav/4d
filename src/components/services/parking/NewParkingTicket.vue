@@ -20,10 +20,7 @@
           :name="1"
           icon="edit"
         )
-          div.row.q-col-gutter-md
-            BaseInput(v-model="name.last" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="name.first" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="name.patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
+          FormName(v-model="name")
           FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passportCopy')").q-mt-sm
           FilePicker(v-model="documents.snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
 
@@ -120,6 +117,7 @@
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
+  import FormName from "components/common/form/FormName";
   import VehicleForm from "../../forms/documents/VehicleForm";
   import FormContacts from "@/components/common/form/FormContacts";
   import Vehicles from "../../user/documents/Vehicles";
@@ -127,7 +125,7 @@
 
   export default {
     name: "NewParkingTicket",
-    components: { VehicleForm, FormContacts, Vehicles, BaseInput, FilePicker, BaseModal },
+    components: { VehicleForm, FormContacts, Vehicles, BaseInput, FilePicker, BaseModal, FormName },
     props: {
       value: {
         type: Boolean,
@@ -151,7 +149,11 @@
           type: null,
           brand: null,
           model: null,
-          number: null
+          number: null,
+          documents: {
+            pts: null,
+            sts: null
+          }
         },
         documents: {
           passport: null,
@@ -185,15 +187,19 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle;
+          && !!this.vehicle
+          && !!this.documents.passport
+          && !!this.documents.snils;
       }
     },
     methods: {
       ...mapActions("user/tickets/parking", [CREATE_USER_TICKET_PARKING]),
 
       createParkingTicket () {
-        const { parkingPlaceId, name, documents, vehicle, rentOption, contacts } = this;
-        return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle, contacts, priceId: rentOption })
+        const documents = { ...this.documents, ...this.vehicle.documents };
+        const vehicle = ({ documents, ...rest }) => rest;
+        const { parkingPlaceId, name, rentOption, contacts } = this;
+        return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle: vehicle(this.vehicle), contacts, priceId: rentOption })
           .then(() => {
             this.$emit("success");
           })

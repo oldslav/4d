@@ -95,7 +95,17 @@
     "guestVisit": "Guest visit",
     "description": "Description",
     "notice": "Message",
-    "reason": "Reason"
+    "reason": "Reason",
+    "rentPrice": "Rent price, rubles",
+    "quantity": {
+      "area": "Area, sq.m",
+      "rooms": "Rooms",
+      "floor": "Floor",
+      "entrance": "Entrance"
+    },
+    "address": "Address",
+    "status": "Status",
+    "created": "Created at"
   },
   "user": {
     "messages": {
@@ -161,12 +171,17 @@
       "contractNumber": "Contract number",
       "monthlyPrice": "Payment per month",
       "depositPrice": "Deposit payment",
-      "totalPrice": "Total amount"
+      "totalPrice": "Total amount",
+      "columns": {
+        "paymentAmount": "Payment amount"
+      }
     }
   },
   "action": {
     "addPhone": "Add phone",
     "login": "Login",
+    "rent": "Rent",
+    "details": "Details",
     "register": "Register",
     "back": "Back",
     "save": "Save",
@@ -179,7 +194,8 @@
     "accept": "Accept",
     "reject": "Reject",
     "pay": "Pay",
-    "toProfile": "Перейти в личный кабинет",
+    "toProfile": "Go to the profile",
+    "toMap": "Go to the map",
     "select": {
       "building": "Select a building",
       "parking": {
@@ -216,6 +232,7 @@
         "info": {
           "rooms": "{n} room | {n} rooms"
         },
+        "apartment": "Apartment",
         "roomsAmount": "Количество комнат",
         "contractType": {
           "choose": "Выберите тип договора",

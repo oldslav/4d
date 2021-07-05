@@ -4,7 +4,7 @@
     position="standard"
     @input="toggleModal"
   )
-    q-card().modal-container-dense
+    q-card().modal-container_dense
       q-card-section.q-py-lg.text-subtitle
         | {{ data.properties.legend }}
       q-separator
@@ -67,6 +67,9 @@
                     q-icon(name="fiber_manual_record" size="8px")
                   q-item-section
                     q-item-label {{ $t("entity.socialTypes.veteran") }}
+          .full-width.q-pa-md
+            q-btn(outline color="primary" @click="selectedParkingType('Common')" :disable="!data.properties.free").full-width
+              | {{ $t('action.rent') }}
         q-tab-panel(name="guest").is-paddingless
           q-list
             q-item
@@ -80,6 +83,9 @@
                 q-item-label(caption) {{ $t(`entity.guestCard.period`) }}
               q-item-section(side)
                 q-item-label.text-primary {{ $t(`entity.guestCard.price`) }}
+          .full-width.q-pa-md
+            q-btn(outline type="submit" color="primary" @click="selectedParkingType('Guest')" :disable="!data.properties.free").full-width
+              | {{ $t('common.guestVisit') }}
         q-tab-panel(name="description").is-paddingless
           q-list
             q-item
@@ -94,11 +100,6 @@
               q-item-section
                 q-item-label.text-primary-light {{ $t("entity.services.parking.parkingType") }}
                 q-item-label {{ featureProperties.parking_type }}
-      q-btn-group(outline spread).q-pa-md.justify-end
-        q-btn(outline color="primary" @click="selectedParkingType('Common')")
-          | {{ $t('common.rent') }}
-        q-btn(outline type="submit" color="primary" @click="selectedParkingType('Guest')")
-          | {{ $t('common.guestVisit') }}
 </template>
 
 <script>
@@ -139,7 +140,7 @@
       },
 
       selectedParkingType (value) {
-        this.$emit("selected", value);
+        this.$emit("selected", this.isParkingSocial ? "Social" : value);
       }
     }
   };

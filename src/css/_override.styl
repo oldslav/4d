@@ -30,8 +30,9 @@
     margin-bottom: 20px
 
   &-subtitle
-    margin-top: 20px
-    margin-bottom: 20px
+    &_m
+      margin-top: 20px
+      margin-bottom: 20px
 
   &-primary-flat
     background: $primary-light
@@ -72,11 +73,15 @@
 
 
 .modal-container
-  min-width: 40vw
+  min-width: 40vw !important
 
-.modal-container-dense
-  max-width: 400px
-  max-height: 600px
+  &__wide
+    max-width: 1600px !important
+
+  &__dense
+    max-width: 400px !important
+    max-height: 600px !important
+
 
 .mobile
   .q-toolbar

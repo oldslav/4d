@@ -11,7 +11,7 @@
         q-separator.q-my-md
         | {{ $t('user.tickets.messages.create.success.caption') }}
       q-card-actions(align="right").q-pa-md
-        q-btn(outline color="primary" :label="$t('action.toProfile')")
+        q-btn(outline color="primary" :label="$t('action.toProfile')" @click="toProfile")
 </template>
 
 <script>
@@ -26,6 +26,10 @@
     methods: {
       onInput (value) {
         this.$emit("input", value);
+      },
+
+      toProfile () {
+        this.$router.push({ name: "user-profile" });
       }
     }
   };

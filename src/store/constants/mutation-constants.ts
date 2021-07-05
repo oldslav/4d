@@ -18,6 +18,8 @@ export const SET_GEODATA = "SET_GEODATA";
 export const SET_FEATURE_ID = "SET_FEATURE_ID";
 export const SET_USER = "SET_USER";
 export const SET_EMPTY = "SET_EMPTY";
+export const SET_DATA = "SET_DATA";
+export const SET_FILTERS = "SET_FILTERS";
 export const SET_ACCOUNT = "SET_ACCOUNT";
 export const SET_ACCESS_TOKEN = "SET_ACCESS_TOKEN";
 export const SET_REFRESH_TOKEN = "SET_REFRESH_TOKEN";
@@ -43,3 +45,5 @@ export const SET_COMPANY_ID = "SET_COMPANY_ID";
 
 export const SET_PARKING_PLACES = "SET_PARKING_PLACES";
 export const SET_PARKING_PLACE = "SET_PARKING_PLACE";
+
+export const UPDATE_APARTMENTS_PAGINATION = "UPDATE_APARTMENTS_PAGINATION";

@@ -11,13 +11,12 @@
     )
       template(v-slot:top-right)
         q-btn(
-          icon="add"
           outline
           color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
+          @click="toServiceParking"
+          :label="$t('action.toMap')"
         )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" :data="currentRow" @update="getUserTickets")
+        TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="parkingAddress" :props="props" @click="expandRow(props)")
@@ -31,8 +30,7 @@
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props" @click="expandRow(props)")
-            | {{ props.row.status.description }}
-            BaseStatus(:value="props.row.status.id")
+            ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
               q-menu
@@ -60,12 +58,12 @@
               )
               q-step(
                 title="Подписание договора и получение ключа"
-                :done="props.row.status.id === 5"
-                :name="5"
+                :done="props.row.status.id > 7"
+                :name="7"
               )
             div(v-if="props.row.status.id < 3").q-pa-md
               div.text-body1.text-wrap
-                | Пожалуйста, дождитесь решения по вашей заявки.
+                | Пожалуйста, дождитесь решения по вашей заявке.
                 | Фонд развития города Иннополис
             div(v-if="props.row.status.id === 3").q-pa-md
               div.text-body1.text-wrap
@@ -81,9 +79,9 @@
                   label="Перейти к оплате"
                   @click="getPaymentLink(props.row.id)"
                 )
-            div(v-if="props.row.status.id === 5").q-pa-md
+            div(v-if="props.row.status.id === 7").q-pa-md
               div.text-body1.text-wrap
-                | Ваш договор готов к подписанию! 
+                | Ваш договор готов к подписанию!
                 | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
     q-inner-loading(v-else showing)
 </template>
@@ -91,7 +89,9 @@
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import BaseTable from "../../components/common/BaseTable";
+  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
   import {
     DELETE_USER_TICKET_PARKING,
     GET_USER_TICKETS_PARKING,
@@ -100,7 +100,7 @@
 
   export default {
     name: "UserTicketsParking",
-    components: { BaseTable },
+    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal },
     async created () {
       await this.getUserTickets();
     },
@@ -178,12 +178,16 @@
       ...mapActions("user/tickets/parking", {
         getUserTickets: GET_USER_TICKETS_PARKING,
         deleteUserTicket: DELETE_USER_TICKET_PARKING,
-        GET_USER_TICKET_PARKING_PAYMENT_LINK        
+        GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
 
       openDetails (data) {
         this.currentRow = data;
         this.isModalVisible = true;
+      },
+
+      toServiceParking () {
+        this.$router.push({ name: "services-parking" });
       },
 
       expandRow (props) {

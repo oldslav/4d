@@ -1,19 +1,11 @@
-interface IUserTicketsList {
-  [index: number]: IUserTicketsItem
-}
+import { PaginationOutput, PaginationParams } from "src/api/common";
 
-interface IUserTicketsItem {
+interface IUserTickets extends PaginationOutput {}
 
-}
-
-interface IUserTickets {
-  limit: number;
-  offset: number;
-  aggregates: Array<any>;
-  items: IUserTicketsList | null;
-}
+interface IUserTicketsPagination extends PaginationParams {}
 
 export interface IUserTicketsState {
   filters: any,
+  pagination: IUserTicketsPagination,
   data: IUserTickets | null
-};
+}
