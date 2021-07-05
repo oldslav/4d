@@ -21,8 +21,8 @@
           icon="edit"
         )
           FormName(v-model="name")
-          FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passportCopy')").q-mt-sm
-          FilePicker(v-model="documents.snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
+          FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
+          FilePicker(v-model="documents.snils" :label="$t('entity.files.snils')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")

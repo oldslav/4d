@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosPromise } from "axios";
 
 interface Aggregates {
   [key: string]: any;
@@ -46,4 +46,8 @@ export interface PaginationParams {
 
 export class Service {
   protected static api: AxiosInstance = axios;
+
+  public static getFile (url: string): AxiosPromise<any> {
+    return this.api.get(url, { responseType: "blob" });
+  }
 }

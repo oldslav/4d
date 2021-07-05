@@ -1,4 +1,4 @@
-import { ActionTree, Module, MutationTree } from "vuex";
+import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
@@ -58,11 +58,11 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   [APPROVE_TICKET_LIVING] (_, { id, payload }) {
     return TicketsService.approveTicketLiving(id, payload);
   },
-  
+
   async [UPDATE_TICKET_APARTMENT] (_, { requestId, apartmentId }) {
     await TicketsService.choiceApartment(requestId, apartmentId);
   },
-  
+
   async [UPDATE_TICKET_APARTMENT_VIEWED] (_, { requestId, apartmentViewed }) {
     await TicketsService.viewedApartment(requestId, apartmentViewed);
   },
@@ -89,11 +89,36 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   }
 };
 
+const getters: GetterTree<IUserTicketsState, TRootState> = {
+  tableData (state) {
+    const { data } = state;
+
+    if (data) {
+      return {
+        items: data.items
+      };
+    }
+  },
+
+  tablePagination (state) {
+    const { pagination, data } = state;
+
+    if (data) {
+      return {
+        rowsPerPage: pagination.limit,
+        page: pagination.offset,
+        rowsNumber: data.count
+      };
+    }
+  }
+};
+
 const living: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };
 
 export default living;

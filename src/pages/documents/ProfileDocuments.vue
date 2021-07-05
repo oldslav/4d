@@ -1,19 +1,18 @@
 <template lang="pug">
-  component(:is="activeComponent")
+  CompanyDocuments(v-if="isUserLegal")
+  UserDocuments(v-else)
 </template>
 
 <script>
   import { mapGetters } from "vuex";
-  import UserDocuments from "pages/documents/UserDocuments";
-  import CompanyDocuments from "pages/documents/CompanyDocuments";
+  import CompanyDocuments from "./CompanyDocuments";
+  import UserDocuments from "../UserDocuments";
 
   export default {
     name: "ProfileDocuments",
+    components: { UserDocuments, CompanyDocuments },
     computed: {
-      ...mapGetters(["isUserLegal"]),
-      activeComponent () {
-        return this.isUserLegal ? CompanyDocuments : UserDocuments;
-      }
+      ...mapGetters(["isUserLegal"])
     }
   };
 </script>

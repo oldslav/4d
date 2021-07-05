@@ -1,12 +1,13 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
       :columns="columns"
-      :data="data"
-      :loading="isLoading"
+      :data="tableData"
+      :isLoading="isLoading"
       :getData="getUserTickets"
+      :pagination="tablePagination"
       :expanded.sync="expanded"
     )
       template(v-slot:top-right)
@@ -67,12 +68,13 @@
     )
       ApartmentsList(
         :requestId="requestId"
+        @close="apartmentSelected"
       )
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
+  import { mapActions, mapGetters, mapState } from "vuex";
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
@@ -146,8 +148,12 @@
       };
     },
     computed: {
+      ...mapGetters("user/tickets/living", [
+        "tablePagination"
+      ]),
+
       ...mapState("user/tickets/living", {
-        data: state => state.data
+        tableData: state => state.data
       }),
 
       isLoading () {
@@ -173,8 +179,14 @@
         // });
       },
 
-      apartmentViewed (requestId) {
-        this.setApartmentViewed({ requestId, apartmentViewed: true });
+      async apartmentViewed (requestId) {
+        await this.setApartmentViewed({ requestId, apartmentViewed: true });
+        await this.getUserTickets();
+      },
+
+      async apartmentSelected () {
+        await this.getUserTickets();
+        this.isApartmentsListModal = false;
       },
 
       openDetails (data) {
