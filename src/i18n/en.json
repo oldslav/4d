@@ -434,10 +434,10 @@
       "preferred": "Preferred method"
     },
     "files": {
-      "passportCopy": "Passport scan",
-      "snilsCopy": "SNILS scan",
-      "innCopy": "INN scan",
-      "workCertificate": "Employment certificate",
+      "passport": "Passport scan",
+      "snils": "SNILS scan",
+      "inn": "INN scan",
+      "job": "Employment certificate",
       "birthCertificate": "Birth certificate scan",
       "marriageCertificate": "Marriage certificate scan",
       "registrationCopy": "Residence permit scan",

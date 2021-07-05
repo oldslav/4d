@@ -1,10 +1,10 @@
 <template lang="pug">
-  q-page.documents.q-pa-lg.column.q-gutter-y-lg
+  q-page.q-pa-lg.column.q-gutter-y-lg
     q-card
       q-card-section.q-pa-lg
         .text-weight-bold.text-medium
           | {{ $t("entity.documents.data") }}
-        my-documents-form
+        MyDocumentsForm
       q-inner-loading(:showing="loadingDocuments")
         q-spinner(size="50px" color="primary")
     q-card
