@@ -22,7 +22,7 @@
 
 <script>
   import { mapActions, mapGetters, mapMutations } from "vuex";
-  import { isEqual } from "lodash";
+  import { isEqual, cloneDeep } from "lodash";
   import NeighborResolver from "components/user/documents/NeighborResolver";
   import BaseTabs from "components/common/BaseTabs";
   import { CREATE_USER_NEIGHBOR, DELETE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR } from "@/store/constants/action-constants";
@@ -83,7 +83,7 @@
       }),
       ...mapMutations("user/neighbors", [SET_DELETED_ID]),
       cloneData () {
-        this.neighbors = JSON.parse(JSON.stringify(this.getNeighbors));
+        this.neighbors = cloneDeep(this.getNeighbors);
       },
       onSubmit ({ label, neighbor }) {
         const action = label === "update" ? this[UPDATE_USER_NEIGHBOR] : this[CREATE_USER_NEIGHBOR];
@@ -148,8 +148,8 @@
       },
       getNeighbors: {
         deep: true,
-        handler (val) {
-          this.neighbors = JSON.parse(JSON.stringify(val));
+        handler () {
+          this.cloneData();
         }
       }
     }
