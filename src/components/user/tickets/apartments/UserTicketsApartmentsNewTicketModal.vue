@@ -214,8 +214,6 @@
           }))
         ];
 
-        // console.log(items);
-
         await Promise.all(items.map(async item => {
           const payload = new FormData();
 

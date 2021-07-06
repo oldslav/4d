@@ -3,19 +3,19 @@
     .col-12.q-mb-sm(v-for="(neighbor, index) in model" :key="index")
       q-expansion-item(
         switch-toggle-side
-        expand-separator
         group="neighbors"
+        ref="ei"
       )
         template(#header)
           .flex.items-center.justify-between.full-width
             div.text-subtitle.ellipsis.text-no-wrap(:style="{flex: 1}")
-              | {{ neighbor.name.full }}
-            div.q-gutter-sm
-              q-icon(name="o_edit" size="sm" color="primary").cursor-pointer
-              q-icon(name="o_delete" size="sm" color="primary" @click.stop="removeNeighbor(index)").cursor-pointer
+              | {{ neighborName(neighbor.name) }}
+            div
+              q-btn(flat icon="o_edit" :color="editing === index ? `grey` : `primary`" @click.stop="edit(index)").q-mr-sm
+              q-btn(flat icon="o_delete" color="primary" :disable="editing !== null" @click.stop="removeNeighbor(index)")
         q-card
           q-card-section
-            NeighborResolver(v-model="model[index]" :backup="model[index]" :index="index" readonly)
+            NeighborResolver(v-model="model[index]" :backup="model[index]" :index="index" :readonly="editing !== index" @remove="removeNeighbor")
     q-btn-dropdown(
       flat
       color="primary"
@@ -34,10 +34,12 @@
             q-icon(name="keyboard_arrow_right")
           q-menu(anchor="top end" self="top start")
             q-list
-              q-item(clickable v-close-popup)
-                q-item-section Супруг(а)
-              q-item(clickable v-close-popup)
-                q-item-section Ребёнок
+              q-item(clickable v-close-popup @click="addNewNeighbor(5)")
+                q-item-section
+                  | {{$t("entity.neighbors.spouse")}}
+              q-item(clickable v-close-popup @click="addNewNeighbor(4)")
+                q-item-section
+                  | {{$t("entity.neighbors.child")}}
 </template>
 
 <script>
@@ -76,7 +78,8 @@
     },
     data () {
       return {
-        model: []
+        model: [],
+        editing: null
       };
     },
     computed: {
@@ -87,6 +90,24 @@
       }
     },
     methods: {
+      neighborName (name) {
+        if (!!name.full) {
+          return name.full;
+        }
+        if (!!name.first) {
+          return name.first;
+        }
+        return "Новый";
+      },
+      async edit (index) {
+        if (this.editing === index) {
+          this.editing = null;
+        } else {
+          this.editing = index;
+          await this.$nextTick();
+          this.$refs.ei[index].show();
+        }
+      },
       removeNeighbor (index) {
         this.model.splice(index, 1);
         this.onInput();
@@ -97,6 +118,8 @@
       },
       addNewNeighbor (id) {
         this.model.push(defaultNeighbor(id));
+        this.onInput();
+        this.edit(this.model.length - 1);
       },
       onInput () {
         this.$emit("input", this.model);
