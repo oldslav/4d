@@ -41,6 +41,7 @@
 </template>
 
 <script>
+  import { cloneDeep } from "lodash";
   import { mapGetters } from "vuex";
   import NeighborResolver from "components/user/documents/NeighborResolver";
 
@@ -73,10 +74,6 @@
         default: () => []
       }
     },
-    created () {
-      // eslint-disable-next-line no-console
-      console.log(this.availableNeighbors);
-    },
     data () {
       return {
         model: []
@@ -95,7 +92,7 @@
         this.onInput();
       },
       addExistingNeighbor (neighbor) {
-        this.model.push(JSON.parse(JSON.stringify(neighbor)));
+        this.model.push(cloneDeep(neighbor));
         this.onInput();
       },
       addNewNeighbor (id) {

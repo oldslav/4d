@@ -38,6 +38,14 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/file`, params);
   }
 
+  public static addTicketLivingNeighbor (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/neighbors`, payload);
+  }
+
+  public static addTicketLivingNeighborFile (id: number, ticketId: number, file: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/apartments/user/tickets/${ ticketId }/neighbors/${ id }/file`, file);
+  }
+
   public static deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
   }
@@ -49,15 +57,15 @@ export class TicketsService extends Service {
   public static approveTicketLiving (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/approve`, payload);
   }
-  
+
   public static choiceApartment (requestId: number | string, apartmentId: number | string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ requestId }/choice_apartments`, { apartmentId });
   }
-  
+
   public static viewedApartment (requestId: number | string, apartmentViewed: boolean): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ requestId }/viewing_apartments`, { apartmentViewed });
   }
-  
+
   public static rejectTicketLiving (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/reject`, reason);
   }

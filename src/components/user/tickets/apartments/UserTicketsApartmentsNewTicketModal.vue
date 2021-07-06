@@ -59,7 +59,7 @@
 <script>
   import { mapActions, mapGetters } from "vuex";
   import {
-    ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
+    ADD_USER_TICKET_FILE_LIVING, ADD_USER_TICKET_NEIGHBOR, CREATE_USER_TICKET_LIVING
   } from "@/store/constants/action-constants";
   import { GET_USER_DOCUMENTS } from "@/store/constants/action-constants";
   import TicketNeighbors from "components/user/tickets/TicketNeighbors";
@@ -156,7 +156,8 @@
     methods: {
       ...mapActions("user/tickets/living", {
         createUserTicket: CREATE_USER_TICKET_LIVING,
-        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING
+        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING,
+        ADD_USER_TICKET_NEIGHBOR
       }),
       ...mapActions("user/documents", [
         GET_USER_DOCUMENTS
@@ -179,7 +180,14 @@
         };
         const { id } = await this.createUserTicket(payload);
         await this.addFiles(id);
+        await this.addNeighbors(id);
         this.closeModal();
+      },
+
+      async addNeighbors (id) {
+        await Promise.all(this.neighbors.map(async n => {
+          await this.ADD_USER_TICKET_NEIGHBOR({ ticketId: id, payload: n });
+        }));
       },
 
       async addFiles (id) {
