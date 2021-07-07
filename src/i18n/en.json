@@ -543,6 +543,7 @@
       }
     },
     "neighbors": {
+      "add": "Add neighbor",
       "title": "Relatives",
       "child": "Child",
       "spouse": "Spouse (а)",

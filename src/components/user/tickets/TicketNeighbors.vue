@@ -19,17 +19,18 @@
     q-btn-dropdown(
       flat
       color="primary"
-      label="Добавить сожителя"
+      :label="$t('entity.neighbors.add')"
       icon="add"
       menu-anchor="bottom left"
       menu-self="top start"
     ).full-width
       q-list
-        q-item(v-for="(available, index) in availableNeighbors" :key="index" clickable @click="addExistingNeighbor(available)")
+        q-item(v-for="(available, index) in availableNeighbors" :key="index" clickable v-close-popup @click="addExistingNeighbor(available)")
           q-item-section
             | {{ available.name.full }}
         q-item(clickable)
-          q-item-section Новый
+          q-item-section
+            | {{$t("entity.neighbors.add")}}
           q-item-section(side)
             q-icon(name="keyboard_arrow_right")
           q-menu(anchor="top end" self="top start")
@@ -97,7 +98,7 @@
         if (!!name.first) {
           return name.first;
         }
-        return "Новый";
+        return this.$t("entity.neighbors.add");
       },
       async edit (index) {
         if (this.editing === index) {
