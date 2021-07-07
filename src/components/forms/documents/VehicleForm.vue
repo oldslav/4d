@@ -10,6 +10,7 @@
           field="name"
           prop="id"
           :rules="requiredRule"
+          :readonly="readonly"
           @input="onInputType()"
         )
       .col-12.col-sm-6.col-md-3
@@ -22,6 +23,7 @@
           prop="id"
           v-model="vehicle.brand"
           use-input
+          :readonly="readonly"
           @input="onInputBrand()"
           :rules="requiredRule"
         )
@@ -34,15 +36,28 @@
           field="name"
           prop="id"
           v-model="vehicle.model"
+          :readonly="readonly"
           use-input
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" maxlength="12")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly" maxlength="12")
     .text-subtitle.q-my-sm
-      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
-      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
-    div.text-right.q-mt-md(v-show="isChanged && !unmanaged")
+      file-picker(
+        :max-files="2"
+        v-model="vehicle.documents.pts"
+        @remove="onRemoveFile"
+        :label="this.$t('entity.files.pts')"
+        :readonly="readonly"
+        )
+      file-picker(
+        :max-files="2"
+        v-model="vehicle.documents.sts"
+        @remove="onRemoveFile"
+        :label="this.$t('entity.files.sts')"
+        :readonly="readonly"
+        )
+    div.text-right.q-mt-md(v-show="isChanged && !readonly")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
 </template>
@@ -69,7 +84,7 @@
         type: Object,
         default: () => ({})
       },
-      unmanaged: {
+      readonly: {
         type: Boolean,
         default: false
       }

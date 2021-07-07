@@ -12,6 +12,7 @@
         contracted
         flat
         animated
+        keep-alive
       )
         q-step(
           title="Основная информация"
@@ -33,7 +34,7 @@
           :name="2"
           icon="directions_car"
         )
-          VehicleForm(v-model="vehicle" unmanaged)
+          TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -114,18 +115,18 @@
 
 <script>
   import { mapActions } from "vuex";
+  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
   import FormName from "components/common/form/FormName";
   import VehicleForm from "../../forms/documents/VehicleForm";
   import FormContacts from "@/components/common/form/FormContacts";
-  import Vehicles from "../../user/documents/Vehicles";
-  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
+  import TicketVehicle from "components/common/TicketVehicle";
 
   export default {
     name: "NewParkingTicket",
-    components: { VehicleForm, FormContacts, Vehicles, BaseInput, FilePicker, BaseModal, FormName },
+    components: { VehicleForm, FormContacts, TicketVehicle, BaseInput, FilePicker, BaseModal, FormName },
     props: {
       value: {
         type: Boolean,
@@ -145,16 +146,7 @@
           last: null,
           patronymic: null
         },
-        vehicle: {
-          type: null,
-          brand: null,
-          model: null,
-          number: null,
-          documents: {
-            pts: null,
-            sts: null
-          }
-        },
+        vehicle: null,
         documents: {
           passport: null,
           snils: null

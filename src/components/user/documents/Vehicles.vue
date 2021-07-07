@@ -16,14 +16,14 @@
 <script>
   import { mapGetters, mapActions, mapMutations } from "vuex";
   import { isEqual, cloneDeep } from "lodash";
-  import BaseTabs from "components/common/BaseTabs";
-  import VehicleForm from "components/forms/documents/VehicleForm";
   import {
     CREATE_USER_VEHICLE,
     DELETE_USER_VEHICLE,
     UPDATE_USER_VEHICLE
   } from "@/store/constants/action-constants";
   import { SET_DELETED_ID } from "@/store/constants/mutation-constants";
+  import BaseTabs from "components/common/BaseTabs";
+  import VehicleForm from "components/forms/documents/VehicleForm";
 
   const defaultVehicle = () => ({
     type: null,
