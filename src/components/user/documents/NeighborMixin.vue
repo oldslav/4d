@@ -1,9 +1,7 @@
 <script>
   import { mapActions } from "vuex";
-  import { isEqual } from "lodash";
+  import { isEqual, cloneDeep } from "lodash";
   import { CREATE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR } from "@/store/constants/action-constants";
-
-  const deepClone = (val) => JSON.parse(JSON.stringify(val));
 
   export default {
     props: {
@@ -65,7 +63,7 @@
         }
       },
       discardChanges () {
-        this.neighbor = deepClone(this.backup);
+        this.neighbor = cloneDeep(this.backup);
       },
       onRemove (id) {
         this.$emit("removeFile", id);
