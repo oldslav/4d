@@ -15,7 +15,7 @@
               q-btn(flat icon="o_delete" color="primary" :disable="editing !== null" @click.stop="removeNeighbor(index)")
         q-card
           q-card-section
-            NeighborResolver(v-model="model[index]" :backup="model[index]" :index="index" :readonly="editing !== index" @remove="removeNeighbor")
+            NeighborResolver(v-model="model[index]" :backup="model[index]" :index="index" :readonly="editing !== index" @input="onInput()" @remove="removeNeighbor")
     q-btn-dropdown(
       flat
       color="primary"
