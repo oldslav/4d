@@ -15,10 +15,14 @@
 
 <script>
   import { mapGetters, mapActions, mapMutations } from "vuex";
-  import { isEqual } from "lodash";
+  import { isEqual, cloneDeep } from "lodash";
   import BaseTabs from "components/common/BaseTabs";
   import VehicleForm from "components/forms/documents/VehicleForm";
-  import { DELETE_USER_VEHICLE } from "@/store/constants/action-constants";
+  import {
+    CREATE_USER_VEHICLE,
+    DELETE_USER_VEHICLE,
+    UPDATE_USER_VEHICLE
+  } from "@/store/constants/action-constants";
   import { SET_DELETED_ID } from "@/store/constants/mutation-constants";
 
   const defaultVehicle = () => ({
@@ -60,10 +64,26 @@
       }
     },
     methods: {
-      ...mapActions("user/vehicles", { deleteVehicle: DELETE_USER_VEHICLE }),
+      ...mapActions("user/vehicles", { deleteVehicle: DELETE_USER_VEHICLE, CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE }),
       ...mapMutations("user/vehicles", [SET_DELETED_ID]),
       cloneData () {
-        this.vehicles = JSON.parse(JSON.stringify(this.getVehicles));
+        this.vehicles = cloneDeep(this.getVehicles);
+      },
+      onSubmit (label, vehicle) {
+        const action = label === "update" ? this[UPDATE_USER_VEHICLE] : this[CREATE_USER_VEHICLE];
+        return action.call(this, vehicle)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t(`entity.vehicles.messages.${ label }.success`)
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t(`entity.vehicles.messages.${ label }.fail`)
+            });
+          });
       },
       onRemove (index) {
         this.$q.dialog({
@@ -105,8 +125,8 @@
     watch: {
       getVehicles: {
         deep: true,
-        handler (val) {
-          this.vehicles = JSON.parse(JSON.stringify(val));
+        handler () {
+          this.cloneData();
         }
       }
     }

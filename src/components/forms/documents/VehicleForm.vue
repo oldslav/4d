@@ -49,12 +49,9 @@
 
 <script>
   import { mapActions } from "vuex";
-  import { isEqual } from "lodash";
-  import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE } from "@/store/constants/action-constants";
+  import { isEqual, cloneDeep } from "lodash";
   import FilePicker from "components/common/FilePicker";
   import BaseAutocomplete from "components/common/BaseAutocomplete";
-
-  const deepClone = (val) => JSON.parse(JSON.stringify(val));
 
   export default {
     name: "VehicleForm",
@@ -109,29 +106,13 @@
       }
     },
     methods: {
-      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels", CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE]),
+      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels"]),
       onSubmit () {
-        let action;
-        let actionLabel = "create";
+        let label = "create";
         if (this.isUpdate) {
-          actionLabel = "update";
-          action = this[UPDATE_USER_VEHICLE];
-        } else {
-          action = this[CREATE_USER_VEHICLE];
+          this.label = "update";
         }
-        return action.call(this, this.vehicle)
-          .then(() => {
-            this.$q.notify({
-              type: "positive",
-              message: this.$t(`entity.vehicles.messages.${ actionLabel }.success`)
-            });
-          })
-          .catch(() => {
-            this.$q.notify({
-              type: "negative",
-              message: this.$t(`entity.vehicles.messages.${ actionLabel }.fail`)
-            });
-          });
+        this.$emit("submit", { label, vehicle: this.vehicle });
       },
       onCancel () {
         if (this.isUpdate) {
@@ -141,7 +122,7 @@
         }
       },
       discardChanges () {
-        this.vehicle = deepClone(this.backup); // backup
+        this.vehicle = cloneDeep(this.backup); // backup
       },
       loadTypes () {
         this.loadingTypes = true;
