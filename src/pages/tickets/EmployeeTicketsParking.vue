@@ -44,12 +44,12 @@
               animated
             )
               q-step(
-                title="Оплата"
+                :title="$t('users.tickets.parking.steps.first')"
                 :done="props.row.status.id > 4"
                 :name="3"
               )
               q-step(
-                title="Подписание договора и получение ключа"
+                :title="$t('users.tickets.parking.steps.second')"
                 :done="props.row.status.id > 7"
                 :name="7"
               )
@@ -90,7 +90,7 @@
                   v-model="contractInfo.dateContractExpire"
                   :label="$t('user.bills.dateContractExpire')"
                   lazy-rules
-                  :rules="[ val => val !== null && val !== '' || 'Please select a date']"
+                  :rules="[ val => val !== null && val !== '' || '']"
                   @click="$refs.qDateExpireProxy.show()"
                 )
                   template(v-slot:append)
@@ -223,8 +223,8 @@
 
       onTicketReject (id) {
         this.$q.dialog({
-          title: this.$t("Отклонение заявки"),
-          message: "Статус заявки обновится автоматически.",
+          title: this.$t("entity.services.ticketRejection"),
+          message: this.$t("user.messages.ticketStatusUpdate"),
           ok: this.$t("action.submit"),
           cancel: this.$t("action.cancel"),
           prompt: {
@@ -245,14 +245,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Заявка отклонена"
+              message: $t("entity.services.messages.reject.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "При отклонении заявки произошла ошибка"
+              message: $t("entity.services.messages.reject.success")
             });
           });
       },
@@ -267,14 +267,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Заявка одобрена"
+              message: $t("entity.services.messages.approve.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "При одобрении заявки произошла ошибка"
+              message: $t("entity.services.messages.approve.fail")
             });
           })
           .finally(() => {
@@ -311,13 +311,13 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Данные договора успешно отправлены"
+              message: $t("user.tickets.contract.sendSuccess")
             });
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "При отправлении данных договора произошла ошибка"
+              message: $t("user.tickets.contract.sendFail")
             });
           });
       },

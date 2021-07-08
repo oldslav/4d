@@ -135,7 +135,7 @@
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "Ошибка при получении ссылки на оплату"
+              message: $t("user.bills.paymentLinkError")
             });
           });
       },
