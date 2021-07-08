@@ -106,6 +106,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/reject`, reason);
   }
 
+  public static sendContractInfoParking (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/sign_contract_success`, payload);
+  }
+
   public static getTicketsIdeas (params: any): AxiosPromise<any> {
     return this.api.get("api/v1/services/crowdsourcing/all", params);
   }
