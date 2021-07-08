@@ -105,7 +105,7 @@
     },
     "address": "Адрес",
     "status": "Статус",
-    "created": "Дата создания"
+    "created": "Дата формирования"
   },
   "user": {
     "messages": {
@@ -116,7 +116,8 @@
       "actions": {
         "create": "Создать новую заявку",
         "details": "Просмотреть детали заявки",
-        "cancel": "Отменить заявку"
+        "cancel": "Отменить заявку",
+        "next": "Далее"
       },
       "empty": {
         "title": "У вас пока нет ни одной заявки",
@@ -172,6 +173,8 @@
       "monthlyPrice": "Сумма ежемесячной аренды",
       "depositPrice": "Сумма обеспечительного платежа",
       "totalPrice": "Итоговая сумма",
+      "dateContractConcluded": "Дата заключения",
+      "dateContractExpire": "Дата окончания",
       "columns": {
         "paymentAmount": "Сумма к оплате"
       }
