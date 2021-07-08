@@ -12,6 +12,7 @@
         contracted
         flat
         animated
+        keep-alive
       )
         q-step(
           title="Основная информация"
@@ -26,18 +27,18 @@
         q-step(
           title="Данные об авто"
           :done="step > 2"
-          :error="!isUserInfo && step > 2"
+          :error="!isCarInfo && step > 2"
           :name="2"
           icon="directions_car"
         )
-          VehicleForm(v-model="vehicle" unmanaged)
+          TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Срок аренды"
           :done="step > 3"
-          :error="!isUserInfo && step > 3"
+          :error="!isDate && step > 3"
           :name="3"
           icon="schedule"
         )
@@ -81,6 +82,7 @@
 
 <script>
   import { mapActions } from "vuex";
+  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
   import moment from "moment";
   import BaseDatepicker from "../../common/BaseDatepicker";
   import BaseInput from "../../common/BaseInput";
@@ -88,13 +90,11 @@
   import FilePicker from "../../common/FilePicker";
   import FormName from "components/common/form/FormName";
   import FormContacts from "../../common/form/FormContacts";
-  import VehicleForm from "../../forms/documents/VehicleForm";
-  import Vehicles from "../../user/documents/Vehicles";
-  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
+  import TicketVehicle from "components/common/TicketVehicle";
 
   export default {
     name: "NewGuestParkingTicket",
-    components: { FormName, FormContacts, BaseDatepicker, VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
+    components: { FormName, FormContacts, BaseDatepicker, TicketVehicle, BaseInput, FilePicker, BaseModal },
     props: {
       value: {
         type: Boolean,
@@ -114,20 +114,7 @@
           last: null,
           patronymic: null
         },
-        documents: {
-          passport: null,
-          snils: null
-        },
-        vehicle: {
-          type: null,
-          brand: null,
-          model: null,
-          number: null,
-          documents: {
-            pts: null,
-            sts: null
-          }
-        },
+        vehicle: null,
         contacts: {
           phones: []
         },
@@ -147,13 +134,15 @@
       },
 
       isValid () {
-        return this.isUserInfo && this.isCarInfo;
+        return this.isUserInfo && this.isCarInfo && this.isDate;
       },
 
       isCarInfo () {
-        return !!this.name.first
-          && !!this.name.last
-          && !!this.vehicle;
+        return !!this.vehicle
+          && this.vehicle.type
+          && this.vehicle.brand
+          && this.vehicle.model
+          && this.vehicle.number;
       },
 
       isDate () {
@@ -163,22 +152,24 @@
 
       isUserInfo () {
         return !!this.name.first
-          && !!this.name.last
-          && !!this.vehicle
-          && !!this.documents.passport
-          && !!this.documents.snils;
+          && !!this.name.last;
       }
     },
     methods: {
       ...mapActions("user/tickets/parking", [CREATE_USER_TICKET_PARKING]),
-
-      moment,
-
       createParkingTicket () {
-        const documents = { ...this.documents, ...this.vehicle.documents };
-        const vehicle = ({ documents, ...rest }) => rest;
+        const { documents, ...vehicle } = this.vehicle;
         const { parkingPlaceId, name, isGuestCard, period, contacts } = this;
-        return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle: vehicle(this.vehicle), contacts, guestCard: isGuestCard, startDate: period.from, endDate: period.to })
+        return this.CREATE_USER_TICKET_PARKING({
+          parkingPlaceId,
+          name,
+          documents,
+          vehicle,
+          contacts,
+          guestCard: isGuestCard,
+          startDate: period.from,
+          endDate: period.to
+        })
           .then(() => {
             this.$emit("success");
           })

@@ -35,11 +35,11 @@ const mutations: MutationTree<IUserTicketsState> = {
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_PARKING] ({ state, commit }) {
     const { filters } = state;
-    
+
     const { data } = await TicketsService.getTicketsParking({
       filters
     });
-    
+
     commit(SET_USER_TICKETS, data);
   },
 
@@ -60,25 +60,28 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   [APPROVE_TICKET_PARKING] (_, { id }) {
     return TicketsService.approveTicketParking(id);
   },
-  
+
   async [DELETE_USER_TICKET_PARKING] ({ dispatch }, payload) {
     await TicketsService.deleteTicketLiving(payload);
-    
+
     dispatch(GET_USER_TICKETS_PARKING);
   },
-  
+
   async [CREATE_USER_TICKET_PARKING] ({ dispatch }, payload) {
     const { documents, ...result } = payload;
-    return TicketsService.createTicketParking(result)
-      .then(({ data }) => {
-        const { id } = data;
-        return dispatch(ADD_PARKING_FILES, { id, documents })
-          .then(() => {
-            return TicketsService.requestApprovalParking(id);
-          });
-      });
+    const { data: { id } } = await TicketsService.createTicketParking(result);
+    await dispatch(ADD_PARKING_FILES, { id, documents });
+    await TicketsService.requestApprovalParking(id);
+    // return TicketsService.createTicketParking(result)
+    //   .then(({ data }) => {
+    //     const { id } = data;
+    //     return dispatch(ADD_PARKING_FILES, { id, documents })
+    //       .then(() => {
+    //         return TicketsService.requestApprovalParking(id);
+    //       });
+    //   });
   },
-  
+
   async [SEND_CONTRACT_INFO_PARKING] ({ dispatch }, { id, payload }) {
     return TicketsService.sendContractInfoParking(id, payload)
       .then(() => dispatch(GET_EMPLOYEE_TICKETS_PARKING));
@@ -97,14 +100,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     });
     return Promise.all(awaits.map((f: any) => dispatch(ADD_USER_TICKET_FILE_PARKING, { id, payload: f })));
   },
-  
+
   async [ADD_USER_TICKET_FILE_PARKING] (_, { id, payload }) {
     await TicketsService.addTicketsParkingFile(id, payload);
   },
-  
+
   async [GET_USER_TICKET_PARKING_PAYMENT_LINK] (_, id) {
-    const { data } = await TicketsService.getParkingPayments({ paid:false });
-    
+    const { data } = await TicketsService.getParkingPayments({ paid: false });
+
     const paymentId = data.find((i: any) => i.id === id).id;
     return BillsService.getPaymentLink(paymentId);
   }

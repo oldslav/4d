@@ -524,6 +524,7 @@
     "email": "E-mail / Login",
     "password": "Password",
     "vehicles": {
+      "add": "Add vehicle",
       "title": "Vehicles",
       "data": "Vehicles data",
       "type": "Type",

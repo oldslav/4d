@@ -4,12 +4,12 @@
       div.text-right.q-mb-sm
         q-btn(flat icon="o_edit" :color="editing ? `grey` : `primary`" @click.stop="edit()").q-mr-sm
         q-btn(flat icon="o_delete" color="primary" @click.stop="removeVehicle()")
-      VehicleForm(v-model="model" :backup="model" :readonly="!editing" @input="onInput()")
+      VehicleForm(v-model="model" :backup="model" :readonly="!editing" :existing="!!model.id" @input="onInput()")
     q-btn-dropdown(
       v-else
       flat
       color="primary"
-      :label="$t('entity.neighbors.add')"
+      :label="$t('entity.vehicles.add')"
       icon="add"
       menu-anchor="bottom left"
       menu-self="top start"
@@ -26,7 +26,7 @@
             | {{ `${vehicle.brand.name} ${vehicle.model.name}` }}
         q-item(clickable @click="addNewVehicle()")
           q-item-section
-            | Добавить TC
+            | {{ $t("entity.vehicles.add") }}
 </template>
 
 <script>

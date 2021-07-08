@@ -528,6 +528,7 @@
     "email": "E-mail / Login",
     "password": "Пароль",
     "vehicles": {
+      "add": "Добавить ТС",
       "title": "Автомобили",
       "data": "Данные об автомобилях",
       "type": "Тип",

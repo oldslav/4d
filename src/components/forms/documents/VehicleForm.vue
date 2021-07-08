@@ -10,7 +10,7 @@
           field="name"
           prop="id"
           :rules="requiredRule"
-          :readonly="readonly"
+          :readonly="readonly || existing"
           @input="onInputType()"
         )
       .col-12.col-sm-6.col-md-3
@@ -23,7 +23,7 @@
           prop="id"
           v-model="vehicle.brand"
           use-input
-          :readonly="readonly"
+          :readonly="readonly || existing"
           @input="onInputBrand()"
           :rules="requiredRule"
         )
@@ -36,12 +36,12 @@
           field="name"
           prop="id"
           v-model="vehicle.model"
-          :readonly="readonly"
+          :readonly="readonly || existing"
           use-input
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly" maxlength="12")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12")
     .text-subtitle.q-my-sm
       file-picker(
         :max-files="2"
@@ -85,6 +85,10 @@
         default: () => ({})
       },
       readonly: {
+        type: Boolean,
+        default: false
+      },
+      existing: {
         type: Boolean,
         default: false
       }

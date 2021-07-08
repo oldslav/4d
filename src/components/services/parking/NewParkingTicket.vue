@@ -30,7 +30,7 @@
         q-step(
           title="Данные об авто"
           :done="step > 2"
-          :error="!isUserInfo && step > 2"
+          :error="!isCarInfo && step > 2"
           :name="2"
           icon="directions_car"
         )
@@ -58,7 +58,7 @@
                   q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
               template(v-else)
                 q-item-section
-                 q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
+                  q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
 
@@ -171,15 +171,16 @@
       },
 
       isCarInfo () {
-        return !!this.name.first
-          && !!this.name.last
-          && !!this.vehicle;
+        return !!this.vehicle
+          && this.vehicle.type
+          && this.vehicle.brand
+          && this.vehicle.model
+          && this.vehicle.number;
       },
 
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle
           && !!this.documents.passport
           && !!this.documents.snils;
       }
@@ -191,7 +192,14 @@
         const documents = { ...this.documents, ...this.vehicle.documents };
         const vehicle = ({ documents, ...rest }) => rest;
         const { parkingPlaceId, name, rentOption, contacts } = this;
-        return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle: vehicle(this.vehicle), contacts, priceId: rentOption })
+        return this.CREATE_USER_TICKET_PARKING({
+          parkingPlaceId,
+          name,
+          documents,
+          vehicle: vehicle(this.vehicle),
+          contacts,
+          priceId: rentOption
+        })
           .then(() => {
             this.$emit("success");
           })
