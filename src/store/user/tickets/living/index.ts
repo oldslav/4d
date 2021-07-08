@@ -15,7 +15,6 @@ import {
   UPDATE_TICKET_APARTMENT, UPDATE_TICKET_APARTMENT_VIEWED
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
-import neighbors from "src/store/user/neighbors";
 
 const state: IUserTicketsState = {
   filters: null,

@@ -12,10 +12,18 @@
               | {{ neighborName(neighbor.name) }}
             div
               q-btn(flat icon="o_edit" :color="editing === index ? `grey` : `primary`" @click.stop="edit(index)").q-mr-sm
-              q-btn(flat icon="o_delete" color="primary" :disable="editing !== null" @click.stop="removeNeighbor(index)")
+              q-btn(flat icon="o_delete" color="primary" @click.stop="removeNeighbor(index)")
         q-card
           q-card-section
-            NeighborResolver(v-model="model[index]" :backup="model[index]" :index="index" :readonly="editing !== index" @input="onInput()" @remove="removeNeighbor")
+            NeighborResolver(
+              v-model="model[index]"
+              :backup="model[index]"
+              :index="index"
+              :existing="!!neighbor.id"
+              :readonly="editing !== index"
+              @input="onInput()"
+              @remove="removeNeighbor"
+            )
     q-btn-dropdown(
       flat
       color="primary"
@@ -86,8 +94,8 @@
     computed: {
       ...mapGetters("user/neighbors", ["getNeighbors"]),
       availableNeighbors () {
-        const modelIds = this.model.map((m) => m.id);
-        return this.getNeighbors.filter((n) => !modelIds.includes(n.id));
+        const modelNames = this.model.map((m) => m.name.full);
+        return this.getNeighbors.filter((n) => !modelNames.includes(n.name.full));
       }
     },
     methods: {
@@ -110,6 +118,7 @@
         }
       },
       removeNeighbor (index) {
+        this.editing = null;
         this.model.splice(index, 1);
         this.onInput();
       },

@@ -9,6 +9,10 @@
         type: Boolean,
         default: false
       },
+      existing: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Object,
         default: () => ({})
