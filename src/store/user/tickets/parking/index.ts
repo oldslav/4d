@@ -81,7 +81,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   
   async [SEND_CONTRACT_INFO_PARKING] ({ dispatch }, { id, payload }) {
     return TicketsService.sendContractInfoParking(id, payload)
-      .then(() => dispatch(GET_USER_TICKETS_PARKING));
+      .then(() => dispatch(GET_EMPLOYEE_TICKETS_PARKING));
   },
 
   [ADD_PARKING_FILES] ({ dispatch, rootGetters }, { id, documents }) {
