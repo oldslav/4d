@@ -15,13 +15,13 @@ import { Service } from "src/api/common";
 
 const initialState = (): IDocumentsState => {
   return {
-   documents: {
-     passport: [],
-     snils: [],
-     inn: [],
-     job: [],
-     deletedIds: []
-   }
+    documents: {
+      passport: [],
+      snils: [],
+      inn: [],
+      job: [],
+      deletedIds: []
+    }
   };
 };
 
@@ -80,13 +80,11 @@ const actions: ActionTree<IDocumentsState, TRootState> = {
     dispatch(`user/neighbors/${ STORE_USER_NEIGHBORS }`, neighbors, { root: true });
   },
   async [STORE_USER_DOCUMENTS] ({ commit }, documents) {
-    const result = initialState();
+    const result: any = initialState();
     await Promise.all(documents.map(async (doc: any) => {
       const { imagePath, docType, fileName } = doc;
       const { data } = await Service.getFile(imagePath);
-      const file = new File([data], fileName);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      const file = new File([data], fileName, { type: data.type });
       result.documents[docType.name].push(file);
     }));
     Object.assign(defaultState, result);

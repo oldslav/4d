@@ -1,12 +1,18 @@
 <script>
   import { mapActions } from "vuex";
-  import { isEqual } from "lodash";
+  import { isEqual, cloneDeep } from "lodash";
   import { CREATE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR } from "@/store/constants/action-constants";
-
-  const deepClone = (val) => JSON.parse(JSON.stringify(val));
 
   export default {
     props: {
+      readonly: {
+        type: Boolean,
+        default: false
+      },
+      existing: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Object,
         default: () => ({})
@@ -47,27 +53,11 @@
     methods: {
       ...mapActions("user/neighbors", [CREATE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR]),
       onSubmit () {
-        let action;
-        let actionLabel = "create";
+        let label = "create";
         if (this.isUpdate) {
-          actionLabel = "update";
-          action = this[UPDATE_USER_NEIGHBOR];
-        } else {
-          action = this[CREATE_USER_NEIGHBOR];
+          label = "update";
         }
-        return action.call(this, this.neighbor)
-          .then(() => {
-            this.$q.notify({
-              type: "positive",
-              message: this.$t(`entity.neighbors.messages.${ actionLabel }.success`)
-            });
-          })
-          .catch(() => {
-            this.$q.notify({
-              type: "negative",
-              message: this.$t(`entity.neighbors.messages.${ actionLabel }.fail`)
-            });
-          });
+        this.$emit("submit", { label, neighbor: this.neighbor });
       },
       onCancel () {
         if (this.isUpdate) {
@@ -77,7 +67,7 @@
         }
       },
       discardChanges () {
-        this.neighbor = deepClone(this.backup);
+        this.neighbor = cloneDeep(this.backup);
       },
       onRemove (id) {
         this.$emit("removeFile", id);
