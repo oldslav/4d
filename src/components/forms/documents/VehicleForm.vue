@@ -49,14 +49,14 @@
         @remove="onRemoveFile"
         :label="this.$t('entity.files.pts')"
         :readonly="readonly"
-        )
+      )
       file-picker(
         :max-files="2"
         v-model="vehicle.documents.sts"
         @remove="onRemoveFile"
         :label="this.$t('entity.files.sts')"
         :readonly="readonly"
-        )
+      )
     div.text-right.q-mt-md(v-show="isChanged && !readonly")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
@@ -110,7 +110,7 @@
     computed: {
       requiredRule () {
         return [
-          val => !!val || this.$t("common.error.validation.required")
+          val => !!val
         ];
       },
       isChanged () {
@@ -125,7 +125,7 @@
       onSubmit () {
         let label = "create";
         if (this.isUpdate) {
-          this.label = "update";
+          label = "update";
         }
         this.$emit("submit", { label, vehicle: this.vehicle });
       },
@@ -150,18 +150,14 @@
           });
       },
       onInputType () {
-        if (this.vehicle.type) {
-          this.loadBrands();
-        } else {
-          this.vehicle.brand = null;
-          this.vehicle.model = null;
-        }
+        this.vehicle.brand = null;
+        this.vehicle.model = null;
+        this.vehicle.type && this.loadBrands();
       },
       onInputBrand () {
+        this.vehicle.model = null;
         if (this.vehicle.type && this.vehicle.brand) {
           this.loadModels();
-        } else {
-          this.vehicle.model = null;
         }
       },
       loadBrands () {

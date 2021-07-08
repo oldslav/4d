@@ -10,7 +10,7 @@
       q-btn(flat auto-close icon="add" @click="addVehicleItem()")
     q-tab-panels(v-model="currentTab" animated keep-alive)
       q-tab-panel.q-px-none(v-for="(vehicle, index) in vehicles" :key="index" :name="index")
-        vehicle-form(v-model="vehicles[index]" :index="index" :backup="getVehicles[index]" @remove="removeVehicle" @removeFile="onRemoveFile")
+        vehicle-form(v-model="vehicles[index]" :index="index" @submit="onSubmit" :backup="getVehicles[index]" @remove="removeVehicle" @removeFile="onRemoveFile")
 </template>
 
 <script>
@@ -69,7 +69,7 @@
       cloneData () {
         this.vehicles = cloneDeep(this.getVehicles);
       },
-      onSubmit (label, vehicle) {
+      onSubmit ({ label, vehicle }) {
         const action = label === "update" ? this[UPDATE_USER_VEHICLE] : this[CREATE_USER_VEHICLE];
         return action.call(this, vehicle)
           .then(() => {
