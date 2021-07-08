@@ -20,11 +20,12 @@
           :name="1"
         )
           FormName(v-model="name")
-          FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
-          FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
-          FilePicker(v-model="inn" :label="$t('entity.files.innCopy')").q-mt-sm
-          FilePicker(v-model="job" :label="$t('entity.files.workCertificate')").q-mt-sm
-          FilePicker(v-model="employerPetition" :label="$t('entity.files.employerPetition')").q-mt-sm
+          //FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
+          //FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
+          //FilePicker(v-model="inn" :label="$t('entity.files.innCopy')").q-mt-sm
+          //FilePicker(v-model="job" :label="$t('entity.files.workCertificate')").q-mt-sm
+          //FilePicker(v-model="employerPetition" :label="$t('entity.files.employerPetition')").q-mt-sm
+          MyDocumentsForm(v-model="documents" isLocal)
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -55,7 +56,7 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   import {
     ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
   } from "@/store/constants/action-constants";
@@ -65,10 +66,12 @@
   import Neighbors from "../../documents/Neighbors";
   import FormName from "components/common/form/FormName";
   import FormContacts from "components/common/form/FormContacts";
+  import MyDocumentsForm from "../../../forms/documents/MyDocumentsForm";
+  import { GET_USER_DOCUMENTS } from "../../../../store/constants/action-constants";
 
   export default {
     name: "UserTicketsApartmentsNewTicketModal",
-    components: { Neighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
+    components: { MyDocumentsForm, Neighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
     props: {
       value: {
         type: Boolean,
@@ -79,7 +82,13 @@
         default: null
       }
     },
-    created () {
+    async created () {
+      await this.GET_USER_DOCUMENTS();
+      Object.keys(this.documents).forEach(type => {
+        if (this.getDocuments[type]) {
+          this.documents[type] = this.getDocuments[type];
+        }
+      });
       this.$watch("data", val => {
         if (val) {
           const {
@@ -109,11 +118,13 @@
         // firstname: null,
         // lastname: null,
         // patronymic: null,
-        passport: null,
-        snils: null,
-        inn: null,
-        job: null,
-        employerPetition: null,
+        documents: {
+          passport: null,
+          snils: null,
+          inn: null,
+          job: null,
+          employerPetition: null
+        },
         contacts: {
           phones: [],
           telegram: null
@@ -122,6 +133,8 @@
       };
     },
     computed: {
+      ...mapGetters("user/documents", ["getDocuments"]),
+
       isValid () {
         return this.isUserInfo && this.isAdditionalInfo;
       },
@@ -129,11 +142,11 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.passport
-          && !!this.snils
-          && !!this.inn
-          && !!this.job
-          && !!this.employerPetition;
+          && !!this.documents.passport
+          && !!this.documents.snils
+          && !!this.documents.inn
+          && !!this.documents.job
+          && !!this.documents.employerPetition;
       },
 
       isFamilyInfo () {
@@ -143,38 +156,6 @@
       isAdditionalInfo () {
         return !!this.contacts.phones[0]
           && !!this.rooms;
-      },
-
-      items () {
-        return [
-          ...this.passport.map(item => ({
-            file: item,
-            typeId: 1
-          })),
-          ...this.inn.map(item => ({
-            file: item,
-            typeId: 2
-          })),
-          ...this.snils.map(item => ({
-            file: item,
-            typeId: 13
-          })),
-          ...this.job.map(item => ({
-            file: item,
-            typeId: 3
-          })),
-          ...this.employerPetition.map(item => ({
-            file: item,
-            typeId: 10
-          }))
-        ].map(item => {
-          const payload = new FormData();
-
-          payload.append("file", item.file);
-          payload.append("typeId", item.typeId);
-
-          return payload;
-        });
       }
     },
     methods: {
@@ -182,6 +163,9 @@
         createUserTicket: CREATE_USER_TICKET_LIVING,
         addUserTicketFile: ADD_USER_TICKET_FILE_LIVING
       }),
+      ...mapActions("user/documents", [
+        GET_USER_DOCUMENTS
+      ]),
 
       closeModal () {
         this.$emit("update");
@@ -205,27 +189,29 @@
 
       async addFiles (id) {
         const items = [
-          ...this.passport.map(item => ({
-            file: item,
+          ...this.documents.passport.map(file => ({
+            file,
             typeId: 1
           })),
-          ...this.inn.map(item => ({
-            file: item,
+          ...this.documents.inn.map(file => ({
+            file,
             typeId: 2
           })),
-          ...this.snils.map(item => ({
-            file: item,
+          ...this.documents.snils.map(file => ({
+            file,
             typeId: 13
           })),
-          ...this.job.map(item => ({
-            file: item,
+          ...this.documents.job.map(file => ({
+            file,
             typeId: 3
           })),
-          ...this.employerPetition.map(item => ({
-            file: item,
+          ...this.documents.employerPetition.map(file => ({
+            file,
             typeId: 10
           }))
         ];
+
+        console.log(items);
 
         await Promise.all(items.map(async item => {
           const payload = new FormData();

@@ -1,10 +1,21 @@
 <template lang="pug">
   q-form(@submit="onSubmit" ref="form")
-    file-picker.q-mt-sm(:max-files="5" v-model="passport" @remove="onRemove" :label="$t('entity.files.passportCopy')")
-    file-picker.q-mt-sm(v-model="snils" @remove="onRemove" :label="$t('entity.files.snilsCopy')")
-    file-picker.q-mt-sm(v-model="inn" @remove="onRemove" :label="$t('entity.files.innCopy')")
-    file-picker.q-mt-sm(v-model="job" @remove="onRemove" :label="$t('entity.files.workCertificate')")
-    div.text-right.q-mt-md(v-show="isChanged")
+    template(v-if="value")
+      file-picker.q-mt-sm(
+        :value="documents[type]"
+        v-for="(type, i) in Object.keys(value)"
+        :key="i"
+        :max-files="type === 'passport' ? 5 : 1"
+        @input="setDocuments(type, $event)"
+        @remove="isLocal || onRemove"
+        :label="$t(`entity.files.${ type }`)"
+      )
+    template(v-else)
+      file-picker.q-mt-sm(:max-files="5" :value="documents.passport" @input="setDocuments('passport', $event)" @remove="onRemove" :label="$t('entity.files.passport')")
+      file-picker.q-mt-sm(:value="documents.snils" @input="setDocuments('snils', $event)" @remove="onRemove" :label="$t('entity.files.snils')")
+      file-picker.q-mt-sm(:value="documents.inn" @input="setDocuments('inn', $event)" @remove="onRemove" :label="$t('entity.files.inn')")
+      file-picker.q-mt-sm(:value="documents.job" @input="setDocuments('job', $event)" @remove="onRemove" :label="$t('entity.files.job')")
+    div.text-right.q-mt-md(v-show="isChanged && !isLocal")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
 </template>
@@ -17,57 +28,39 @@
     SET_SNILS,
     SET_JOB,
     SET_DELETED_ID,
-    SET_STATE_DEFAULT
+    SET_STATE_DEFAULT,
+    SET_DOCUMENTS
   } from "@/store/constants/mutation-constants";
   import FilePicker from "components/common/FilePicker";
-  import { UPDATE_USER_DOCUMENTS } from "@/store/constants/action-constants";
+  import { UPDATE_USER_DOCUMENTS, GET_USER_DOCUMENTS } from "@/store/constants/action-constants";
 
   export default {
     name: "MyDocumentsForm",
     components: { FilePicker },
     props: {
+      isLocal: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Object,
-        default: () => ({})
+        default: null
       }
     },
     computed: {
       ...mapGetters("user/documents", ["isChanged", "getDocuments"]),
-      passport: {
-        get () {
-          return this.getDocuments.passport;
-        },
-        set (val) {
-          this.SET_PASSPORT(val);
-        }
-      },
-      snils: {
-        get () {
-          return this.getDocuments.snils;
-        },
-        set (val) {
-          this.SET_SNILS(val);
-        }
-      },
-      inn: {
-        get () {
-          return this.getDocuments.inn;
-        },
-        set (val) {
-          this.SET_INN(val);
-        }
-      },
-      job: {
-        get () {
-          return this.getDocuments.job;
-        },
-        set (val) {
-          this.SET_JOB(val);
+
+      documents () {
+        if (this.value) {
+          return this.value;
+        } else {
+          return this.getDocuments;
         }
       }
     },
     methods: {
       ...mapMutations("user/documents", [
+        SET_DOCUMENTS,
         SET_PASSPORT,
         SET_SNILS,
         SET_INN,
@@ -75,7 +68,20 @@
         SET_DELETED_ID,
         SET_STATE_DEFAULT
       ]),
-      ...mapActions("user/documents", [UPDATE_USER_DOCUMENTS]),
+
+      ...mapActions("user/documents", [
+        UPDATE_USER_DOCUMENTS,
+        GET_USER_DOCUMENTS
+      ]),
+
+      setDocuments (type,val) {
+        if (this.isLocal) {
+          this.value[type] = val;
+        } else {
+          this.SET_DOCUMENTS({ [type]: val });
+        }
+      },
+
       onInput (val) {
         this.$emit("input", val);
       },
