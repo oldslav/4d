@@ -2,11 +2,11 @@
   q-form(@submit="onSubmit()")
     .row.q-col-gutter-sm
       .col-12.col-md-4
-        q-input(:label="$t('user.lastName')" :readonly="readonly" v-model.trim="neighbor.name.last" maxlength="20" :rules="nameMask")
+        q-input(:label="$t('user.lastName')" :readonly="readonly || existing" v-model.trim="neighbor.name.last" maxlength="20" :rules="nameMask")
       .col-12.col-md-4
-        q-input(:label="$t('user.firstName')" :readonly="readonly" v-model.trim="neighbor.name.first" :rules="nameRules" maxlength="20")
+        q-input(:label="$t('user.firstName')" :readonly="readonly || existing" v-model.trim="neighbor.name.first" :rules="nameRules" maxlength="20")
       .col-12.col-md-4
-        q-input(:label="$t('user.patronymic')" :readonly="readonly" v-model.trim="neighbor.name.patronymic" maxlength="20" :rules="nameMask")
+        q-input(:label="$t('user.patronymic')" :readonly="readonly || existing" v-model.trim="neighbor.name.patronymic" maxlength="20" :rules="nameMask")
     .text-subtitle.q-my-sm {{ $t("entity.documents.title") }}
       file-picker(:max-files="5" :label="this.$t(`entity.files.passport`)" @remove="onRemove" v-model="neighbor.documents.passport" :readonly="readonly")
       file-picker(:label="this.$t(`entity.files.snils`)" @remove="onRemove" v-model="neighbor.documents.snils" :readonly="readonly")
