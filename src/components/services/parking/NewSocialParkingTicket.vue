@@ -24,7 +24,7 @@
           FormName(v-model="name")
           FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
           FilePicker(v-model="documents.snils" :label="$t('entity.files.snils')").q-mt-sm
-          FilePicker(v-model="documents.social" :label="$t('entity.files.social')").q-mt-sm
+          FilePicker(v-model="documents.social_confirm" :label="$t('entity.files.social')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -121,7 +121,7 @@
         },
         vehicle: null,
         documents: {
-          social: null,
+          social_confirm: null,
           passport: null,
           snils: null
         },
@@ -155,7 +155,7 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.documents.social
+          && !!this.documents.social_confirm
           && !!this.documents.passport
           && !!this.documents.snils;
       }
