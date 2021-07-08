@@ -11,7 +11,8 @@ import {
   REJECT_TICKET_PARKING,
   APPROVE_TICKET_PARKING,
   GET_USER_TICKET_PARKING_PAYMENT_LINK,
-  ADD_PARKING_FILES
+  ADD_PARKING_FILES,
+  SEND_CONTRACT_INFO_PARKING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { BillsService } from "src/api/user/bills";
@@ -76,6 +77,11 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
             return TicketsService.requestApprovalParking(id);
           });
       });
+  },
+  
+  async [SEND_CONTRACT_INFO_PARKING] ({ dispatch }, { id, payload }) {
+    return TicketsService.sendContractInfoParking(id, payload)
+      .then(() => dispatch(GET_EMPLOYEE_TICKETS_PARKING));
   },
 
   [ADD_PARKING_FILES] ({ dispatch, rootGetters }, { id, documents }) {
