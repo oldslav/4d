@@ -22,16 +22,16 @@ export default route<Store<TRootState>>(function ({ store, Vue }) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   });
-  
+
   Router.beforeEach((to, from, next) => {
     const isUser = store.getters.getAccount;
-  
+
     if (to.name && !to.name.startsWith("profile")) {
       if (!isUser) {
         return next({ name: "main" });
       }
     }
-    
+
     next();
   });
 

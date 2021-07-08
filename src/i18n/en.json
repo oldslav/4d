@@ -462,7 +462,8 @@
       "title": "Tickets",
       "apartments": "Apartment rent",
       "ideas": "Ideas and suggestions",
-      "parking": "Parking rent"
+      "parking": "Parking rent",
+      "vacancy": "Городские вакансии"
     },
     "bills": "Bills",
     "main": "Main",
@@ -572,6 +573,10 @@
           "fail": "An error occurred during relative deletion"
         }
       }
+    },
+    "vacancy": {
+      "search": "Поиск по названию",
+      "add": "Добавить вакансию"
     }
   }
 }

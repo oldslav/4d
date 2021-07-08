@@ -117,9 +117,6 @@ const routes: RouteConfig[] = [
       {
         path: "tickets",
         name: "user-tickets",
-        redirect: {
-          name: "user-tickets-apartments"
-        },
         components: {
           default: (): Promise<any> => import("pages/UserTickets.vue")
         },
@@ -160,6 +157,42 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               content: true
             }
+          },
+          {
+            path: "vacancy",
+            name: "user-tickets-vacancy",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            },
+            children: [
+              {
+                path: ":id",
+                name: "user-tickets-vacancy-item",
+                components: {
+                  default: (): Promise<any> => new Promise(() => {
+                    // Do nothing
+                  })
+                },
+                meta: { toolbar: true, asideLeft: true, content: true },
+                children: [
+                  {
+                    path: "candidates",
+                    name: "user-tickets-vacancy-item-candidates",
+                    components: {
+                      default: (): Promise<any> => new Promise(() => {
+                        // Do nothing
+                      })
+                    },
+                    meta: { toolbar: true, asideLeft: true, content: true }
+                  }
+                ]
+              }
+            ]
           }
         ]
       },

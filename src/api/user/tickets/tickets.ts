@@ -34,7 +34,7 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/apartments/employee/tickets", { params });
   }
 
-  public static createTicketLiving (params: any): AxiosPromise<TicketsResponse> {
+  public static createTicketLiving (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.post("/api/v1/services/apartments/user/tickets", { ...params });
   }
 
@@ -82,7 +82,7 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/parking/employee/tickets", { params });
   }
 
-  public static createTicketParking (params: any): AxiosPromise<any> {
+  public static createTicketParking (params: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/parking/user/tickets", { ...params });
   }
 
@@ -126,7 +126,7 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/warehouse/user/tickets/${ id }/file`, file);
   }
 
-  public static getParkingPayments (params: any): AxiosPromise<any> {
+  public static getParkingPayments (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/payment/parking/user", params);
   }
 }
