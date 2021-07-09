@@ -82,13 +82,13 @@
         this.$emit("input", value);
       },
       removeFile (index) {
-        this.$refs.field.removeAtIndex(index);
+        process.browser && this.$refs.field.removeAtIndex(index);
         if (!!this.value[index].id) {
           this.$emit("remove", this.value[index].id);
         }
       },
       pickFiles (evt) {
-        this.$refs.field.pickFiles(evt);
+        process.browser && this.$refs.field.pickFiles(evt);
       }
     }
   };
