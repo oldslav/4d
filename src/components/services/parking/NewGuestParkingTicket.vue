@@ -142,7 +142,9 @@
           && this.vehicle.type
           && this.vehicle.brand
           && this.vehicle.model
-          && this.vehicle.number;
+          && this.vehicle.number
+          && this.vehicle.documents.pts.length > 0
+          && this.vehicle.documents.sts.length > 0;
       },
 
       isDate () {

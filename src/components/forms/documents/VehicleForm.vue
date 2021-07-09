@@ -1,8 +1,8 @@
 <template lang="pug">
-  q-form(@submit="onSubmit()")
+  q-form(@submit="onSubmit")
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-3
-        base-autocomplete(
+        BaseAutocomplete(
           :label="$t('entity.vehicles.type')"
           v-model="vehicle.type"
           :options="vehicleTypes"
@@ -14,7 +14,7 @@
           @input="onInputType()"
         )
       .col-12.col-sm-6.col-md-3
-        base-autocomplete(
+        BaseAutocomplete(
           :label="$t('entity.vehicles.brand')"
           :disable="!vehicle.type"
           :options="vehicleBrands"
@@ -28,7 +28,7 @@
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        base-autocomplete(
+        BaseAutocomplete(
           :label="$t('entity.vehicles.model')"
           :disable="!vehicle.brand"
           clearable
@@ -41,21 +41,25 @@
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12" :rules="requiredRule")
     .text-subtitle.q-my-sm
-      file-picker(
+      FilePicker(
         :max-files="2"
         v-model="vehicle.documents.pts"
         @remove="onRemoveFile"
         :label="this.$t('entity.files.pts')"
         :readonly="readonly"
+        :rules="requiredFile"
+        lazy
       )
-      file-picker(
+      FilePicker(
         :max-files="2"
         v-model="vehicle.documents.sts"
         @remove="onRemoveFile"
         :label="this.$t('entity.files.sts')"
         :readonly="readonly"
+        :rules="requiredFile"
+        lazy
       )
     div.text-right.q-mt-md(v-show="isChanged && !readonly")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
@@ -115,6 +119,12 @@
       requiredRule () {
         return [
           val => !!val
+        ];
+      },
+      requiredFile () {
+        return [
+          ...this.requiredRule,
+          val => val.length > 0
         ];
       },
       isChanged () {

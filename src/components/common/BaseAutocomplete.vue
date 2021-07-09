@@ -13,6 +13,7 @@
     :option-label="field"
     :options="computedOptions"
     :label="label"
+    ref="field"
     :clearable="clearable"
     :outlined="outlined"
     :readonly="readonly"
@@ -30,8 +31,11 @@
 </template>
 
 <script>
+  import BaseFieldMixin from "components/common/BaseFieldMixin";
+
   export default {
     name: "BaseAutocomplete",
+    mixins: [BaseFieldMixin],
     props: {
       label: {
         type: String,

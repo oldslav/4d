@@ -4,12 +4,12 @@
     :rules="rules"
     no-error-icon
     dense
-    ref="picker"
     :label="label"
     bottom-slots
     borderless
     multiple
     append
+    ref="field"
     :readonly="readonly"
     :lazy-rules="lazy"
     :accept="accept"
@@ -29,7 +29,11 @@
 </template>
 
 <script>
+  import BaseFieldMixin from "components/common/BaseFieldMixin";
+
   export default {
+    name: "FilePicker",
+    mixins: [BaseFieldMixin],
     props: {
       readonly: {
         type: Boolean,
@@ -78,13 +82,13 @@
         this.$emit("input", value);
       },
       removeFile (index) {
-        this.$refs.picker.removeAtIndex(index);
+        this.$refs.field.removeAtIndex(index);
         if (!!this.value[index].id) {
           this.$emit("remove", this.value[index].id);
         }
       },
       pickFiles (evt) {
-        this.$refs.picker.pickFiles(evt);
+        this.$refs.field.pickFiles(evt);
       }
     }
   };
