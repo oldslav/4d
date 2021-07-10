@@ -160,6 +160,18 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               content: true
             }
+          },
+          {
+            path: "warehouse",
+            name: "user-tickets-warehouse",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsWarehouse/TicketsWarehouse.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
           }
         ]
       },

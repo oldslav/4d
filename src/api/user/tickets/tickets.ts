@@ -110,6 +110,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
+  public static getParkingPayments (params: any): AxiosPromise<any> {
+    return this.api.get("/api/v1/payment/parking/user", params);
+  }
+
   public static getTicketsIdeas (params: any): AxiosPromise<any> {
     return this.api.get("api/v1/services/crowdsourcing/all", params);
   }
@@ -122,7 +126,27 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/warehouse/user/tickets/${ id }/file`, file);
   }
 
-  public static getParkingPayments (params: any): AxiosPromise<any> {
-    return this.api.get("/api/v1/payment/parking/user", params);
+  public static deleteTicketWarehouse (id: number): AxiosPromise<TicketsResponse> {
+    return this.api.put(`/api/v1/services/warehouse/user/tickets/${ id }/cancel`);
+  }
+
+  public static getTicketsWarehouse (params: unknown): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/services/warehouse/user/tickets", { params });
+  }
+
+  public static getEmployeeTicketsWarehouse (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/services/warehouse/employee/tickets", { params });
+  }
+
+  public static approveTicketWarehouse (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/approve`);
+  }
+
+  public static rejectTicketWarehouse (id: number, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/reject`, reason);
+  }
+
+  public static sendContractInfoWarehouse (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 }
