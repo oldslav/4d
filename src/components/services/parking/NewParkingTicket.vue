@@ -12,6 +12,7 @@
         contracted
         flat
         animated
+        keep-alive
       )
         q-step(
           title="Основная информация"
@@ -29,11 +30,11 @@
         q-step(
           title="Данные об авто"
           :done="step > 2"
-          :error="!isUserInfo && step > 2"
+          :error="!isCarInfo && step > 2"
           :name="2"
           icon="directions_car"
         )
-          VehicleForm(v-model="vehicle" unmanaged)
+          TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -57,7 +58,7 @@
                   q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
               template(v-else)
                 q-item-section
-                 q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
+                  q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
 
@@ -114,18 +115,18 @@
 
 <script>
   import { mapActions } from "vuex";
+  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
   import FormName from "components/common/form/FormName";
   import VehicleForm from "../../forms/documents/VehicleForm";
   import FormContacts from "@/components/common/form/FormContacts";
-  import Vehicles from "../../user/documents/Vehicles";
-  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
+  import TicketVehicle from "components/common/TicketVehicle";
 
   export default {
     name: "NewParkingTicket",
-    components: { VehicleForm, FormContacts, Vehicles, BaseInput, FilePicker, BaseModal, FormName },
+    components: { VehicleForm, FormContacts, TicketVehicle, BaseInput, FilePicker, BaseModal, FormName },
     props: {
       value: {
         type: Boolean,
@@ -145,16 +146,7 @@
           last: null,
           patronymic: null
         },
-        vehicle: {
-          type: null,
-          brand: null,
-          model: null,
-          number: null,
-          documents: {
-            pts: null,
-            sts: null
-          }
-        },
+        vehicle: null,
         documents: {
           passport: null,
           snils: null
@@ -179,15 +171,18 @@
       },
 
       isCarInfo () {
-        return !!this.name.first
-          && !!this.name.last
-          && !!this.vehicle;
+        return !!this.vehicle
+          && this.vehicle.type
+          && this.vehicle.brand
+          && this.vehicle.model
+          && this.vehicle.number
+          && this.vehicle.documents.pts.length > 0
+          && this.vehicle.documents.sts.length > 0;
       },
 
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.vehicle
           && !!this.documents.passport
           && !!this.documents.snils;
       }
@@ -199,7 +194,14 @@
         const documents = { ...this.documents, ...this.vehicle.documents };
         const vehicle = ({ documents, ...rest }) => rest;
         const { parkingPlaceId, name, rentOption, contacts } = this;
-        return this.CREATE_USER_TICKET_PARKING({ parkingPlaceId, name, documents, vehicle: vehicle(this.vehicle), contacts, priceId: rentOption })
+        return this.CREATE_USER_TICKET_PARKING({
+          parkingPlaceId,
+          name,
+          documents,
+          vehicle: vehicle(this.vehicle),
+          contacts,
+          priceId: rentOption
+        })
           .then(() => {
             this.$emit("success");
           })

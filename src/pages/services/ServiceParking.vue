@@ -40,6 +40,12 @@
 
 <script>
   import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+  import {
+    GET_PARKING_GEO,
+    GET_PARKING_BUILDINGS,
+    GET_PARKING_PLACES, GET_USER_DOCUMENTS, GET_REFERENCES
+  } from "@/store/constants/action-constants";
+  import { SET_FEATURE_ID, SET_PARKING_PLACE } from "@/store/constants/mutation-constants";
   import BaseSelect from "../../components/common/BaseSelect";
   import ParkingHoverModal from "../../components/services/ParkingHoverModal";
   import NewGuestParkingTicket from "../../components/services/parking/NewGuestParkingTicket";
@@ -48,18 +54,12 @@
   import ParkingPlaceModal from "../../components/services/parking/ParkingPlaceModal";
   import ModalFail from "../../components/services/ModalFail";
   import ModalSuccess from "../../components/services/ModalSuccess";
-  import {
-    GET_PARKING_GEO,
-    GET_PARKING_BUILDINGS,
-    GET_PARKING_PLACES
-  } from "../../store/constants/action-constants";
-  import { SET_FEATURE_ID, SET_PARKING_PLACE } from "../../store/constants/mutation-constants";
 
   export default {
     name: "ServiceParking",
     components: { ParkingHoverModal, NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect, ModalFail, ModalSuccess },
     async created () {
-      await this.GET_PARKING_GEO();
+      await Promise.all([this.GET_PARKING_GEO(), this.GET_USER_DOCUMENTS(), this.GET_REFERENCES()]);
     },
     data () {
       return {
@@ -124,6 +124,9 @@
         GET_PARKING_BUILDINGS,
         GET_PARKING_PLACES
       ]),
+
+      ...mapActions("user/documents", [GET_USER_DOCUMENTS]),
+      ...mapActions("references", [GET_REFERENCES]),
 
       onParkingChange (value) {
         this.rentType = value;
