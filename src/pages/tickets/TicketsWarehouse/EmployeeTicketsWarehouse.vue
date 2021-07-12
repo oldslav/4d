@@ -13,11 +13,11 @@
           q-td(key="fullname" :props="props" @click="expandRow(props)")
             | {{props.row.name.full}}
           q-td(key="warehouseAddress" :props="props" @click="expandRow(props)")
-            | {{props.row.warehousePlace.address}}
-          q-td(key="warehouseNumber" :props="props" @click="expandRow(props)")
-            | {{props.row.warehousePlace.number}}
-          q-td(key="type" :props="props" @click="expandRow(props)")
-            | {{props.row.warehousePlace.type.description}}
+            | ул. Спортивная, 130, паркинг
+          q-td(key="warehouseType" :props="props" @click="expandRow(props)")
+            | {{ props.row.serviceOption.service.name }}
+          q-td(key="price" :props="props" @click="expandRow(props)")
+            | {{ props.row.price ? props.row.price.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props" @click="expandRow(props)")
@@ -110,14 +110,14 @@
                 )
 
     q-inner-loading(v-else showing)
-    TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
+    //- TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
+  // import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
   import BaseTable from "components/common/BaseTable";
   import BaseInput from "components/common/BaseInput";
   import BaseDatepicker from "components/common/BaseDatepicker";
@@ -131,7 +131,7 @@
 
   export default {
     name: "EmployeeTicketsWarehouse",
-    components: { ApartmentsEmployeeDetailsModal, BaseTable, BaseInput, BaseDatepicker, ApartmentTicketStatus, TicketDetailsModal },
+    components: { ApartmentsEmployeeDetailsModal, BaseTable, BaseInput, BaseDatepicker, ApartmentTicketStatus },
     async created () {
       await this.getEmployeeTickets();
     },
@@ -158,16 +158,16 @@
             sortable: true
           },
           {
-            name: "warehouseNumber",
+            name: "warehouseType",
             required: false,
-            label: "Number",
+            label: "Type",
             align: "left",
             sortable: true
           },
           {
-            name: "type",
+            name: "price",
             required: false,
-            label: "Parking type",
+            label: "Price, rub",
             align: "left",
             sortable: true
           },

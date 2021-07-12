@@ -16,15 +16,13 @@
           @click="toServiceWarehouse"
           :label="$t('action.toMap')"
         )
-        TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
+        //- TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="warehouseAddress" :props="props" @click="expandRow(props)")
-            | {{props.row.warehousePlace.address}}
-          q-td(key="warehouseNumber" :props="props" @click="expandRow(props)")
-            | {{props.row.warehousePlace.number}}
-          q-td(key="type" :props="props" @click="expandRow(props)")
-            | {{props.row.warehousePlace.type.description}}
+            | ул. Спортивная, 130, паркинг
+          q-td(key="warehouseType" :props="props" @click="expandRow(props)")
+            | {{ props.row.serviceOption.service.name }}
           q-td(key="price" :props="props" @click="expandRow(props)")
             | {{ props.row.price ? props.row.price.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
@@ -90,17 +88,17 @@
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import BaseTable from "../../components/common/BaseTable";
-  import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
+  import BaseTable from "components/common/BaseTable";
+  // import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
   import {
     DELETE_USER_TICKET_WAREHOUSE,
     GET_USER_TICKETS_WAREHOUSE,
     GET_USER_TICKET_WAREHOUSE_PAYMENT_LINK
-  } from "../../store/constants/action-constants";
+  } from "@/store/constants/action-constants";
 
   export default {
     name: "UserTicketsWarehouse",
-    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal },
+    components: { ApartmentTicketStatus, BaseTable },
     async created () {
       await this.getUserTickets();
     },
@@ -118,23 +116,16 @@
             sortable: true
           },
           {
-            name: "warehouseNumber",
+            name: "warehouseType",
             required: false,
-            label: "Number",
-            align: "left",
-            sortable: true
-          },
-          {
-            name: "type",
-            required: false,
-            label: "Parking type",
+            label: "Type",
             align: "left",
             sortable: true
           },
           {
             name: "price",
             required: false,
-            label: "Parking price, rub",
+            label: "Price, rub",
             align: "left",
             sortable: true
           },
