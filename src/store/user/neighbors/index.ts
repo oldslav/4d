@@ -10,6 +10,7 @@ import {
 } from "src/store/constants/action-constants";
 import { UserNeighborsService } from "src/api/user/neighbors";
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
+import { Service } from "src/api/common";
 
 const state: INeighborsState = {
   items: [],
@@ -77,9 +78,10 @@ const actions: ActionTree<INeighborsState, TRootState> = {
         return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
       });
   },
-  [STORE_USER_NEIGHBORS] ({ commit }, neighbors) {
-    const result = neighbors.map((n: any) => {
-      const documents = {
+  async [STORE_USER_NEIGHBORS] ({ commit }, neighbors) {
+    const result: any = [];
+    await Promise.all(neighbors.map(async (n: any) => {
+      const documents: any = {
         inn: [],
         snils: [],
         passport: [],
@@ -89,19 +91,14 @@ const actions: ActionTree<INeighborsState, TRootState> = {
         consent_processing_personal_data: []
       };
       const { id, name, images, neighborType } = n;
-      images.forEach((doc: any) => {
-        const { id, imagePath, docType, fileName } = doc;
-        const file = {
-          id,
-          imagePath,
-          name: fileName
-        };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+      await Promise.all(images.map(async (doc: any) => {
+        const { imagePath, docType, fileName } = doc;
+        const { data } = await Service.getFile(imagePath);
+        const file = new File([data], fileName, { type: data.type });
         documents[docType.name].push(file);
-      });
-      return { id, name, documents, neighborType };
-    });
+      }));
+      result.push({ id, name, documents, neighborType });
+    }));
     commit(SET_ITEMS, result);
   }
 };

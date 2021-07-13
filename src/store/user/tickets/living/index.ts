@@ -10,6 +10,7 @@ import {
   GET_USER_TICKETS_LIVING,
   GET_EMPLOYEE_TICKETS_LIVING,
   REJECT_TICKET_LIVING,
+  ADD_USER_TICKET_NEIGHBOR,
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT, UPDATE_TICKET_APARTMENT_VIEWED, GET_USER_TICKET
 } from "src/store/constants/action-constants";
@@ -111,6 +112,24 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
     await TicketsService.addTicketLivingFile(id, payload);
+  },
+
+  async [ADD_USER_TICKET_NEIGHBOR] ({ rootGetters }, { ticketId, payload }) {
+    const { documents, ...neighbor } = payload;
+    const { data: { id } } = await TicketsService.addTicketLivingNeighbor(ticketId, neighbor);
+    const awaits: any = [];
+    Object.entries(documents).forEach(([key, val]: any) => {
+      val.forEach((file: any) => {
+        if (!file.id) {
+          const type = rootGetters["references/getDocTypeByName"](key);
+          const payload = new FormData();
+          payload.append("file", file);
+          payload.append("typeId", type.id);
+          awaits.push(payload);
+        }
+      });
+    });
+    await Promise.all(awaits.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
   },
 
   [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {

@@ -42,6 +42,14 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/file`, params);
   }
 
+  public static addTicketLivingNeighbor (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/neighbors`, payload);
+  }
+
+  public static addTicketLivingNeighborFile (id: number, ticketId: number, file: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/apartments/user/tickets/${ ticketId }/neighbors/${ id }/file`, file);
+  }
+
   public static deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
   }
@@ -100,6 +108,10 @@ export class TicketsService extends Service {
 
   public static rejectTicketParking (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/reject`, reason);
+  }
+
+  public static sendContractInfoParking (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
   public static getTicketsIdeas (params: any): AxiosPromise<any> {

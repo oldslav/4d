@@ -10,6 +10,7 @@ import {
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
 import { UserVehiclesService } from "src/api/user/vehicles";
 import { DictionariesService } from "src/api/dictionaries";
+import { Service } from "src/api/common";
 
 const state: IVehiclesState = {
   items: [],
@@ -86,24 +87,22 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
         return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_VEHICLE_DOCUMENT, { payload: p, id })));
       });
   },
-  [STORE_USER_VEHICLES] ({ commit }, vehicles) {
-    const result = vehicles.map((v: any) => {
+  async [STORE_USER_VEHICLES] ({ commit }, vehicles) {
+    const result: any = [];
+    await Promise.all(vehicles.map(async (v: any) => {
       const documents: any = {
         sts: [],
         pts: []
       };
       const { id, model, brand, type, number, images } = v;
-      images.forEach((doc: any) => {
-        const { id, imagePath, docType, fileName } = doc;
-        const file = {
-          id,
-          imagePath,
-          name: fileName
-        };
+      await Promise.all(images.map(async (doc: any) => {
+        const { imagePath, docType, fileName } = doc;
+        const { data } = await Service.getFile(imagePath);
+        const file = new File([data], fileName, { type: data.type });
         documents[docType.name].push(file);
-      });
-      return { id, model, brand, type, number, documents };
-    });
+      }));
+      result.push({ id, model, brand, type, number, documents });
+    }));
     commit(SET_ITEMS, result);
   }
 };

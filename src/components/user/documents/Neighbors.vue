@@ -16,16 +16,16 @@
             q-item-section
               | {{$t("entity.neighbors.child")}}
     q-tab-panels(v-model="currentTab" animated keep-alive)
-      q-tab-panel.q-px-none(v-for="(neighbor, index) in neighbors" :name="index" :key="index")
-        neighbor-resolver(v-model="neighbors[index]" @remove="removeNeighbor" :backup="getNeighbors[index]" :index="index" @removeFile="onRemoveFile")
+      q-tab-panel.q-px-none(v-for="(_, index) in neighbors" :name="index" :key="index")
+        neighbor-resolver(v-model="neighbors[index]" @remove="removeNeighbor" :backup="getNeighbors[index]" :index="index" @removeFile="onRemoveFile" @submit="onSubmit")
 </template>
 
 <script>
   import { mapActions, mapGetters, mapMutations } from "vuex";
-  import { isEqual } from "lodash";
+  import { isEqual, cloneDeep } from "lodash";
   import NeighborResolver from "components/user/documents/NeighborResolver";
   import BaseTabs from "components/common/BaseTabs";
-  import { DELETE_USER_NEIGHBOR } from "@/store/constants/action-constants";
+  import { CREATE_USER_NEIGHBOR, DELETE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR } from "@/store/constants/action-constants";
   import { SET_DELETED_ID } from "@/store/constants/mutation-constants";
 
   const defaultNeighbor = (id) => ({
@@ -76,10 +76,30 @@
       }
     },
     methods: {
-      ...mapActions("user/neighbors", { deleteNeighbor: DELETE_USER_NEIGHBOR }),
+      ...mapActions("user/neighbors", {
+        deleteNeighbor: DELETE_USER_NEIGHBOR,
+        CREATE_USER_NEIGHBOR,
+        UPDATE_USER_NEIGHBOR
+      }),
       ...mapMutations("user/neighbors", [SET_DELETED_ID]),
       cloneData () {
-        this.neighbors = JSON.parse(JSON.stringify(this.getNeighbors));
+        this.neighbors = cloneDeep(this.getNeighbors);
+      },
+      onSubmit ({ label, neighbor }) {
+        const action = label === "update" ? this[UPDATE_USER_NEIGHBOR] : this[CREATE_USER_NEIGHBOR];
+        return action.call(this, neighbor)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t(`entity.neighbors.messages.${ label }.success`)
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t(`entity.neighbors.messages.${ label }.fail`)
+            });
+          });
       },
       onRemove (index) {
         this.$q.dialog({
@@ -112,6 +132,7 @@
         } else {
           this.neighbors.splice(index, 1);
         }
+        this.currentTab--;
       },
       addNeighbor (id) {
         this.neighbors.push(defaultNeighbor(id));
@@ -127,8 +148,8 @@
       },
       getNeighbors: {
         deep: true,
-        handler (val) {
-          this.neighbors = JSON.parse(JSON.stringify(val));
+        handler () {
+          this.cloneData();
         }
       }
     }

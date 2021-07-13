@@ -116,7 +116,8 @@
       "actions": {
         "create": "Create new ticket",
         "details": "Show ticket details",
-        "cancel": "Cancel ticket"
+        "cancel": "Cancel ticket",
+        "next": "Далее"
       },
       "empty": {
         "title": "You don't have any applications yet",
@@ -131,6 +132,10 @@
             "caption": "Отследить статус заявки можно в личном кабинете"
           }
         }
+      },
+      "contract": {
+        "sendSuccess": "Данные договора успешно отправлены",
+        "sendFail": "При отправлении данных договора произошла ошибка"
       }
     },
     "firstName": "Firstname",
@@ -172,6 +177,8 @@
       "monthlyPrice": "Payment per month",
       "depositPrice": "Deposit payment",
       "totalPrice": "Total amount",
+      "dateContractConcluded": "Дата заключения",
+      "dateContractExpire": "Дата окончания",
       "columns": {
         "paymentAmount": "Payment amount"
       }
@@ -521,6 +528,7 @@
     "email": "E-mail / Login",
     "password": "Password",
     "vehicles": {
+      "add": "Add vehicle",
       "title": "Vehicles",
       "data": "Vehicles data",
       "type": "Type",
@@ -543,6 +551,7 @@
       }
     },
     "neighbors": {
+      "add": "Add neighbor",
       "title": "Relatives",
       "child": "Child",
       "spouse": "Spouse (а)",

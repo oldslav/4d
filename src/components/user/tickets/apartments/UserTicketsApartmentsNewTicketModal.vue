@@ -35,7 +35,8 @@
           :error="!isFamilyInfo && step > 2"
           :name="2"
         )
-          Neighbors(v-model="neighbors")
+          TicketNeighbors(v-model="neighbors")
+
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -53,18 +54,17 @@
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
-            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
 <script>
   import { mapActions, mapGetters, mapState } from "vuex";
   import {
-    ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
+    ADD_USER_TICKET_FILE_LIVING, ADD_USER_TICKET_NEIGHBOR, CREATE_USER_TICKET_LIVING
   } from "@/store/constants/action-constants";
+  import TicketNeighbors from "components/user/tickets/TicketNeighbors";
   import BaseInput from "../../../common/BaseInput";
   import BaseModal from "../../../common/BaseModal";
   import FilePicker from "../../../common/FilePicker";
-  import Neighbors from "../../documents/Neighbors";
   import FormName from "components/common/form/FormName";
   import FormContacts from "components/common/form/FormContacts";
   import MyDocumentsForm from "../../../forms/documents/MyDocumentsForm";
@@ -72,7 +72,7 @@
 
   export default {
     name: "UserTicketsApartmentsNewTicketModal",
-    components: { MyDocumentsForm, Neighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
+    components: { MyDocumentsForm, TicketNeighbors, FilePicker, BaseInput, BaseModal, FormName, FormContacts },
     props: {
       value: {
         type: Boolean,
@@ -108,10 +108,7 @@
           last: "",
           patronymic: ""
         },
-        neighbors: {},
-        // firstname: null,
-        // lastname: null,
-        // patronymic: null,
+        neighbors: [],
         documents: {
           passport: null,
           snils: null,
@@ -164,7 +161,8 @@
       ...mapActions("user/tickets/living", {
         createUserTicket: CREATE_USER_TICKET_LIVING,
         addUserTicketFile: ADD_USER_TICKET_FILE_LIVING,
-        GET_USER_TICKET
+        GET_USER_TICKET,
+        ADD_USER_TICKET_NEIGHBOR
       }),
       ...mapActions("user/documents", [
         GET_USER_DOCUMENTS
@@ -188,6 +186,7 @@
           };
           const { id } = await this.createUserTicket(payload);
           await this.addFiles(id);
+          await this.addNeighbors(id);
           this.$q.notify({
             type: "positive",
             message: this.$t("user.tickets.messages.create.success.title")
@@ -199,6 +198,12 @@
           });
         }
         this.closeModal();
+      },
+
+      async addNeighbors (id) {
+        await Promise.all(this.neighbors.map(async n => {
+          await this.ADD_USER_TICKET_NEIGHBOR({ ticketId: id, payload: n });
+        }));
       },
 
       async addFiles (id) {

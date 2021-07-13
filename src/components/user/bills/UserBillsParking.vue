@@ -10,10 +10,10 @@
     )
       template(v-slot:body="props")
         q-tr(:props="props")
-          //q-td(key="payDate" :props="props" @click="expandRow(props)")
-          //  | {{ props.row.payDate }}
+          q-td(key="created" :props="props" @click="expandRow(props)")
+            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="address" :props="props" @click="expandRow(props)")
-            span(v-if="props.row") {{ props.row.address  }}
+            span(v-if="props.row") {{ getFullAddress(props.row.address) }}
             span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props" @click="expandRow(props)")
             | {{ props.row ? props.row.amount.total : "0" }}
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+  import moment from "moment";
   import BaseStatus from "components/common/BaseStatus";
   import BaseTable from "components/common/BaseTable";
   import { mapActions, mapState } from "vuex";
@@ -66,14 +67,15 @@
         expanded: [],
         currentRow: null,
         columns: [
-          // {
-          //   name: "payDate",
-          //   required: true,
-          //   label: "Pay date",
-          //   align: "left",
-          //   field: row => row.created,
-          //   sortable: true
-          // },
+          {
+            name: "created",
+            required: true,
+            label: this.$t("common.created"),
+            align: "left",
+            field: row => row.created,
+            format: val => moment(val).format("DD.MM.YYYY"),
+            sortable: true
+          },
           {
             name: "address",
             required: true,
@@ -133,10 +135,16 @@
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "Ошибка при получении ссылки на оплату"
+              message: $t("user.bills.paymentLinkError")
             });
           });
-      }
+      },
+
+      getFullAddress (address) {
+        return `${ address.street } ${ address.house }`;
+      },
+      
+      moment
     }
   };
 </script>

@@ -1,8 +1,8 @@
 <template lang="pug">
-  q-form(@submit="onSubmit()")
+  q-form(@submit="onSubmit")
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-3
-        base-autocomplete(
+        BaseAutocomplete(
           :label="$t('entity.vehicles.type')"
           v-model="vehicle.type"
           :options="vehicleTypes"
@@ -10,10 +10,11 @@
           field="name"
           prop="id"
           :rules="requiredRule"
+          :readonly="readonly || existing"
           @input="onInputType()"
         )
       .col-12.col-sm-6.col-md-3
-        base-autocomplete(
+        BaseAutocomplete(
           :label="$t('entity.vehicles.brand')"
           :disable="!vehicle.type"
           :options="vehicleBrands"
@@ -22,11 +23,12 @@
           prop="id"
           v-model="vehicle.brand"
           use-input
+          :readonly="readonly || existing"
           @input="onInputBrand()"
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        base-autocomplete(
+        BaseAutocomplete(
           :label="$t('entity.vehicles.model')"
           :disable="!vehicle.brand"
           clearable
@@ -34,27 +36,41 @@
           field="name"
           prop="id"
           v-model="vehicle.model"
+          :readonly="readonly || existing"
           use-input
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" maxlength="12")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12" :rules="requiredRule")
     .text-subtitle.q-my-sm
-      file-picker(:max-files="2" v-model="vehicle.documents.pts" @remove="onRemoveFile" :label="this.$t('entity.files.pts')")
-      file-picker(:max-files="2" v-model="vehicle.documents.sts" @remove="onRemoveFile" :label="this.$t('entity.files.sts')")
-    div.text-right.q-mt-md(v-show="isChanged && !unmanaged")
+      FilePicker(
+        :max-files="2"
+        v-model="vehicle.documents.pts"
+        @remove="onRemoveFile"
+        :label="this.$t('entity.files.pts')"
+        :readonly="readonly"
+        :rules="requiredFile"
+        lazy
+      )
+      FilePicker(
+        :max-files="2"
+        v-model="vehicle.documents.sts"
+        @remove="onRemoveFile"
+        :label="this.$t('entity.files.sts')"
+        :readonly="readonly"
+        :rules="requiredFile"
+        lazy
+      )
+    div.text-right.q-mt-md(v-show="isChanged && !readonly")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
 </template>
 
 <script>
   import { mapActions } from "vuex";
-  import { isEqual } from "lodash";
-  import { CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE } from "@/store/constants/action-constants";
+  import { isEqual, cloneDeep } from "lodash";
   import FilePicker from "components/common/FilePicker";
   import BaseAutocomplete from "components/common/BaseAutocomplete";
-
-  const deepClone = (val) => JSON.parse(JSON.stringify(val));
 
   export default {
     name: "VehicleForm",
@@ -72,7 +88,11 @@
         type: Object,
         default: () => ({})
       },
-      unmanaged: {
+      readonly: {
+        type: Boolean,
+        default: false
+      },
+      existing: {
         type: Boolean,
         default: false
       }
@@ -98,7 +118,13 @@
     computed: {
       requiredRule () {
         return [
-          val => !!val || this.$t("common.error.validation.required")
+          val => !!val
+        ];
+      },
+      requiredFile () {
+        return [
+          ...this.requiredRule,
+          val => val.length > 0
         ];
       },
       isChanged () {
@@ -109,29 +135,13 @@
       }
     },
     methods: {
-      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels", CREATE_USER_VEHICLE, UPDATE_USER_VEHICLE]),
+      ...mapActions("user/vehicles", ["getVehicleTypes", "getVehicleBrands", "getVehicleModels"]),
       onSubmit () {
-        let action;
-        let actionLabel = "create";
+        let label = "create";
         if (this.isUpdate) {
-          actionLabel = "update";
-          action = this[UPDATE_USER_VEHICLE];
-        } else {
-          action = this[CREATE_USER_VEHICLE];
+          label = "update";
         }
-        return action.call(this, this.vehicle)
-          .then(() => {
-            this.$q.notify({
-              type: "positive",
-              message: this.$t(`entity.vehicles.messages.${ actionLabel }.success`)
-            });
-          })
-          .catch(() => {
-            this.$q.notify({
-              type: "negative",
-              message: this.$t(`entity.vehicles.messages.${ actionLabel }.fail`)
-            });
-          });
+        this.$emit("submit", { label, vehicle: this.vehicle });
       },
       onCancel () {
         if (this.isUpdate) {
@@ -141,7 +151,7 @@
         }
       },
       discardChanges () {
-        this.vehicle = deepClone(this.backup); // backup
+        this.vehicle = cloneDeep(this.backup); // backup
       },
       loadTypes () {
         this.loadingTypes = true;
@@ -154,18 +164,14 @@
           });
       },
       onInputType () {
-        if (this.vehicle.type) {
-          this.loadBrands();
-        } else {
-          this.vehicle.brand = null;
-          this.vehicle.model = null;
-        }
+        this.vehicle.brand = null;
+        this.vehicle.model = null;
+        this.vehicle.type && this.loadBrands();
       },
       onInputBrand () {
+        this.vehicle.model = null;
         if (this.vehicle.type && this.vehicle.brand) {
           this.loadModels();
-        } else {
-          this.vehicle.model = null;
         }
       },
       loadBrands () {
