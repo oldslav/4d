@@ -3,7 +3,7 @@
     BaseTable(
       v-if="data"
       row-key="id"
-      :data="data",
+      :data="data"
       :columns="columns"
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"

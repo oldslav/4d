@@ -30,13 +30,11 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
-  [CREATE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
+  async [CREATE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
     const { documents, ...result } = payload;
-    return TicketsService.createTicketWarehouse(result)
-      .then(({ data }) => {
-        const { id } = data;
-        return dispatch(ADD_WAREHOUSE_FILES, { id, documents });
-      });
+    const { data: { id } } = await TicketsService.createTicketWarehouse(result);
+    await dispatch(ADD_WAREHOUSE_FILES, { id, documents });
+    await TicketsService.requestApprovalWarehouse(id);
   },
 
   [ADD_WAREHOUSE_FILES] ({ dispatch, rootGetters }, { id, documents }) {
@@ -57,7 +55,6 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     return TicketsService.addTicketsWarehouseFile(id, file);
   },
 
-  
   async [GET_USER_TICKETS_WAREHOUSE] ({ state, commit }) {
     const { filters } = state;
 

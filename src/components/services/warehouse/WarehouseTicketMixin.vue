@@ -1,6 +1,6 @@
 <script>
-  import { mapActions } from "vuex";
-  import { CREATE_USER_TICKET_WAREHOUSE } from "@/store/constants/action-constants";
+  import { mapActions, mapGetters } from "vuex";
+  import { CREATE_USER_TICKET_WAREHOUSE, GET_USER_DOCUMENTS } from "@/store/constants/action-constants";
 
   export default {
     name: "WarehouseTicketMixin",
@@ -9,6 +9,14 @@
         type: Boolean,
         default: false
       }
+    },
+    async created () {
+      await this.GET_USER_DOCUMENTS();
+      Object.keys(this.documents).forEach(type => {
+        if (this.getDocuments[type]) {
+          this.documents[type] = this.getDocuments[type];
+        }
+      });
     },
     data () {
       return {
@@ -32,6 +40,7 @@
       };
     },
     computed: {
+      ...mapGetters("user/documents", ["getDocuments"]),
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ CREATE_USER_TICKET_WAREHOUSE }`];
       },
@@ -53,6 +62,9 @@
     },
     methods: {
       ...mapActions("user/tickets/warehouse", [CREATE_USER_TICKET_WAREHOUSE]),
+      ...mapActions("user/documents", [
+        GET_USER_DOCUMENTS
+      ]),
       toggleModal (value) {
         this.$emit("input", value);
         Object.assign(this.$data, this.$options.data.apply(this)); // default data

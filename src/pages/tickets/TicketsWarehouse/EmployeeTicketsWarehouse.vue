@@ -32,7 +32,7 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-          
+
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
@@ -55,7 +55,7 @@
               )
             div(v-if="props.row.status.id === 3").q-pa-md
               div.text-body1.text-wrap
-                  | Для продолжения оформления документов дождитесь оплаты.
+                | Для продолжения оформления документов дождитесь оплаты.
             div(v-if="props.row.status.id === 7").q-pa-md
               div.text-body1.text-wrap
                 | Договор подписан.
@@ -138,7 +138,6 @@
     data () {
       return {
         activeRow: null,
-        approvedId: null,
         showDetailsModal: false,
         rejectionReason: "",
         expanded: [],
@@ -207,7 +206,7 @@
       ...mapState("user/tickets/warehouse", {
         data: state => state.data
       }),
-      isContractInfoFilled () {        
+      isContractInfoFilled () {
         return !!this.contractInfo.contractNumber
           && !!this.contractInfo.dateContractConcluded
           && !!this.contractInfo.dateContractExpire;
@@ -245,40 +244,32 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("entity.services.messages.reject.success")
+              message: this.$t("entity.services.messages.reject.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("entity.services.messages.reject.success")
+              message: this.$t("entity.services.messages.reject.success")
             });
           });
       },
 
       onTicketApprove (id) {
-        this.approvedId = id;
-        this.approveTicket();
-      },
-
-      approveTicket () {
-        return this.APPROVE_TICKET_WAREHOUSE({ id: this.approvedId })
+        return this.APPROVE_TICKET_WAREHOUSE({ id })
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("entity.services.messages.approve.success")
+              message: this.$t("entity.services.messages.approve.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("entity.services.messages.approve.fail")
+              message: this.$t("entity.services.messages.approve.fail")
             });
-          })
-          .finally(() => {
-            this.approvedId = null;
           });
       },
 
@@ -311,13 +302,13 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("user.tickets.contract.sendSuccess")
+              message: this.$t("user.tickets.contract.sendSuccess")
             });
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("user.tickets.contract.sendFail")
+              message: this.$t("user.tickets.contract.sendFail")
             });
           });
       },
