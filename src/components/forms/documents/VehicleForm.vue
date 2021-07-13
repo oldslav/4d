@@ -41,7 +41,7 @@
           :rules="requiredRule"
         )
       .col-12.col-sm-6.col-md-3
-        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12" :rules="requiredRule")
+        q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12")
     .text-subtitle.q-my-sm
       FilePicker(
         :max-files="2"

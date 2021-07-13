@@ -18,7 +18,7 @@
           @click="isModalVisible = true"
           :label="$t('user.tickets.actions.create')"
         )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" :data="currentRow" @update="getUserTickets")
+        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" v-if="isModalVisible" :ticketId="currentRow && currentRow.id" @update="getUserTickets")
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="address" :props="props" @click="expandRow(props)")
