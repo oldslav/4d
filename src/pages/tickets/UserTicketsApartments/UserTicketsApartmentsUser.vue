@@ -187,6 +187,10 @@
       async apartmentSelected () {
         await this.getUserTickets();
         this.isApartmentsListModal = false;
+        this.$q.notify({
+          type: "positive",
+          message: this.$t("entity.services.living.chooseApartmentSuccess")
+        });
       },
 
       openDetails (data) {
