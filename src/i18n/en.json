@@ -451,7 +451,7 @@
       "sts": "Vehicle registration certificate scan",
       "pts": "Vehicle passport scan",
       "personalAgreement": "Consent to the processing of personal data",
-      "employerPetition": "Application from the employer",
+      "job_petition": "Application from the employer",
       "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
       "ogrnCopy": "Скан-копия ОГРН",
       "egrjulCopy": "Скан-копия выписки из ЕГРЮЛ",

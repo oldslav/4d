@@ -22,6 +22,10 @@ export interface TicketsResponse extends PaginationOutput {
 }
 
 export class TicketsService extends Service {
+  public static getTicketLiving (ticketId: string | number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/apartments/user/tickets/${ ticketId }`);
+  }
+
   public static getTicketsLiving (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/apartments/user/tickets", { params });
   }
