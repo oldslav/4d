@@ -194,12 +194,17 @@ const routes: RouteConfig[] = [
           {
             path: "apartments",
             name: "user-bills-apartments",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsApartments.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsApartments.vue")
           },
           {
             path: "parking",
             name: "user-bills-parking",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsParking.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsParking.vue")
+          },
+          {
+            path: "warehouse",
+            name: "user-bills-warehouse",
+            component: (): Promise<any> => import("pages/bills/UserBillsWarehouse.vue")
           }
         ]
       }

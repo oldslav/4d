@@ -150,6 +150,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/approve`);
   }
 
+  public static getWarehousePaymentLink (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/warehouse/rent/contract/${ id }/payment`);
+  }
+
   public static rejectTicketWarehouse (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/reject`, reason);
   }

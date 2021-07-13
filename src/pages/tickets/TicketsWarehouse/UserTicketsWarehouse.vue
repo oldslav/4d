@@ -24,7 +24,7 @@
           q-td(key="warehouseType" :props="props" @click="expandRow(props)")
             | {{ props.row.serviceOption.service.name }}
           q-td(key="price" :props="props" @click="expandRow(props)")
-            | {{ props.row.price ? props.row.price.price : "0" }}
+            | {{ props.row.serviceOption.price ? props.row.serviceOption.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props" @click="expandRow(props)")
@@ -72,10 +72,9 @@
                 | Фонд развития города Иннополис.
               div.text-right
                 q-btn(
-                  :loading="isPaymentLinkLoading"
                   color="primary"
                   label="Перейти к оплате"
-                  @click="getPaymentLink(props.row.id)"
+                  @click="goToPayment()"
                 )
             div(v-if="props.row.status.id === 7").q-pa-md
               div.text-body1.text-wrap
@@ -92,8 +91,7 @@
   // import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
   import {
     DELETE_USER_TICKET_WAREHOUSE,
-    GET_USER_TICKETS_WAREHOUSE,
-    GET_USER_TICKET_WAREHOUSE_PAYMENT_LINK
+    GET_USER_TICKETS_WAREHOUSE
   } from "@/store/constants/action-constants";
 
   export default {
@@ -159,17 +157,12 @@
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKETS_WAREHOUSE }`];
-      },
-
-      isPaymentLinkLoading () {
-        return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKET_WAREHOUSE_PAYMENT_LINK }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/warehouse", {
         getUserTickets: GET_USER_TICKETS_WAREHOUSE,
-        deleteUserTicket: DELETE_USER_TICKET_WAREHOUSE,
-        GET_USER_TICKET_WAREHOUSE_PAYMENT_LINK
+        deleteUserTicket: DELETE_USER_TICKET_WAREHOUSE
       }),
 
       openDetails (data) {
@@ -195,17 +188,8 @@
         this.deleteUserTicket(id);
       },
 
-      getPaymentLink (id) {
-        return this.GET_USER_TICKET_WAREHOUSE_PAYMENT_LINK(id)
-          .then(({ data }) => {
-            window.open(data);
-          })
-          .catch(() => {
-            this.$q.notify({
-              type: "negative",
-              message: "Ошибка при получении ссылки на оплату"
-            });
-          });
+      goToPayment () {
+        this.$router.push({ name: "user-bills-warehouse" });
       },
 
       moment
