@@ -84,7 +84,9 @@ const actions: ActionTree<IDocumentsState, TRootState> = {
     await Promise.all(documents.map(async (doc: any) => {
       const { imagePath, docType, fileName } = doc;
       const { data } = await Service.getFile(imagePath);
-      const file = new File([data], fileName);
+      const file = new File([data], fileName, {
+        type: data.type
+      });
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       result.documents[docType.name].push(file);

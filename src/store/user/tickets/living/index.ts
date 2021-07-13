@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKET, SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
   REQUEST_APPROVAL_LIVING,
   ADD_USER_TICKET_FILE_LIVING,
@@ -11,9 +11,10 @@ import {
   GET_EMPLOYEE_TICKETS_LIVING,
   REJECT_TICKET_LIVING,
   APPROVE_TICKET_LIVING,
-  UPDATE_TICKET_APARTMENT, UPDATE_TICKET_APARTMENT_VIEWED
+  UPDATE_TICKET_APARTMENT, UPDATE_TICKET_APARTMENT_VIEWED, GET_USER_TICKET
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
+import { Service } from "src/api/common";
 
 const state: IUserTicketsState = {
   filters: null,
@@ -21,12 +22,17 @@ const state: IUserTicketsState = {
     limit: 10,
     offset: 1
   },
-  data: null
+  data: null,
+  current: null
 };
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {
     state.data = payload;
+  },
+
+  [SET_USER_TICKET] (state, payload) {
+    state.current = payload;
   }
 };
 
@@ -39,6 +45,30 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     });
 
     commit(SET_USER_TICKETS, data);
+  },
+
+  async [GET_USER_TICKET] ({ commit }, ticketId) {
+    const { data } = await TicketsService.getTicketLiving(ticketId);
+
+    data.documents = {
+      passport: [],
+      snils: [],
+      inn: [],
+      job: [],
+      job_petition: []
+    };
+
+    await Promise.all(data.images.map(async (doc: any) => {
+      const { imagePath, docType, fileName } = doc;
+      const { data: fileData } = await Service.getFile(imagePath);
+      const file = new File([fileData], fileName, {
+        type: fileData.type
+      });
+
+      data.documents[docType.name].push(file);
+    }));
+
+    commit(SET_USER_TICKET, data);
   },
 
   async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {

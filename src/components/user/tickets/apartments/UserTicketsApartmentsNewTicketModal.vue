@@ -24,7 +24,7 @@
           //FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
           //FilePicker(v-model="inn" :label="$t('entity.files.innCopy')").q-mt-sm
           //FilePicker(v-model="job" :label="$t('entity.files.workCertificate')").q-mt-sm
-          //FilePicker(v-model="employerPetition" :label="$t('entity.files.employerPetition')").q-mt-sm
+          //FilePicker(v-model="job_petition" :label="$t('entity.files.job_petition')").q-mt-sm
           MyDocumentsForm(v-model="documents" isLocal)
 
           q-stepper-navigation
@@ -53,10 +53,11 @@
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
+            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
 <script>
-  import { mapActions, mapGetters } from "vuex";
+  import { mapActions, mapGetters, mapState } from "vuex";
   import {
     ADD_USER_TICKET_FILE_LIVING, CREATE_USER_TICKET_LIVING
   } from "@/store/constants/action-constants";
@@ -67,7 +68,7 @@
   import FormName from "components/common/form/FormName";
   import FormContacts from "components/common/form/FormContacts";
   import MyDocumentsForm from "../../../forms/documents/MyDocumentsForm";
-  import { GET_USER_DOCUMENTS } from "../../../../store/constants/action-constants";
+  import { GET_USER_DOCUMENTS, GET_USER_TICKET } from "../../../../store/constants/action-constants";
 
   export default {
     name: "UserTicketsApartmentsNewTicketModal",
@@ -77,34 +78,27 @@
         type: Boolean,
         default: false
       },
-      data: {
-        type: Object,
+      ticketId: {
+        type: [String, Number],
         default: null
       }
     },
     async created () {
-      await this.GET_USER_DOCUMENTS();
-      Object.keys(this.documents).forEach(type => {
-        if (this.getDocuments[type]) {
-          this.documents[type] = this.getDocuments[type];
-        }
-      });
-      this.$watch("data", val => {
-        if (val) {
-          const {
-            name
-            // contacts: {
-            //   phones
-            // }
-          } = val;
-
-          this.name = name;
-          // this.firstname = first;
-          // this.lastname = last;
-          // this.patronymic = patronymic;
-          // this.phone = phones[0];
-        }
-      });
+      if (this.ticketId) {
+        await this.GET_USER_TICKET(this.ticketId);
+        Object.keys(this.documents).forEach(type => {
+          if (this.stateDocuments[type]) {
+            this.documents[type] = this.stateDocuments[type];
+          }
+        });
+      } else {
+        await this.GET_USER_DOCUMENTS();
+        Object.keys(this.documents).forEach(type => {
+          if (this.getDocuments[type]) {
+            this.documents[type] = this.getDocuments[type];
+          }
+        });
+      }
     },
     data () {
       return {
@@ -123,7 +117,7 @@
           snils: null,
           inn: null,
           job: null,
-          employerPetition: null
+          job_petition: null
         },
         contacts: {
           phones: [],
@@ -134,6 +128,14 @@
     },
     computed: {
       ...mapGetters("user/documents", ["getDocuments"]),
+      ...mapState("user/tickets/living", {
+        stateDocuments: state => state.current.documents
+      }),
+
+      isLoading () {
+        return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`] ||
+          this.$store.state.wait[`user/documents/${ GET_USER_DOCUMENTS }`];
+      },
 
       isValid () {
         return this.isUserInfo && this.isAdditionalInfo;
@@ -146,7 +148,7 @@
           && !!this.documents.snils
           && !!this.documents.inn
           && !!this.documents.job
-          && !!this.documents.employerPetition;
+          && !!this.documents.job_petition;
       },
 
       isFamilyInfo () {
@@ -161,7 +163,8 @@
     methods: {
       ...mapActions("user/tickets/living", {
         createUserTicket: CREATE_USER_TICKET_LIVING,
-        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING
+        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING,
+        GET_USER_TICKET
       }),
       ...mapActions("user/documents", [
         GET_USER_DOCUMENTS
@@ -177,13 +180,24 @@
       },
 
       async createLivingTicket () {
-        const payload = {
-          name: this.name,
-          contacts: this.contacts,
-          rooms: this.rooms
-        };
-        const { id } = await this.createUserTicket(payload);
-        await this.addFiles(id);
+        try {
+          const payload = {
+            name: this.name,
+            contacts: this.contacts,
+            rooms: this.rooms
+          };
+          const { id } = await this.createUserTicket(payload);
+          await this.addFiles(id);
+          this.$q.notify({
+            type: "positive",
+            message: this.$t("user.tickets.messages.create.success.title")
+          });
+        } catch (e) {
+          this.$q.notify({
+            type: "negative",
+            message: e
+          });
+        }
         this.closeModal();
       },
 
@@ -205,13 +219,11 @@
             file,
             typeId: 3
           })),
-          ...this.documents.employerPetition.map(file => ({
+          ...this.documents.job_petition.map(file => ({
             file,
             typeId: 10
           }))
         ];
-
-        console.log(items);
 
         await Promise.all(items.map(async item => {
           const payload = new FormData();
