@@ -85,7 +85,7 @@
                 q-item-label.text-primary {{ $t(`entity.guestCard.price`) }}
           .full-width.q-pa-md
             q-btn(outline type="submit" color="primary" @click="selectedParkingType('Guest')" :disable="!data.properties.free").full-width
-              | {{ $t('common.guestVisit') }}
+              | {{ $t('action.rent') }}
         q-tab-panel(name="description").is-paddingless
           q-list
             q-item
