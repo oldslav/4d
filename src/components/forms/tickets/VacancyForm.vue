@@ -24,6 +24,8 @@
         q-input.q-mb-md(
           v-model="values.salary"
           label='Заработная плата (руб.)'
+          type="number"
+          min="0"
         )
 
         q-select.q-mb-md(
@@ -89,28 +91,26 @@
             outlined
           )
 
-    q-stepper-navigation.q-gutter-md
-      q-btn(color="primary" type="submit" label="Добавить" :disable="!isValid")
+      button.hidden(type="submit")
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex";
+  import { mapGetters } from "vuex";
   import { VacancyReferencesEnum } from "../../../store/types/vacancy";
   import FilePicker from "components/common/FilePicker";
   import BaseAutocomplete from "components/common/BaseAutocomplete";
-  import { CREATE_VACANCY } from "../../../store/constants/action-constants";
 
-  const defaults = () => ({
-    position: "",
-    profIndustryId: null,
-    experienceId: null,
-    workScheduleId: null,
-    employmentTypeId: null,
-    salary: "",
-    address: "",
-    conditions: "",
-    requirements: "",
-    duties: ""
+  const defaults = (vacancy = {}) => ({
+    position: vacancy.position || "",
+    profIndustryId: vacancy.profIndustry ? vacancy.profIndustry.id : null,
+    experienceId: vacancy.experience ? vacancy.experience.id : null,
+    workScheduleId: vacancy.workSchedule ? vacancy.workSchedule.id : null,
+    employmentTypeId: vacancy.employmentType ? vacancy.employmentType.id : null,
+    salary: vacancy.salary || "",
+    address: vacancy.address || "",
+    conditions: vacancy.conditions || "",
+    requirements: vacancy.requirements || "",
+    duties: vacancy.duties || ""
   });
 
   export default {
@@ -118,7 +118,9 @@
     components: { FilePicker, BaseAutocomplete },
 
     props: {
-      value: { type: Object, default: () => ({}) }
+      value: { type: Object, default: () => ({}) },
+      visibleActions: { type: Boolean, default: true },
+      isValid: { type: Boolean, default: false }
     },
 
     data () {
@@ -141,7 +143,7 @@
       getEmploymentTypeReferences () {
         return this.getVacancyReferences[VacancyReferencesEnum.employmentType];
       },
-      isValid () {
+      isValidForm () {
         const { values } = this;
         return values.position !== "" &&
           values.profIndustryId !== null &&
@@ -155,14 +157,36 @@
           values.duties !== "";
       }
     },
-    methods: {
-      ...mapActions("services/vacancy", {
-        createVacancy: CREATE_VACANCY
-      }),
 
-      async onSubmit () {
-        const vacancy = await this.createVacancy(this.values);
-        this.$emit("done", vacancy);
+    methods: {
+      onSubmit () {
+        this.submit();
+      },
+
+      getValues () {
+        return this.values;
+      },
+
+      submit () {
+        if (this.isValidForm) {
+          this.$emit("submit", this.values);
+        }
+      }
+    },
+
+    watch: {
+      value: {
+        immediate: true,
+        handler () {
+          this.values = defaults(this.value);
+        }
+      },
+      values: {
+        immediate: true,
+        deep: true,
+        handler () {
+          this.$emit("update:isValid", this.isValidForm);
+        }
       }
     }
   };

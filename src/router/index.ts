@@ -23,17 +23,16 @@ export default route<Store<TRootState>>(function ({ store, Vue }) {
     base: process.env.VUE_ROUTER_BASE
   });
 
-  Router.beforeEach((to, from, next) => {
-    const isUser = store.getters.getAccount;
+  if (!process.env.SERVER) {
+    Router.beforeEach((to, from, next) => {
+      const isAuthenticated = store.getters.isAuthenticated;
 
-    if (to.name && !to.name.startsWith("profile")) {
-      if (!isUser) {
+      if (to.name && to.name !== "main" && !to.name.startsWith("profile") && !isAuthenticated) {
         return next({ name: "main" });
       }
-    }
 
-    next();
-  });
-
+      next();
+    });
+  }
   return Router;
 });

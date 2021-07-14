@@ -20,8 +20,12 @@
     },
     preFetch ({ store, currentRoute, redirect }) {
       const { isUserLegal } = store.getters;
-      if (currentRoute.name === "user-tickets" && isUserLegal) {
-        return redirect({ name:"user-tickets-vacancy" });
+      if (currentRoute.name === "user-tickets") {
+        if (isUserLegal) {
+          return redirect({ name: "user-tickets-vacancy" });
+        } else {
+          return redirect({ name:"user-tickets-apartments" });
+        }
       }
     }
   };

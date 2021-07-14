@@ -6,17 +6,29 @@
     @input="toggleModal"
   )
     q-card.full-width.new-vacancy-card
-      q-card-section.row.items-center.q-pb-none
+      q-card-section.row.items-center
         .text-medium
-          | Заявка на аренду парковки
+          | Новая вакансия
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
+
+      q-separator
+
       q-card-section
-        VacancyForm(@done="onCreateVacancy")
-      q-inner-loading(v-if="isVisibleLoading" showing color="primary" )
+        VacancyForm(:is-valid.sync="isValidForm" ref="form" @submit="onSubmit")
+
+      q-card-actions(align="right")
+        q-btn(
+          :disabled="!isValidForm"
+          color="primary"
+          size="md"
+          label="Добавить"
+          @click="onSubmit()"
+        )
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import BaseModal from "../../../common/BaseModal";
   import VacancyForm from "../../../forms/tickets/VacancyForm";
   import { CREATE_VACANCY } from "../../../../store/constants/action-constants";
@@ -28,11 +40,12 @@
       value: {
         type: Boolean,
         default: false
-      },
-      data: {
-        type: Object,
-        default: null
       }
+    },
+    data (){
+      return {
+        isValidForm: false
+      };
     },
     computed: {
       isVisibleLoading () {
@@ -40,12 +53,36 @@
       }
     },
     methods: {
+      ...mapActions("services/vacancy", {
+        createVacancy: CREATE_VACANCY
+      }),
       toggleModal (val) {
         this.$emit("input", val);
       },
 
-      onCreateVacancy (val) {
-        this.$emit("done", val);
+      onSubmit () {
+        if (this.isValidForm) {
+          this.submit();
+        }
+      },
+
+      async submit (){
+        const values = this.$refs.form.getValues();
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: "Создаем вакансию"
+        });
+
+        try {
+          const vacancy = await this.createVacancy(values);
+          this.$emit("done", vacancy);
+          notifyEnd({ type: "positive", message: "Вакансия успешно создана" });
+        } catch (e) {
+          notifyEnd({
+            type: "negative",
+            message: "При создании вакансии произошла ошибка, пожалуйста попробуйте позже"
+          });
+        }
       }
     }
   };

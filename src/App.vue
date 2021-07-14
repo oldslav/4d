@@ -1,5 +1,7 @@
 <template lang="pug">
   div#q-app
+    q-no-ssr
+      q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
     q-layout(view="hHh Lpr lFf")
       template(v-if="isMobile")
         q-drawer(
@@ -21,8 +23,14 @@
                 )
               q-item-section(side)
                 q-toggle(
-                  v-model="darkMode" unchecked-icon="dark_mode" checked-icon="light_mode"
-                  color="dark" icon-color="yellow" keep-color size="md" dense
+                  v-model="darkMode"
+                  unchecked-icon="dark_mode"
+                  checked-icon="light_mode"
+                  color="dark"
+                  icon-color="yellow"
+                  keep-color
+                  size="md"
+                  dense
                 )
 
         q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
@@ -55,55 +63,45 @@
 
 <script>
   import moment from "moment";
-  import { mapActions } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   import AsideProfile from "./components/aside/AsideProfile";
   import AuthModal from "./components/auth/AuthModal";
   import BaseToolbar from "./components/common/ui/BaseToolbar";
   import LoginForm from "./components/forms/auth/LoginForm";
-  import { GET_ACCOUNT, GET_REFERENCES } from "./store/constants/action-constants";
+  import { GET_REFERENCES } from "./store/constants/action-constants";
+  import { DEFAULT_COOKIE_OPTIONS } from "./constaints";
 
   export default {
     name: "App",
     components: { AuthModal, LoginForm, AsideProfile, BaseToolbar },
-    async created () {
-      await moment.locale(this.$i18n.locale);
+    created () {
+      moment.locale(this.$i18n.locale);
+      this.auth = !this.isAuthenticated;
+    },
+    mounted () {
+      this.$q.dark.set(this.$q.cookies.get("darkMode") === true);
 
-      const darkMode = this.$q.localStorage.getItem("darkMode");
-      const locale = this.$q.localStorage.getItem("locale");
-
-      if (darkMode) {
-        this.darkMode = darkMode;
-      }
-
-      if (locale) {
-        this.locale = locale;
-      }
-
-      try {
-        await this.GET_ACCOUNT();
-        await this.GET_REFERENCES();
-      } catch (e) {
-        if (e.response) {
-          this.auth = true;
-        }
-      }
+      this.$router.onReady(() => {
+        this.$router.beforeEach(this.onRouteChangedBegin.bind(this));
+        this.$router.afterEach(this.onRouteChangedDone.bind(this));
+        this.mounted = true;
+      });
     },
     data () {
-      return {
-        auth: false
-      };
+      return { auth: false };
     },
     computed: {
+      ...mapGetters(["isAuthenticated"]),
       meta () {
         return this.$route.meta;
       },
 
       components () {
-        return this.$route.matched[0].components;
+        return this.$route.matched.length ? this.$route.matched[0].components : {};
       },
 
       isMobile () {
-        return this.$q.platform.is.mobile;
+        return !this.$q.platform.is.desktop;
       },
 
       darkMode: {
@@ -112,7 +110,7 @@
         },
 
         set (value) {
-          this.$q.localStorage.set("darkMode", value);
+          this.$q.cookies.set("darkMode", value, DEFAULT_COOKIE_OPTIONS);
           this.$q.dark.set(value);
         }
       },
@@ -123,7 +121,7 @@
         },
 
         set (value) {
-          this.$q.localStorage.set("locale", value);
+          this.$q.cookies.set("locale", value.value, DEFAULT_COOKIE_OPTIONS);
           this.$i18n.locale = value.value;
         }
       },
@@ -142,10 +140,6 @@
       }
     },
     methods: {
-      ...mapActions([
-        GET_ACCOUNT
-      ]),
-
       ...mapActions("references", [GET_REFERENCES]),
 
       isComponentPassed (viewName) {
@@ -154,6 +148,17 @@
 
       toAuth () {
         this.auth = true;
+      },
+
+      onRouteChangedBegin (from ,to ,next) {
+        if(from.path !== to.path) {
+          this.$refs.progress.start();
+        }
+        next();
+      },
+
+      onRouteChangedDone () {
+        this.$refs.progress.stop();
       }
     }
   };

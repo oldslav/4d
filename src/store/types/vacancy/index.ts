@@ -1,4 +1,4 @@
-import { TVacancyReferencesResponse } from "src/api/user/vacancy";
+import { IVacancy, TVacancyReferencesResponse } from "src/api/services/vacancy";
 
 export enum VacancyReferencesEnum {
   closureReason = "closure_reason",
@@ -10,7 +10,16 @@ export enum VacancyReferencesEnum {
   workSchedule = "work_schedule",
 }
 
+export enum VacancyStatusesEnum {
+  published = 4,
+  closed = 5
+}
+
 export interface IServiceVacancyState {
   references: TVacancyReferencesResponse,
   isExistsReferences: boolean;
+  vacancies: {
+    count: number,
+    items: IVacancy[]
+  }
 }
