@@ -291,6 +291,13 @@ const routes: RouteConfig[] = [
       }
     ]
   },
+  {
+    path: "/users",
+    name: "users",
+    components: {
+      default: (): Promise<any> => import("pages/users/AdminUsers.vue")
+    }
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

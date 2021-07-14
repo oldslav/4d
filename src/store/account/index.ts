@@ -175,6 +175,12 @@ const getters: GetterTree<IAccountState, TRootState> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return state.account.roles.some(role => role.name.startsWith("ROLE_EMPLOYEE"));
+  },
+
+  isUserAdmin (state) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return state.account.roles.some(role => role.name.startsWith("ROLE_ADMIN"));
   }
 };
 

@@ -105,6 +105,10 @@
     },
     "address": "Address",
     "status": "Status",
+    "id": "ID",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
     "created": "Created at"
   },
   "user": {
@@ -185,6 +189,8 @@
     }
   },
   "action": {
+    "block": "Block",
+    "unblock": "Unblock",
     "addPhone": "Add phone",
     "login": "Login",
     "rent": "Rent",
@@ -218,6 +224,9 @@
       "disability": "A person with a disability",
       "retired": "Retired people",
       "veteran": "Veteran"
+    },
+    "users": {
+      "title": "Users"
     },
     "services": {
       "mainInfo": "Main information",
