@@ -17,7 +17,7 @@ import {
 } from "src/store/constants/action-constants";
 import { UserCompanyService } from "src/api/user/company";
 
-const state: ICompanyState = {
+const state = () : ICompanyState => ({
   id: null,
   isVerify: null,
   profile: {
@@ -50,7 +50,7 @@ const state: ICompanyState = {
     name: null,
     realAddress: null
   }
-};
+});
 
 const mutations: MutationTree<ICompanyState> = {
   [SET_COMPANY_ID] (state, id) {

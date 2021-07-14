@@ -25,7 +25,7 @@ function setMutations (actions: string[]): MutationTree<State> {
     obj[value] = (state: State, payload): void => {
       state[value] = payload;
     };
-    
+
     return obj;
   }, {});
 }
@@ -41,18 +41,18 @@ function setModule (actions: string[], options: any): Module<State, any> {
 const Waiter = (store: Store<any>, options: any): void => {
   // eslint-disable-next-line
   const actions = Object.keys((store as Store<any> & AppStore)._actions);
-  
-  store.registerModule("wait", setModule(actions, options));
-  
+
+  store.registerModule("wait", setModule(actions, options), { preserveState: true });
+
   store.subscribeAction({
     before ({ type }) {
       store.commit(`wait/${ type }`, true);
     },
-    
+
     after ({ type }) {
       store.commit(`wait/${ type }`, false);
     },
-    
+
     error ({ type }) {
       store.commit(`wait/${ type }`, false);
     }
@@ -64,7 +64,7 @@ export default {
     const defaultOptions: any = {
       namespaced: true
     };
-    
+
     Waiter(store, { ...defaultOptions, ...options });
   }
 };

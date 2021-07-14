@@ -32,7 +32,7 @@ const initialState = (): IServiceVacancyState => {
   };
 };
 
-const state: () => IServiceVacancyState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<IServiceVacancyState> = {
   // non constant, private setter

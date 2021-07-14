@@ -141,7 +141,10 @@
       ...mapActions([ACCOUNT_LOGOUT]),
       onLogout () {
         this.ACCOUNT_LOGOUT();
-        this.$router.push({ name: "main" });
+
+        if (this.$route.name !== "main") {
+          this.$router.push({ name: "main" });
+        }
       },
       onAuth () {
         this.$emit("auth");

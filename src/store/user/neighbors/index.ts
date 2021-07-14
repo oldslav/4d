@@ -12,10 +12,10 @@ import { UserNeighborsService } from "src/api/user/neighbors";
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
 import { Service } from "src/api/common";
 
-const state: INeighborsState = {
+const state = (): INeighborsState => ({
   items: [],
   deletedIds: []
-};
+});
 
 const mutations: MutationTree<INeighborsState> = {
   [SET_ITEMS] (state: INeighborsState, payload: INeighbor[]) {

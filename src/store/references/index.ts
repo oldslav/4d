@@ -3,7 +3,7 @@ import ReferencesService from "src/api/references";
 import { GET_REFERENCES } from "src/store/constants/action-constants";
 import { SET_STATE } from "src/store/constants/mutation-constants";
 
-const state: any = {};
+const state: any = () => ({});
 
 const mutations: MutationTree<any> = {
   [SET_STATE] (state: any, payload) {
