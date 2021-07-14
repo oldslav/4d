@@ -257,7 +257,8 @@
           "choose": "Выберите тип договора",
           "fixedTerm": "Срочный",
           "termless": "Бессрочный"
-        }
+        },
+        "chooseApartmentSuccess": "Квартира выбрана"
       },
       "commerce": "Commercial real estate",
       "parking": {
@@ -476,6 +477,7 @@
       "apartments": "Apartment rent",
       "ideas": "Ideas and suggestions",
       "parking": "Parking rent",
+      "vacancy": "Городские вакансии",
       "warehouse": "Warehouse rent"
     },
     "bills": "Bills",
@@ -586,6 +588,10 @@
           "fail": "An error occurred during relative deletion"
         }
       }
+    },
+    "vacancy": {
+      "search": "Поиск по названию",
+      "add": "Добавить вакансию"
     }
   }
 }

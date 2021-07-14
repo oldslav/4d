@@ -1,20 +1,22 @@
 <template lang="pug">
   div.cesiumWrapper
-    vc-viewer(
-      :infoBox="false"
-      :selection-indicator="false"
-      @selectedEntityChanged="entitySelected"
-    )
-      vc-layer-imagery
-        vc-provider-imagery-openstreetmap(:url="mapUrl")
-        vc-datasource-geojson(
-          v-if="data"
-          @ready="onDatasourceReady"
-          :show="show"
-          ref="ds"
-          :data="data"
-          :entities="entities"
-        )
+    q-no-ssr
+      vc-viewer(
+        :infoBox="false"
+        :selection-indicator="false"
+        @selectedEntityChanged="entitySelected"
+        @ready="onReadyViewer"
+      )
+        vc-layer-imagery
+          vc-provider-imagery-openstreetmap(:url="mapUrl")
+          vc-datasource-geojson(
+            v-if="data"
+            @ready="onDatasourceReady"
+            :show="show"
+            ref="ds"
+            :data="data"
+            :entities="entities"
+          )
 </template>
 
 <script>
@@ -29,10 +31,6 @@
       //   type: Function,
       //   default: () => {}
       // }
-    },
-    mounted () {
-      document.getElementById("cesiumContainer").style.width = "";
-      document.getElementById("cesiumContainer").style.height = "";
     },
     data () {
       return {
@@ -50,6 +48,11 @@
       }
     },
     methods: {
+      onReadyViewer (){
+        document.getElementById("cesiumContainer").style.width = "";
+        document.getElementById("cesiumContainer").style.height = "";
+      },
+
       onDatasourceReady ({ viewer, cesiumObject }) {
         viewer.zoomTo(cesiumObject);
       },

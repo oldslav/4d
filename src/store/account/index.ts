@@ -4,20 +4,27 @@ import {
   ACCOUNT_CREATE,
   ACCOUNT_LOGIN,
   FETCH_ACCESS_TOKEN,
-  GET_ACCOUNT, ACCOUNT_LOGOUT
+  GET_ACCOUNT,
+  ACCOUNT_LOGOUT,
+  GET_ACCESS_TOKEN,
+  SET_OAUTH_TOKENS
 } from "src/store/constants/action-constants";
-import { SET_ACCESS_TOKEN, SET_ACCOUNT, SET_EMPTY, SET_REFRESH_TOKEN } from "src/store/constants/mutation-constants";
+import { SET_ACCOUNT, SET_EMPTY } from "src/store/constants/mutation-constants";
 import AuthService from "src/api/auth";
 import { IAccountState } from "src/store/account/state";
 
-const ACCESS_TOKEN_COOKIE = "access_token";
-const REFRESH_TOKEN_COOKIE = "refresh_token";
+const REFRESH_TOKEN_COOKIE = "PHPSESSID";
+const ACCESS_TOKEN_COOKIE = "PHPSESS2ID";
 
 const formUrlEncoded = (x: { [key: string]: string | number; }) =>
   Object.keys(x).reduce((p, c) => p + `&${ c }=${ encodeURIComponent(x[c]) }`, "");
 
+const fromBase64 = (value: string) =>
+  process.env.SERVER ? Buffer.from(value, "base64").toString() : atob(value);
+
 const initialState = (): IAccountState => {
   return {
+    accessTokenAwait: null,
     account: {
       name: {
         first: null,
@@ -41,9 +48,7 @@ const initialState = (): IAccountState => {
       created: null,
       updated: null,
       roles: []
-    },
-    accessToken: null,
-    refreshToken: null
+    }
   };
 };
 
@@ -51,9 +56,9 @@ const state: () => IAccountState = initialState;
 
 const mutations: MutationTree<IAccountState> = {
   [SET_ACCOUNT]: (state, payload) => state.account = payload,
-  [SET_ACCESS_TOKEN]: (state, payload) => state.accessToken = payload,
-  [SET_REFRESH_TOKEN]: (state, payload) => state.refreshToken = payload,
-  [SET_EMPTY]: state => Object.assign(state, initialState())
+  [SET_EMPTY]: state => Object.assign(state, initialState()),
+  // private mutation
+  setAccessTokenAwait: (state, accessTokenAwait) => state.accessTokenAwait = accessTokenAwait
 };
 
 const actions: ActionTree<IAccountState, TRootState> = {
@@ -67,26 +72,14 @@ const actions: ActionTree<IAccountState, TRootState> = {
     return AuthService.registration(payload);
   },
 
-  async [ACCOUNT_LOGIN] ({ commit, dispatch }, payload = {
+  async [ACCOUNT_LOGIN] ({ dispatch }, payload = {
     username: "user",
     password: "user",
     grant_type: "password"
   }) {
     const { data } = await AuthService.login(formUrlEncoded(payload));
 
-    commit(SET_ACCESS_TOKEN, {
-      token: data.access_token,
-      expiresIn: data.expires_in
-    });
-
-    commit(SET_REFRESH_TOKEN, {
-      token: data.refresh_token,
-      expiresIn: data.expires_in
-    });
-
-    this.$local.set(ACCESS_TOKEN_COOKIE, data.access_token);
-    this.$local.set(REFRESH_TOKEN_COOKIE, data.refresh_token);
-
+    dispatch(SET_OAUTH_TOKENS, data);
     await dispatch(GET_ACCOUNT);
   },
 
@@ -95,20 +88,50 @@ const actions: ActionTree<IAccountState, TRootState> = {
     commit(SET_ACCOUNT, data);
   },
 
-  async getAccessToken ({ getters, dispatch }: ActionContext<IAccountState, TRootState>) {
-    if (getters.getAccessToken !== null && getters.getAccessToken.expiresIn > Date.now() + 3600) {
-      return getters.getAccessToken.token;
+  [SET_OAUTH_TOKENS] (ctx, data) {
+    this.$cookies.set(ACCESS_TOKEN_COOKIE, data.access_token, {
+      expires: new Date(Date.now() + (data.expires_in - 10) * 1000),
+      path: "/"
+    });
+
+    try {
+      const parsedRefresh = JSON.parse(
+        fromBase64(data.refresh_token.split(".")[1])
+      );
+
+      this.$cookies.set(REFRESH_TOKEN_COOKIE, data.refresh_token, {
+        expires: new Date(parsedRefresh.exp * 1000),
+        path: "/"
+      });
+    } catch (e) {
+      // Do nothing
+    }
+  },
+
+  async [GET_ACCESS_TOKEN] ({ dispatch, state, commit }: ActionContext<IAccountState, TRootState>) {
+    const accessToken = this.$cookies.get(ACCESS_TOKEN_COOKIE);
+
+    if (accessToken) {
+      return accessToken;
     }
 
     try {
-      await dispatch(FETCH_ACCESS_TOKEN);
-      return getters.getAccessToken ? getters.getAccessToken.token : null;
+      if (!state.accessTokenAwait) {
+       const accessTokenAwait = dispatch(FETCH_ACCESS_TOKEN);
+       commit("setAccessTokenAwait", accessTokenAwait);
+       await accessTokenAwait;
+        commit("setAccessTokenAwait", null);
+      } else {
+        await state.accessTokenAwait;
+      }
+
+      return this.$cookies.get(ACCESS_TOKEN_COOKIE) || null;
     } catch (e) {
       return null;
     }
   },
 
-  async [FETCH_ACCESS_TOKEN] ({ commit }: ActionContext<IAccountState, TRootState>) {
+  async [FETCH_ACCESS_TOKEN] ({ dispatch }: ActionContext<IAccountState, TRootState>) {
     const refreshToken = this.$cookies.get(REFRESH_TOKEN_COOKIE);
     const accessToken = this.$cookies.get(ACCESS_TOKEN_COOKIE);
 
@@ -120,33 +143,14 @@ const actions: ActionTree<IAccountState, TRootState> = {
 
       const { data } = await AuthService.login(payload, { skipAuth: true });
 
-      commit(SET_ACCESS_TOKEN, {
-        token: data.access_token,
-        expiresIn: data.expires_in
-      });
-
-      commit(SET_REFRESH_TOKEN, {
-        token: data.refresh_token,
-        expiresIn: data.expires_in
-      });
-
-      this.$local.set(ACCESS_TOKEN_COOKIE, data.access_token);
-      this.$local.set(REFRESH_TOKEN_COOKIE, data.refresh_token);
+      await dispatch(SET_OAUTH_TOKENS, data);
     }
   }
 };
 
 const getters: GetterTree<IAccountState, TRootState> = {
-  getAccessToken (state: IAccountState) {
-    return state.accessToken;
-  },
-
-  isAccessToken (state: IAccountState) {
-    return state.accessToken !== null && state.accessToken.expiresIn > Date.now() + 1800;
-  },
-
   isAuthenticated (state: IAccountState) {
-    return state.account !== null;
+    return state.account !== null && state.account.id !== null;
   },
 
   getAccount (state: IAccountState) {

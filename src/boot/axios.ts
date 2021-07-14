@@ -1,10 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
-import { TRootState } from "../store/types/root";
 import qs from "qs";
-import { ACCESS_TOKEN_COOKIE, FETCH_ACCESS_TOKEN } from "src/store/constants/action-constants";
+import { GET_ACCESS_TOKEN } from "src/store/constants/action-constants";
 import { LocalStorage } from "quasar";
+import { TRootState } from "../store/types/root";
 
 axios.defaults.baseURL = process.env.SERVER_API_HOST;
 axios.interceptors.request.use(
@@ -54,16 +56,14 @@ const requestInterceptor = (store: Store<any>) => {
       return config;
     }
 
-    const headers = config.headers as {[key: string]: string};
-    const accessToken = store.getters.isAccessToken
-      ? store.state.account.accessToken.token
-      : store.$local.getItem(ACCESS_TOKEN_COOKIE);
+    const accessToken = await store.dispatch(GET_ACCESS_TOKEN);
 
-    if (accessToken === null) {
-      await store.dispatch(FETCH_ACCESS_TOKEN);
+    if (accessToken !== null) {
+      const headers = config.headers || {};
+      config.headers = Object.assign(headers,{
+        Authorization : `Bearer ${ accessToken }`
+      });
     }
-
-    headers.Authorization = `Bearer ${ accessToken }`;
 
     return config;
   };
@@ -71,6 +71,7 @@ const requestInterceptor = (store: Store<any>) => {
 
 export default boot(({ app }) => {
   axios.interceptors.request.use(requestInterceptor(app.store as Store<TRootState>));
+
   if (app.store) {
     app.store.$local = LocalStorage;
   }

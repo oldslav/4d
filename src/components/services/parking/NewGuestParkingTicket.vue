@@ -76,7 +76,7 @@
           FormContacts(v-model="contacts")
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 

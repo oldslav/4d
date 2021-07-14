@@ -4,6 +4,7 @@
     :full-height="fullHeight"
     :full-width="isMobile"
     :square="square"
+    :persistent="square"
     :position="position"
     :maximized="maximized"
     transition-show="fade"
@@ -26,6 +27,10 @@
         default: false
       },
       square: {
+        type: Boolean,
+        default: false
+      },
+      persistent: {
         type: Boolean,
         default: false
       },

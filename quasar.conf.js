@@ -28,11 +28,12 @@ module.exports = configure(function () {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-      "i18n",
-      "axios",
       "cookies",
-      "notify-defaults",
+      "axios",
       "filters",
+      { path: "server-init", client: false },
+      "i18n",
+      "notify-defaults",
       "cesium"
     ],
 
