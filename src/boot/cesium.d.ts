@@ -1,1 +1,1 @@
-declare module 'vue-cesium'
+declare module "vue-cesium"

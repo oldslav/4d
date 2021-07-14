@@ -26,6 +26,7 @@ export interface ProfileFormPayload {
     telegramAlias: string | null
   }
 }
+
 export interface NewPasswordPayload {
   oldPassword: string | null,
   password: string | null,

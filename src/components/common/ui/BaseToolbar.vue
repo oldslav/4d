@@ -56,6 +56,7 @@
   import { mapActions, mapGetters } from "vuex";
   import BaseTabs from "components/common/BaseTabs";
   import { ACCOUNT_LOGOUT } from "@/store/constants/action-constants";
+  import { DEFAULT_COOKIE_OPTIONS } from "../../../constaints";
 
   export default {
     name: "BaseToolbar",
@@ -107,7 +108,7 @@
         },
 
         set (value) {
-          this.$q.localStorage.set("darkMode", value);
+          this.$q.cookies.set("darkMode", value, DEFAULT_COOKIE_OPTIONS);
           this.$q.dark.set(value);
         }
       },
@@ -118,7 +119,7 @@
         },
 
         set (value) {
-          this.$q.localStorage.set("locale", value);
+          this.$q.cookies.set("locale", value.value, DEFAULT_COOKIE_OPTIONS);
           this.$i18n.locale = value.value;
         }
       },

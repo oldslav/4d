@@ -40,6 +40,9 @@ export const i18n = new VueI18n({
 });
 
 export default boot(({ app }) => {
+  const application = app as any;
+
   // Set i18n instance on app
+  i18n.locale = application.$cookies.get("locale") || "ru";
   app.i18n = i18n;
 });

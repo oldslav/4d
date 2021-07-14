@@ -117,9 +117,6 @@ const routes: RouteConfig[] = [
       {
         path: "tickets",
         name: "user-tickets",
-        redirect: {
-          name: "user-tickets-apartments"
-        },
         components: {
           default: (): Promise<any> => import("pages/UserTickets.vue")
         },
@@ -154,6 +151,53 @@ const routes: RouteConfig[] = [
             name: "user-tickets-parking",
             components: {
               default: (): Promise<any> => import("pages/tickets/ParkingRent.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
+            path: "vacancy",
+            name: "user-tickets-vacancy",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancy.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          }
+        ]
+      },
+      {
+        path: "tickets/vacancy",
+        name: "user-tickets-vacancy-page",
+        redirect: { name: "user-tickets-vacancy-info" },
+        components: {
+          default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserVacancyPage.vue")
+        },
+        meta: { toolbar: true, asideLeft: true, content: true },
+        children:[
+          {
+            path: ":id",
+            name: "user-tickets-vacancy-info",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancyInfo.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
+            path: ":id/candidates",
+            name: "user-tickets-vacancy-candidates",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancyInfo.vue")
             },
             meta: {
               toolbar: true,
@@ -283,9 +327,11 @@ const routes: RouteConfig[] = [
         path: "vacancies",
         name: "services-vacancies",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/vacancies/ServiceVacancy.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesVacancy.vue")
         },
         meta: {
+          asideServices: true,
           toolbar: true
         }
       }

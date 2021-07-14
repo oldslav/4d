@@ -1,7 +1,6 @@
-import { IAccount, IAccessToken } from "./models";
+import { IAccount } from "./models";
 
 export interface IAccountState {
   account: IAccount | null,
-  accessToken: IAccessToken | null,
-  refreshToken: IAccessToken | null
+  accessTokenAwait: Promise<unknown> | null,
 }

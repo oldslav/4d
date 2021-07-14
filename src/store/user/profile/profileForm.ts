@@ -79,7 +79,7 @@ const mutations: MutationTree<IProfileFormState> = {
 const actions: ActionTree<IProfileFormState, TRootState> = {
 
   [GET_USER_PROFILE_DEFAULT] ({ commit, rootGetters }) {
-    const { name, contacts, avatar } = rootGetters["getAccount"];
+    const { name, contacts, avatar } = rootGetters.getAccount;
     commit(SET_PROFILE_FORM_FIRSTNAME, name.first);
     commit(SET_PROFILE_FORM_LASTNAME, name.last);
     commit(SET_PROFILE_FORM_PATRONYMIC, name.patronymic);
