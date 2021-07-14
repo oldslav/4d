@@ -251,7 +251,8 @@
           "choose": "Выберите тип договора",
           "fixedTerm": "Срочный",
           "termless": "Бессрочный"
-        }
+        },
+        "chooseApartmentSuccess": "Квартира выбрана"
       },
       "commerce": "Коммерческая недвижимость",
       "parking": {
