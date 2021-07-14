@@ -3,7 +3,8 @@ import { AxiosPromise } from "axios";
 import { TicketsResponse } from "src/api/user/tickets/tickets";
 
 interface Params {
-  paid?: boolean
+  paid?: boolean | null,
+  ticketId?: number | null
 }
 
 export class BillsService extends Service {

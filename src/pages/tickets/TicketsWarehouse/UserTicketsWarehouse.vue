@@ -16,7 +16,6 @@
           @click="toServiceWarehouse"
           :label="$t('action.toMap')"
         )
-        //- TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="warehouseAddress" :props="props" @click="expandRow(props)")
@@ -42,44 +41,43 @@
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
+            div(v-if="props.row.status.id < 3").q-pa-md
+              div.text-body1.text-wrap
+                | Пожалуйста, дождитесь решения по вашей заявке.
+                | Фонд развития города Иннополис
             q-stepper(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
               flat
               animated
+              v-if="props.row.status.id >= 3 && props.row.status.id <= 7"
             )
               q-step(
                 title="Оплата"
                 :done="props.row.status.id > 3"
                 :name="3"
               )
+                div.text-body1.text-wrap
+                  | Поздравляем, ваша заявка одобрена!
+                  | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
+                  | Перед оплатой ознакомьтесь с публичной офертой и примите ее.
+                  | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
+                  | Фонд развития города Иннополис.
+                div.text-right
+                  q-btn(
+                    color="primary"
+                    label="Перейти к оплате"
+                    @click="goToPayment(props.row.id)"
+                  )
               q-step(
                 title="Подписание договора и получение ключа"
                 :done="props.row.status.id > 7"
                 :name="7"
               )
-            div(v-if="props.row.status.id < 3").q-pa-md
-              div.text-body1.text-wrap
-                | Пожалуйста, дождитесь решения по вашей заявке.
-                | Фонд развития города Иннополис
-            div(v-if="props.row.status.id === 3").q-pa-md
-              div.text-body1.text-wrap
-                | Поздравляем, ваша заявка одобрена!
-                | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
-                | Перед оплатой ознакомьтесь с публичной офертой и примите ее.
-                | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
-                | Фонд развития города Иннополис.
-              div.text-right
-                q-btn(
-                  color="primary"
-                  label="Перейти к оплате"
-                  @click="goToPayment()"
-                )
-            div(v-if="props.row.status.id === 7").q-pa-md
-              div.text-body1.text-wrap
-                | Ваш договор готов к подписанию!
-                | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+                div.text-body1.text-wrap
+                  | Ваш договор готов к подписанию!
+                  | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
     q-inner-loading(v-else showing)
 </template>
 
@@ -188,15 +186,11 @@
         this.deleteUserTicket(id);
       },
 
-      goToPayment () {
-        this.$router.push({ name: "user-bills-warehouse" });
+      goToPayment (id) {
+        this.$router.push({ name: "user-bills-warehouse", params: { ticket: id } });
       },
 
       moment
     }
   };
 </script>
-
-<style lang="stylus" scoped>
-
-</style>

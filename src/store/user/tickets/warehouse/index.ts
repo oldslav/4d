@@ -10,7 +10,7 @@ import {
   GET_USER_TICKETS_WAREHOUSE,
   GET_EMPLOYEE_TICKETS_WAREHOUSE,
   REJECT_TICKET_WAREHOUSE,
-  APPROVE_TICKET_WAREHOUSE
+  APPROVE_TICKET_WAREHOUSE, SEND_CONTRACT_INFO_WAREHOUSE
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 
@@ -86,7 +86,13 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [DELETE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
     await TicketsService.deleteTicketWarehouse(payload);
 
-    dispatch(GET_USER_TICKETS_WAREHOUSE);
+    await dispatch(GET_USER_TICKETS_WAREHOUSE);
+  },
+
+  async [SEND_CONTRACT_INFO_WAREHOUSE] ({ dispatch }, { id, payload }) {
+    await TicketsService.sendContractInfoWarehouse(id, payload);
+
+    await dispatch(GET_EMPLOYEE_TICKETS_WAREHOUSE);
   }
 };
 

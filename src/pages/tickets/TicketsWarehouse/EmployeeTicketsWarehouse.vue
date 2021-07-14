@@ -8,7 +8,7 @@
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"
     )
-      template(v-slot:body="props")
+      template(#body="props")
         q-tr(:props="props")
           q-td(key="fullname" :props="props" @click="expandRow(props)")
             | {{props.row.name.full}}
@@ -17,13 +17,13 @@
           q-td(key="warehouseType" :props="props" @click="expandRow(props)")
             | {{ props.row.serviceOption.service.name }}
           q-td(key="price" :props="props" @click="expandRow(props)")
-            | {{ props.row.price ? props.row.price.price : "0" }}
+            | {{ props.row.serviceOption.price ? props.row.serviceOption.price : "0" }}
           q-td(key="created" :props="props" @click="expandRow(props)")
             | {{ moment(props.row.created).format("DD.MM.YYYY") }}
           q-td(key="status" :props="props" @click="expandRow(props)")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
-            q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click="onTicketReject(props.row.id)")
+            q-btn(flat icon="close" v-if="![9, 4, 8].includes(props.row.status.id)" color="red" @click="onTicketReject(props.row.id)")
             q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onTicketApprove(props.row.id)")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
@@ -33,9 +33,9 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
+            div(v-if="props.row.status.id === 8").q-pa-md
             q-stepper(
               ref="stepper"
               :value="props.row.status.id"
@@ -44,80 +44,76 @@
               animated
             )
               q-step(
-                :title="$t('users.tickets.warehouse.steps.first')"
+                :title="$t('user.tickets.warehouse.steps.first')"
                 :done="props.row.status.id > 4"
                 :name="3"
               )
+                div.text-body1.text-wrap
+                  | Для продолжения оформления документов дождитесь оплаты.
               q-step(
-                :title="$t('users.tickets.warehouse.steps.second')"
+                :title="$t('user.tickets.warehouse.steps.second')"
                 :done="props.row.status.id > 7"
                 :name="7"
               )
-            div(v-if="props.row.status.id === 3").q-pa-md
-              div.text-body1.text-wrap
-                | Для продолжения оформления документов дождитесь оплаты.
-            div(v-if="props.row.status.id === 7").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан.
-                | Введите данные договора.
-              .row
-                BaseInput.col-2.q-my-md(
-                  v-model="contractInfo.contractNumber"
-                  :rules="[ val => val !== null && val !== '' || '']"
-                  :label="$t('user.bills.contractNumber')"
-                )
-              .row
-                q-input.col-2.q-mr-lg(
-                  ref="date"
-                  filled
-                  v-model="contractInfo.dateContractConcluded"
-                  :label="$t('user.bills.dateContractConcluded')"
-                  lazy-rules
-                  :rules="[ val => val !== null && val !== '' || '']"
-                  @click="$refs.qDateConcludedProxy.show()"
-                )
-                  template(v-slot:append)
-                    q-icon(name="event" class="cursor-pointer")
-                      q-popup-proxy(ref="qDateConcludedProxy")
-                        q-date(
-                          v-model="contractInfo.dateContractConcluded"
-                          :mask="'YYYY-MM-DD'"
-                          @input="$refs.qDateConcludedProxy.hide()"
-                        )
-                q-input.col-2(
-                  ref="date"
-                  filled
-                  v-model="contractInfo.dateContractExpire"
-                  :label="$t('user.bills.dateContractExpire')"
-                  lazy-rules
-                  :rules="[ val => val !== null && val !== '' || '']"
-                  @click="$refs.qDateExpireProxy.show()"
-                )
-                  template(v-slot:append)
-                    q-icon(name="event" class="cursor-pointer")
-                      q-popup-proxy(ref="qDateExpireProxy")
-                        q-date(
-                          v-model="contractInfo.dateContractExpire"
-                          :mask="'YYYY-MM-DD'"
-                          @input="$refs.qDateExpireProxy.hide()"
-                        )
-              .row
-                q-btn(
-                  :disable="!isContractInfoFilled"
-                  color="primary"
-                  :label="$t('user.tickets.actions.next')"
-                  @click="sendContractInfo(props.row.id)"
-                )
-
+                div.text-body1.text-wrap
+                  | Договор подписан.
+                  | Введите данные договора.
+                .row
+                  BaseInput.col-2.q-my-md(
+                    v-model="contractInfo.number"
+                    :rules="[ val => val !== null && val !== '' || '']"
+                    :label="$t('user.bills.contractNumber')"
+                  )
+                .row
+                  q-input.col-2.q-mr-lg(
+                    ref="date"
+                    filled
+                    v-model="contractInfo.startDate"
+                    :label="$t('user.bills.dateContractConcluded')"
+                    lazy-rules
+                    :rules="[ val => val !== null && val !== '' || '']"
+                    @click="$refs.qDateConcludedProxy.show()"
+                  )
+                    template(v-slot:append)
+                      q-icon(name="event" class="cursor-pointer")
+                        q-popup-proxy(ref="qDateConcludedProxy")
+                          q-date(
+                            v-model="contractInfo.startDate"
+                            :mask="'YYYY-MM-DD'"
+                            @input="$refs.qDateConcludedProxy.hide()"
+                          )
+                  q-input.col-2(
+                    ref="date"
+                    filled
+                    v-model="contractInfo.endDate"
+                    :label="$t('user.bills.dateContractExpire')"
+                    lazy-rules
+                    :rules="[ val => val !== null && val !== '' || '']"
+                    @click="$refs.qDateExpireProxy.show()"
+                  )
+                    template(v-slot:append)
+                      q-icon(name="event" class="cursor-pointer")
+                        q-popup-proxy(ref="qDateExpireProxy")
+                          q-date(
+                            v-model="contractInfo.endDate"
+                            :mask="'YYYY-MM-DD'"
+                            @input="$refs.qDateExpireProxy.hide()"
+                          )
+                .row
+                  q-btn(
+                    :disable="!isContractInfoFilled"
+                    color="primary"
+                    :loading="loadingContract"
+                    :label="$t('user.tickets.actions.next')"
+                    @click="sendContractInfo(props.row.id)"
+                  )
     q-inner-loading(v-else showing)
-    //- TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  // import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
   import BaseTable from "components/common/BaseTable";
   import BaseInput from "components/common/BaseInput";
   import BaseDatepicker from "components/common/BaseDatepicker";
@@ -196,9 +192,9 @@
           }
         ],
         contractInfo: {
-          contractNumber: null,
-          dateContractConcluded: null,
-          dateContractExpire: null
+          number: null,
+          startDate: null,
+          endDate: null
         }
       };
     },
@@ -207,9 +203,12 @@
         data: state => state.data
       }),
       isContractInfoFilled () {
-        return !!this.contractInfo.contractNumber
-          && !!this.contractInfo.dateContractConcluded
-          && !!this.contractInfo.dateContractExpire;
+        return !!this.contractInfo.number
+          && !!this.contractInfo.startDate
+          && !!this.contractInfo.endDate;
+      },
+      loadingContract () {
+        return this.$store.state.wait[`user/tickets/warehouse/${ SEND_CONTRACT_INFO_WAREHOUSE }`];
       }
     },
     methods: {
@@ -292,13 +291,7 @@
       },
 
       sendContractInfo (id) {
-        const { contractNumber, dateContractConcluded, dateContractExpire } = this.contractInfo;
-        const payload = {
-          startDate: dateContractConcluded,
-          endDate: dateContractExpire,
-          number: contractNumber
-        };
-        this.SEND_CONTRACT_INFO_WAREHOUSE({ id, payload })
+        this.SEND_CONTRACT_INFO_WAREHOUSE({ id, payload: this.contractInfo })
           .then(() => {
             this.$q.notify({
               type: "positive",

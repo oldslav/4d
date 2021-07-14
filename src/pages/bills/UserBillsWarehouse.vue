@@ -40,21 +40,29 @@
                   color="primary"
                   :disable="props.row.paid"
                   :label="$t('action.pay')"
+                  :loading="loadingPayment"
                   @click="getPaymentLink(props.row.id)")
     q-inner-loading(v-else showing)
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapGetters } from "vuex";
+  import { mapActions, mapGetters, mapMutations } from "vuex";
   import { GET_DATA, GET_PAYMENT_LINK } from "@/store/constants/action-constants";
   import BaseTable from "components/common/BaseTable";
   import BaseStatus from "components/common/BaseStatus";
+  import { SET_TICKET_ID } from "@/store/constants/mutation-constants";
 
   export default {
     name: "UserBillsWarehouse",
     components: { BaseTable, BaseStatus },
     async created () {
+      const { ticket } = this.$route.params;
+      if (ticket) {
+        this.ticketId = ticket;
+      } else {
+        this.ticketId = null;
+      }
       await this.fetchWarehouseBills();
     },
     data () {
@@ -98,10 +106,22 @@
       };
     },
     computed: {
-      ...mapGetters("user/bills/warehouse", ["getWarehouseBills"])
+      ...mapGetters("user/bills/warehouse", ["getWarehouseBills"]),
+      loadingPayment () {
+        return this.$store.state.wait[`user/bills/warehouse/${ GET_PAYMENT_LINK }`];
+      },
+      ticketId: {
+        get () {
+          return this.$store.state["user/bills/warehouse"].filters.ticketId;
+        },
+        set (id) {
+          this.SET_TICKET_ID(id);
+        }
+      }
     },
     methods: {
       ...mapActions("user/bills/warehouse", { fetchWarehouseBills: GET_DATA, GET_PAYMENT_LINK }),
+      ...mapMutations("user/bills/warehouse", [SET_TICKET_ID]),
       moment,
       getFullAddress (address) {
         return `${ address.street } ${ address.house }`;

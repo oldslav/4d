@@ -6,7 +6,11 @@ import { BillsService } from "src/api/user/bills";
 import { IBillsState } from "src/store/types/user/bills";
 
 const state: IBillsState = {
-  data: null
+  data: null,
+  filters: {
+    ticketId: null,
+    paid: null
+  }
 };
 
 const mutations: MutationTree<IBillsState> = {
@@ -18,12 +22,12 @@ const mutations: MutationTree<IBillsState> = {
 const actions: ActionTree<IBillsState, TRootState> = {
   async [GET_DATA] ({ commit }) {
     const { data } = await BillsService.getBillsParking();
-    
+
     commit(SET_DATA, {
       items: data
     });
   },
-  
+
   async [GET_PAYMENT_LINK] (_, id) {
     return BillsService.getPaymentLink(id);
   }
