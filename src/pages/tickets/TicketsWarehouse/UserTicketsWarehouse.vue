@@ -35,7 +35,7 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup @click="openDetails(props.row)")
+                  q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
@@ -51,7 +51,7 @@
               color="primary"
               flat
               animated
-              v-if="props.row.status.id >= 3 && props.row.status.id <= 7"
+              v-if="props.row.status.id >= 3"
             )
               q-step(
                 title="Оплата"
@@ -79,22 +79,23 @@
                   | Ваш договор готов к подписанию!
                   | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
     q-inner-loading(v-else showing)
+    TicketWarehouseDetailsModal(:id.sync="currentId" v-model="isModalVisible" v-if="currentId")
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
-  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import BaseTable from "components/common/BaseTable";
-  // import TicketDetailsModal from "components/user/tickets/warehouse/TicketDetailsModal";
   import {
     DELETE_USER_TICKET_WAREHOUSE,
     GET_USER_TICKETS_WAREHOUSE
   } from "@/store/constants/action-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import BaseTable from "components/common/BaseTable";
+  import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
 
   export default {
     name: "UserTicketsWarehouse",
-    components: { ApartmentTicketStatus, BaseTable },
+    components: { TicketWarehouseDetailsModal, ApartmentTicketStatus, BaseTable },
     async created () {
       await this.getUserTickets();
     },
@@ -102,7 +103,7 @@
       return {
         isModalVisible: false,
         expanded: [],
-        currentRow: null,
+        currentId: null,
         columns: [
           {
             name: "warehouseAddress",
@@ -163,8 +164,8 @@
         deleteUserTicket: DELETE_USER_TICKET_WAREHOUSE
       }),
 
-      openDetails (data) {
-        this.currentRow = data;
+      openDetails (id) {
+        this.currentId = id;
         this.isModalVisible = true;
       },
 

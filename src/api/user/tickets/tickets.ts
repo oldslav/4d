@@ -138,6 +138,10 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/warehouse/user/tickets", { params });
   }
 
+  public static getWarehouseTicketById (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/warehouse/user/tickets/${ id }`);
+  }
+
   public static getEmployeeTicketsWarehouse (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/warehouse/employee/tickets", { params });
   }

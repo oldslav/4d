@@ -32,7 +32,7 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-          
+
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
@@ -44,12 +44,12 @@
               animated
             )
               q-step(
-                :title="$t('users.tickets.parking.steps.first')"
+                :title="$t('user.tickets.parking.steps.first')"
                 :done="props.row.status.id > 4"
                 :name="3"
               )
               q-step(
-                :title="$t('users.tickets.parking.steps.second')"
+                :title="$t('user.tickets.parking.steps.second')"
                 :done="props.row.status.id > 7"
                 :name="7"
               )
@@ -207,7 +207,7 @@
       ...mapState("user/tickets/parking", {
         data: state => state.data
       }),
-      isContractInfoFilled () {        
+      isContractInfoFilled () {
         return !!this.contractInfo.contractNumber
           && !!this.contractInfo.dateContractConcluded
           && !!this.contractInfo.dateContractExpire;

@@ -377,12 +377,14 @@
         },
         "storageTypes": {
           "title": "Storage type",
+          "rentType": "Rent type",
           "rack": "On a rack",
           "bikePark": "On a bicycle parking",
           "subtitle": {
             "top": "Выберите один из предложенных типов хранения.",
             "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
-          }
+          },
+          "duration": "Хранение на {n} месяц | Хранение на {n} месяца | Хранение на {n} месяцев"
         }
       },
       "ideas": "Ideas and suggestions",

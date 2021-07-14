@@ -1,7 +1,7 @@
-import { ActionTree, Module, MutationTree } from "vuex";
+import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKETS, SET_USER_TICKET } from "src/store/constants/mutation-constants";
 import {
   ADD_USER_TICKET_FILE_WAREHOUSE,
   ADD_WAREHOUSE_FILES,
@@ -10,9 +10,10 @@ import {
   GET_USER_TICKETS_WAREHOUSE,
   GET_EMPLOYEE_TICKETS_WAREHOUSE,
   REJECT_TICKET_WAREHOUSE,
-  APPROVE_TICKET_WAREHOUSE, SEND_CONTRACT_INFO_WAREHOUSE
+  APPROVE_TICKET_WAREHOUSE, SEND_CONTRACT_INFO_WAREHOUSE, GET_USER_TICKET
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
+import { Service } from "src/api/common";
 
 const state: IUserTicketsState = {
   filters: null,
@@ -20,12 +21,16 @@ const state: IUserTicketsState = {
     limit: 10,
     offset: 1
   },
-  data: null
+  data: null,
+  current: null
 };
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {
     state.data = payload;
+  },
+  [SET_USER_TICKET] (state, payload) {
+    state.current = payload;
   }
 };
 
@@ -65,6 +70,21 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
+  async [GET_USER_TICKET] ({ commit }, id) {
+    const { data } = await TicketsService.getWarehouseTicketById(id);
+    const { images, ...ticket } = data;
+    const documents: any = {
+      passport: []
+    };
+    await Promise.all(images.map(async (doc: any) => {
+      const { imagePath, docType, fileName } = doc;
+      const { data } = await Service.getFile(imagePath);
+      const file = new File([data], fileName, { type: data.type });
+      documents[docType.name].push(file);
+    }));
+    commit(SET_USER_TICKET, { ...ticket, documents });
+  },
+
   async [GET_EMPLOYEE_TICKETS_WAREHOUSE] ({ state, commit }) {
     const { filters } = state;
 
@@ -75,32 +95,34 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
-  [REJECT_TICKET_WAREHOUSE] (_, { id, reason }) {
-    return TicketsService.rejectTicketWarehouse(id, reason);
+  async [REJECT_TICKET_WAREHOUSE] (_, { id, reason }) {
+    await TicketsService.rejectTicketWarehouse(id, reason);
   },
 
-  [APPROVE_TICKET_WAREHOUSE] (_, { id }) {
-    return TicketsService.approveTicketWarehouse(id);
+  async [APPROVE_TICKET_WAREHOUSE] (_, { id }) {
+    await TicketsService.approveTicketWarehouse(id);
   },
 
   async [DELETE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
     await TicketsService.deleteTicketWarehouse(payload);
-
     await dispatch(GET_USER_TICKETS_WAREHOUSE);
   },
 
   async [SEND_CONTRACT_INFO_WAREHOUSE] ({ dispatch }, { id, payload }) {
     await TicketsService.sendContractInfoWarehouse(id, payload);
-
     await dispatch(GET_EMPLOYEE_TICKETS_WAREHOUSE);
   }
 };
 
+const getters: GetterTree<IUserTicketsState, TRootState> = {
+  getCurrentTicket: (state) => state.current
+};
 const warehouse: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };
 
 export default warehouse;

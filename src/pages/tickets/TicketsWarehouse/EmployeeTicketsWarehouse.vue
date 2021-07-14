@@ -108,6 +108,7 @@
                     @click="sendContractInfo(props.row.id)"
                   )
     q-inner-loading(v-else showing)
+    TicketWarehouseDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
@@ -124,16 +125,24 @@
     SEND_CONTRACT_INFO_WAREHOUSE
   } from "@/store/constants/action-constants";
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
 
   export default {
     name: "EmployeeTicketsWarehouse",
-    components: { ApartmentsEmployeeDetailsModal, BaseTable, BaseInput, BaseDatepicker, ApartmentTicketStatus },
+    components: {
+      TicketWarehouseDetailsModal,
+      ApartmentsEmployeeDetailsModal,
+      BaseTable,
+      BaseInput,
+      BaseDatepicker,
+      ApartmentTicketStatus
+    },
     async created () {
       await this.getEmployeeTickets();
     },
     data () {
       return {
-        activeRow: null,
+        activeId: null,
         showDetailsModal: false,
         rejectionReason: "",
         expanded: [],
@@ -286,7 +295,7 @@
       },
 
       showDetails (row) {
-        this.activeRow = row;
+        this.activeId = row.id;
         this.showDetailsModal = true;
       },
 
