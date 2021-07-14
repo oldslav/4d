@@ -83,7 +83,7 @@
           FormContacts(v-model="contacts")
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
@@ -157,9 +157,9 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.documents.social_confirm
-          && !!this.documents.passport
-          && !!this.documents.snils;
+          && (this.documents.social_confirm && this.documents.social_confirm.length > 0)
+          && (this.documents.passport && this.documents.passport.length > 0)
+          && (this.documents.snils && this.documents.snils.length > 0);
       }
     },
     methods: {

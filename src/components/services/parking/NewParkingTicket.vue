@@ -41,7 +41,7 @@
         q-step(
           title="Срок аренды"
           :done="step > 3"
-          :error="!isUserInfo && step > 3"
+          :error="!rentOption && step > 3"
           :name="3"
           icon="schedule"
         )
@@ -109,7 +109,7 @@
           FormContacts(v-model="contacts")
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
@@ -167,7 +167,7 @@
       },
 
       isValid () {
-        return this.isUserInfo && this.isCarInfo;
+        return this.isUserInfo && this.isCarInfo && this.rentOption;
       },
 
       isCarInfo () {
@@ -183,8 +183,8 @@
       isUserInfo () {
         return !!this.name.first
           && !!this.name.last
-          && !!this.documents.passport
-          && !!this.documents.snils;
+          && (this.documents.passport && this.documents.passport.length > 0)
+          && (this.documents.snils && this.documents.snils.length > 0);
       }
     },
     methods: {
