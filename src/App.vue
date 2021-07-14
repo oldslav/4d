@@ -88,7 +88,7 @@
       });
     },
     data () {
-      return { auth: false };
+      return { auth: false, isStartedLoading: false };
     },
     computed: {
       ...mapGetters(["isAuthenticated"]),
@@ -151,14 +151,20 @@
       },
 
       onRouteChangedBegin (from ,to ,next) {
+        if (this.isStartedLoading) {
+          this.$refs.progress.stop();
+        }
+
         if(from.path !== to.path) {
           this.$refs.progress.start();
+          this.isStartedLoading = true;
         }
         next();
       },
 
       onRouteChangedDone () {
         this.$refs.progress.stop();
+        this.isStartedLoading = false;
       }
     }
   };

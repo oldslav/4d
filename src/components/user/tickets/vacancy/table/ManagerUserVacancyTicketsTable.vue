@@ -55,7 +55,7 @@
     props: {
       pagination: { type: Object, default:() => ({}) },
       data: { type: Object, default:() => ({}) },
-      getData: { type: Object, default:() => ({}) },
+      getData: { type: Function, default:() => () => ({}) },
       isLoading: { type: Boolean, default: false },
       statusId: { type: [Number, String], default:"" }
     },

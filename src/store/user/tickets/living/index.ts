@@ -13,7 +13,8 @@ import {
   ADD_USER_TICKET_NEIGHBOR,
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
-  UPDATE_TICKET_APARTMENT_VIEWED
+  UPDATE_TICKET_APARTMENT_VIEWED,
+  GET_USER_TICKET
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { Service } from "src/api/common";

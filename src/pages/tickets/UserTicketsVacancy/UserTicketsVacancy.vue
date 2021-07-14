@@ -56,7 +56,7 @@
         @vacancy:reject="handleRejectVacancy"
       )
 
-      user-vacancy-tickets-table(v-else  v-bind="getTableProps")
+      user-vacancy-tickets-table(v-else v-bind="getTableProps")
 
       q-inner-loading(v-else showing)
 

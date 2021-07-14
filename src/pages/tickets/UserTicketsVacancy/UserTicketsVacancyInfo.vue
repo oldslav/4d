@@ -16,8 +16,7 @@
     components: { VacancyCard },
     data () {
       return {
-        isEnableEditorMode: false,
-        isLoading: false
+        isEnableEditorMode: false
       };
     },
     computed: {
