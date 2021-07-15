@@ -85,10 +85,10 @@
         this.$emit("input", val);
       },
       onReject () {
-        this.$emit("reject", this.value.id);
+        this.$emit("reject", this.info.id);
       },
       onApprove () {
-        this.$emit("approve", this.value.id);
+        this.$emit("approve", this.info.id);
       }
     }
   };

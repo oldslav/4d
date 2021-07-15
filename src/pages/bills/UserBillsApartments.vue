@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-card
+  div
     BaseTable(
       v-if="tableData"
       row-key="id"
@@ -55,7 +55,7 @@
   import BaseStatus from "components/common/BaseStatus";
   import BaseTable from "components/common/BaseTable";
   import { mapActions, mapState } from "vuex";
-  import { GET_DATA, GET_PAYMENT_LINK } from "../../../store/constants/action-constants";
+  import { GET_DATA, GET_PAYMENT_LINK } from "../../store/constants/action-constants";
 
   export default {
     name: "UserBillsApartments",
@@ -148,7 +148,7 @@
       getFullAddress (address) {
         return `${ address.street } ${ address.house }, кв ${ address.apartment }`;
       },
-      
+
       moment
     }
   };

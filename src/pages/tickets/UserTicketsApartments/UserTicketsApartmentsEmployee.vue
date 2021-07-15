@@ -3,7 +3,7 @@
     BaseTable(
       v-if="data"
       row-key="id"
-      :data="data",
+      :data="data"
       :columns="columns"
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"
@@ -57,13 +57,13 @@
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
-  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
-  import BaseTable from "components/common/BaseTable";
   import {
     APPROVE_TICKET_LIVING,
     GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING
   } from "@/store/constants/action-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
+  import BaseTable from "components/common/BaseTable";
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
 
   export default {

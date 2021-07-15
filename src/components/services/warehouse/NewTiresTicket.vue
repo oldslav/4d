@@ -22,7 +22,7 @@
           icon="edit"
         )
           FormName(v-model="name")
-          FilePicker(v-model="documents.passport" :label="$t('entity.files.passport')" :max-files="5")
+          MyDocumentsForm(v-model="documents" is-local)
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
@@ -113,11 +113,12 @@
   import FilePicker from "components/common/FilePicker";
   import FormContacts from "components/common/form/FormContacts";
   import FormName from "components/common/form/FormName";
+  import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
 
   export default {
     name: "NewTiresTicket",
     mixins: [WarehouseTicketMixin],
-    components: { FormName, FilePicker, BaseModal, FormContacts },
+    components: { FormName, FilePicker, BaseModal, FormContacts, MyDocumentsForm },
     props: {
       value: {
         type: Boolean,

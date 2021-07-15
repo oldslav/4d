@@ -159,6 +159,18 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "warehouse",
+            name: "user-tickets-warehouse",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsWarehouse/TicketsWarehouse.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
             path: "vacancy",
             name: "user-tickets-vacancy",
             components: {
@@ -224,14 +236,19 @@ const routes: RouteConfig[] = [
         component: (): Promise<any> => import("pages/UserBills.vue"),
         children: [
           {
-            path: "apartments",
+            path: "apartments/:ticket?",
             name: "user-bills-apartments",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsApartments.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsApartments.vue")
           },
           {
-            path: "parking",
+            path: "parking/:ticket?",
             name: "user-bills-parking",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsParking.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsParking.vue")
+          },
+          {
+            path: "warehouse/:ticket?",
+            name: "user-bills-warehouse",
+            component: (): Promise<any> => import("pages/bills/UserBillsWarehouse.vue")
           }
         ]
       }

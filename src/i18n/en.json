@@ -136,6 +136,18 @@
       "contract": {
         "sendSuccess": "Данные договора успешно отправлены",
         "sendFail": "При отправлении данных договора произошла ошибка"
+      },
+      "parking": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
+      },
+      "warehouse": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
       }
     },
     "firstName": "Firstname",
@@ -366,12 +378,14 @@
         },
         "storageTypes": {
           "title": "Storage type",
+          "rentType": "Rent type",
           "rack": "On a rack",
           "bikePark": "On a bicycle parking",
           "subtitle": {
             "top": "Выберите один из предложенных типов хранения.",
             "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
-          }
+          },
+          "duration": "Хранение на {n} месяц | Хранение на {n} месяца | Хранение на {n} месяцев"
         }
       },
       "ideas": "Ideas and suggestions",
@@ -463,7 +477,8 @@
       "apartments": "Apartment rent",
       "ideas": "Ideas and suggestions",
       "parking": "Parking rent",
-      "vacancy": "Городские вакансии"
+      "vacancy": "Городские вакансии",
+      "warehouse": "Warehouse rent"
     },
     "bills": "Bills",
     "main": "Main",

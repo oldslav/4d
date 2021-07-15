@@ -50,7 +50,7 @@
   import BaseStatus from "components/common/BaseStatus";
   import BaseTable from "components/common/BaseTable";
   import { mapActions, mapState } from "vuex";
-  import { GET_DATA, GET_PAYMENT_LINK } from "../../../store/constants/action-constants";
+  import { GET_DATA, GET_PAYMENT_LINK } from "../../store/constants/action-constants";
 
   export default {
     name: "UserBillsParking",
@@ -143,7 +143,7 @@
       getFullAddress (address) {
         return `${ address.street } ${ address.house }`;
       },
-      
+
       moment
     }
   };

@@ -12,7 +12,7 @@
         q-btn(icon="close" flat round dense v-close-popup)
       q-card-section
         .text-medium.q-mb-sm
-            | {{ $t("entity.services.mainInfo") }}
+          | {{ $t("entity.services.mainInfo") }}
         .row.q-col-gutter-sm
           .col-12.col-md-4
             q-input(readonly :label="$t('user.lastName')" :value="info.name.last" borderless)
@@ -65,10 +65,10 @@
         this.$emit("input", val);
       },
       onReject () {
-        this.$emit("reject", this.value.id);
+        this.$emit("reject", this.info.id);
       },
       onApprove () {
-        this.$emit("approve", this.value.id);
+        this.$emit("approve", this.info.id);
       }
     }
   };
