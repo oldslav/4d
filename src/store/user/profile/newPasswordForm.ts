@@ -1,7 +1,7 @@
 import { ActionTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { INewPasswordFormState } from "../../types/user/profile";
-import { 
+import {
   SET_NEW_PASSWORD_FORM_OLD_PASSWORD,
   SET_NEW_PASSWORD_FORM_PASSWORD,
   SET_NEW_PASSWORD_FORM_CONFIRM_PASSWORD
@@ -9,11 +9,11 @@ import {
 import { CHANGE_USER_PROFILE_PASSWORD } from "src/store/constants/action-constants";
 import { UserProfileService } from "src/api/user/profile";
 
-const state: INewPasswordFormState = {
+const state = (): INewPasswordFormState => ({
   oldPassword: null,
   password: null,
   confirmPassword: null
-};
+});
 
 const mutations: MutationTree<INewPasswordFormState> = {
   [SET_NEW_PASSWORD_FORM_OLD_PASSWORD] (state, payload) {
@@ -23,7 +23,7 @@ const mutations: MutationTree<INewPasswordFormState> = {
   [SET_NEW_PASSWORD_FORM_PASSWORD] (state, payload) {
     state.password = payload;
   },
-  
+
   [SET_NEW_PASSWORD_FORM_CONFIRM_PASSWORD] (state, payload) {
     state.confirmPassword = payload;
   }

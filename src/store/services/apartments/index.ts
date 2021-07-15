@@ -20,7 +20,7 @@ const initialState = (): IUserTicketsState => {
   };
 };
 
-const state: () => IUserTicketsState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_EMPTY]: state => Object.assign(state, initialState()),
@@ -36,7 +36,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
       requestId,
       ...state.pagination
     });
-  
+
     commit(SET_DATA, data);
     commit(UPDATE_APARTMENTS_PAGINATION, { rowsNumber: data.count });
   }
@@ -45,17 +45,17 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 const getters: GetterTree<IUserTicketsState, TRootState> = {
   tableData (state) {
     const { data } = state;
-    
+
     if (data) {
       return {
         items: data.items
       };
     }
   },
-  
+
   tablePagination (state) {
     const { pagination, data } = state;
-    
+
     if (data) {
       return {
         rowsPerPage: pagination.limit,

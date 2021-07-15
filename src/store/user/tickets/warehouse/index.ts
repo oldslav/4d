@@ -15,7 +15,7 @@ import {
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { Service } from "src/api/common";
 
-const state: IUserTicketsState = {
+const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
@@ -23,7 +23,7 @@ const state: IUserTicketsState = {
   },
   data: null,
   current: null
-};
+});
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {

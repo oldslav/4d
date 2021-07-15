@@ -16,7 +16,7 @@ const initialState = (): GeoState => {
   };
 };
 
-const state: () => GeoState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<GeoState> = {
   [SET_USER]: (state, payload) => Object.assign(state, payload),

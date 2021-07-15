@@ -5,13 +5,13 @@ import { GET_DATA, GET_PAYMENT_LINK } from "src/store/constants/action-constants
 import { BillsService } from "src/api/user/bills";
 import { IBillsState } from "src/store/types/user/bills";
 
-const state: IBillsState = {
+const state = (): IBillsState => ({
   data: null,
   filters: {
     ticketId: null,
     paid: null
   }
-};
+});
 
 const mutations: MutationTree<IBillsState> = {
   [SET_DATA] (state, payload) {
