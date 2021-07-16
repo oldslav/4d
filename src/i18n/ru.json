@@ -434,15 +434,31 @@
         "searchEmptyTitle": "Вакансий не найдено",
         "searchEmptyDescription": "Попробуйте изменить критерии поиска",
         "searchEmptyRetry": "Сбросить фильтр",
-
         "processSearch": "Выполняем поиск вакансий",
         "processLoadPage": "Загружаем данные",
-
         "successSearch": "Результаты успешно отфильтрованы",
         "successLoadPage": "Данные загружены",
-
         "errorSearch": "При поиске вакансий произошла ошибка",
-        "errorLoadPage": "При загрузке данных произошла ошибка"
+        "errorLoadPage": "При загрузке данных произошла ошибка",
+        "respondModalTitle": "Откликнуться на вакансию",
+        "respondPresent": "Вы уже откликнулись на эту вакансию",
+        "respondForm": {
+          "about": "Основная информация",
+          "contacts": "Контакты",
+          "resume": "Резюме",
+          "respondError": "При отправке отклика произошла ошибка, пожалуйста повторите позже",
+          "respondProgress": "Отправляем отклик",
+          "respondSuccessTitle": "Спасибо! Ваш отклик успешно отправлен",
+          "respondSuccessMessage": "Отследить статус отлкика можно в личном кабинете",
+          "resumeHint": "Вы можете прикрепить файл с резюме или ссылку",
+          "resumeError": "Необходимо прикрепить файл, либо указать ссылку на резюме",
+          "resumeFile": "Файл резюме",
+          "resumeFileFormat": "Формат pdf",
+          "resumeLink": "Ссылка на резюме",
+          "textHint": "Добавьте текст сопроводительного письма",
+          "textPlaceholder": "Расскажите о себе",
+          "resumeLinkRequired": "Необходимо указать ссылку к резюме"
+        }
       }
     },
     "guestCard": {

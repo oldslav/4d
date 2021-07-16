@@ -1,11 +1,11 @@
 <template lang="pug">
   q-page.q-pa-lg.bg-white(:class="{ column: !canVisibleContent }")
     div.row.items-center
-      div.col-md-6
-        div.text-subtitle1(:class="{ invisible: isFailedLastSearch }")
+      div.col-md-6.col-sm-12.col-xs-12.q-mb-sm-md.q-mb-xs-md
+        div.text-subtitle1(:class="{ invisible: isFailedLastSearch || visibleLoading }")
           | {{ $tc("entity.services.vacancies.searchResult", getVacancies.count) }}
 
-      div.col-md-6
+      div.col-md-6.col-sm-12.col-xs-12
         q-input(
           v-model="filter.query"
           :placeholder="$t('entity.services.vacancies.searchPlaceholder')"
@@ -15,11 +15,12 @@
           dense
         )
 
-    div.q-mt-lg-lg(v-if="canVisibleContent")
-      vacancy-card.q-mb-lg-lg(
+    div.q-mt-lg(v-if="canVisibleContent")
+      vacancy-card.q-mb-lg(
         v-for="vacancy in getVacancies.items"
         :key="vacancy.id"
         :value="vacancy"
+        @respond="onRespondRequestVacancy(vacancy.id)"
       )
 
       div.row.justify-center
@@ -47,19 +48,25 @@
         :retry-label="$t('entity.services.vacancies.searchErrorRetry')"
         @retry="refreshVacancies"
       )
+
+    vacancy-respond-modal(
+      v-model="visibleRespondModal"
+      :vacancy-id="respondVacancyId"
+    )
 </template>
 <script>
   import { mapGetters, mapActions } from "vuex";
   import { SEARCH_VACANCY } from "../../../store/constants/action-constants";
   import VacancyCard from "../../../components/services/vacancy/VacancyCard";
   import PageError from "../../../components/common/PageError";
+  import VacancyRespondModal from "../../../components/services/vacancy/VacancyRespondModal";
 
   const PER_PAGE_COUNT = 15;
 
   const getQueryFromRoute = (route) => {
     const { industry, query } = route.query;
     const page = parseInt(route.query.page, 10);
-    const result = { limit: PER_PAGE_COUNT };
+    const result = { limit: PER_PAGE_COUNT, offset: 0 };
 
     if (!Number.isNaN(page)) {
       result.offset = Math.max(0, page - 1);
@@ -77,7 +84,7 @@
   };
 
   export default {
-    components: { PageError, VacancyCard },
+    components: { VacancyRespondModal, PageError, VacancyCard },
     preFetch ({ store, currentRoute }) {
       const query = getQueryFromRoute(currentRoute);
 
@@ -95,7 +102,9 @@
         filter: { query: this.$route.query.query || "" },
         isChangedPagination: false,
         currentPage: 1,
-        isTypingQuery: false
+        isTypingQuery: false,
+        visibleRespondModal: false,
+        respondVacancyId: null
       };
     },
     computed: {
@@ -119,13 +128,13 @@
       }),
       async replaceQuery (newValues) {
         const query = { ...this.$route.query, ...newValues };
+
         try {
           await this.$router.replace({ query });
         } catch (e) {
           // Do nothing
         }
       },
-
 
       async clearQuery (){
         this.filter.query = "";
@@ -138,14 +147,19 @@
 
       async refreshVacancies () {
         const query = getQueryFromRoute(this.$route);
+        this.currentPage = query.offset + 1;
         await this.searchVacancy(query);
         this.isChangedPagination = false;
       },
 
       async handleUpdateSearchQuery (){
-        await this.replaceQuery({ query: this.filter.query || undefined });
+        await this.replaceQuery({ query: this.filter.query || undefined, page: undefined });
         await this.$nextTick();
         this.isTypingQuery = false;
+      },
+
+      async onChangeIndustry (){
+        await this.replaceQuery({ page: undefined });
       },
 
       onTypingQuery (){
@@ -183,6 +197,11 @@
       async onChangeCurrentPage (){
         this.isChangedPagination = true;
         await this.replaceQuery({ page: this.currentPage === 1 ? undefined : this.currentPage });
+      },
+
+      onRespondRequestVacancy (vacancyId){
+        this.respondVacancyId = vacancyId;
+        this.visibleRespondModal = true;
       }
     },
     watch: {
@@ -194,8 +213,8 @@
         }
       },
       "filter.query": "handleUpdateSearchQuery",
-      "$route.query": "refreshVacancies",
-      "$route.industry": "refreshVacancies"
+      "$route.query.industry": "onChangeIndustry",
+      "$route.query": "refreshVacancies"
     }
   };
 </script>

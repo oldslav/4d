@@ -430,15 +430,31 @@
         "searchEmptyTitle": "No vacancies found",
         "searchEmptyDescription": "Try changing your search criteria",
         "searchEmptyRetry": "Reset Filter",
-
         "processSearch": "Searching for vacancies",
         "processLoadPage": "Loading data",
-
         "successSearch": "Results filtered successfully",
         "successLoadPage": "Data loaded",
-
         "errorSearch": "An error occurred while searching for jobs",
-        "errorLoadPage": "An error occurred while loading data"
+        "errorLoadPage": "An error occurred while loading data",
+        "respondModalTitle": "Apply for vacancy",
+        "respondPresent": "You have already applied for this position.",
+        "respondForm": {
+          "about": "Basic information",
+          "contacts": "Contacts",
+          "resume": "Resume",
+          "respondError": "There was an error sending your response, please try again later",
+          "respondProgress": "Sending a response",
+          "respondSuccessTitle": "Thank you! Your response was successfully submitted",
+          "respondSuccessMessage": "You can track the response status in your account",
+          "resumeHint": "You can attach a file with a resume or a link",
+          "resumeError": "You must attach a file or provide a link to your resume",
+          "resumeFile": "Resume file",
+          "resumeFileFormat": "pdf format",
+          "resumeLink": "Resume link",
+          "textHint": "Add cover letter text",
+          "textPlaceholder": "Tell us about yourself",
+          "resumeLinkRequired": "You must provide a link to your resume"
+        }
       }
     },
     "guestCard": {

@@ -10,7 +10,8 @@ import {
   UPDATE_VACANCY,
   CLOSE_VACANCY,
   PUBLISH_VACANCY,
-  SEARCH_VACANCY
+  SEARCH_VACANCY,
+  RESPOND_VACANCY
 } from "src/store/constants/action-constants";
 import {
   SET_SEARCH_VACANCY_ERROR,
@@ -103,6 +104,21 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
   async [REJECT_VACANCY] (ctx, vacancyId) {
     const { data: vacancy } = await VacancyService.rejectVacancy(vacancyId);
     return vacancy;
+  },
+
+  async [RESPOND_VACANCY] (ctx, { id, payload }) {
+    const { resumeFile } = payload;
+    delete payload.resumeFile;
+
+    const { data: respond } = await VacancyService.respond(id, payload);
+
+    if (resumeFile) {
+      const formData = new FormData();
+      formData.append("file", resumeFile);
+      await VacancyService.attachRespondFile(respond.id, formData);
+    }
+
+    return respond;
   }
 };
 
