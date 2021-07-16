@@ -153,7 +153,7 @@
           },
           {
             name: "role",
-            align: "left",
+            align: "center",
             label: this.$t("common.role")
           },
           {
