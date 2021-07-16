@@ -159,6 +159,18 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "crowdfunding",
+            name: "user-tickets-crowdfunding",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsCrowdfunding/TicketsCrowdfunding.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
             path: "vacancy",
             name: "user-tickets-vacancy",
             components: {

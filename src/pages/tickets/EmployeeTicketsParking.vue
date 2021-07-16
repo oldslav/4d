@@ -245,14 +245,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("entity.services.messages.reject.success")
+              message: this.$t("entity.services.messages.reject.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("entity.services.messages.reject.success")
+              message: this.$t("entity.services.messages.reject.success")
             });
           });
       },
@@ -267,14 +267,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("entity.services.messages.approve.success")
+              message: this.$t("entity.services.messages.approve.success")
             });
             return this.getEmployeeTickets();
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("entity.services.messages.approve.fail")
+              message: this.$t("entity.services.messages.approve.fail")
             });
           })
           .finally(() => {

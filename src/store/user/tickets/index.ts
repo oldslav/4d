@@ -5,6 +5,7 @@ import living from "src/store/user/tickets/living";
 import parking from "src/store/user/tickets/parking";
 import warehouse from "src/store/user/tickets/warehouse";
 import vacancy from "src/store/user/tickets/vacancy";
+import crowdfunding from "src/store/user/tickets/crowdfunding";
 
 
 const mutations: MutationTree<IUserTicketsState> = {
@@ -21,7 +22,8 @@ const tickets: Module<IUserTicketsState, TRootState> = {
     living,
     parking,
     warehouse,
-    vacancy
+    vacancy,
+    crowdfunding
   },
   mutations,
   actions
