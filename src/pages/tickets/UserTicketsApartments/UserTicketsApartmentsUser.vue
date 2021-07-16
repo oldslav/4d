@@ -5,21 +5,20 @@
       row-key="id"
       :columns="columns"
       :data="tableData"
-      :isLoading="isLoading"
       :getData="getUserTickets"
-      :pagination="tablePagination"
       :expanded.sync="expanded"
     )
-      template(v-slot:top-right)
-        q-btn(
-          icon="add"
-          outline
-          color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
-        )
+      template(#top)
+        div.full-width.text-right
+          q-btn(
+            icon="add"
+            outline
+            color="primary"
+            @click="isModalVisible = true"
+            :label="$t('user.tickets.actions.create')"
+          )
         UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" v-if="isModalVisible" :ticketId="currentRow && currentRow.id" @update="getUserTickets")
-      template(v-slot:body="props")
+      template(#body="props")
         q-tr(:props="props")
           q-td(key="address" :props="props" @click="expandRow(props)")
             span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
@@ -60,8 +59,6 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-    q-inner-loading(v-else showing)
-
     BaseModal(
       v-model="isApartmentsListModal"
       position="standard"
