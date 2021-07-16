@@ -7,7 +7,7 @@ import {
   SET_FILTERS,
   UPDATE_PAGINATION
 } from "src/store/constants/mutation-constants";
-import { ACCOUNT_BLOCK, ACCOUNT_UNBLOCK, GET_DATA } from "src/store/constants/action-constants";
+import { ACCOUNT_BLOCK, ACCOUNT_SET_ROLES, ACCOUNT_UNBLOCK, GET_DATA } from "src/store/constants/action-constants";
 import { UsersService } from "src/api/users";
 
 const initialState = (): IUsersState => {
@@ -47,6 +47,10 @@ const actions: ActionTree<IUsersState, TRootState> = {
 
   async [ACCOUNT_UNBLOCK] (_, id) {
     await UsersService.unblockUser(id);
+  },
+
+  async [ACCOUNT_SET_ROLES] (_, { id, roles }) {
+    await UsersService.changeUserRoles(id, roles);
   }
 };
 
@@ -55,8 +59,13 @@ const getters: GetterTree<IUsersState, TRootState> = {
     const { data } = state;
 
     if (data) {
+      const items = data.items.map(i => ({
+        ...i,
+        roles: i.roles.map((role: any) => role.name)
+      }));
+
       return {
-        items: data.items
+        items: items
       };
     }
   },
