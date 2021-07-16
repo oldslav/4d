@@ -27,7 +27,7 @@
   export default {
     name: "AsideProfile",
     computed: {
-      ...mapGetters(["getUserRolesNames", "isUserLegal", "isUserNature", "isEmployee"]),
+      ...mapGetters(["getUserRolesNames", "isUserLegal", "isUserNature", "isEmployee", "isAuthenticated"]),
 
       items () {
         return [
@@ -35,7 +35,7 @@
             label: this.$t("entity.profile"),
             action: { name: "user-profile" },
             icon: "o_person",
-            show: this.isUserNature || this.isEmployee || this.isUserLegal
+            show: this.isAuthenticated
           },
           {
             label: this.$t("entity.companyProfile.title"),

@@ -105,7 +105,28 @@
     },
     "address": "Адрес",
     "status": "Статус",
-    "created": "Дата формирования"
+    "id": "ID",
+    "name": "Имя",
+    "email": "Email",
+    "phone": "Телефон",
+    "telegram": "Телеграм",
+    "role": "Роль",
+    "created": "Дата формирования",
+    "roles": {
+      "ROLE_GIS": "Сотрудник по ГИС",
+      "ROLE_ADMIN": "Администратор",
+      "ROLE_USER": "Житель",
+      "ROLE_EMPLOYEE": "Сотрудник фонда",
+      "ROLE_EMPLOYEE_PARKING": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.parking.title",
+      "ROLE_EMPLOYEE_IDEA": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.ideas",
+      "ROLE_EMPLOYEE_WAREHOUSE": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.warehouse.title",
+      "ROLE_EMPLOYEE_LIVING": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.living.title",
+      "ROLE_EMPLOYEE_EMPLOYMENT_CENTER": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.employmentCenter",
+      "ROLE_EMPLOYEE_LIGHT": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.light",
+      "ROLE_EMPLOYEE_TREES": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.tress",
+      "ROLE_EMPLOYEE_COMMERCE": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.commerce",
+      "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.roles.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    }
   },
   "user": {
     "messages": {
@@ -197,6 +218,8 @@
     }
   },
   "action": {
+    "block": "Заблокировать",
+    "unblock": "Разблокировать",
     "addPhone": "Добавить телефон",
     "login": "Войти",
     "rent": "Арендовать",
@@ -230,6 +253,9 @@
       "disability": "Человек с инвалидностью",
       "retired": "Пенсионер",
       "veteran": "Ветеран"
+    },
+    "users": {
+      "title": "Пользователи"
     },
     "services": {
       "mainInfo": "Основная информация",
@@ -393,7 +419,10 @@
         }
       },
       "ideas": "Идеи и предложения",
-
+      "crowdfunding": "Проекты жителя",
+      "employmentCenter": "Центр занятости",
+      "light": "Освещение",
+      "tress": "Озеленение",
       "vacancies": {
         "title": "Городские вакансии",
         "searchResult": "Всего {n} вакансия | Всего {n} вакансии | Всего {n} вакансий",
