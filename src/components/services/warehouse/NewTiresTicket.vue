@@ -152,9 +152,9 @@
         ];
       },
       prices () {
-        if (this.serviceTypeId === 2) {
+        if (this.serviceOption.serviceTypeId === 2) {
           return this.mediumPrices;
-        } else if (this.serviceTypeId === 3) {
+        } else if (this.serviceOption.serviceTypeId === 3) {
           return this.largePrices;
         }
         return this.smallPrices;

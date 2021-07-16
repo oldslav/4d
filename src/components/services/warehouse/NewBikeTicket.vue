@@ -145,9 +145,9 @@
         ];
       },
       prices () {
-        if (this.serviceTypeId === 1) {
+        if (this.serviceOption.serviceTypeId === 5) {
           return this.adultPrices;
-        } else if (this.serviceTypeId === 2) {
+        } else if (this.serviceOption.serviceTypeId === 6) {
           return this.tandemPrices;
         }
         return this.childPrices;
