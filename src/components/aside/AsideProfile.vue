@@ -53,7 +53,7 @@
             label: this.$t("entity.tickets.title"),
             action: { name: "user-tickets" },
             icon: "o_library_add_check",
-            show: this.isUserNature || this.isEmployee
+            show: this.isUserNature || this.isEmployee || this.isUserLegal
           },
           {
             label: this.$t("entity.bills"),

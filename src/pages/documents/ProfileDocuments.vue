@@ -6,7 +6,7 @@
 <script>
   import { mapGetters } from "vuex";
   import CompanyDocuments from "./CompanyDocuments";
-  import UserDocuments from "../UserDocuments";
+  import UserDocuments from "./UserDocuments";
 
   export default {
     name: "ProfileDocuments",

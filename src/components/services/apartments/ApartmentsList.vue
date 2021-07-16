@@ -55,7 +55,6 @@
                 .row.q-gutter-md.q-mt-sm
                   //q-btn(:label="$t('action.details')" color="primary" outline).col
                   q-btn(
-                    v-close-popup
                     :label="$t('action.rent')"
                     color="primary"
                     @click="setTicketApartment(props.row.id)"

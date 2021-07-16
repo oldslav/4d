@@ -4,9 +4,10 @@ import { GET_APARTMENTS_GEO, GET_PARKING_GEO } from "src/store/constants/action-
 import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import { ParkingService } from "src/api/services/parking";
+import { ApartmentsService } from "src/api/services/apartments";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
-import { ApartmentsService } from "src/api/services/apartments";
+import vacancy from "src/store/services/vacancy";
 
 const initialState = (): GeoState => {
   return {
@@ -15,7 +16,7 @@ const initialState = (): GeoState => {
   };
 };
 
-const state: () => GeoState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<GeoState> = {
   [SET_USER]: (state, payload) => Object.assign(state, payload),
@@ -28,7 +29,7 @@ const actions: ActionTree<GeoState, TRootState> = {
   async [GET_PARKING_GEO] ({ commit }) {
     const { data } = await ParkingService.getParkingGeo();
     const { type, features } = data;
-    
+
     const preparedData = {
       type,
       features: features.map((i: any) => {
@@ -39,28 +40,28 @@ const actions: ActionTree<GeoState, TRootState> = {
         } else if (i.properties.parking_places_type === "Льготное") {
           i.properties.fill = "#298BAF";
         }
-        
+
         Object.assign(i.properties, {
           stroke: "#333333"
         });
-        
+
         return i;
       })
     };
-    
+
     commit(SET_GEODATA, preparedData);
   },
-  
+
   async [GET_APARTMENTS_GEO] ({ commit }, requestId) {
     // TODO: Это не гео, но здесь должен быть гео в будущем
     const { data } = await ApartmentsService.getApartmentsGeo(requestId);
     const { type, features } = data;
-    
+
     const preparedData = {
       type,
       features
     };
-    
+
     commit(SET_GEODATA, preparedData);
   }
 };
@@ -81,7 +82,8 @@ const services: Module<GeoState, TRootState> = {
   getters,
   modules: {
     parking,
-    apartments
+    apartments,
+    vacancy
   }
 };
 

@@ -157,6 +157,18 @@
       "contract": {
         "sendSuccess": "Данные договора успешно отправлены",
         "sendFail": "При отправлении данных договора произошла ошибка"
+      },
+      "parking": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
+      },
+      "warehouse": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
       }
     },
     "firstName": "Firstname",
@@ -271,7 +283,8 @@
           "choose": "Выберите тип договора",
           "fixedTerm": "Срочный",
           "termless": "Бессрочный"
-        }
+        },
+        "chooseApartmentSuccess": "Квартира выбрана"
       },
       "commerce": "Commercial real estate",
       "parking": {
@@ -391,20 +404,42 @@
         },
         "storageTypes": {
           "title": "Storage type",
+          "rentType": "Rent type",
           "rack": "On a rack",
           "bikePark": "On a bicycle parking",
           "subtitle": {
             "top": "Выберите один из предложенных типов хранения.",
             "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
-          }
+          },
+          "duration": "Хранение на {n} месяц | Хранение на {n} месяца | Хранение на {n} месяцев"
         }
       },
       "ideas": "Ideas and suggestions",
-      "vacancies": "Jobs",
       "crowdfunding": "Crowdfunding",
       "employmentCenter": "Employment center",
       "light": "Light",
-      "tress": "Tress"
+      "tress": "Tress",
+      "vacancies": {
+        "title": "City vacancies",
+        "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
+        "respond": "Respond",
+        "searchPlaceholder": "Search jobs by category, company or title",
+        "searchErrorTitle": "An error occurred",
+        "searchErrorSubtitle": "An error occurred while searching for jobs, please try again later",
+        "searchErrorRetry": "Try again",
+        "searchEmptyTitle": "No vacancies found",
+        "searchEmptyDescription": "Try changing your search criteria",
+        "searchEmptyRetry": "Reset Filter",
+
+        "processSearch": "Searching for vacancies",
+        "processLoadPage": "Loading data",
+
+        "successSearch": "Results filtered successfully",
+        "successLoadPage": "Data loaded",
+
+        "errorSearch": "An error occurred while searching for jobs",
+        "errorLoadPage": "An error occurred while loading data"
+      }
     },
     "guestCard": {
       "title": "Guest card",
@@ -491,7 +526,9 @@
       "title": "Tickets",
       "apartments": "Apartment rent",
       "ideas": "Ideas and suggestions",
-      "parking": "Parking rent"
+      "parking": "Parking rent",
+      "vacancy": "Городские вакансии",
+      "warehouse": "Warehouse rent"
     },
     "bills": "Bills",
     "main": "Main",
@@ -601,6 +638,10 @@
           "fail": "An error occurred during relative deletion"
         }
       }
+    },
+    "vacancy": {
+      "search": "Поиск по названию",
+      "add": "Добавить вакансию"
     }
   }
 }

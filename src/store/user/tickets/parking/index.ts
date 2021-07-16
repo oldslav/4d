@@ -17,14 +17,14 @@ import {
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { BillsService } from "src/api/user/bills";
 
-const state: IUserTicketsState = {
+const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
     offset: 1
   },
   data: null
-};
+});
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {

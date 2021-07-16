@@ -117,9 +117,6 @@ const routes: RouteConfig[] = [
       {
         path: "tickets",
         name: "user-tickets",
-        redirect: {
-          name: "user-tickets-apartments"
-        },
         components: {
           default: (): Promise<any> => import("pages/UserTickets.vue")
         },
@@ -160,6 +157,65 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               content: true
             }
+          },
+          {
+            path: "warehouse",
+            name: "user-tickets-warehouse",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsWarehouse/TicketsWarehouse.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
+            path: "vacancy",
+            name: "user-tickets-vacancy",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancy.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          }
+        ]
+      },
+      {
+        path: "tickets/vacancy",
+        name: "user-tickets-vacancy-page",
+        redirect: { name: "user-tickets-vacancy-info" },
+        components: {
+          default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserVacancyPage.vue")
+        },
+        meta: { toolbar: true, asideLeft: true, content: true },
+        children:[
+          {
+            path: ":id",
+            name: "user-tickets-vacancy-info",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancyInfo.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
+            path: ":id/candidates",
+            name: "user-tickets-vacancy-candidates",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancyInfo.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
           }
         ]
       },
@@ -180,14 +236,19 @@ const routes: RouteConfig[] = [
         component: (): Promise<any> => import("pages/UserBills.vue"),
         children: [
           {
-            path: "apartments",
+            path: "apartments/:ticket?",
             name: "user-bills-apartments",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsApartments.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsApartments.vue")
           },
           {
-            path: "parking",
+            path: "parking/:ticket?",
             name: "user-bills-parking",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsParking.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsParking.vue")
+          },
+          {
+            path: "warehouse/:ticket?",
+            name: "user-bills-warehouse",
+            component: (): Promise<any> => import("pages/bills/UserBillsWarehouse.vue")
           }
         ]
       }
@@ -283,9 +344,11 @@ const routes: RouteConfig[] = [
         path: "vacancies",
         name: "services-vacancies",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/vacancies/ServiceVacancy.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesVacancy.vue")
         },
         meta: {
+          asideServices: true,
           toolbar: true
         }
       }

@@ -1,5 +1,5 @@
 import { PaginationOutput, Service } from "src/api/common";
-import { AxiosPromise } from "axios";
+import { AxiosPromise, AxiosRequestConfig } from "axios";
 
 // interface TicketsRequestFilters {
 //   statusId: Array<number>;
@@ -34,8 +34,8 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/apartments/employee/tickets", { params });
   }
 
-  public static createTicketLiving (params: any): AxiosPromise<TicketsResponse> {
-    return this.api.post("/api/v1/services/apartments/user/tickets", { ...params });
+  public static createTicketLiving (params: unknown): AxiosPromise<TicketsResponse> {
+    return this.api.post("/api/v1/services/apartments/user/tickets", params);
   }
 
   public static addTicketLivingFile (id: number, params: unknown): AxiosPromise<TicketsResponse> {
@@ -82,8 +82,8 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/parking/employee/tickets", { params });
   }
 
-  public static createTicketParking (params: any): AxiosPromise<any> {
-    return this.api.post("/api/v1/services/parking/user/tickets", { ...params });
+  public static createTicketParking (params: unknown): AxiosPromise<any> {
+    return this.api.post("/api/v1/services/parking/user/tickets", params as AxiosRequestConfig);
   }
 
   public static addTicketsParkingFile (id: number, file: unknown): AxiosPromise<any> {
@@ -114,8 +114,8 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
-  public static getTicketsIdeas (params: any): AxiosPromise<any> {
-    return this.api.get("api/v1/services/crowdsourcing/all", params);
+  public static getTicketsIdeas (params: unknown): AxiosPromise<any> {
+    return this.api.get("api/v1/services/crowdsourcing/all", params as AxiosRequestConfig);
   }
 
   public static createTicketWarehouse (payload: unknown): AxiosPromise<any> {
@@ -126,7 +126,43 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/warehouse/user/tickets/${ id }/file`, file);
   }
 
-  public static getParkingPayments (params: any): AxiosPromise<any> {
-    return this.api.get("/api/v1/payment/parking/user", params);
+  public static deleteTicketWarehouse (id: number): AxiosPromise<TicketsResponse> {
+    return this.api.put(`/api/v1/services/warehouse/user/tickets/${ id }/cancel`);
+  }
+
+  public static getTicketsWarehouse (params: unknown): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/services/warehouse/user/tickets", { params });
+  }
+
+  public static getWarehouseTicketById (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/warehouse/user/tickets/${ id }`);
+  }
+
+  public static getEmployeeTicketsWarehouse (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/services/warehouse/employee/tickets", { params });
+  }
+
+  public static requestApprovalWarehouse (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/user/tickets/${ id }/send_on_approval`);
+  }
+
+  public static approveTicketWarehouse (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/approve`);
+  }
+
+  public static getWarehousePaymentLink (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/warehouse/rent/contract/${ id }/payment`);
+  }
+
+  public static rejectTicketWarehouse (id: number, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/reject`, reason);
+  }
+
+  public static sendContractInfoWarehouse (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/sign_contract_success`, payload);
+  }
+
+  public static getParkingPayments (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/payment/parking/user", params as AxiosRequestConfig);
   }
 }

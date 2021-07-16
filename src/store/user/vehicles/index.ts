@@ -12,10 +12,10 @@ import { UserVehiclesService } from "src/api/user/vehicles";
 import { DictionariesService } from "src/api/dictionaries";
 import { Service } from "src/api/common";
 
-const state: IVehiclesState = {
+const state = () : IVehiclesState => ({
   items: [],
   deletedIds: []
-};
+});
 
 const mutations: MutationTree<IVehiclesState> = {
   [SET_ITEMS] (state: IVehiclesState, payload) {

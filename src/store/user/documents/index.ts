@@ -27,7 +27,7 @@ const initialState = (): IDocumentsState => {
 
 const defaultState = {};
 
-const state: () => IDocumentsState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<IDocumentsState> = {
   [SET_DOCUMENTS] (state: IDocumentsState, payload) {

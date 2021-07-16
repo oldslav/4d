@@ -12,7 +12,7 @@ const initialState = (): IServiceParkingState => {
   };
 };
 
-const state: () => IServiceParkingState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<IServiceParkingState> = {
   [SET_EMPTY]: state => Object.assign(state, initialState()),
@@ -25,7 +25,7 @@ const actions: ActionTree<IServiceParkingState, TRootState> = {
     const { data } = await ParkingService.getParkingPlaces(rootState.services.pickedFeatureId as number);
 
     const freePlaces = data.items.filter((item: any) => item.status.id === 1);
-    
+
     commit(SET_PARKING_PLACES, freePlaces.map((place: any) => place.id));
   }
 };
