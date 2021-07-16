@@ -9,13 +9,19 @@ import {
   REJECT_VACANCY,
   UPDATE_VACANCY,
   CLOSE_VACANCY,
-  PUBLISH_VACANCY, SEARCH_VACANCY
+  PUBLISH_VACANCY,
+  SEARCH_VACANCY
 } from "src/store/constants/action-constants";
-import { SET_VACANCIES, SET_VACANCY_REFERENCES } from "src/store/constants/mutation-constants";
+import {
+  SET_SEARCH_VACANCY_ERROR,
+  SET_VACANCIES,
+  SET_VACANCY_REFERENCES
+} from "src/store/constants/mutation-constants";
 
 const initialState = (): IServiceVacancyState => {
   return {
     isExistsReferences: false,
+    isFailedLastSearch: false,
     vacancies: {
       count: 0,
       items: []
@@ -46,6 +52,10 @@ const mutations: MutationTree<IServiceVacancyState> = {
 
   [SET_VACANCIES] (state: IServiceVacancyState, vacancies) {
     state.vacancies = vacancies;
+  },
+
+  [SET_SEARCH_VACANCY_ERROR] (state: IServiceVacancyState, isError: boolean) {
+    state.isFailedLastSearch = isError;
   }
 };
 
@@ -61,8 +71,13 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
   async [SEARCH_VACANCY] ({ commit }, query = {}) {
     const defaults = { limit: 15, offset: 0 };
 
-    const { data } = await VacancyService.search({ ...query, ...defaults });
-    commit(SET_VACANCIES, data);
+    try {
+      const { data } = await VacancyService.search({ ...defaults, ...query });
+      commit(SET_SEARCH_VACANCY_ERROR, false);
+      commit(SET_VACANCIES, data);
+    } catch (e) {
+      commit(SET_SEARCH_VACANCY_ERROR, true);
+    }
   },
 
   async [CREATE_VACANCY] (ctx, values) {
@@ -98,6 +113,10 @@ const getters: GetterTree<IServiceVacancyState, TRootState> = {
 
   getVacancies (state) {
     return state.vacancies;
+  },
+
+  isFailedLastSearch (state) {
+    return state.isFailedLastSearch;
   }
 };
 

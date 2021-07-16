@@ -18,6 +18,7 @@ export enum VacancyStatusesEnum {
 export interface IServiceVacancyState {
   references: TVacancyReferencesResponse,
   isExistsReferences: boolean;
+  isFailedLastSearch: boolean;
   vacancies: {
     count: number,
     items: IVacancy[]

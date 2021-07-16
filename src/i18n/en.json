@@ -389,7 +389,27 @@
         }
       },
       "ideas": "Ideas and suggestions",
-      "vacancies": "Jobs"
+      "vacancies": {
+        "title": "City vacancies",
+        "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
+        "respond": "Respond",
+        "searchPlaceholder": "Search jobs by category, company or title",
+        "searchErrorTitle": "An error occurred",
+        "searchErrorSubtitle": "An error occurred while searching for jobs, please try again later",
+        "searchErrorRetry": "Try again",
+        "searchEmptyTitle": "No vacancies found",
+        "searchEmptyDescription": "Try changing your search criteria",
+        "searchEmptyRetry": "Reset Filter",
+
+        "processSearch": "Searching for vacancies",
+        "processLoadPage": "Loading data",
+
+        "successSearch": "Results filtered successfully",
+        "successLoadPage": "Data loaded",
+
+        "errorSearch": "An error occurred while searching for jobs",
+        "errorLoadPage": "An error occurred while loading data"
+      }
     },
     "guestCard": {
       "title": "Guest card",

@@ -43,13 +43,13 @@
         );
 
         return [
-          { id: "", label: "Все" },
+          { id: "", label: "Все", icon: "o_dashboard" },
           ...options
         ];
       },
 
       activeIndustryId (){
-        const industryId = this.$route.query.industry || "";
+        const industryId = parseInt(this.$route.query.industry || "", 10);
         const industry = this.getProfIndustry.find(x => x.id === industryId);
 
         return industry ? industry.id : "";
@@ -57,8 +57,11 @@
     },
     methods: {
       onClickIndustry (industryId) {
+        const query = this.$route.query;
         this.$router.push({
-          query: { industry: industryId || undefined }
+          query: { ...query, industry: industryId || undefined }
+        }).catch(() => {
+          // Do nothing
         });
       }
     }
