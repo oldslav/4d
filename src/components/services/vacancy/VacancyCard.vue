@@ -10,7 +10,7 @@
 
         div.column.col-auto.items-end
           div.text-h6.text-blue-9.col {{ $n(value.salary, 'currency', 'ru') }}
-          div
+          div(v-if="isUserNature")
             q-btn(
               v-if="!value.respondIsPresent"
               :label="$t('entity.services.vacancies.respond')"
@@ -21,9 +21,14 @@
             span.text-grey-8(v-else) {{ $t('entity.services.vacancies.respondPresent') }}
 </template>
 <script>
+  import { mapGetters } from "vuex";
+
   export default {
     props:{
       value: { type:Object, default:() => ({}) }
+    },
+    computed:{
+      ...mapGetters(["isUserNature"])
     }
   };
 </script>
