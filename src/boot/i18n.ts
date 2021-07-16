@@ -53,7 +53,7 @@ export const i18n = new VueI18n({
   fallbackLocale: "en-us",
   messages,
   pluralizationRules,
-  numberFormats,
+  numberFormats
 });
 
 export default boot(({ app }) => {
