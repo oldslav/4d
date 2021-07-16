@@ -23,7 +23,7 @@ function setState (actions: string[]): State {
 function setMutations (actions: string[]): MutationTree<State> {
   return actions.reduce((obj: Mutations, value: string) => {
     obj[value] = (state: State, payload): void => {
-      state[value] = payload;
+      _Vue.set(state, value, payload);
     };
 
     return obj;
