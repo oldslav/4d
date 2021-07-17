@@ -19,6 +19,7 @@ export interface IServiceVacancyState {
   references: TVacancyReferencesResponse,
   isExistsReferences: boolean;
   isFailedLastSearch: boolean;
+  currentVacancy: IVacancy | null,
   vacancies: {
     count: number,
     items: IVacancy[]
