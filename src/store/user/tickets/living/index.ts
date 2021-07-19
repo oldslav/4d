@@ -118,43 +118,23 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     return data;
   },
 
-  async [CREATE_LEGAL_TICKET_LIVING] ({ rootGetters, dispatch }, payload) {
+  async [CREATE_LEGAL_TICKET_LIVING] ({ dispatch }, payload) {
     const { documents, ...rest } = payload;
     const { data: { id } } = await TicketsService.createLegalTicketLiving(rest);
-    const awaits: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        const type = rootGetters["references/getDocTypeByName"](key);
-        const payload = new FormData();
-        payload.append("file", file);
-        payload.append("typeId", type.id);
-        awaits.push(payload);
-      });
-    });
+    const files = await dispatch("bundleFiles", documents, { root: true });
 
-    await Promise.all(awaits.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
   },
 
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
     await TicketsService.addTicketLivingFile(id, payload);
   },
 
-  async [ADD_USER_TICKET_NEIGHBOR] ({ rootGetters }, { ticketId, payload }) {
+  async [ADD_USER_TICKET_NEIGHBOR] ({ dispatch }, { ticketId, payload }) {
     const { documents, ...neighbor } = payload;
     const { data: { id } } = await TicketsService.addTicketLivingNeighbor(ticketId, neighbor);
-    const awaits: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          awaits.push(payload);
-        }
-      });
-    });
-    await Promise.all(awaits.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(files.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
   },
 
   [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {

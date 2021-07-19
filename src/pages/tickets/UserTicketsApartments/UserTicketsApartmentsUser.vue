@@ -86,6 +86,8 @@
     GET_USER_TICKETS_LIVING,
     UPDATE_TICKET_APARTMENT_VIEWED
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import { mapFields } from "@/plugins/mapFields";
   import BaseTable from "components/common/BaseTable";
   import UserTicketsApartmentsNewTicketModal
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
@@ -94,8 +96,6 @@
   import BaseModal from "../../../components/common/BaseModal";
   import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
-  import { mapFields } from "../../../plugins/mapFields";
-  import { UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
 
   export default {
     name: "UserTicketsApartmentsUser",

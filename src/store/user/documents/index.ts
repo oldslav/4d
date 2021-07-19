@@ -45,26 +45,13 @@ const mutations: MutationTree<IDocumentsState> = {
 };
 
 const actions: ActionTree<IDocumentsState, TRootState> = {
-  [UPDATE_USER_DOCUMENTS] ({ state, rootGetters, dispatch, commit }) {
-    const awaitsCreate: any = [];
+  async [UPDATE_USER_DOCUMENTS] ({ state, dispatch, commit }) {
     const { documents: { deletedIds }, documents: { ...files } } = state;
-    Object.entries(files).forEach(([key, val]) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const { id } = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", id);
-          awaitsCreate.push(payload);
-        }
-      });
-    });
-    return Promise.all(deletedIds.map((id: number) => dispatch(DELETE_USER_DOCUMENT, id)))
-      .then(() => {
-        commit(CLEAR_DELETED_IDS);
-        return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_USER_DOCUMENT, p)));
-      })
-      .then(() => dispatch(GET_USER_DOCUMENTS));
+    const awaitsCreate = await dispatch("bundleFiles", files, { root: true });
+    await Promise.all(deletedIds.map((id: number) => dispatch(DELETE_USER_DOCUMENT, id)));
+    commit(CLEAR_DELETED_IDS);
+    await Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_USER_DOCUMENT, p)));
+    dispatch(GET_USER_DOCUMENTS);
   },
   [CREATE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, TRootState>, document) {
     return UserDocumentsService.createDocument(document);
