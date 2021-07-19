@@ -8,7 +8,7 @@
     FilePicker(v-model="model.documents.inn" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.inn')")
     FilePicker(v-model="model.documents.ogrn" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.ogrn')")
     FilePicker(v-model="model.documents.egrjul" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.egrjul')")
-    FilePicker(v-model="model.documents.partner_card" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.partnerCard')")
+    FilePicker(v-model="model.documents.partner_card" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.partner_card')")
     q-input(v-model="model.okved" :rules="required" :label="$t('entity.companyDocuments.okved')")
     .row.q-col-gutter-sm
       .col-12.col-md-4
