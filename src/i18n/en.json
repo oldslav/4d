@@ -92,6 +92,7 @@
       "nextSlideBtn": "Onwards"
     },
     "rent": "Rent",
+    "position": "Position",
     "guestVisit": "Guest visit",
     "description": "Description",
     "notice": "Message",
@@ -518,8 +519,8 @@
       "personalAgreement": "Consent to the processing of personal data",
       "job_petition": "Application from the employer",
       "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
-      "ogrnCopy": "Скан-копия ОГРН",
-      "egrjulCopy": "Скан-копия выписки из ЕГРЮЛ",
+      "ogrn": "Скан-копия ОГРН",
+      "egrjul": "Скан-копия выписки из ЕГРЮЛ",
       "partnerCard": "Скан-копия карты партнера"
     },
     "tickets": {

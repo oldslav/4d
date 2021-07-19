@@ -38,6 +38,10 @@ export class TicketsService extends Service {
     return this.api.post("/api/v1/services/apartments/user/tickets", params);
   }
 
+  public static createLegalTicketLiving (payload: unknown): AxiosPromise<any> {
+    return this.api.post("/api/v1/services/apartments/company/tickets", payload);
+  }
+
   public static addTicketLivingFile (id: number, params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/file`, params);
   }

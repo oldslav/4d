@@ -5,11 +5,13 @@
       row-key="id"
       :columns="columns"
       :data="tableData"
+      :isLoading="isLoading"
+      :pagination="tablePagination"
       :getData="getUserTickets"
       :expanded.sync="expanded"
     )
       template(#top)
-        div.full-width.text-right
+        .full-width.text-right
           q-btn(
             icon="add"
             outline
@@ -17,7 +19,13 @@
             @click="isModalVisible = true"
             :label="$t('user.tickets.actions.create')"
           )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" v-if="isModalVisible" :ticketId="currentRow && currentRow.id" @update="getUserTickets")
+        component(
+          :is="ticketModal"
+          v-model="isModalVisible"
+          v-if="isModalVisible"
+          :ticketId="currentRow && currentRow.id"
+          @update="getUserTickets"
+        )
       template(#body="props")
         q-tr(:props="props")
           q-td(key="address" :props="props" @click="expandRow(props)")
@@ -75,7 +83,8 @@
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
-    GET_USER_TICKETS_LIVING
+    GET_USER_TICKETS_LIVING,
+    UPDATE_TICKET_APARTMENT_VIEWED
   } from "@/store/constants/action-constants";
   import BaseTable from "components/common/BaseTable";
   import UserTicketsApartmentsNewTicketModal
@@ -84,7 +93,7 @@
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
   import BaseModal from "../../../components/common/BaseModal";
   import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
-  import { UPDATE_TICKET_APARTMENT_VIEWED } from "../../../store/constants/action-constants";
+  import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
 
   export default {
     name: "UserTicketsApartmentsUser",
@@ -94,6 +103,7 @@
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       UserTicketsApartmentProgressState,
+      CompanyApartmentsNewTicketModal,
       BaseTable
     },
     async created () {
@@ -148,6 +158,7 @@
       ...mapGetters("user/tickets/living", [
         "tablePagination"
       ]),
+      ...mapGetters(["isUserLegal"]),
 
       ...mapState("user/tickets/living", {
         tableData: state => state.data
@@ -155,6 +166,10 @@
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKETS_LIVING }`];
+      },
+
+      ticketModal () {
+        return this.isUserLegal ? CompanyApartmentsNewTicketModal : UserTicketsApartmentsNewTicketModal;
       }
     },
     methods: {

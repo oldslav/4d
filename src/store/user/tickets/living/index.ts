@@ -14,7 +14,7 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { Service } from "src/api/common";
@@ -110,6 +110,23 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     const { data } = await TicketsService.createTicketLiving(payload);
 
     return data;
+  },
+
+  async [CREATE_LEGAL_TICKET_LIVING] ({ rootGetters, dispatch }, payload) {
+    const { documents, ...rest } = payload;
+    const { data: { id } } = await TicketsService.createLegalTicketLiving(rest);
+    const awaits: any = [];
+    Object.entries(documents).forEach(([key, val]: any) => {
+      val.forEach((file: any) => {
+        const type = rootGetters["references/getDocTypeByName"](key);
+        const payload = new FormData();
+        payload.append("file", file);
+        payload.append("typeId", type.id);
+        awaits.push(payload);
+      });
+    });
+
+    await Promise.all(awaits.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
   },
 
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
