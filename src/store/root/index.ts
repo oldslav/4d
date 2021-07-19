@@ -30,7 +30,6 @@ const actions: ActionTree<TRootState, TRootState> = {
     const result: any = [];
     Object.entries(files).forEach(([key, val]: any) => {
       val.forEach((file: any) => {
-        console.log("file", file);
         if(!file.id) {
           const type = rootGetters["references/getDocTypeByName"](key);
           const payload = new FormData();
