@@ -34,7 +34,8 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_APARTMENTS] ({ state, commit }, requestId) {
     const { data } = await ApartmentsService.getApartmentsGeo({
       requestId,
-      ...state.pagination
+      ...state.pagination,
+      offset: state.pagination.offset - 1
     });
 
     commit(SET_DATA, data);

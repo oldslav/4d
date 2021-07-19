@@ -21,15 +21,39 @@
             | {{ props.row.contacts.phone }}
           q-td(key="telegram" :props="props")
             | {{ props.row.contacts.telegramAlias }}
+          q-td(key="permissions" :props="props")
+            | {{ userRole(props) }}
           q-td(key="role" :props="props" auto-width)
-            q-btn(color="primary" label="Роли" flat)
+            q-btn(color="primary" :label="$t('common.permissions.title')" flat)
               q-menu(fit)
                 q-card
                   q-card-section
                     q-option-group(
-                      v-if="props.row.roles.includes('ROLE_USER')"
+                      v-if="isLegal(props)"
                       v-model="props.row.roles"
+                      disable
+                      :options="legalRoles"
+                      type="checkbox"
+                    )
+                    q-option-group(
+                      v-else-if="isUser(props)"
+                      v-model="props.row.roles"
+                      disable
                       :options="userRoles"
+                      type="checkbox"
+                    )
+                    q-option-group(
+                      v-else-if="isAdmin(props)"
+                      v-model="props.row.roles"
+                      disable
+                      :options="adminRoles"
+                      type="checkbox"
+                    )
+                    q-option-group(
+                      v-else-if="isGIS(props)"
+                      v-model="props.row.roles"
+                      disable
+                      :options="gisRoles"
                       type="checkbox"
                     )
                     q-option-group(
@@ -39,13 +63,17 @@
                       type="checkbox"
                     )
                   q-card-actions(align="right")
-                    q-btn(color="primary" :label="$t('action.save')" @click="setRoles(props.row.id, props.row.roles)")
+                    q-btn(
+                      color="primary"
+                      :label="$t('action.save')"
+                      @click="setRoles(props.row.id, props.row.roles)"
+                    )
           q-td(key="menu" :props="props" auto-width)
             q-btn(v-if="props.row.locked" flat @click="toggleBlock(props.row)" color="primary")
               span
                 q-icon(name="block" left)
                 span {{ $t("action.unblock") }}
-            q-btn(v-else flat @click="toggleBlock(props.row)" color="negative")
+            q-btn(v-else flat @click="toggleBlock(props.row)" color="negative" :disable="isAdmin(props)")
               span
                 q-icon(name="block" left)
                 span {{ $t("action.block") }}
@@ -53,7 +81,7 @@
 
 <script>
   import BaseTable from "./common/BaseTable";
-  import { mapActions, mapGetters, mapState } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   import { ACCOUNT_BLOCK, ACCOUNT_SET_ROLES, ACCOUNT_UNBLOCK, GET_DATA } from "../store/constants/action-constants";
   import { mapFields } from "../plugins/mapFields";
   import { UPDATE_PAGINATION } from "../store/constants/mutation-constants";
@@ -63,66 +91,73 @@
     components: { BaseTable },
     async created () {
       await this.GET_DATA();
-      this.tableData = {
-        items: this.stateData.items.map(i => ({
-          ...i,
-          roles: i.roles.map(role => role.name)
-        }))
-      };
     },
     data () {
       return {
-        tableData: null,
+        legalRoles: [
+          {
+            label: this.$t("common.permissions.ROLE_USER_JURISTIC"),
+            value: "ROLE_USER_JURISTIC"
+          }
+        ],
         userRoles: [
           {
-            label: this.$t("common.roles.ROLE_USER"),
+            label: this.$t("common.permissions.ROLE_USER"),
             value: "ROLE_USER"
           }
         ],
         employeeRoles: [
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE"),
             value: "ROLE_EMPLOYEE"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_PARKING"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_PARKING"),
             value: "ROLE_EMPLOYEE_PARKING"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_IDEA"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_IDEA"),
             value: "ROLE_EMPLOYEE_IDEA"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_WAREHOUSE"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_WAREHOUSE"),
             value: "ROLE_EMPLOYEE_WAREHOUSE"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_LIVING"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_LIVING"),
             value: "ROLE_EMPLOYEE_LIVING"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_EMPLOYMENT_CENTER"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_EMPLOYMENT_CENTER"),
             value: "ROLE_EMPLOYEE_EMPLOYMENT_CENTER"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_LIGHT"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_LIGHT"),
             value: "ROLE_EMPLOYEE_LIGHT"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_TREES"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_TREES"),
             value: "ROLE_EMPLOYEE_TREES"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_COMMERCE"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_COMMERCE"),
             value: "ROLE_EMPLOYEE_COMMERCE"
           },
           {
-            label: this.$t("common.roles.ROLE_EMPLOYEE_CROWDFUNDING"),
+            label: this.$t("common.permissions.ROLE_EMPLOYEE_CROWDFUNDING"),
             value: "ROLE_EMPLOYEE_CROWDFUNDING"
-          },
+          }
+        ],
+        adminRoles: [
           {
-            label: this.$t("common.roles.ROLE_GIS"),
-            value: "ROLE_GIS"
+            label: this.$t("common.permissions.ROLE_ADMIN"),
+            value: "ROLE_ADMIN"
+          }
+        ],
+        gisRoles: [
+          {
+            label: this.$t("common.permissions.ROLE_QGIS"),
+            value: "ROLE_QGIS"
           }
         ],
         columns: [
@@ -157,6 +192,11 @@
             label: this.$t("common.role")
           },
           {
+            name: "permissions",
+            align: "center",
+            label: this.$t("common.permissions.title")
+          },
+          {
             name: "menu",
             align: "right"
           }
@@ -164,11 +204,8 @@
       };
     },
     computed: {
-      ...mapState("users", {
-        stateData: state => state.data
-      }),
-
       ...mapGetters("users", [
+        "tableData",
         "tablePagination"
       ]),
 
@@ -193,12 +230,50 @@
         ACCOUNT_SET_ROLES
       ]),
 
+      isAdmin (user) {
+        return this.userPermissions(user).includes("ROLE_ADMIN");
+      },
+
+      isUser (user) {
+        return this.userPermissions(user).includes("ROLE_USER");
+      },
+
+      isLegal (user) {
+        return this.userPermissions(user).includes("ROLE_USER_JURISTIC");
+      },
+
+      isEmployee (user) {
+        return this.userPermissions(user).includes("ROLE_EMPLOYEE");
+      },
+
+      isGIS (user) {
+        return this.userPermissions(user).includes("ROLE_QGIS");
+      },
+
+      userPermissions (user) {
+        return user.row.roles.toString();
+      },
+
+      userRole (user) {
+        if (this.isLegal(user)) {
+          return this.$t("common.permissions.ROLE_USER_JURISTIC");
+        } else if (this.isUser(user)) {
+          return this.$t("common.permissions.ROLE_USER");
+        } else if (this.isEmployee(user)) {
+          return this.$t("common.permissions.ROLE_EMPLOYEE");
+        } else if (this.isGIS(user)) {
+          return this.$t("common.permissions.ROLE_QGIS");
+        } else {
+          return this.$t("common.permissions.ROLE_ADMIN");
+        }
+      },
+
       async getUsers (props) {
         if (props) {
           const { pagination: { page, rowsPerPage } } = props;
 
           this.limit = rowsPerPage;
-          this.offset = page - 1;
+          this.offset = page;
         }
 
         await this.GET_DATA();
@@ -208,14 +283,13 @@
         if (user.locked) {
           try {
             await this.ACCOUNT_UNBLOCK(user.id);
-            user.locked = false;
           } catch (e) {}
         } else {
           try {
             await this.ACCOUNT_BLOCK(user.id);
-            user.locked = true;
           } catch (e) {}
         }
+        await this.GET_DATA();
       },
 
       async setRoles (id, roles) {
