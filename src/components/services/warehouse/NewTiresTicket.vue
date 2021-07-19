@@ -92,7 +92,7 @@
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
@@ -101,7 +101,7 @@
         )
           FormContacts(v-model="contacts")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="onSubmit()" color="primary" :disable="!formDone" :label="$t('action.submit')")
       q-inner-loading(:showing="isLoading")
         q-spinner(size="50px" color="primary")

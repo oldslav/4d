@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKET, SET_USER_TICKETS } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKET, SET_USER_TICKETS, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
 import {
   REQUEST_APPROVAL_LIVING,
   ADD_USER_TICKET_FILE_LIVING,
@@ -36,15 +36,21 @@ const mutations: MutationTree<IUserTicketsState> = {
 
   [SET_USER_TICKET] (state, payload) {
     state.current = payload;
+  },
+
+  [UPDATE_PAGINATION] (state, pagination) {
+    state.pagination = { ...state.pagination, ...pagination };
   }
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_LIVING] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination } = state;
 
     const { data } = await TicketsService.getTicketsLiving({
-      filters
+      filters,
+      ...pagination,
+      offset: pagination.offset - 1
     });
 
     commit(SET_USER_TICKETS, data);

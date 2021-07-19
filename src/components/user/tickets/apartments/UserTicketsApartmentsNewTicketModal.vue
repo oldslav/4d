@@ -139,7 +139,6 @@
 
       isUserInfo () {
         return !!this.name.first
-          && !!this.name.last
           && !!this.documents.passport
           && !!this.documents.snils
           && !!this.documents.inn

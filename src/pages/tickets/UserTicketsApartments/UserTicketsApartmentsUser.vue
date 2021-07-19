@@ -94,6 +94,8 @@
   import BaseModal from "../../../components/common/BaseModal";
   import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
+  import { mapFields } from "../../../plugins/mapFields";
+  import { UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
 
   export default {
     name: "UserTicketsApartmentsUser",
@@ -164,6 +166,12 @@
         tableData: state => state.data
       }),
 
+      ...mapFields("user/tickets/living", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
+
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKETS_LIVING }`];
       },
@@ -174,7 +182,7 @@
     },
     methods: {
       ...mapActions("user/tickets/living", {
-        getUserTickets: GET_USER_TICKETS_LIVING,
+        GET_USER_TICKETS_LIVING,
         deleteUserTicket: DELETE_USER_TICKET_LIVING,
         requestApproval: REQUEST_APPROVAL_LIVING,
         setApartmentViewed: UPDATE_TICKET_APARTMENT_VIEWED
@@ -189,6 +197,17 @@
         //     requestId
         //   }
         // });
+      },
+
+      async getUserTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_USER_TICKETS_LIVING();
       },
 
       async apartmentViewed (requestId) {
