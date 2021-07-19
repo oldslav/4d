@@ -37,7 +37,7 @@
         )
           TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Срок аренды"
@@ -71,7 +71,7 @@
                 q-item-label {{ $t("entity.socialTypes.veteran") }}
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
@@ -156,7 +156,6 @@
 
       isUserInfo () {
         return !!this.name.first
-          && !!this.name.last
           && (this.documents.social_confirm && this.documents.social_confirm.length > 0)
           && (this.documents.passport && this.documents.passport.length > 0)
           && (this.documents.snils && this.documents.snils.length > 0);

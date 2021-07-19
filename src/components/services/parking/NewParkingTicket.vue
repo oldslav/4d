@@ -36,7 +36,7 @@
         )
           TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Срок аренды"
@@ -97,7 +97,7 @@
                   q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.long.price.description") }}
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
@@ -182,7 +182,6 @@
 
       isUserInfo () {
         return !!this.name.first
-          && !!this.name.last
           && (this.documents.passport && this.documents.passport.length > 0)
           && (this.documents.snils && this.documents.snils.length > 0);
       }

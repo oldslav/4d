@@ -10,14 +10,15 @@
       :pagination="tablePagination"
       :expanded.sync="expanded"
     )
-      template(v-slot:top-right)
-        q-btn(
-          icon="add"
-          outline
-          color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
-        )
+      template(v-slot:top)
+        .full-width.text-right
+          q-btn(
+            icon="add"
+            outline
+            color="primary"
+            @click="isModalVisible = true"
+            :label="$t('user.tickets.actions.create')"
+          )
         UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" v-if="isModalVisible" :ticketId="currentRow && currentRow.id" @update="getUserTickets")
       template(v-slot:body="props")
         q-tr(:props="props")
@@ -88,6 +89,8 @@
   import BaseModal from "../../../components/common/BaseModal";
   import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
   import { UPDATE_TICKET_APARTMENT_VIEWED } from "../../../store/constants/action-constants";
+  import { mapFields } from "../../../plugins/mapFields";
+  import { UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
 
   export default {
     name: "UserTicketsApartmentsUser",
@@ -156,13 +159,19 @@
         tableData: state => state.data
       }),
 
+      ...mapFields("user/tickets/living", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
+
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKETS_LIVING }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/living", {
-        getUserTickets: GET_USER_TICKETS_LIVING,
+        GET_USER_TICKETS_LIVING,
         deleteUserTicket: DELETE_USER_TICKET_LIVING,
         requestApproval: REQUEST_APPROVAL_LIVING,
         setApartmentViewed: UPDATE_TICKET_APARTMENT_VIEWED
@@ -177,6 +186,17 @@
         //     requestId
         //   }
         // });
+      },
+
+      async getUserTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_USER_TICKETS_LIVING();
       },
 
       async apartmentViewed (requestId) {
