@@ -14,7 +14,7 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { Service } from "src/api/common";
@@ -140,6 +140,11 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {
     return TicketsService.requestApprovalLiving(id)
       .then(() => dispatch(GET_USER_TICKETS_LIVING));
+  },
+
+  [SEND_CONTRACT_INFO_LIVING] ({ dispatch }, { id, payload }) {
+    return TicketsService.sendContractInfoLiving(id, payload)
+      .then(() => dispatch(GET_EMPLOYEE_TICKETS_LIVING));
   }
 };
 

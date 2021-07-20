@@ -8,15 +8,15 @@ interface Params {
 }
 
 export class BillsService extends Service {
-  public static getBillsApartments (): AxiosPromise<TicketsResponse> {
-    return this.api.get("/api/v1/payment/apartments/user");
+  public static getBillsApartments (params?: Params): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/payment/apartments/user", { params });
   }
 
-  public static getBillsParking (): AxiosPromise<TicketsResponse> {
-    return this.api.get("/api/v1/payment/parking/user");
+  public static getBillsParking (params?: Params): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/payment/parking/user", { params });
   }
 
-  public static getBillsWarehouse (params: Params): AxiosPromise<TicketsResponse> {
+  public static getBillsWarehouse (params?: Params): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/payment/warehouse/user", { params });
   }
 

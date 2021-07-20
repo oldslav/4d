@@ -6,8 +6,8 @@
       :columns="columns"
       :data="tableData"
       :isLoading="isLoading"
-      :pagination="tablePagination"
       :getData="getUserTickets"
+      :pagination="tablePagination"
       :expanded.sync="expanded"
     )
       template(#top)
@@ -27,18 +27,18 @@
           @update="getUserTickets"
         )
       template(#body="props")
-        q-tr(:props="props")
-          q-td(key="address" :props="props" @click="expandRow(props)")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="address" :props="props")
             span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
             span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
-          q-td(key="price" :props="props" @click="expandRow(props)")
+          q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
-          q-td(key="created" :props="props" @click="expandRow(props)")
+          q-td(key="created" :props="props")
             | {{ props.row.created | fromNow }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
+          q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
@@ -63,6 +63,7 @@
               :value="props.row.status"
               @choose="toApartments(props.row.id)"
               @viewed="apartmentViewed(props.row.id)"
+              @pay="goToPayment(props.row.id)"
             )
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
@@ -267,6 +268,10 @@
 
       sendOnApproval (id) {
         id && this.requestApproval(id);
+      },
+
+      goToPayment (id) {
+        this.$router.push({ name: "user-bills-apartments", params: { ticket: id } });
       },
 
       moment
