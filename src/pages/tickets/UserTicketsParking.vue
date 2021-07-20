@@ -78,7 +78,7 @@
                   :loading="isPaymentLinkLoading"
                   color="primary"
                   label="Перейти к оплате"
-                  @click="getPaymentLink(props.row.id)"
+                  @click="goToPayment(props.row.id)"
                 )
             div(v-if="props.row.status.id === 7").q-pa-md
               div.text-body1.text-wrap
@@ -205,17 +205,8 @@
         this.deleteUserTicket(id);
       },
 
-      getPaymentLink (id) {
-        return this.GET_USER_TICKET_PARKING_PAYMENT_LINK(id)
-          .then(({ data }) => {
-            window.open(data);
-          })
-          .catch(() => {
-            this.$q.notify({
-              type: "negative",
-              message: "Ошибка при получении ссылки на оплату"
-            });
-          });
+      goToPayment (id) {
+        this.$router.push({ name: "user-bills-parking", params: { ticket: id } });
       },
 
       moment
