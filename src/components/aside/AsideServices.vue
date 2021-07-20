@@ -28,7 +28,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["isUserNature"]),
+      ...mapGetters(["isUserNature", "isUserLegal"]),
 
       meta () {
         return this.$route.meta;
@@ -42,7 +42,7 @@
               name: "services-apartments"
             },
             icon: "o_person",
-            show: this.isUserNature
+            show: this.isUserNature || this.isUserLegal
           },
           {
             label: this.$t("entity.services.commerce"),
