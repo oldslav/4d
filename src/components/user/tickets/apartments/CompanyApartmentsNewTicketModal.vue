@@ -14,26 +14,27 @@
         keep-alive
       )
         q-step(
-          title="Основная информация"
+          title="Информация об организации"
           :name="1"
           :done="step > 1"
           :error="!stepOneDone && step > 1"
           icon="edit"
         )
-          FormName(v-model="name")
+          q-input(v-model="companyName" :label="$t('user.companyName')")
+          q-input(v-model="companyAddress" :label="$t('common.address')")
+          MyDocumentsForm(is-local v-model="companyDocuments").q-mt-md
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
-          title="Информация об организации"
+          title="Информация о проживающем"
           :name="2"
           :done="step > 2"
           :error="!stepTwoDone && step > 2"
           icon="business"
         )
-          q-input(v-model="companyName" :label="$t('user.companyName')")
-          q-input(v-model="companyAddress" :label="$t('common.address')")
+          FormName(v-model="name")
           q-input(v-model="jobPosition" :label="$t('common.position')")
-          MyDocumentsForm(is-local v-model="documents").q-mt-md
+          MyDocumentsForm(is-local v-model="userDocuments")
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -80,9 +81,16 @@
         contacts: {
           phones: []
         },
-        documents: {
+        userDocuments: {
+          passport: null,
           inn: null,
-          ogrn: null
+          job_petition: null,
+          consent_processing_personal_data: null
+        },
+        companyDocuments: {
+          inn_jur: null,
+          ogrn: null,
+          partner_card: null
         },
         rooms: [],
         jobPosition: null,
@@ -91,16 +99,13 @@
       };
     },
     computed: {
-      stepOneDone () {
-        return !!this.name.first
-          && !!this.name.last;
-      },
       stepTwoDone () {
-        return !!this.jobPosition
-          && !!this.companyName
+        return !!this.name.first && !!this.jobPosition && Object.values(this.userDocuments).every((d) => this.documentPresent(d));
+      },
+      stepOneDone () {
+        return !!this.companyName
           && !!this.companyAddress
-          && !!this.documents.inn
-          && !!this.documents.ogrn;
+          && Object.values(this.companyDocuments).every((d) => this.documentPresent(d));
       },
       stepThreeDone () {
         return !!this.rooms.length && !!this.contacts.phones[0];
@@ -111,16 +116,19 @@
     },
     methods: {
       ...mapActions("user/tickets/living", [CREATE_LEGAL_TICKET_LIVING]),
+      documentPresent (val) {
+        return !!val && val.length > 0;
+      },
       toggleModal (val) {
         this.$emit("input", val);
         Object.assign(this.$data, this.$options.data.apply(this));
       },
       createTicket () {
-        const { name, contacts, documents, rooms, jobPosition, companyName, companyAddress } = this;
+        const { name, contacts, userDocuments, companyDocuments, rooms, jobPosition, companyName, companyAddress } = this;
         return this.CREATE_LEGAL_TICKET_LIVING({
           name,
           contacts,
-          documents,
+          documents: { ...userDocuments, ...companyDocuments },
           rooms,
           jobPosition,
           companyName,
