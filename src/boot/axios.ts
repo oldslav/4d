@@ -23,6 +23,14 @@ axios.interceptors.request.use(
   error => Promise.reject(error)
 );
 
+axios.interceptors.response.use(
+  undefined,
+  (error) => {
+   error.code = error.response.status || 0;
+   return Promise.reject(error);
+  }
+);
+
 declare module "vue/types/vue" {
   interface Vue {
     $axios: AxiosInstance

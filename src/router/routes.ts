@@ -351,6 +351,18 @@ const routes: RouteConfig[] = [
           asideServices: true,
           toolbar: true
         }
+      },
+      {
+        path: "vacancies/:id(\\d+)",
+        name: "services-vacancies-item",
+        components: {
+          default: (): Promise<any> => import("pages/services/vacancies/ServiceVacancyItemPage.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesVacancyItem.vue")
+        },
+        meta: {
+          asideServices: true,
+          toolbar: true
+        }
       }
     ]
   },
