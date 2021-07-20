@@ -173,4 +173,24 @@ export class TicketsService extends Service {
   public static getParkingPayments (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/payment/parking/user", params as AxiosRequestConfig);
   }
+  
+  public static getTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/services/crowdfunding", { params });
+  }
+
+  public static getEmployeeTicketsCrowdfunding (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/services/crowdfunding", { params });
+  }
+
+  public static approveTicketCrowdfunding (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/crowdfunding/${ id }/approve`);
+  }
+
+  public static rejectTicketCrowdfunding (id: number, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/crowdfunding/${ id }/reject`, reason);
+  }
+
+  public static deleteTicketCrowdfunding (id: number): AxiosPromise<TicketsResponse> {
+    return this.api.delete(`/api/v1/services/crowdfunding/${ id }`);
+  }
 }
