@@ -27,8 +27,8 @@
           @update="getUserTickets"
         )
       template(#body="props")
-        q-tr(:props="props")
-          q-td(key="address" :props="props" @click="expandRow(props)")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="address" :props="props")
             span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
             span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props")
