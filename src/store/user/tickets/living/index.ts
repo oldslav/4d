@@ -14,7 +14,7 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET, SEND_CONTRACT_INFO_LIVING
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { Service } from "src/api/common";
@@ -118,26 +118,23 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     return data;
   },
 
+  async [CREATE_LEGAL_TICKET_LIVING] ({ dispatch }, payload) {
+    const { documents, ...rest } = payload;
+    const { data: { id } } = await TicketsService.createLegalTicketLiving(rest);
+    const files = await dispatch("bundleFiles", documents, { root: true });
+
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
+  },
+
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
     await TicketsService.addTicketLivingFile(id, payload);
   },
 
-  async [ADD_USER_TICKET_NEIGHBOR] ({ rootGetters }, { ticketId, payload }) {
+  async [ADD_USER_TICKET_NEIGHBOR] ({ dispatch }, { ticketId, payload }) {
     const { documents, ...neighbor } = payload;
     const { data: { id } } = await TicketsService.addTicketLivingNeighbor(ticketId, neighbor);
-    const awaits: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          awaits.push(payload);
-        }
-      });
-    });
-    await Promise.all(awaits.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(files.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
   },
 
   [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {

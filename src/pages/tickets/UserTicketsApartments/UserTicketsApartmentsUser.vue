@@ -10,7 +10,7 @@
       :pagination="tablePagination"
       :expanded.sync="expanded"
     )
-      template(v-slot:top)
+      template(#top)
         .full-width.text-right
           q-btn(
             icon="add"
@@ -19,10 +19,16 @@
             @click="isModalVisible = true"
             :label="$t('user.tickets.actions.create')"
           )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" v-if="isModalVisible" :ticketId="currentRow && currentRow.id" @update="getUserTickets")
-      template(v-slot:body="props")
-        q-tr(:props="props" @click="expandRow(props)")
-          q-td(key="address" :props="props")
+        component(
+          :is="ticketModal"
+          v-model="isModalVisible"
+          v-if="isModalVisible"
+          :ticketId="currentRow && currentRow.id"
+          @update="getUserTickets"
+        )
+      template(#body="props")
+        q-tr(:props="props")
+          q-td(key="address" :props="props" @click="expandRow(props)")
             span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
             span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props")
@@ -62,8 +68,6 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-    q-inner-loading(v-else showing)
-
     BaseModal(
       v-model="isApartmentsListModal"
       position="standard"
@@ -80,10 +84,10 @@
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
-    GET_USER_TICKETS_LIVING
+    GET_USER_TICKETS_LIVING,
+    UPDATE_TICKET_APARTMENT_VIEWED
   } from "@/store/constants/action-constants";
   import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
-  import { UPDATE_TICKET_APARTMENT_VIEWED } from "@/store/constants/action-constants";
   import { mapFields } from "@/plugins/mapFields";
   import BaseTable from "components/common/BaseTable";
   import UserTicketsApartmentsNewTicketModal
@@ -92,6 +96,7 @@
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
   import BaseModal from "../../../components/common/BaseModal";
   import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
+  import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
 
   export default {
     name: "UserTicketsApartmentsUser",
@@ -101,6 +106,7 @@
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       UserTicketsApartmentProgressState,
+      CompanyApartmentsNewTicketModal,
       BaseTable
     },
     async created () {
@@ -155,6 +161,7 @@
       ...mapGetters("user/tickets/living", [
         "tablePagination"
       ]),
+      ...mapGetters(["isUserLegal"]),
 
       ...mapState("user/tickets/living", {
         tableData: state => state.data
@@ -168,6 +175,10 @@
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKETS_LIVING }`];
+      },
+
+      ticketModal () {
+        return this.isUserLegal ? CompanyApartmentsNewTicketModal : UserTicketsApartmentsNewTicketModal;
       }
     },
     methods: {

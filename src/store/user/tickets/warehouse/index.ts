@@ -42,18 +42,9 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     await TicketsService.requestApprovalWarehouse(id);
   },
 
-  [ADD_WAREHOUSE_FILES] ({ dispatch, rootGetters }, { id, documents }) {
-    const awaits: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        const type = rootGetters["references/getDocTypeByName"](key);
-        const payload = new FormData();
-        payload.append("file", file);
-        payload.append("typeId", type.id);
-        awaits.push(payload);
-      });
-    });
-    return Promise.all(awaits.map((f: any) => dispatch(ADD_USER_TICKET_FILE_WAREHOUSE, { id, file: f })));
+  async [ADD_WAREHOUSE_FILES] ({ dispatch }, { id, documents }) {
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_WAREHOUSE, { id, file: f })));
   },
 
   [ADD_USER_TICKET_FILE_WAREHOUSE] (_, { id, file }) {
