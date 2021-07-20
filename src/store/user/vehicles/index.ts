@@ -12,10 +12,10 @@ import { UserVehiclesService } from "src/api/user/vehicles";
 import { DictionariesService } from "src/api/dictionaries";
 import { Service } from "src/api/common";
 
-const state: IVehiclesState = {
+const state = () : IVehiclesState => ({
   items: [],
   deletedIds: []
-};
+});
 
 const mutations: MutationTree<IVehiclesState> = {
   [SET_ITEMS] (state: IVehiclesState, payload) {
@@ -67,25 +67,12 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
   [DELETE_VEHICLE_DOCUMENT] (ctx, id) {
     return UserVehiclesService.deleteVehicleFile(id);
   },
-  [UPDATE_VEHICLE_DOCUMENTS] ({ dispatch, state, rootGetters, commit }, { documents, id }) {
+  async [UPDATE_VEHICLE_DOCUMENTS] ({ dispatch, state, commit }, { documents, id }) {
     const { deletedIds } = state;
-    const awaitsCreate: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          awaitsCreate.push(payload);
-        }
-      });
-    });
-    return Promise.all(deletedIds.map((id) => dispatch(DELETE_VEHICLE_DOCUMENT, id)))
-      .then(() => {
-        commit(CLEAR_DELETED_IDS);
-        return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_VEHICLE_DOCUMENT, { payload: p, id })));
-      });
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(deletedIds.map((id) => dispatch(DELETE_VEHICLE_DOCUMENT, id)));
+    commit(CLEAR_DELETED_IDS);
+    await Promise.all(files.map((p: any) => dispatch(CREATE_VEHICLE_DOCUMENT, { payload: p, id })));
   },
   async [STORE_USER_VEHICLES] ({ commit }, vehicles) {
     const result: any = [];

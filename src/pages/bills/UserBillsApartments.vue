@@ -1,12 +1,12 @@
 <template lang="pug">
-  q-card
+  div
     BaseTable(
-      v-if="tableData"
+      v-if="getApartmentsBills"
       row-key="id"
       :columns="columns"
-      :data="tableData"
+      :data="getApartmentsBills"
       :expanded.sync="expanded"
-      :getData="GET_DATA"
+      :getData="fetchApartmentsBills"
     )
       template(v-slot:body="props")
         q-tr(:props="props")
@@ -45,6 +45,7 @@
                   color="primary"
                   :disable="props.row.paid"
                   :label="$t('action.pay')"
+                  :loading="loadingPayment"
                   @click="getPaymentLink(props.row.id)"
                 )
     q-inner-loading(v-else showing)
@@ -52,10 +53,11 @@
 
 <script>
   import moment from "moment";
+  import { mapActions, mapGetters, mapMutations } from "vuex";
+  import { GET_DATA, GET_PAYMENT_LINK } from "@/store/constants/action-constants";
   import BaseStatus from "components/common/BaseStatus";
   import BaseTable from "components/common/BaseTable";
-  import { mapActions, mapState } from "vuex";
-  import { GET_DATA, GET_PAYMENT_LINK } from "../../../store/constants/action-constants";
+  import { SET_TICKET_ID } from "@/store/constants/mutation-constants";
 
   export default {
     name: "UserBillsApartments",
@@ -64,7 +66,13 @@
       BaseTable
     },
     async created () {
-      await this.GET_DATA();
+      const { ticket } = this.$route.params;
+      if (ticket) {
+        this.ticketId = ticket;
+      } else {
+        this.ticketId = null;
+      }
+      await this.fetchApartmentsBills();
     },
     data () {
       return {
@@ -107,15 +115,25 @@
       };
     },
     computed: {
-      ...mapState("user/bills/apartments", {
-        tableData: state => state.data
-      })
+      ...mapGetters("user/bills/apartments", ["getApartmentsBills"]),
+      loadingPayment () {
+        return this.$store.state.wait[`user/bills/apartments/${ GET_PAYMENT_LINK }`];
+      },
+      ticketId: {
+        get () {
+          return this.$store.state["user/bills/apartments"].filters.ticketId;
+        },
+        set (val) {
+          this.SET_TICKET_ID(val);
+        }
+      }
     },
     methods: {
       ...mapActions("user/bills/apartments", {
-        GET_DATA,
+        fetchApartmentsBills: GET_DATA,
         GET_PAYMENT_LINK
       }),
+      ...mapMutations("user/bills/apartments", [SET_TICKET_ID]),
 
       openDetails (data) {
         this.currentRow = data;
@@ -148,7 +166,7 @@
       getFullAddress (address) {
         return `${ address.street } ${ address.house }, кв ${ address.apartment }`;
       },
-      
+
       moment
     }
   };

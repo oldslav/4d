@@ -17,14 +17,14 @@ import {
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { BillsService } from "src/api/user/bills";
 
-const state: IUserTicketsState = {
+const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
     offset: 1
   },
   data: null
-};
+});
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {
@@ -87,18 +87,9 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
       .then(() => dispatch(GET_EMPLOYEE_TICKETS_PARKING));
   },
 
-  [ADD_PARKING_FILES] ({ dispatch, rootGetters }, { id, documents }) {
-    const awaits: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        const type = rootGetters["references/getDocTypeByName"](key);
-        const payload = new FormData();
-        payload.append("file", file);
-        payload.append("typeId", type.id);
-        awaits.push(payload);
-      });
-    });
-    return Promise.all(awaits.map((f: any) => dispatch(ADD_USER_TICKET_FILE_PARKING, { id, payload: f })));
+  async [ADD_PARKING_FILES] ({ dispatch }, { id, documents }) {
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_PARKING, { id, payload: f })));
   },
 
   async [ADD_USER_TICKET_FILE_PARKING] (_, { id, payload }) {

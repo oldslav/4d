@@ -3,13 +3,13 @@
     BaseTable(
       v-if="data"
       row-key="id"
-      :data="data",
+      :data="data"
       :columns="columns"
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"
     )
       template(#body="props")
-        q-tr(:props="props")
+        q-tr(:props="props" @click="expandRow(props)")
           q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
           q-td(key="address" :props="props")
@@ -21,10 +21,10 @@
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
-            q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click="onReject(props.row.id)")
+            q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click="onReject(props.row.id)")
             q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onApprove(props.row.id)")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
@@ -32,20 +32,17 @@
                       | {{ $t("user.tickets.actions.details") }}
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
-            div.column(v-if="props.row.status.id === 1").q-pa-md
-              div.text-body1.text-wrap
-                | Для подачи заявки продолжите заполнение формы.
-              div.text-right
-                q-btn(color="primary" label="Отправить на рассмотрение" @click="sendOnApproval(props.row.id)")
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
-                | Дождитесь рассмотрения вашей заявки
-            UserTicketsApartmentProgressState(
+                | Примите или отклоните заявку
+            ApartmentTicketEmployeeFlow(
               v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
               :value="props.row.status"
-              @choose="toApartments(props.row.id)"
-              @viewed="apartmentViewed(props.row.id)"
+              @contract="sendContractInfo($event, props.row.id)"
             )
+            div.column(v-if="props.row.status.id === 8").q-pa-md
+              div.text-body1.text-wrap
+                | Договор подписан
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -57,18 +54,25 @@
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
+  import {
+    APPROVE_TICKET_LIVING,
+    GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
+  } from "@/store/constants/action-constants";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
   import BaseTable from "components/common/BaseTable";
-  import {
-    APPROVE_TICKET_LIVING,
-    GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING
-  } from "@/store/constants/action-constants";
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import ApartmentTicketEmployeeFlow from "components/user/tickets/apartments/ApartmentTicketEmployeeFlow";
 
   export default {
     name: "UserTicketsApartmentsEmployee",
-    components: { ApartmentsEmployeeDetailsModal, BaseTable, ApartmentTicketStatus, ApproveTicketModal },
+    components: {
+      ApartmentsEmployeeDetailsModal,
+      BaseTable,
+      ApartmentTicketStatus,
+      ApproveTicketModal,
+      ApartmentTicketEmployeeFlow
+    },
     async created () {
       await this.getEmployeeTickets();
     },
@@ -138,9 +142,18 @@
       ...mapActions("user/tickets/living", {
         getEmployeeTickets: GET_EMPLOYEE_TICKETS_LIVING,
         REJECT_TICKET_LIVING,
-        APPROVE_TICKET_LIVING
+        APPROVE_TICKET_LIVING,
+        SEND_CONTRACT_INFO_LIVING
       }),
       moment,
+      expandRow (props) {
+        const row = this.expanded.indexOf(props.key);
+        if (row === -1) {
+          this.expanded.push(props.key);
+        } else {
+          this.expanded.splice(row, 1);
+        }
+      },
       onReject (id) {
         this.$q.dialog({
           title: this.$t("entity.services.ticketRejection"),
@@ -201,6 +214,21 @@
       showDetails (row) {
         this.activeRow = row;
         this.showDetailsModal = true;
+      },
+      sendContractInfo (payload, id) {
+        return this.SEND_CONTRACT_INFO_LIVING({ id, payload })
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: this.$t("user.tickets.contract.sendSuccess")
+            });
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: this.$t("user.tickets.contract.sendFail")
+            });
+          });
       }
     }
   };

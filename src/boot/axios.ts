@@ -23,6 +23,14 @@ axios.interceptors.request.use(
   error => Promise.reject(error)
 );
 
+axios.interceptors.response.use(
+  undefined,
+  (error) => {
+   error.code = error.response.status || 0;
+   return Promise.reject(error);
+  }
+);
+
 declare module "vue/types/vue" {
   interface Vue {
     $axios: AxiosInstance
@@ -51,7 +59,7 @@ declare module "axios" {
 }
 
 const requestInterceptor = (store: Store<any>) => {
-  return async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+  return async function (config: AxiosRequestConfig): Promise<AxiosRequestConfig> {
     if (config.skipAuth) {
       return config;
     }
@@ -60,19 +68,30 @@ const requestInterceptor = (store: Store<any>) => {
 
     if (accessToken !== null) {
       const headers = config.headers || {};
-      config.headers = Object.assign(headers,{
-        Authorization : `Bearer ${ accessToken }`
-      });
+
+      return {
+        ...config,
+        headers: Object.assign({}, headers,{ Authorization : `Bearer ${ accessToken }` })
+      };
     }
 
     return config;
   };
 };
 
-export default boot(({ app }) => {
-  axios.interceptors.request.use(requestInterceptor(app.store as Store<TRootState>));
+
+export default boot(({ app, ssrContext }) => {
+  const interceptor = requestInterceptor(app.store as Store<TRootState>);
+
+  const interceptorId = axios.interceptors.request.use(interceptor);
 
   if (app.store) {
     app.store.$local = LocalStorage;
+  }
+
+  if (process.env.SERVER) {
+    ssrContext.res.on("finish", function () {
+      axios.interceptors.request.eject(interceptorId);
+    });
   }
 });

@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKET, SET_USER_TICKETS } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKET, SET_USER_TICKETS, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
 import {
   REQUEST_APPROVAL_LIVING,
   ADD_USER_TICKET_FILE_LIVING,
@@ -14,12 +14,12 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
 } from "src/store/constants/action-constants";
 import { TicketsService } from "src/api/user/tickets/tickets";
 import { Service } from "src/api/common";
 
-const state: IUserTicketsState = {
+const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
@@ -27,7 +27,7 @@ const state: IUserTicketsState = {
   },
   data: null,
   current: null
-};
+});
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {
@@ -36,15 +36,21 @@ const mutations: MutationTree<IUserTicketsState> = {
 
   [SET_USER_TICKET] (state, payload) {
     state.current = payload;
+  },
+
+  [UPDATE_PAGINATION] (state, pagination) {
+    state.pagination = { ...state.pagination, ...pagination };
   }
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_LIVING] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination } = state;
 
     const { data } = await TicketsService.getTicketsLiving({
-      filters
+      filters,
+      ...pagination,
+      offset: pagination.offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
@@ -112,31 +118,33 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     return data;
   },
 
+  async [CREATE_LEGAL_TICKET_LIVING] ({ dispatch }, payload) {
+    const { documents, ...rest } = payload;
+    const { data: { id } } = await TicketsService.createLegalTicketLiving(rest);
+    const files = await dispatch("bundleFiles", documents, { root: true });
+
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
+  },
+
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
     await TicketsService.addTicketLivingFile(id, payload);
   },
 
-  async [ADD_USER_TICKET_NEIGHBOR] ({ rootGetters }, { ticketId, payload }) {
+  async [ADD_USER_TICKET_NEIGHBOR] ({ dispatch }, { ticketId, payload }) {
     const { documents, ...neighbor } = payload;
     const { data: { id } } = await TicketsService.addTicketLivingNeighbor(ticketId, neighbor);
-    const awaits: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          awaits.push(payload);
-        }
-      });
-    });
-    await Promise.all(awaits.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(files.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
   },
 
   [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {
     return TicketsService.requestApprovalLiving(id)
       .then(() => dispatch(GET_USER_TICKETS_LIVING));
+  },
+
+  [SEND_CONTRACT_INFO_LIVING] ({ dispatch }, { id, payload }) {
+    return TicketsService.sendContractInfoLiving(id, payload)
+      .then(() => dispatch(GET_EMPLOYEE_TICKETS_LIVING));
   }
 };
 

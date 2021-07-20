@@ -52,7 +52,7 @@ const initialState = (): IAccountState => {
   };
 };
 
-const state: () => IAccountState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<IAccountState> = {
   [SET_ACCOUNT]: (state, payload) => state.account = payload,
@@ -64,8 +64,8 @@ const mutations: MutationTree<IAccountState> = {
 const actions: ActionTree<IAccountState, TRootState> = {
   [ACCOUNT_LOGOUT] ({ commit }) {
     commit(SET_EMPTY);
-    this.$local.remove(ACCESS_TOKEN_COOKIE);
-    this.$local.remove(REFRESH_TOKEN_COOKIE);
+    this.$cookies.remove(ACCESS_TOKEN_COOKIE);
+    this.$cookies.remove(REFRESH_TOKEN_COOKIE);
   },
 
   [ACCOUNT_CREATE] (ctx, payload) {
@@ -179,6 +179,12 @@ const getters: GetterTree<IAccountState, TRootState> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return state.account.roles.some(role => role.name.startsWith("ROLE_EMPLOYEE"));
+  },
+
+  isUserAdmin (state) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return state.account.roles.some(role => role.name.startsWith("ROLE_ADMIN"));
   }
 };
 

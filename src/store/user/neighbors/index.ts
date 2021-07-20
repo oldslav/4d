@@ -12,10 +12,10 @@ import { UserNeighborsService } from "src/api/user/neighbors";
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
 import { Service } from "src/api/common";
 
-const state: INeighborsState = {
+const state = (): INeighborsState => ({
   items: [],
   deletedIds: []
-};
+});
 
 const mutations: MutationTree<INeighborsState> = {
   [SET_ITEMS] (state: INeighborsState, payload: INeighbor[]) {
@@ -58,25 +58,12 @@ const actions: ActionTree<INeighborsState, TRootState> = {
   [DELETE_NEIGHBOR_DOCUMENT] (ctx, id) {
     return UserNeighborsService.deleteNeighborFile(id);
   },
-  [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state, rootGetters }, { documents, id }) {
+  async [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state }, { documents, id }) {
     const { deletedIds } = state;
-    const awaitsCreate: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          awaitsCreate.push(payload);
-        }
-      });
-    });
-    return Promise.all(deletedIds.map((id) => dispatch(DELETE_NEIGHBOR_DOCUMENT, id)))
-      .then(() => {
-        commit(CLEAR_DELETED_IDS);
-        return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
-      });
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(deletedIds.map((id) => dispatch(DELETE_NEIGHBOR_DOCUMENT, id)));
+    commit(CLEAR_DELETED_IDS);
+    await Promise.all(files.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
   },
   async [STORE_USER_NEIGHBORS] ({ commit }, neighbors) {
     const result: any = [];

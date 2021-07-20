@@ -22,7 +22,7 @@
           icon="edit"
         )
           FormName(v-model="name")
-          FilePicker(v-model="documents.passport" :label="$t('entity.files.passport')" :max-files="5")
+          MyDocumentsForm(v-model="documents" is-local)
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
@@ -92,7 +92,7 @@
                   q-item-label.text-primary {{ $t("entity.services.warehouse.storagePrice.dynamic", {price: prices.long}) }}
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
@@ -101,7 +101,7 @@
         )
           FormContacts(v-model="contacts")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="onSubmit()" color="primary" :disable="!formDone" :label="$t('action.submit')")
       q-inner-loading(:showing="isLoading")
         q-spinner(size="50px" color="primary")
@@ -113,11 +113,12 @@
   import FilePicker from "components/common/FilePicker";
   import FormContacts from "components/common/form/FormContacts";
   import FormName from "components/common/form/FormName";
+  import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
 
   export default {
     name: "NewTiresTicket",
     mixins: [WarehouseTicketMixin],
-    components: { FormName, FilePicker, BaseModal, FormContacts },
+    components: { FormName, FilePicker, BaseModal, FormContacts, MyDocumentsForm },
     props: {
       value: {
         type: Boolean,
@@ -151,9 +152,9 @@
         ];
       },
       prices () {
-        if (this.serviceTypeId === 2) {
+        if (this.serviceOption.serviceTypeId === 2) {
           return this.mediumPrices;
-        } else if (this.serviceTypeId === 3) {
+        } else if (this.serviceOption.serviceTypeId === 3) {
           return this.largePrices;
         }
         return this.smallPrices;

@@ -45,9 +45,9 @@
           :error="!isAdditionalInfo && step > 3"
           :name="3"
         )
-          q-checkbox(v-model="rooms" val="1" color="primary" label="1 Комната")
-          q-checkbox(v-model="rooms" val="2" color="primary" label="2 Комнаты")
-          q-checkbox(v-model="rooms" val="3" color="primary" label="3 Комнаты")
+          q-checkbox(v-model="rooms" val="1" color="primary" :label="$tc('entity.services.living.info.rooms', 1)")
+          q-checkbox(v-model="rooms" val="2" color="primary" :label="$tc('entity.services.living.info.rooms', 2)")
+          q-checkbox(v-model="rooms" val="3" color="primary" :label="$tc('entity.services.living.info.rooms', 3)")
 
           FormContacts(v-model="contacts").q-mt-sm
 
@@ -59,7 +59,11 @@
 <script>
   import { mapActions, mapGetters, mapState } from "vuex";
   import {
-    ADD_USER_TICKET_FILE_LIVING, ADD_USER_TICKET_NEIGHBOR, CREATE_USER_TICKET_LIVING
+    ADD_USER_TICKET_FILE_LIVING,
+    ADD_USER_TICKET_NEIGHBOR,
+    CREATE_USER_TICKET_LIVING,
+    GET_USER_DOCUMENTS,
+    GET_USER_TICKET
   } from "@/store/constants/action-constants";
   import TicketNeighbors from "components/user/tickets/TicketNeighbors";
   import BaseInput from "../../../common/BaseInput";
@@ -68,7 +72,6 @@
   import FormName from "components/common/form/FormName";
   import FormContacts from "components/common/form/FormContacts";
   import MyDocumentsForm from "../../../forms/documents/MyDocumentsForm";
-  import { GET_USER_DOCUMENTS, GET_USER_TICKET } from "../../../../store/constants/action-constants";
 
   export default {
     name: "UserTicketsApartmentsNewTicketModal",
@@ -117,8 +120,7 @@
           job_petition: null
         },
         contacts: {
-          phones: [],
-          telegram: null
+          phones: []
         },
         rooms: []
       };
@@ -140,7 +142,6 @@
 
       isUserInfo () {
         return !!this.name.first
-          && !!this.name.last
           && !!this.documents.passport
           && !!this.documents.snils
           && !!this.documents.inn

@@ -3,6 +3,7 @@
     BaseTabs
       q-route-tab(:to="{ name: 'user-bills-apartments' }" name="apartments" :label="$t('entity.tickets.apartments')")
       q-route-tab(:to="{ name: 'user-bills-parking' }" name="parking" :label="$t('entity.tickets.parking')")
+      q-route-tab(:to="{ name: 'user-bills-warehouse' }" name="warehouse" :label="$t('entity.tickets.warehouse')")
     router-view
 </template>
 

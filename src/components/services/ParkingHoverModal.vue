@@ -33,6 +33,10 @@
                 q-item-section(side)
                   q-item-label.text-primary {{ $t(`entity.services.parking.rentTypes.long.price.title`) }}
                   q-item-label(caption) {{ $t(`entity.services.parking.rentTypes.long.price.description`) }}
+            .full-width.q-pa-md
+              q-btn(outline color="primary" @click="selectedParkingType('Common')" :disable="!data.properties.free").full-width
+                | {{ $t('action.rent') }}
+
           template(v-else)
             q-item
               q-item-section
@@ -67,9 +71,9 @@
                     q-icon(name="fiber_manual_record" size="8px")
                   q-item-section
                     q-item-label {{ $t("entity.socialTypes.veteran") }}
-          .full-width.q-pa-md
-            q-btn(outline color="primary" @click="selectedParkingType('Common')" :disable="!data.properties.free").full-width
-              | {{ $t('action.rent') }}
+            .full-width.q-pa-md
+              q-btn(outline color="primary" @click="selectedParkingType('Social')" :disable="!data.properties.free").full-width
+                | {{ $t('action.applicationMake') }}
         q-tab-panel(name="guest").is-paddingless
           q-list
             q-item

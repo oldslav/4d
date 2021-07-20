@@ -61,6 +61,14 @@ export class VacancyService extends Service {
   }
 
   public static search (params?: Record<string, any>): AxiosPromise {
-    return this.api.get("/api/v1/services/vacancy/user", params || {});
+    return this.api.get("/api/v1/services/vacancy/user", { params });
+  }
+
+  public static respond (id: number, payload: Record<string, any>): AxiosPromise {
+    return this.api.post(`/api/v1/services/vacancy/${ id }/respond`, payload);
+  }
+
+  public static attachRespondFile (respondId: number, payload: FormData): AxiosPromise {
+    return this.api.post(`/api/v1/services/vacancy/respond/${ respondId }/file`, payload);
   }
 }

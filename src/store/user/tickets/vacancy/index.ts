@@ -13,14 +13,14 @@ import {
   UPDATE_USER_VACANCY_PAGINATION
 } from "src/store/constants/mutation-constants";
 
-const state: IUserVacancyState = {
+const state = () : IUserVacancyState => ({
   pagination: {
     limit: 10,
     offset: 1
   },
   data: null,
   entity: null
-};
+});
 
 const getters: GetterTree<IUserVacancyState, TRootState> = {
   tableData (state) {

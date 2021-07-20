@@ -10,28 +10,35 @@
       :pagination="tablePagination"
       :expanded.sync="expanded"
     )
-      template(v-slot:top-right)
-        q-btn(
-          icon="add"
-          outline
-          color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
+      template(#top)
+        .full-width.text-right
+          q-btn(
+            icon="add"
+            outline
+            color="primary"
+            @click="isModalVisible = true"
+            :label="$t('user.tickets.actions.create')"
+          )
+        component(
+          :is="ticketModal"
+          v-model="isModalVisible"
+          v-if="isModalVisible"
+          :ticketId="currentRow && currentRow.id"
+          @update="getUserTickets"
         )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" v-if="isModalVisible" :ticketId="currentRow && currentRow.id" @update="getUserTickets")
-      template(v-slot:body="props")
-        q-tr(:props="props")
-          q-td(key="address" :props="props" @click="expandRow(props)")
+      template(#body="props")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="address" :props="props")
             span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
             span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
-          q-td(key="price" :props="props" @click="expandRow(props)")
+          q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
-          q-td(key="created" :props="props" @click="expandRow(props)")
+          q-td(key="created" :props="props")
             | {{ props.row.created | fromNow }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
+          q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
@@ -56,12 +63,11 @@
               :value="props.row.status"
               @choose="toApartments(props.row.id)"
               @viewed="apartmentViewed(props.row.id)"
+              @pay="goToPayment(props.row.id)"
             )
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-    q-inner-loading(v-else showing)
-
     BaseModal(
       v-model="isApartmentsListModal"
       position="standard"
@@ -78,8 +84,11 @@
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
-    GET_USER_TICKETS_LIVING
+    GET_USER_TICKETS_LIVING,
+    UPDATE_TICKET_APARTMENT_VIEWED
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import { mapFields } from "@/plugins/mapFields";
   import BaseTable from "components/common/BaseTable";
   import UserTicketsApartmentsNewTicketModal
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
@@ -87,7 +96,7 @@
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
   import BaseModal from "../../../components/common/BaseModal";
   import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
-  import { UPDATE_TICKET_APARTMENT_VIEWED } from "../../../store/constants/action-constants";
+  import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
 
   export default {
     name: "UserTicketsApartmentsUser",
@@ -97,6 +106,7 @@
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       UserTicketsApartmentProgressState,
+      CompanyApartmentsNewTicketModal,
       BaseTable
     },
     async created () {
@@ -151,18 +161,29 @@
       ...mapGetters("user/tickets/living", [
         "tablePagination"
       ]),
+      ...mapGetters(["isUserLegal"]),
 
       ...mapState("user/tickets/living", {
         tableData: state => state.data
       }),
 
+      ...mapFields("user/tickets/living", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
+
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKETS_LIVING }`];
+      },
+
+      ticketModal () {
+        return this.isUserLegal ? CompanyApartmentsNewTicketModal : UserTicketsApartmentsNewTicketModal;
       }
     },
     methods: {
       ...mapActions("user/tickets/living", {
-        getUserTickets: GET_USER_TICKETS_LIVING,
+        GET_USER_TICKETS_LIVING,
         deleteUserTicket: DELETE_USER_TICKET_LIVING,
         requestApproval: REQUEST_APPROVAL_LIVING,
         setApartmentViewed: UPDATE_TICKET_APARTMENT_VIEWED
@@ -177,6 +198,17 @@
         //     requestId
         //   }
         // });
+      },
+
+      async getUserTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_USER_TICKETS_LIVING();
       },
 
       async apartmentViewed (requestId) {
@@ -236,6 +268,10 @@
 
       sendOnApproval (id) {
         id && this.requestApproval(id);
+      },
+
+      goToPayment (id) {
+        this.$router.push({ name: "user-bills-apartments", params: { ticket: id } });
       },
 
       moment

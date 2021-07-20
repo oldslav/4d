@@ -159,6 +159,18 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "warehouse",
+            name: "user-tickets-warehouse",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsWarehouse/TicketsWarehouse.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
             path: "crowdfunding",
             name: "user-tickets-crowdfunding",
             components: {
@@ -236,14 +248,19 @@ const routes: RouteConfig[] = [
         component: (): Promise<any> => import("pages/UserBills.vue"),
         children: [
           {
-            path: "apartments",
+            path: "apartments/:ticket?",
             name: "user-bills-apartments",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsApartments.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsApartments.vue")
           },
           {
-            path: "parking",
+            path: "parking/:ticket?",
             name: "user-bills-parking",
-            component: (): Promise<any> => import("src/components/user/bills/UserBillsParking.vue")
+            component: (): Promise<any> => import("pages/bills/UserBillsParking.vue")
+          },
+          {
+            path: "warehouse/:ticket?",
+            name: "user-bills-warehouse",
+            component: (): Promise<any> => import("pages/bills/UserBillsWarehouse.vue")
           }
         ]
       }
@@ -346,8 +363,27 @@ const routes: RouteConfig[] = [
           asideServices: true,
           toolbar: true
         }
+      },
+      {
+        path: "vacancies/:id(\\d+)",
+        name: "services-vacancies-item",
+        components: {
+          default: (): Promise<any> => import("pages/services/vacancies/ServiceVacancyItemPage.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesVacancyItem.vue")
+        },
+        meta: {
+          asideServices: true,
+          toolbar: true
+        }
       }
     ]
+  },
+  {
+    path: "/users",
+    name: "users",
+    components: {
+      default: (): Promise<any> => import("pages/users/AdminUsers.vue")
+    }
   },
   // Always leave this as last one,
   // but you can also remove it

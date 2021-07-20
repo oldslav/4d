@@ -18,6 +18,7 @@
       },
       "validation": {
         "required": "Это поле обязательно для заполнения",
+        "invalid": "Использованы недопустимые символы",
         "passwordReg": "Пароль: 8 символов, строчные и заглавные буквы, цифры",
         "email": "Введите действительный email",
         "confirmPassword": "Пароли не совпадают",
@@ -92,6 +93,7 @@
       "nextSlideBtn": "Далее"
     },
     "rent": "Аренда",
+    "position": "Должность",
     "guestVisit": "Гостевой визит",
     "description": "Описание",
     "notice": "Сообщение",
@@ -105,7 +107,30 @@
     },
     "address": "Адрес",
     "status": "Статус",
-    "created": "Дата формирования"
+    "id": "ID",
+    "name": "Имя",
+    "email": "Email",
+    "phone": "Телефон",
+    "telegram": "Телеграм",
+    "role": "Роль",
+    "created": "Дата формирования",
+    "permissions": {
+      "title": "Права",
+      "ROLE_QGIS": "Сотрудник по ГИС",
+      "ROLE_ADMIN": "Администратор",
+      "ROLE_USER": "Житель",
+      "ROLE_USER_JURISTIC": "@:common.permissions.ROLE_USER, Юр.лицо",
+      "ROLE_EMPLOYEE": "Сотрудник фонда",
+      "ROLE_EMPLOYEE_PARKING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.parking.title",
+      "ROLE_EMPLOYEE_IDEA": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.ideas",
+      "ROLE_EMPLOYEE_WAREHOUSE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.warehouse.title",
+      "ROLE_EMPLOYEE_LIVING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.living.title",
+      "ROLE_EMPLOYEE_EMPLOYMENT_CENTER": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.employmentCenter",
+      "ROLE_EMPLOYEE_LIGHT": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.light",
+      "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
+      "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce",
+      "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    }
   },
   "user": {
     "messages": {
@@ -138,6 +163,12 @@
         "sendFail": "При отправлении данных договора произошла ошибка"
       },
       "parking": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
+      },
+      "warehouse": {
         "steps": {
           "first": "Оплата",
           "second": "Подписание договора и получение ключа"
@@ -191,6 +222,9 @@
     }
   },
   "action": {
+    "applicationMake": "Оформить",
+    "block": "Заблокировать",
+    "unblock": "Разблокировать",
     "addPhone": "Добавить телефон",
     "login": "Войти",
     "rent": "Арендовать",
@@ -224,6 +258,9 @@
       "disability": "Человек с инвалидностью",
       "retired": "Пенсионер",
       "veteran": "Ветеран"
+    },
+    "users": {
+      "title": "Пользователи"
     },
     "services": {
       "mainInfo": "Основная информация",
@@ -376,16 +413,67 @@
         },
         "storageTypes": {
           "title": "Тип хранения",
+          "rentType": "Тип аренды",
           "rack": "Не стеллажах",
           "bikePark": "На велосипедной парковке",
           "subtitle": {
             "top": "Выберите один из предложенных типов хранения.",
             "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
-          }
+          },
+          "duration": "Хранение на {n} месяц | Хранение на {n} месяца | Хранение на {n} месяцев"
         }
       },
       "ideas": "Идеи и предложения",
-      "vacancies": "Городские вакансии"
+      "crowdfunding": "Проекты жителя",
+      "employmentCenter": "Центр занятости",
+      "light": "Освещение",
+      "tress": "Озеленение",
+      "vacancies": {
+        "title": "Городские вакансии",
+        "searchResult": "Всего {n} вакансия | Всего {n} вакансии | Всего {n} вакансий",
+        "respond": "Откликнуться",
+        "searchPlaceholder": "Поиск вакансий по категории, компании или названию",
+        "searchErrorTitle": "Произошла ошибка",
+        "searchErrorSubtitle": "При поиске вакансий произошла ошибка, повторите попытку позже",
+        "searchErrorRetry": "Попробовать снова",
+        "searchEmptyTitle": "Вакансий не найдено",
+        "searchEmptyDescription": "Попробуйте изменить критерии поиска",
+        "searchEmptyRetry": "Сбросить фильтр",
+        "processSearch": "Выполняем поиск вакансий",
+        "processLoadPage": "Загружаем данные",
+        "successSearch": "Результаты успешно отфильтрованы",
+        "successLoadPage": "Данные загружены",
+        "errorSearch": "При поиске вакансий произошла ошибка",
+        "errorLoadPage": "При загрузке данных произошла ошибка",
+        "respondModalTitle": "Откликнуться на вакансию",
+        "respondPresent": "Вы уже откликнулись на эту вакансию",
+        "duties": "Обязанности",
+        "requirements": "Требования",
+        "conditions": "Условия",
+        "workTime": "Режим работы",
+        "salary": "Зарплата",
+        "experience": "Опыт работы",
+        "employmentType": "График работы",
+        "workSchedule": "Тип занятости",
+        "sendRespond": "Откликнуться на вакансию",
+        "respondForm": {
+          "about": "Основная информация",
+          "contacts": "Контакты",
+          "resume": "Резюме",
+          "respondError": "При отправке отклика произошла ошибка, пожалуйста повторите позже",
+          "respondProgress": "Отправляем отклик",
+          "respondSuccessTitle": "Спасибо! Ваш отклик успешно отправлен",
+          "respondSuccessMessage": "Отследить статус отлкика можно в личном кабинете",
+          "resumeHint": "Вы можете прикрепить файл с резюме или ссылку",
+          "resumeError": "Необходимо прикрепить файл, либо указать ссылку на резюме",
+          "resumeFile": "Файл резюме",
+          "resumeFileFormat": "Формат pdf",
+          "resumeLink": "Ссылка на резюме",
+          "textHint": "Добавьте текст сопроводительного письма",
+          "textPlaceholder": "Расскажите о себе",
+          "resumeLinkRequired": "Необходимо указать ссылку к резюме"
+        }
+      }
     },
     "guestCard": {
       "title": "Карта гостя",
@@ -455,18 +543,19 @@
       "passport": "Скан-копия паспорта",
       "snils": "Скан-копия СНИЛС",
       "inn": "Скан-копия ИНН",
+      "inn_jur": "ИНН организации",
       "job": "Справка с места работы",
-      "birthCertificate": "Скан-копия свидетельства о рождении",
-      "marriageCertificate": "Скан-копия свидетельства о браке",
-      "registrationCopy": "Скан-копия прописки",
-      "sts": "Свидетельство о регистрации ТС",
-      "pts": "Паспорт ТС",
-      "personalAgreement": "Согласие на обработку персональных данных",
-      "employerPetition": "Ходатайство от работодателя",
+      "birth": "Скан-копия свидетельства о рождении",
+      "marriage": "Скан-копия свидетельства о браке",
+      "children_registration": "Скан-копия прописки",
+      "sts": "Скан копия СТС или ПТС",
+      "pts": "Скан копия паспорта ТС",
+      "consent_processing_personal_data": "Согласие на обработку персональных данных",
+      "job_petition": "Ходатайство от работодателя",
       "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
-      "ogrnCopy": "Скан-копия ОГРН",
-      "egrjulCopy": "Скан-копия выписки из ЕГРЮЛ",
-      "partnerCard": "Скан-копия карты партнера"
+      "ogrn": "Скан-копия ОГРН",
+      "egrjul": "Скан-копия выписки из ЕГРЮЛ",
+      "partner_card": "Скан-копия карты партнера"
     },
     "tickets": {
       "title": "Заявки",
@@ -474,7 +563,8 @@
       "ideas": "Идеи и предложения",
       "parking": "Аренда парковок",
       "crowdfunding": "Проекты жителя",
-      "vacancy": "Городские вакансии"
+      "vacancy": "Городские вакансии",
+      "warehouse": "Аренда мест хранения"
     },
     "bills": "Счета",
     "main": "Главная",

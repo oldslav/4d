@@ -18,6 +18,7 @@
       },
       "validation": {
         "required": "This field is required",
+        "invalid": "Invalid characters",
         "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
         "email": "Please enter valid email",
         "confirmPassword": "Password mismatch",
@@ -92,6 +93,7 @@
       "nextSlideBtn": "Onwards"
     },
     "rent": "Rent",
+    "position": "Position",
     "guestVisit": "Guest visit",
     "description": "Description",
     "notice": "Message",
@@ -105,7 +107,30 @@
     },
     "address": "Address",
     "status": "Status",
-    "created": "Created at"
+    "id": "ID",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "telegramAlias": "Telegram",
+    "role": "Role",
+    "created": "Created at",
+    "permissions": {
+      "title": "Permissions",
+      "ROLE_QGIS": "GIS employee",
+      "ROLE_ADMIN": "Admin",
+      "ROLE_USER": "Resident",
+      "ROLE_USER_JURISTIC": "@:common.permissions.ROLE_USER, Legal entity",
+      "ROLE_EMPLOYEE": "Fund employee",
+      "ROLE_EMPLOYEE_PARKING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.parking.title",
+      "ROLE_EMPLOYEE_IDEA": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.ideas",
+      "ROLE_EMPLOYEE_WAREHOUSE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.warehouse.title",
+      "ROLE_EMPLOYEE_LIVING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.living.title",
+      "ROLE_EMPLOYEE_EMPLOYMENT_CENTER": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.employmentCenter",
+      "ROLE_EMPLOYEE_LIGHT": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.light",
+      "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
+      "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce",
+      "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    }
   },
   "user": {
     "messages": {
@@ -136,6 +161,18 @@
       "contract": {
         "sendSuccess": "Данные договора успешно отправлены",
         "sendFail": "При отправлении данных договора произошла ошибка"
+      },
+      "parking": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
+      },
+      "warehouse": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
       }
     },
     "firstName": "Firstname",
@@ -185,6 +222,9 @@
     }
   },
   "action": {
+    "applicationMake": "Make an application",
+    "block": "Block",
+    "unblock": "Unblock",
     "addPhone": "Add phone",
     "login": "Login",
     "rent": "Rent",
@@ -218,6 +258,9 @@
       "disability": "A person with a disability",
       "retired": "Retired people",
       "veteran": "Veteran"
+    },
+    "users": {
+      "title": "Users"
     },
     "services": {
       "mainInfo": "Main information",
@@ -366,16 +409,67 @@
         },
         "storageTypes": {
           "title": "Storage type",
+          "rentType": "Rent type",
           "rack": "On a rack",
           "bikePark": "On a bicycle parking",
           "subtitle": {
             "top": "Выберите один из предложенных типов хранения.",
             "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
-          }
+          },
+          "duration": "Хранение на {n} месяц | Хранение на {n} месяца | Хранение на {n} месяцев"
         }
       },
       "ideas": "Ideas and suggestions",
-      "vacancies": "Jobs"
+      "crowdfunding": "Crowdfunding",
+      "employmentCenter": "Employment center",
+      "light": "Light",
+      "tress": "Tress",
+      "vacancies": {
+        "title": "City vacancies",
+        "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
+        "respond": "Respond",
+        "searchPlaceholder": "Search jobs by category, company or title",
+        "searchErrorTitle": "An error occurred",
+        "searchErrorSubtitle": "An error occurred while searching for jobs, please try again later",
+        "searchErrorRetry": "Try again",
+        "searchEmptyTitle": "No vacancies found",
+        "searchEmptyDescription": "Try changing your search criteria",
+        "searchEmptyRetry": "Reset Filter",
+        "processSearch": "Searching for vacancies",
+        "processLoadPage": "Loading data",
+        "successSearch": "Results filtered successfully",
+        "successLoadPage": "Data loaded",
+        "errorSearch": "An error occurred while searching for jobs",
+        "errorLoadPage": "An error occurred while loading data",
+        "respondModalTitle": "Apply for vacancy",
+        "respondPresent": "You have already applied for this vacancy",
+        "duties": "Duties",
+        "requirements": "Requirements",
+        "conditions": "Conditions",
+        "workTime": "Work mode",
+        "salary": "Salary",
+        "experience": "Work experience",
+        "employmentType": "Employment",
+        "workSchedule": "Employment type",
+        "sendRespond": "Apply for vacancy",
+        "respondForm": {
+          "about": "Basic information",
+          "contacts": "Contacts",
+          "resume": "Resume",
+          "respondError": "There was an error sending your response, please try again later",
+          "respondProgress": "Sending a response",
+          "respondSuccessTitle": "Thank you! Your response was successfully submitted",
+          "respondSuccessMessage": "You can track the response status in your account",
+          "resumeHint": "You can attach a file with a resume or a link",
+          "resumeError": "You must attach a file or provide a link to your resume",
+          "resumeFile": "Resume file",
+          "resumeFileFormat": "pdf format",
+          "resumeLink": "Resume link",
+          "textHint": "Add cover letter text",
+          "textPlaceholder": "Tell us about yourself",
+          "resumeLinkRequired": "You must provide a link to your resume"
+        }
+      }
     },
     "guestCard": {
       "title": "Guest card",
@@ -445,18 +539,19 @@
       "passport": "Passport scan",
       "snils": "SNILS scan",
       "inn": "INN scan",
+      "inn_jur": "Company INN",
       "job": "Employment certificate",
-      "birthCertificate": "Birth certificate scan",
-      "marriageCertificate": "Marriage certificate scan",
-      "registrationCopy": "Residence permit scan",
+      "birth": "Birth certificate scan",
+      "marriage": "Marriage certificate scan",
+      "children_registration": "Residence permit scan",
       "sts": "Vehicle registration certificate scan",
       "pts": "Vehicle passport scan",
-      "personalAgreement": "Consent to the processing of personal data",
+      "consent_processing_personal_data": "Consent to the processing of personal data",
       "job_petition": "Application from the employer",
       "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
-      "ogrnCopy": "Скан-копия ОГРН",
-      "egrjulCopy": "Скан-копия выписки из ЕГРЮЛ",
-      "partnerCard": "Скан-копия карты партнера"
+      "ogrn": "Скан-копия ОГРН",
+      "egrjul": "Скан-копия выписки из ЕГРЮЛ",
+      "partner_card": "Скан-копия карты партнера"
     },
     "tickets": {
       "title": "Tickets",
@@ -464,7 +559,8 @@
       "ideas": "Ideas and suggestions",
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
-      "vacancy": "Городские вакансии"
+      "vacancy": "Городские вакансии",
+      "warehouse": "Warehouse rent"
     },
     "bills": "Bills",
     "main": "Main",

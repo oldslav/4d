@@ -20,7 +20,7 @@ const initialState = (): IUserTicketsState => {
   };
 };
 
-const state: () => IUserTicketsState = initialState;
+const state = initialState;
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_EMPTY]: state => Object.assign(state, initialState()),
@@ -34,9 +34,10 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_APARTMENTS] ({ state, commit }, requestId) {
     const { data } = await ApartmentsService.getApartmentsGeo({
       requestId,
-      ...state.pagination
+      ...state.pagination,
+      offset: state.pagination.offset - 1
     });
-  
+
     commit(SET_DATA, data);
     commit(UPDATE_APARTMENTS_PAGINATION, { rowsNumber: data.count });
   }
@@ -45,17 +46,17 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 const getters: GetterTree<IUserTicketsState, TRootState> = {
   tableData (state) {
     const { data } = state;
-    
+
     if (data) {
       return {
         items: data.items
       };
     }
   },
-  
+
   tablePagination (state) {
     const { pagination, data } = state;
-    
+
     if (data) {
       return {
         rowsPerPage: pagination.limit,

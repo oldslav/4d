@@ -24,7 +24,7 @@
       q-btn(round dense icon="o_account_circle" text-color="primary")
         q-menu
           q-list
-            q-item(:to="{ name: 'user' }" v-if="isAuth")
+            q-item(:to="{ name: 'user' }" v-if="isAuthenticated")
               q-item-section(avatar)
                 q-icon(name="o_account_circle")
               q-item-section
@@ -40,7 +40,7 @@
                 q-toggle(
                   v-model="darkMode" unchecked-icon="dark_mode" checked-icon="light_mode"
                   color="dark" icon-color="yellow" keep-color :label="$t('common.theme')" )
-            q-item(clickable @click="onLogout()" v-if="isAuth")
+            q-item(clickable @click="onLogout()" v-if="isAuthenticated")
               q-item-section(avatar)
                 q-icon(name="logout")
               q-item-section
@@ -68,10 +68,8 @@
       };
     },
     computed: {
-      ...mapGetters(["getAccount"]),
-      isAuth () {
-        return this.getAccount.id !== null;
-      },
+      ...mapGetters(["getAccount", "isUserAdmin", "isAuthenticated"]),
+
       isMobile () {
         return this.$q.platform.is.mobile;
       },
@@ -97,7 +95,12 @@
           {
             name: "services",
             label: this.$t("entity.services.title"),
-            hide: !this.isAuth
+            hide: !this.isAuthenticated || this.isUserAdmin
+          },
+          {
+            name: "users",
+            label: this.$t("entity.users.title"),
+            hide: !this.isUserAdmin
           }
         ];
       },
@@ -141,7 +144,10 @@
       ...mapActions([ACCOUNT_LOGOUT]),
       onLogout () {
         this.ACCOUNT_LOGOUT();
-        this.$router.push({ name: "main" });
+
+        if (this.$route.name !== "main") {
+          this.$router.push({ name: "main" });
+        }
       },
       onAuth () {
         this.$emit("auth");
