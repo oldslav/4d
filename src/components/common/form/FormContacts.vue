@@ -1,18 +1,19 @@
 <template lang="pug">
-  .column
-    FormPhones(v-model="model.phones" @input="onInput()")
-    q-input(
-      v-model="model.telegramAlias"
-      @input="onInput()"
-      :label="$t('user.profile.mainForm.telegramAlias')"
-      :rules="validateTelegram"
-    )
-    .text-caption.text-primary-light
-      | {{ $t("entity.contacts.preferred") }}
-    q-checkbox(v-model="model.pcm.email" @input="onInput()" :label="$t('entity.contacts.email')")
-    q-checkbox(v-model="model.pcm.phone" @input="onInput()" :label="$t('entity.contacts.phone')")
-    q-checkbox(v-model="model.pcm.telegram" @input="onInput()" :label="$t('entity.contacts.telegram')")
-    q-checkbox(v-model="model.pcm.whatsApp" @input="onInput()" :label="$t('entity.contacts.whatsApp')")
+  q-form(ref="form")
+    .column
+      FormPhones(v-model="model.phones" @input="onInput()")
+      q-input(
+        v-model="model.telegramAlias"
+        @input="onInput()"
+        :label="$t('user.profile.mainForm.telegramAlias')"
+        :rules="validateTelegram"
+      )
+      .text-caption.text-primary-light
+        | {{ $t("entity.contacts.preferred") }}
+      q-checkbox(v-model="model.pcm.email" @input="onInput()" :label="$t('entity.contacts.email')")
+      q-checkbox(v-model="model.pcm.phone" @input="onInput()" :label="$t('entity.contacts.phone')")
+      q-checkbox(v-model="model.pcm.telegram" @input="onInput()" :label="$t('entity.contacts.telegram')")
+      q-checkbox(v-model="model.pcm.whatsApp" @input="onInput()" :label="$t('entity.contacts.whatsApp')")
 </template>
 
 <script>
@@ -62,6 +63,9 @@
       },
       onInput () {
         this.$emit("input", this.model);
+      },
+      validate () {
+        return this.$refs.form.validate();
       }
     }
   };

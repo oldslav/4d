@@ -19,5 +19,4 @@ export class UserProfileService extends Service {
   public static changePassword (passwordForm: NewPasswordPayload): AxiosPromise<any> {
     return this.api.put("api/v1/profile/password", passwordForm);
   }
-
 }

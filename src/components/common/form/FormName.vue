@@ -1,8 +1,9 @@
 <template lang="pug">
-  .row.q-col-gutter-md
-    q-input(v-model="model.last" @input="onInput()" :rules="isNameValid" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
-    q-input(v-model="model.first" @input="onInput()" :rules="rules" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
-    q-input(v-model="model.patronymic" @input="onInput()" :rules="isNameValid" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
+  q-form(ref="form")
+    .row.q-col-gutter-md
+      q-input(v-model="model.last" @input="onInput()" :rules="isNameValid" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
+      q-input(v-model="model.first" @input="onInput()" :rules="rules" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
+      q-input(v-model="model.patronymic" @input="onInput()" :rules="isNameValid" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
 </template>
 
 <script>
