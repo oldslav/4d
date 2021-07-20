@@ -9,13 +9,14 @@
       :getData="getUserTickets"
       :expanded.sync="expanded"
     )
-      template(v-slot:top-right)
-        q-btn(
-          outline
-          color="primary"
-          @click="toServiceWarehouse"
-          :label="$t('action.toMap')"
-        )
+      template(v-slot:top)
+        .full-width.text-right
+          q-btn(
+            outline
+            color="primary"
+            @click="toServiceWarehouse"
+            :label="$t('action.toMap')"
+          )
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="warehouseAddress" :props="props" @click="expandRow(props)")

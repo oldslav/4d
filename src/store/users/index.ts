@@ -16,7 +16,7 @@ const initialState = (): IUsersState => {
     filters: null,
     pagination: {
       limit: 10,
-      offset: 0
+      offset: 1
     }
   };
 };
@@ -35,7 +35,8 @@ const mutations: MutationTree<IUsersState> = {
 const actions: ActionTree<IUsersState, TRootState> = {
   async [GET_DATA] ({ commit, state }) {
     const { data } = await UsersService.getUsers({
-      ...state.pagination
+      ...state.pagination,
+      offset: state.pagination.offset - 1
     });
 
     commit(SET_DATA, data);

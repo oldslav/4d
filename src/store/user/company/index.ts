@@ -17,7 +17,7 @@ import {
 } from "src/store/constants/action-constants";
 import { UserCompanyService } from "src/api/user/company";
 
-const state = () : ICompanyState => ({
+const state = (): ICompanyState => ({
   id: null,
   isVerify: null,
   profile: {
@@ -119,26 +119,13 @@ const actions: ActionTree<ICompanyState, TRootState> = {
     return UserCompanyService.updateCompanyBank(payload)
       .then(() => dispatch(GET_COMPANY));
   },
-  [UPDATE_COMPANY_CARD] ({ dispatch, rootGetters }, { card, deletedIds }) {
+  async [UPDATE_COMPANY_CARD] ({ dispatch }, { card, deletedIds }) {
     const { documents, ...payload } = card;
-    return UserCompanyService.updateCompanyCard(payload)
-      .then(() => {
-        const awaitsCreate: any = [];
-        Object.entries(documents).forEach(([key, val]: any) => {
-          val.forEach((file: any) => {
-            if (!file.id) {
-              const type = rootGetters["references/getDocTypeByName"](key);
-              const payload = new FormData();
-              payload.append("file", file);
-              payload.append("typeId", type.id);
-              awaitsCreate.push(payload);
-            }
-          });
-        });
-        return Promise.all(deletedIds.map((id: number) => UserCompanyService.deleteCardFile(id)))
-          .then(() => Promise.all(awaitsCreate.map((f: any) => UserCompanyService.uploadCardFile(f))));
-      })
-      .then(() => dispatch(GET_COMPANY));
+    await UserCompanyService.updateCompanyCard(payload);
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(deletedIds.map((id: number) => UserCompanyService.deleteCardFile(id)));
+    await Promise.all(files.map((f: any) => UserCompanyService.uploadCardFile(f)));
+    dispatch(GET_COMPANY);
   }
 };
 

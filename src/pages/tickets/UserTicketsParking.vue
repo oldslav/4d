@@ -9,13 +9,14 @@
       :getData="getUserTickets"
       :expanded.sync="expanded"
     )
-      template(v-slot:top-right)
-        q-btn(
-          outline
-          color="primary"
-          @click="toServiceParking"
-          :label="$t('action.toMap')"
-        )
+      template(v-slot:top)
+        .full-width.text-right
+          q-btn(
+            outline
+            color="primary"
+            @click="toServiceParking"
+            :label="$t('action.toMap')"
+          )
         TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
         q-tr(:props="props")
