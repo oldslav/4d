@@ -284,8 +284,21 @@ const routes: RouteConfig[] = [
     path: "/map",
     name: "map",
     components: {
-      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
-    }
+      default: (): Promise<any> => import("pages/maps/MapsService.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/AsideMaps.vue")
+    },
+    children: [
+      {
+        path: "apartments",
+        name: "map-apartments",
+        components: {
+          default: (): Promise<any> => import("pages/maps/MapApartments.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      }
+    ]
   },
   {
     path: "/services",
