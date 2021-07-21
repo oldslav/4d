@@ -1,5 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
@@ -9,8 +8,9 @@ import { LocalStorage } from "quasar";
 import { TRootState } from "../store/types/root";
 
 axios.defaults.baseURL = process.env.SERVER_API_HOST;
-axios.interceptors.request.use(
-  config => {
+
+const paramsSerializerInterceptor = [
+    (config: AxiosRequestConfig) => {
     config.paramsSerializer = (params: any): string => qs.stringify(params, {
       skipNulls: true,
       allowDots: true,
@@ -19,17 +19,16 @@ axios.interceptors.request.use(
 
     return config;
   },
+    (error: any) => Promise.reject(error)
+];
 
-  error => Promise.reject(error)
-);
-
-axios.interceptors.response.use(
+const responseStatusInterceptor = [
   undefined,
-  (error) => {
-   error.code = error.response.status || 0;
-   return Promise.reject(error);
+  (error: { code: any; response: { status: number; }; }) => {
+    error.code = error.response.status || 0;
+    return Promise.reject(error);
   }
-);
+];
 
 declare module "vue/types/vue" {
   interface Vue {
@@ -76,10 +75,18 @@ const requestInterceptor = (store: Store<any>) => {
 export default boot(({ app }) => {
   const axiosInstance = axios.create();
 
-  const interceptor = requestInterceptor(app.store as Store<TRootState>);
-  axiosInstance.interceptors.request.use(interceptor);
+  const authInterceptor = requestInterceptor(app.store as Store<TRootState>);
 
-  app.store.$axios = axiosInstance;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  axiosInstance.interceptors.request.use(...paramsSerializerInterceptor);
+  axiosInstance.interceptors.request.use(authInterceptor);
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  axiosInstance.interceptors.response.use(...responseStatusInterceptor);
+
+  app.store!.$axios = axiosInstance;
 
   if (app.store) {
     app.store.$local = LocalStorage;
