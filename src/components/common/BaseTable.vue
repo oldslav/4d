@@ -1,6 +1,7 @@
 <template lang="pug">
   q-table(
     flat
+    ref="baseTable"
     :grid="grid"
     :title="title"
     :data="data.items"
@@ -15,12 +16,12 @@
   )
     template(v-slot:loading)
       q-inner-loading(showing color="primary")
-    template(v-slot:top)
+    template(v-if="passedSlots.top" v-slot:top)
       slot(name="top")
-    template(v-slot:top-left)
-      slot(name="top-left")
-    template(v-slot:top-right)
-      slot(name="top-right")
+    //template(v-slot:top-left)
+    //  slot(name="top-left")
+    //template(v-slot:top-right)
+    //  slot(name="top-right")
     template(v-slot:body="props")
       slot(name="body" v-bind="props")
     template(v-slot:item="props")
@@ -33,6 +34,10 @@
     props: {
       cardContainerClass: {
         type: String,
+        default: null
+      },
+      slots: {
+        type: Array,
         default: null
       },
       getData: {
@@ -74,6 +79,11 @@
       grid: {
         type: Boolean,
         default: false
+      }
+    },
+    computed: {
+      passedSlots () {
+        return this.$refs.baseTable && this.$refs.baseTable.$slots || {};
       }
     }
   };

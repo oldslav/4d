@@ -26,7 +26,7 @@
       ]),
 
       onMapClick (e) {
-        if (e) {
+        if (e && e._properties._fill._value !== "#FF6565") {
           this.SET_FEATURE_ID(e.id);
         } else {
           this.SET_FEATURE_ID(null);
