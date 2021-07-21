@@ -24,7 +24,7 @@
       q-card-section
         .text-medium.q-mb-sm
           | {{ $t("entity.services.living.roomsAmount") }}
-        div(v-for="(room, index) in info.rooms.length" :key="index").q-mb-sm
+        div(v-for="(room, index) in info.rooms" :key="index").q-mb-sm
           | {{ $tc("entity.services.living.info.rooms", +room) }}
       q-separator
       q-card-section(v-if="contactsPresent")
