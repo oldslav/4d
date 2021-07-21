@@ -12,9 +12,9 @@
     q-input(v-model="model.okved" :rules="required" :label="$t('entity.companyDocuments.okved')")
     .row.q-col-gutter-sm
       .col-12.col-md-4
-        q-input(v-model="model.email" :label="$t('user.companyName')")
+        q-input(v-model="model.email" :label="$t('entity.contacts.email')")
       .col-12.col-md-8
-        q-input(v-model="model.site" :label="$t('user.companyName')")
+        q-input(v-model="model.site" :label="$t('entity.companyProfile.site')")
     FormPhones(v-model="model.phones")
     div.text-right.q-gutter-md.q-mt-md(v-show="isChanged")
       q-btn(flat :label="this.$t('action.cancel')" @click="assignModel()")
