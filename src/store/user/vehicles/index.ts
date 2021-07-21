@@ -5,12 +5,13 @@ import {
   CREATE_USER_VEHICLE,
   UPDATE_USER_VEHICLE,
   DELETE_USER_VEHICLE,
-  UPDATE_VEHICLE_DOCUMENTS, DELETE_VEHICLE_DOCUMENT, CREATE_VEHICLE_DOCUMENT, GET_USER_DOCUMENTS, STORE_USER_VEHICLES
+  UPDATE_VEHICLE_DOCUMENTS,
+  DELETE_VEHICLE_DOCUMENT,
+  CREATE_VEHICLE_DOCUMENT,
+  GET_USER_DOCUMENTS,
+  STORE_USER_VEHICLES
 } from "src/store/constants/action-constants";
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
-import { UserVehiclesService } from "src/api/user/vehicles";
-import { DictionariesService } from "src/api/dictionaries";
-import { Service } from "src/api/common";
 
 const state = () : IVehiclesState => ({
   items: [],
@@ -31,17 +32,17 @@ const mutations: MutationTree<IVehiclesState> = {
 
 const actions: ActionTree<IVehiclesState, TRootState> = {
   getVehicleTypes () {
-    return DictionariesService.getVehicleTypes();
+    return this.service.dictionaries.getVehicleTypes();
   },
   getVehicleBrands (ctx: ActionContext<TRootState, TRootState>, typeId) {
-    return DictionariesService.getVehicleBrands(typeId);
+    return this.service.dictionaries.getVehicleBrands(typeId);
   },
   getVehicleModels (ctx: ActionContext<TRootState, TRootState>, { typeId, brandId }) {
-    return DictionariesService.getVehicleModels(typeId, brandId);
+    return this.service.dictionaries.getVehicleModels(typeId, brandId);
   },
   [CREATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, TRootState>, vehicle) {
     const { documents, ...payload } = vehicle;
-    return UserVehiclesService.createVehicle(payload)
+    return this.service.user.vehicles.createVehicle(payload)
       .then(({ data }) => {
         const { id } = data;
         return dispatch(UPDATE_VEHICLE_DOCUMENTS, { documents, id });
@@ -50,7 +51,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
   },
   [UPDATE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, TRootState>, vehicle) {
     const { documents, ...payload } = vehicle;
-    return UserVehiclesService.updateVehicle(payload)
+    return this.service.user.vehicles.updateVehicle(payload)
       .then(({ data }) => {
         const { id } = data;
         return dispatch(UPDATE_VEHICLE_DOCUMENTS, { documents, id });
@@ -58,14 +59,14 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
   [DELETE_USER_VEHICLE] ({ dispatch }: ActionContext<IVehiclesState, TRootState>, id) {
-    return UserVehiclesService.deleteVehicle(id)
+    return this.service.user.vehicles.deleteVehicle(id)
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
   [CREATE_VEHICLE_DOCUMENT] (ctx, { payload, id }) {
-    return UserVehiclesService.createVehicleFile(payload, id);
+    return this.service.user.vehicles.createVehicleFile(payload, id);
   },
   [DELETE_VEHICLE_DOCUMENT] (ctx, id) {
-    return UserVehiclesService.deleteVehicleFile(id);
+    return this.service.user.vehicles.deleteVehicleFile(id);
   },
   async [UPDATE_VEHICLE_DOCUMENTS] ({ dispatch, state, commit }, { documents, id }) {
     const { deletedIds } = state;
@@ -84,7 +85,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
       const { id, model, brand, type, number, images } = v;
       await Promise.all(images.map(async (doc: any) => {
         const { imagePath, docType, fileName } = doc;
-        const { data } = await Service.getFile(imagePath);
+        const { data } = await this.service.common.getFile(imagePath);
         const file = new File([data], fileName, { type: data.type });
         documents[docType.name].push(file);
       }));

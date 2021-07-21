@@ -3,15 +3,15 @@ import { AxiosPromise } from "axios";
 import { DocumentPayload } from "src/api/common";
 
 export class UserDocumentsService extends Service {
-  public static getDocuments (): AxiosPromise<any> {
+  public getDocuments (): AxiosPromise<any> {
     return this.api.get("api/v1/profile/documents");
   }
 
-  public static createDocument (document: DocumentPayload): AxiosPromise<any> {
+  public createDocument (document: DocumentPayload): AxiosPromise<any> {
     return this.api.post("api/v1/profile/documents", document, { headers: { "content-type": "image/*" } });
   }
 
-  public static deleteDocument (id: number): AxiosPromise<any> {
+  public deleteDocument (id: number): AxiosPromise<any> {
     return this.api.delete(`api/v1/profile/documents/${ id }`);
   }
 }

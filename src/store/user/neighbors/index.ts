@@ -8,9 +8,7 @@ import {
   STORE_USER_NEIGHBORS, UPDATE_NEIGHBOR_DOCUMENTS,
   UPDATE_USER_NEIGHBOR
 } from "src/store/constants/action-constants";
-import { UserNeighborsService } from "src/api/user/neighbors";
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
-import { Service } from "src/api/common";
 
 const state = (): INeighborsState => ({
   items: [],
@@ -32,7 +30,7 @@ const mutations: MutationTree<INeighborsState> = {
 const actions: ActionTree<INeighborsState, TRootState> = {
   [CREATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, neighbor) {
     const { documents, ...payload } = neighbor;
-    return UserNeighborsService.createNeighbor(payload)
+    return this.service.user.neighbors.createNeighbor(payload)
       .then(({ data }) => {
         const { id } = data;
         return dispatch(UPDATE_NEIGHBOR_DOCUMENTS, { documents, id });
@@ -41,7 +39,7 @@ const actions: ActionTree<INeighborsState, TRootState> = {
   },
   [UPDATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, neighbor) {
     const { documents, ...payload } = neighbor;
-    return UserNeighborsService.updateNeighbor(payload)
+    return this.service.user.neighbors.updateNeighbor(payload)
       .then(({ data }) => {
         const { id } = data;
         return dispatch(UPDATE_NEIGHBOR_DOCUMENTS, { documents, id });
@@ -49,14 +47,14 @@ const actions: ActionTree<INeighborsState, TRootState> = {
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
   [DELETE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, id) {
-    return UserNeighborsService.deleteNeighbor(id)
+    return this.service.user.neighbors.deleteNeighbor(id)
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
   [CREATE_NEIGHBOR_DOCUMENT] (ctx, { payload, id }) {
-    return UserNeighborsService.createNeighborFile(payload, id);
+    return this.service.user.neighbors.createNeighborFile(payload, id);
   },
   [DELETE_NEIGHBOR_DOCUMENT] (ctx, id) {
-    return UserNeighborsService.deleteNeighborFile(id);
+    return this.service.user.neighbors.deleteNeighborFile(id);
   },
   async [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state }, { documents, id }) {
     const { deletedIds } = state;
@@ -80,7 +78,7 @@ const actions: ActionTree<INeighborsState, TRootState> = {
       const { id, name, images, neighborType } = n;
       await Promise.all(images.map(async (doc: any) => {
         const { imagePath, docType, fileName } = doc;
-        const { data } = await Service.getFile(imagePath);
+        const { data } = await this.service.common.getFile(imagePath);
         const file = new File([data], fileName, { type: data.type });
         documents[docType.name].push(file);
       }));

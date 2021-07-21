@@ -30,6 +30,7 @@ module.exports = configure(function () {
     boot: [
       "cookies",
       "axios",
+      "api",
       "filters",
       { path: "server-init", client: false },
       "i18n",

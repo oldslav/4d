@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { IServiceVacancyState, VacancyReferencesEnum } from "src/store/types/vacancy";
 import { TRootState } from "src/store/types/root";
-import { TVacancyReferencesResponse, VacancyService } from "src/api/services/vacancy";
+import { TVacancyReferencesResponse } from "src/api/services/vacancy";
 
 import {
   GET_VACANCY_REFERENCES,
@@ -70,7 +70,7 @@ const mutations: MutationTree<IServiceVacancyState> = {
 const actions: ActionTree<IServiceVacancyState, TRootState> = {
   async [GET_VACANCY_REFERENCES] ({ commit, state }) {
     if (!state.isExistsReferences) {
-      const { data } = await VacancyService.getReferences();
+      const { data } = await this.service.services.vacancy.getReferences();
       commit(SET_VACANCY_REFERENCES, data);
       commit("setExistsReferences");
     }
@@ -80,7 +80,7 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
     const defaults = { limit: 15, offset: 0 };
 
     try {
-      const { data } = await VacancyService.search({ ...defaults, ...query });
+      const { data } = await this.service.services.vacancy.search({ ...defaults, ...query });
       commit(SET_SEARCH_VACANCY_ERROR, false);
       commit(SET_VACANCIES, data);
     } catch (e) {
@@ -89,33 +89,33 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
   },
 
   async [FETCH_VACANCY] ({ commit }, id) {
-    const { data } = await VacancyService.getVacancyById(id);
+    const { data } = await this.service.services.vacancy.getVacancyById(id);
 
     commit(SET_VACANCY, data);
   },
 
   async [CREATE_VACANCY] (ctx, values) {
-    const { data: vacancy } = await VacancyService.createVacancy(values);
+    const { data: vacancy } = await this.service.services.vacancy.createVacancy(values);
     return vacancy;
   },
 
   async [UPDATE_VACANCY] (ctx, { id, update }) {
-    const { data: vacancy } = await VacancyService.updateVacancy(id, update);
+    const { data: vacancy } = await this.service.services.vacancy.updateVacancy(id, update);
     return vacancy;
   },
 
   async [CLOSE_VACANCY] (ctx, { id, closeReasonId }) {
-    const { data: vacancy } = await VacancyService.closeVacancy(id, closeReasonId);
+    const { data: vacancy } = await this.service.services.vacancy.closeVacancy(id, closeReasonId);
     return vacancy;
   },
 
   async [PUBLISH_VACANCY] (ctx, vacancyId) {
-    const { data: vacancy } = await VacancyService.publishVacancy(vacancyId);
+    const { data: vacancy } = await this.service.services.vacancy.publishVacancy(vacancyId);
     return vacancy;
   },
 
   async [REJECT_VACANCY] (ctx, vacancyId) {
-    const { data: vacancy } = await VacancyService.rejectVacancy(vacancyId);
+    const { data: vacancy } = await this.service.services.vacancy.rejectVacancy(vacancyId);
     return vacancy;
   },
 
@@ -123,12 +123,12 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
     const { resumeFile } = payload;
     delete payload.resumeFile;
 
-    const { data: respond } = await VacancyService.respond(id, payload);
+    const { data: respond } = await this.service.services.vacancy.respond(id, payload);
 
     if (resumeFile) {
       const formData = new FormData();
       formData.append("file", resumeFile);
-      await VacancyService.attachRespondFile(respond.id, formData);
+      await this.service.services.vacancy.attachRespondFile(respond.id, formData);
     }
 
     return respond;

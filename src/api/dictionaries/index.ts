@@ -13,7 +13,7 @@ const replaceValues = (data: any) => {
 };
 
 export class DictionariesService extends Service {
-  public static async getVehicleTypes (): Promise<any> {
+  public async getVehicleTypes (): Promise<any> {
     return fetch(`${ API_AUTO }`, {
       method: "GET"
     })
@@ -21,7 +21,7 @@ export class DictionariesService extends Service {
       .then((data) => replaceValues(data));
   }
 
-  public static getVehicleBrands (typeId: string): Promise<any> {
+  public getVehicleBrands (typeId: string): Promise<any> {
     return fetch(`${ API_AUTO }/${ typeId }/marks`, {
       method: "GET"
     })
@@ -29,7 +29,7 @@ export class DictionariesService extends Service {
       .then((data) => replaceValues(data));
   }
 
-  public static getVehicleModels (typeId: string, brandId: string): Promise<any> {
+  public getVehicleModels (typeId: string, brandId: string): Promise<any> {
     return fetch(`${ API_AUTO }/${ typeId }/marks/${ brandId }/models`, {
       method: "GET"
     })

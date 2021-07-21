@@ -12,8 +12,6 @@ import {
   REJECT_TICKET_WAREHOUSE,
   APPROVE_TICKET_WAREHOUSE, SEND_CONTRACT_INFO_WAREHOUSE, GET_USER_TICKET
 } from "src/store/constants/action-constants";
-import { TicketsService } from "src/api/user/tickets/tickets";
-import { Service } from "src/api/common";
 
 const state = (): IUserTicketsState => ({
   filters: null,
@@ -37,9 +35,9 @@ const mutations: MutationTree<IUserTicketsState> = {
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [CREATE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
     const { documents, ...result } = payload;
-    const { data: { id } } = await TicketsService.createTicketWarehouse(result);
+    const { data: { id } } = await this.service.user.tickets.createTicketWarehouse(result);
     await dispatch(ADD_WAREHOUSE_FILES, { id, documents });
-    await TicketsService.requestApprovalWarehouse(id);
+    await this.service.user.tickets.requestApprovalWarehouse(id);
   },
 
   async [ADD_WAREHOUSE_FILES] ({ dispatch }, { id, documents }) {
@@ -48,13 +46,13 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   [ADD_USER_TICKET_FILE_WAREHOUSE] (_, { id, file }) {
-    return TicketsService.addTicketsWarehouseFile(id, file);
+    return this.service.user.tickets.addTicketsWarehouseFile(id, file);
   },
 
   async [GET_USER_TICKETS_WAREHOUSE] ({ state, commit }) {
     const { filters } = state;
 
-    const { data } = await TicketsService.getTicketsWarehouse({
+    const { data } = await this.service.user.tickets.getTicketsWarehouse({
       filters
     });
 
@@ -62,14 +60,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_USER_TICKET] ({ commit }, id) {
-    const { data } = await TicketsService.getWarehouseTicketById(id);
+    const { data } = await this.service.user.tickets.getWarehouseTicketById(id);
     const { images, ...ticket } = data;
     const documents: any = {
       passport: []
     };
     await Promise.all(images.map(async (doc: any) => {
       const { imagePath, docType, fileName } = doc;
-      const { data } = await Service.getFile(imagePath);
+      const { data } = await this.service.common.getFile(imagePath);
       const file = new File([data], fileName, { type: data.type });
       documents[docType.name].push(file);
     }));
@@ -81,26 +79,26 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
 
-    const { data } = await TicketsService.getEmployeeTicketsWarehouse({ filters: f });
+    const { data } = await this.service.user.tickets.getEmployeeTicketsWarehouse({ filters: f });
 
     commit(SET_USER_TICKETS, data);
   },
 
   async [REJECT_TICKET_WAREHOUSE] (_, { id, reason }) {
-    await TicketsService.rejectTicketWarehouse(id, reason);
+    await this.service.user.tickets.rejectTicketWarehouse(id, reason);
   },
 
   async [APPROVE_TICKET_WAREHOUSE] (_, { id }) {
-    await TicketsService.approveTicketWarehouse(id);
+    await this.service.user.tickets.approveTicketWarehouse(id);
   },
 
   async [DELETE_USER_TICKET_WAREHOUSE] ({ dispatch }, payload) {
-    await TicketsService.deleteTicketWarehouse(payload);
+    await this.service.user.tickets.deleteTicketWarehouse(payload);
     await dispatch(GET_USER_TICKETS_WAREHOUSE);
   },
 
   async [SEND_CONTRACT_INFO_WAREHOUSE] ({ dispatch }, { id, payload }) {
-    await TicketsService.sendContractInfoWarehouse(id, payload);
+    await this.service.user.tickets.sendContractInfoWarehouse(id, payload);
     await dispatch(GET_EMPLOYEE_TICKETS_WAREHOUSE);
   }
 };

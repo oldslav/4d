@@ -3,12 +3,9 @@ import { TRootState } from "src/store/types/root";
 import { GET_APARTMENTS_GEO, GET_IDEAS_GEO, GET_PARKING_GEO } from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
-import { ParkingService } from "src/api/services/parking";
-import { ApartmentsService } from "src/api/services/apartments";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
-import { IdeasService } from "src/api/services/ideas";
 
 const initialState = (): GeoState => {
   return {
@@ -28,7 +25,7 @@ const mutations: MutationTree<GeoState> = {
 
 const actions: ActionTree<GeoState, TRootState> = {
   async [GET_PARKING_GEO] ({ commit }) {
-    const { data } = await ParkingService.getParkingGeo();
+    const { data } = await this.service.services.parking.getParkingGeo();
     const { type, features } = data;
 
     const preparedData = {
@@ -54,7 +51,8 @@ const actions: ActionTree<GeoState, TRootState> = {
   },
 
   async [GET_APARTMENTS_GEO] ({ commit }, ticketId) {
-    const { data } = await ApartmentsService.getBuildings({ ticketId });
+    // TODO: Это не гео, но здесь должен быть гео в будущем
+    const { data } = await this.service.services.apartments.getBuildings({ ticketId });
     const { type, features } = data;
 
     const preparedData = {
@@ -66,7 +64,7 @@ const actions: ActionTree<GeoState, TRootState> = {
   },
 
   async [GET_IDEAS_GEO] ({ commit }) {
-    const { data } = await IdeasService.getIdeas();
+    const { data } = await this.service.services.ideas.getIdeas();
     const { type, features } = data;
 
     const preparedData = {

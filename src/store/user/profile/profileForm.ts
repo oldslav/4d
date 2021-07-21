@@ -18,7 +18,6 @@ import {
   UPDATE_USER_PROFILE_AVATAR,
   CHANGE_USER_PROFILE_EMAIL
 } from "src/store/constants/action-constants";
-import { UserProfileService } from "src/api/user/profile";
 
 const state = (): IProfileFormState => ({
   name: {
@@ -95,15 +94,15 @@ const actions: ActionTree<IProfileFormState, TRootState> = {
       name: state.name,
       contacts: state.contacts
     };
-    return UserProfileService.updateProfile(payload);
+    return this.service.user.profile.updateProfile(payload);
   },
 
   [UPDATE_USER_PROFILE_AVATAR] ({}, avatarFile) {
-    return UserProfileService.updateAvatar(avatarFile);
+    return this.service.user.profile.updateAvatar(avatarFile);
   },
 
   [CHANGE_USER_PROFILE_EMAIL] ({ state }) {
-    return UserProfileService.changeEmail(state.newEmail);
+    return this.service.user.profile.changeEmail(state.newEmail);
   }
 };
 

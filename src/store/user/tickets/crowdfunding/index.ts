@@ -9,7 +9,6 @@ import {
   APPROVE_TICKET_CROWDFUNDING,
   DELETE_USER_TICKET_CROWDFUNDING
 } from "src/store/constants/action-constants";
-import { TicketsService } from "src/api/user/tickets/tickets";
 
 const state: IUserTicketsState = {
   filters: null,
@@ -30,7 +29,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_CROWDFUNDING] ({ state, commit }) {
     const { filters } = state;
 
-    const { data } = await TicketsService.getTicketsCrowdfunding({
+    const { data } = await this.service.user.tickets.getTicketsCrowdfunding({
       filters
     });
 
@@ -42,21 +41,21 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
 
-    const { data } = await TicketsService.getEmployeeTicketsCrowdfunding({ filters: f });
+    const { data } = await this.service.user.tickets.getEmployeeTicketsCrowdfunding({ filters: f });
 
     commit(SET_USER_TICKETS, data);
   },
 
   [REJECT_TICKET_CROWDFUNDING] (_, { id, reason }) {
-    return TicketsService.rejectTicketCrowdfunding(id, reason);
+    return this.service.user.tickets.rejectTicketCrowdfunding(id, reason);
   },
 
   [APPROVE_TICKET_CROWDFUNDING] (_, { id }) {
-    return TicketsService.approveTicketCrowdfunding(id);
+    return this.service.user.tickets.approveTicketCrowdfunding(id);
   },
 
   async [DELETE_USER_TICKET_CROWDFUNDING] ({ dispatch }, payload) {
-    await TicketsService.deleteTicketCrowdfunding(payload);
+    await this.service.user.tickets.deleteTicketCrowdfunding(payload);
 
     dispatch(GET_USER_TICKETS_CROWDFUNDING);
   }

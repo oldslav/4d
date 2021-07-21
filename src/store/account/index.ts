@@ -10,7 +10,6 @@ import {
   SET_OAUTH_TOKENS
 } from "src/store/constants/action-constants";
 import { SET_ACCOUNT, SET_EMPTY } from "src/store/constants/mutation-constants";
-import AuthService from "src/api/auth";
 import { IAccountState } from "src/store/account/state";
 
 const REFRESH_TOKEN_COOKIE = "PHPSESSID";
@@ -69,7 +68,7 @@ const actions: ActionTree<IAccountState, TRootState> = {
   },
 
   [ACCOUNT_CREATE] (ctx, payload) {
-    return AuthService.registration(payload);
+    return this.service.auth.registration(payload);
   },
 
   async [ACCOUNT_LOGIN] ({ dispatch }, payload = {
@@ -77,14 +76,14 @@ const actions: ActionTree<IAccountState, TRootState> = {
     password: "user",
     grant_type: "password"
   }) {
-    const { data } = await AuthService.login(formUrlEncoded(payload));
+    const { data } = await this.service.auth.login(formUrlEncoded(payload));
 
     dispatch(SET_OAUTH_TOKENS, data);
     await dispatch(GET_ACCOUNT);
   },
 
   async [GET_ACCOUNT] ({ commit }) {
-    const { data } = await AuthService.getAccount();
+    const { data } = await this.service.auth.getAccount();
     commit(SET_ACCOUNT, data);
   },
 
@@ -141,7 +140,7 @@ const actions: ActionTree<IAccountState, TRootState> = {
         grant_type: "refresh_token"
       });
 
-      const { data } = await AuthService.login(payload, { skipAuth: true });
+      const { data } = await this.service.auth.login(payload, { skipAuth: true });
 
       await dispatch(SET_OAUTH_TOKENS, data);
     }
