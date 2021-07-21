@@ -7,7 +7,6 @@ import {
   SET_NEW_PASSWORD_FORM_CONFIRM_PASSWORD
 } from "src/store/constants/mutation-constants";
 import { CHANGE_USER_PROFILE_PASSWORD } from "src/store/constants/action-constants";
-import { UserProfileService } from "src/api/user/profile";
 
 const state = (): INewPasswordFormState => ({
   oldPassword: null,
@@ -31,7 +30,7 @@ const mutations: MutationTree<INewPasswordFormState> = {
 
 const actions: ActionTree<INewPasswordFormState, TRootState> = {
   [CHANGE_USER_PROFILE_PASSWORD] ({ state }) {
-    return UserProfileService.changePassword(state);
+    return this.service.user.profile.changePassword(state);
   }
 };
 

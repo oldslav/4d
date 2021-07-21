@@ -40,15 +40,8 @@ declare module "vue/types/vue" {
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Store<S> {
-    $axios: AxiosInstance
-    REFRESH_PROMISE: null | Promise<void>
-  }
-}
-
-declare module "vuex/types/index" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Store<S> {
     $local: LocalStorage
+    $axios: AxiosInstance
   }
 }
 
@@ -80,18 +73,15 @@ const requestInterceptor = (store: Store<any>) => {
 };
 
 
-export default boot(({ app, ssrContext }) => {
-  const interceptor = requestInterceptor(app.store as Store<TRootState>);
+export default boot(({ app }) => {
+  const axiosInstance = axios.create();
 
-  const interceptorId = axios.interceptors.request.use(interceptor);
+  const interceptor = requestInterceptor(app.store as Store<TRootState>);
+  axiosInstance.interceptors.request.use(interceptor);
+
+  app.store.$axios = axiosInstance;
 
   if (app.store) {
     app.store.$local = LocalStorage;
-  }
-
-  if (process.env.SERVER) {
-    ssrContext.res.on("finish", function () {
-      axios.interceptors.request.eject(interceptorId);
-    });
   }
 });

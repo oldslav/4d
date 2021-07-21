@@ -46,9 +46,13 @@ export interface PaginationParams {
 }
 
 export class Service {
-  protected static api: AxiosInstance = axios;
+  protected api: AxiosInstance;
 
-  public static getFile (url: string): AxiosPromise<any> {
+  constructor (axios: AxiosInstance) {
+    this.api = axios;
+  }
+
+  public getFile (url: string): AxiosPromise<any> {
     return this.api.get(url, { responseType: "blob" });
   }
 }

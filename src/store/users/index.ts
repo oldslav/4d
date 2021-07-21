@@ -8,7 +8,6 @@ import {
   UPDATE_PAGINATION
 } from "src/store/constants/mutation-constants";
 import { ACCOUNT_BLOCK, ACCOUNT_SET_ROLES, ACCOUNT_UNBLOCK, GET_DATA } from "src/store/constants/action-constants";
-import { UsersService } from "src/api/users";
 
 const initialState = (): IUsersState => {
   return {
@@ -34,7 +33,7 @@ const mutations: MutationTree<IUsersState> = {
 
 const actions: ActionTree<IUsersState, TRootState> = {
   async [GET_DATA] ({ commit, state }) {
-    const { data } = await UsersService.getUsers({
+    const { data } = await this.service.users.getUsers({
       ...state.pagination,
       offset: state.pagination.offset - 1
     });
@@ -43,15 +42,15 @@ const actions: ActionTree<IUsersState, TRootState> = {
   },
 
   async [ACCOUNT_BLOCK] (_, id) {
-    await UsersService.blockUser(id);
+    await this.service.users.blockUser(id);
   },
 
   async [ACCOUNT_UNBLOCK] (_, id) {
-    await UsersService.unblockUser(id);
+    await this.service.users.unblockUser(id);
   },
 
   async [ACCOUNT_SET_ROLES] (_, { id, roles }) {
-    await UsersService.changeUserRoles(id, roles);
+    await this.service.users.changeUserRoles(id, roles);
   }
 };
 

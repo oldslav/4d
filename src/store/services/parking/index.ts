@@ -2,7 +2,6 @@ import { IServiceParkingState } from "src/store/types/parking";
 import { ActionTree, Module, MutationTree } from "vuex";
 import { SET_EMPTY, SET_PARKING_PLACE, SET_PARKING_PLACES } from "src/store/constants/mutation-constants";
 import { GET_PARKING_PLACES } from "src/store/constants/action-constants";
-import { ParkingService } from "src/api/services/parking";
 import { TRootState } from "src/store/types/root";
 
 const initialState = (): IServiceParkingState => {
@@ -22,7 +21,7 @@ const mutations: MutationTree<IServiceParkingState> = {
 
 const actions: ActionTree<IServiceParkingState, TRootState> = {
   async [GET_PARKING_PLACES] ({ commit, rootState }) {
-    const { data } = await ParkingService.getParkingPlaces(rootState.services.pickedFeatureId as number);
+    const { data } = await this.service.services.parking.getParkingPlaces(rootState.services.pickedFeatureId as number);
 
     const freePlaces = data.items.filter((item: any) => item.status.id === 1);
 

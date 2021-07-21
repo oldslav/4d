@@ -2,7 +2,6 @@ import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { SET_DATA, SET_PAID, SET_TICKET_ID } from "src/store/constants/mutation-constants";
 import { GET_DATA, GET_PAYMENT_LINK } from "src/store/constants/action-constants";
-import { BillsService } from "src/api/user/bills";
 import { IBillsState } from "src/store/types/user/bills";
 
 const state = (): IBillsState => ({
@@ -27,7 +26,7 @@ const mutations: MutationTree<IBillsState> = {
 
 const actions: ActionTree<IBillsState, TRootState> = {
   async [GET_DATA] ({ commit, state }) {
-    const { data } = await BillsService.getBillsApartments(state.filters);
+    const { data } = await this.service.user.bills.getBillsApartments(state.filters);
 
     commit(SET_DATA, {
       items: data
@@ -35,7 +34,7 @@ const actions: ActionTree<IBillsState, TRootState> = {
   },
 
   [GET_PAYMENT_LINK] (_, id) {
-    return BillsService.getPaymentLink(id);
+    return this.service.user.bills.getPaymentLink(id);
   }
 };
 

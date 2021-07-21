@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserVacancyState } from "src/store/types/user/tickets/vacancy";
-import { VacancyService } from "src/api/services/vacancy";
+
 import {
   EXPORT_USER_VACANCIES,
   FETCH_USER_VACANCY_BY_ID,
@@ -74,9 +74,11 @@ const actions: ActionTree<IUserVacancyState, TRootState> = {
       ...query || {}
     };
 
-    const getter = rootGetters.isUserLegal ? VacancyService.getForCompany : VacancyService.getForCurrentUser;
+    const getter = rootGetters.isUserLegal ?
+      this.service.services.vacancy.getForCompany :
+      this.service.services.vacancy.getForCurrentUser;
 
-    const { data } = await getter.call(VacancyService, params);
+    const { data } = await getter.call(this.service.services.vacancy, params);
 
     commit(SET_USER_VACANCIES, data);
   },
@@ -90,13 +92,13 @@ const actions: ActionTree<IUserVacancyState, TRootState> = {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data } = await VacancyService.exportVacancies(params);
+    const { data } = await this.service.services.vacancy.exportVacancies(params);
 
     // console.log(data);
   },
 
   async [FETCH_USER_VACANCY_BY_ID] ({ commit }, id) {
-    const { data } = await VacancyService.getVacancyById(id);
+    const { data } = await this.service.services.vacancy.getVacancyById(id);
 
     commit(SET_USER_VACANCY, data);
   }

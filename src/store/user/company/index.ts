@@ -15,7 +15,6 @@ import {
   UPDATE_COMPANY_CARD, UPDATE_COMPANY_LOGO,
   UPDATE_COMPANY_PROFILE
 } from "src/store/constants/action-constants";
-import { UserCompanyService } from "src/api/user/company";
 
 const state = (): ICompanyState => ({
   id: null,
@@ -75,7 +74,7 @@ const mutations: MutationTree<ICompanyState> = {
 
 const actions: ActionTree<ICompanyState, TRootState> = {
   [GET_COMPANY] ({ commit }) {
-    return UserCompanyService.getCompany()
+    return this.service.user.company.getCompany()
       .then(({ data }) => {
         const { id, isVerify, bankDetails, companyCard, companyProfile } = data;
         commit(SET_COMPANY_ID, id);
@@ -104,27 +103,27 @@ const actions: ActionTree<ICompanyState, TRootState> = {
       });
   },
   [UPDATE_COMPANY_PROFILE] ({ dispatch }, payload) {
-    return UserCompanyService.updateCompanyProfile(payload)
+    return this.service.user.company.updateCompanyProfile(payload)
       .then(() => dispatch(GET_COMPANY));
   },
   [UPDATE_COMPANY_LOGO] (_, payload) {
     const data = new FormData();
     data.append("file", payload);
-    return UserCompanyService.updateCompanyLogo(data)
+    return this.service.user.company.updateCompanyLogo(data)
       .then(() => {
         // set logo
       });
   },
   [UPDATE_COMPANY_BANK] ({ dispatch }, payload) {
-    return UserCompanyService.updateCompanyBank(payload)
+    return this.service.user.company.updateCompanyBank(payload)
       .then(() => dispatch(GET_COMPANY));
   },
   async [UPDATE_COMPANY_CARD] ({ dispatch }, { card, deletedIds }) {
     const { documents, ...payload } = card;
-    await UserCompanyService.updateCompanyCard(payload);
+    await this.service.user.company.updateCompanyCard(payload);
     const files = await dispatch("bundleFiles", documents, { root: true });
-    await Promise.all(deletedIds.map((id: number) => UserCompanyService.deleteCardFile(id)));
-    await Promise.all(files.map((f: any) => UserCompanyService.uploadCardFile(f)));
+    await Promise.all(deletedIds.map((id: number) => this.service.user.company.deleteCardFile(id)));
+    await Promise.all(files.map((f: any) => this.service.user.company.uploadCardFile(f)));
     dispatch(GET_COMPANY);
   }
 };

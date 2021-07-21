@@ -22,79 +22,79 @@ export interface TicketsResponse extends PaginationOutput {
 }
 
 export class TicketsService extends Service {
-  public static getTicketLiving (ticketId: string | number): AxiosPromise<any> {
+  public getTicketLiving (ticketId: string | number): AxiosPromise<any> {
     return this.api.get(`/api/v1/services/apartments/user/tickets/${ ticketId }`);
   }
 
-  public static getTicketsLiving (params: unknown): AxiosPromise<TicketsResponse> {
+  public getTicketsLiving (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/apartments/user/tickets", { params });
   }
 
-  public static getEmployeeTicketsLiving (params: unknown): AxiosPromise<any> {
+  public getEmployeeTicketsLiving (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/apartments/employee/tickets", { params });
   }
 
-  public static createTicketLiving (params: unknown): AxiosPromise<TicketsResponse> {
+  public createTicketLiving (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.post("/api/v1/services/apartments/user/tickets", params);
   }
 
-  public static createLegalTicketLiving (payload: unknown): AxiosPromise<any> {
+  public createLegalTicketLiving (payload: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/apartments/company/tickets", payload);
   }
 
-  public static addTicketLivingFile (id: number, params: unknown): AxiosPromise<TicketsResponse> {
+  public addTicketLivingFile (id: number, params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/file`, params);
   }
 
-  public static addTicketLivingNeighbor (id: number, payload: unknown): AxiosPromise<any> {
+  public addTicketLivingNeighbor (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ id }/neighbors`, payload);
   }
 
-  public static addTicketLivingNeighborFile (id: number, ticketId: number, file: unknown): AxiosPromise<any> {
+  public addTicketLivingNeighborFile (id: number, ticketId: number, file: unknown): AxiosPromise<any> {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ ticketId }/neighbors/${ id }/file`, file);
   }
 
-  public static deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
+  public deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
   }
 
-  public static requestApprovalLiving (id: number): AxiosPromise<any> {
+  public requestApprovalLiving (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/send_on_approval`);
   }
 
-  public static approveTicketLiving (id: number, payload: unknown): AxiosPromise<any> {
+  public approveTicketLiving (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/approve`, payload);
   }
 
-  public static choiceApartment (requestId: number | string, apartmentId: number | string): AxiosPromise<any> {
+  public choiceApartment (requestId: number | string, apartmentId: number | string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ requestId }/choice_apartments`, { apartmentId });
   }
 
-  public static viewedApartment (requestId: number | string, apartmentViewed: boolean): AxiosPromise<any> {
+  public viewedApartment (requestId: number | string, apartmentViewed: boolean): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ requestId }/viewing_apartments`, { apartmentViewed });
   }
 
-  public static rejectTicketLiving (id: number, reason: string): AxiosPromise<any> {
+  public rejectTicketLiving (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/reject`, reason);
   }
 
-  public static sendContractInfoLiving (id: number, payload: unknown): AxiosPromise<any> {
+  public sendContractInfoLiving (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
-  public static getTicketsParking (params: unknown): AxiosPromise<TicketsResponse> {
+  public getTicketsParking (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/parking/user/tickets", { params });
   }
 
-  public static getEmployeeTicketsParking (params: unknown): AxiosPromise<any> {
+  public getEmployeeTicketsParking (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/parking/employee/tickets", { params });
   }
 
-  public static createTicketParking (params: unknown): AxiosPromise<any> {
+  public createTicketParking (params: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/parking/user/tickets", params as AxiosRequestConfig);
   }
 
-  public static addTicketsParkingFile (id: number, file: unknown): AxiosPromise<any> {
+  public addTicketsParkingFile (id: number, file: unknown): AxiosPromise<any> {
     return this.api.post(
       `/api/v1/services/parking/user/tickets/${ id }/file`,
       file,
@@ -106,91 +106,91 @@ export class TicketsService extends Service {
     );
   }
 
-  public static requestApprovalParking (id: number): AxiosPromise<any> {
+  public requestApprovalParking (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/parking/user/tickets/${ id }/send_on_approval`);
   }
 
-  public static approveTicketParking (id: number): AxiosPromise<any> {
+  public approveTicketParking (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/approve`);
   }
 
-  public static rejectTicketParking (id: number, reason: string): AxiosPromise<any> {
+  public rejectTicketParking (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/reject`, reason);
   }
 
-  public static sendContractInfoParking (id: number, payload: unknown): AxiosPromise<any> {
+  public sendContractInfoParking (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
-  public static getTicketsIdeas (params: unknown): AxiosPromise<any> {
+  public getTicketsIdeas (params: unknown): AxiosPromise<any> {
     return this.api.get("api/v1/services/crowdsourcing/all", params as AxiosRequestConfig);
   }
 
-  public static createTicketWarehouse (payload: unknown): AxiosPromise<any> {
+  public createTicketWarehouse (payload: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/warehouse/user/tickets", payload);
   }
 
-  public static addTicketsWarehouseFile (id: number, file: unknown): AxiosPromise<any> {
+  public addTicketsWarehouseFile (id: number, file: unknown): AxiosPromise<any> {
     return this.api.post(`/api/v1/services/warehouse/user/tickets/${ id }/file`, file);
   }
 
-  public static deleteTicketWarehouse (id: number): AxiosPromise<TicketsResponse> {
+  public deleteTicketWarehouse (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/warehouse/user/tickets/${ id }/cancel`);
   }
 
-  public static getTicketsWarehouse (params: unknown): AxiosPromise<TicketsResponse> {
+  public getTicketsWarehouse (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/warehouse/user/tickets", { params });
   }
 
-  public static getWarehouseTicketById (id: number): AxiosPromise<any> {
+  public getWarehouseTicketById (id: number): AxiosPromise<any> {
     return this.api.get(`/api/v1/services/warehouse/user/tickets/${ id }`);
   }
 
-  public static getEmployeeTicketsWarehouse (params: unknown): AxiosPromise<any> {
+  public getEmployeeTicketsWarehouse (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/warehouse/employee/tickets", { params });
   }
 
-  public static requestApprovalWarehouse (id: number): AxiosPromise<any> {
+  public requestApprovalWarehouse (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/warehouse/user/tickets/${ id }/send_on_approval`);
   }
 
-  public static approveTicketWarehouse (id: number): AxiosPromise<any> {
+  public approveTicketWarehouse (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/approve`);
   }
 
-  public static getWarehousePaymentLink (id: number): AxiosPromise<any> {
+  public getWarehousePaymentLink (id: number): AxiosPromise<any> {
     return this.api.get(`/api/v1/services/warehouse/rent/contract/${ id }/payment`);
   }
 
-  public static rejectTicketWarehouse (id: number, reason: string): AxiosPromise<any> {
+  public rejectTicketWarehouse (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/reject`, reason);
   }
 
-  public static sendContractInfoWarehouse (id: number, payload: unknown): AxiosPromise<any> {
+  public sendContractInfoWarehouse (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
-  public static getParkingPayments (params: unknown): AxiosPromise<any> {
+  public getParkingPayments (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/payment/parking/user", params as AxiosRequestConfig);
   }
-  
-  public static getTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
+
+  public getTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/crowdfunding", { params });
   }
 
-  public static getEmployeeTicketsCrowdfunding (params: unknown): AxiosPromise<any> {
+  public getEmployeeTicketsCrowdfunding (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/crowdfunding", { params });
   }
 
-  public static approveTicketCrowdfunding (id: number): AxiosPromise<any> {
+  public approveTicketCrowdfunding (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/crowdfunding/${ id }/approve`);
   }
 
-  public static rejectTicketCrowdfunding (id: number, reason: string): AxiosPromise<any> {
+  public rejectTicketCrowdfunding (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/crowdfunding/${ id }/reject`, reason);
   }
 
-  public static deleteTicketCrowdfunding (id: number): AxiosPromise<TicketsResponse> {
+  public deleteTicketCrowdfunding (id: number): AxiosPromise<TicketsResponse> {
     return this.api.delete(`/api/v1/services/crowdfunding/${ id }`);
   }
 }

@@ -16,8 +16,6 @@ import {
   UPDATE_TICKET_APARTMENT_VIEWED,
   GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
 } from "src/store/constants/action-constants";
-import { TicketsService } from "src/api/user/tickets/tickets";
-import { Service } from "src/api/common";
 
 const state = (): IUserTicketsState => ({
   filters: null,
@@ -47,7 +45,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_LIVING] ({ state, commit }) {
     const { filters, pagination } = state;
 
-    const { data } = await TicketsService.getTicketsLiving({
+    const { data } = await this.service.user.tickets.getTicketsLiving({
       filters,
       ...pagination,
       offset: pagination.offset - 1
@@ -57,7 +55,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_USER_TICKET] ({ commit }, ticketId) {
-    const { data } = await TicketsService.getTicketLiving(ticketId);
+    const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
 
     data.documents = {
       passport: [],
@@ -69,7 +67,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
     await Promise.all(data.images.map(async (doc: any) => {
       const { imagePath, docType, fileName } = doc;
-      const { data: fileData } = await Service.getFile(imagePath);
+      const { data: fileData } = await this.service.common.getFile(imagePath);
       const file = new File([fileData], fileName, {
         type: fileData.type
       });
@@ -85,65 +83,65 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }); // no draft
 
-    const { data } = await TicketsService.getEmployeeTicketsLiving({ filters: f });
+    const { data } = await this.service.user.tickets.getEmployeeTicketsLiving({ filters: f });
 
     commit(SET_USER_TICKETS, data);
   },
 
   [REJECT_TICKET_LIVING] (_, { id, reason }) {
-    return TicketsService.rejectTicketLiving(id, reason);
+    return this.service.user.tickets.rejectTicketLiving(id, reason);
   },
 
   [APPROVE_TICKET_LIVING] (_, { id, payload }) {
-    return TicketsService.approveTicketLiving(id, payload);
+    return this.service.user.tickets.approveTicketLiving(id, payload);
   },
 
   async [UPDATE_TICKET_APARTMENT] (_, { requestId, apartmentId }) {
-    await TicketsService.choiceApartment(requestId, apartmentId);
+    await this.service.user.tickets.choiceApartment(requestId, apartmentId);
   },
 
   async [UPDATE_TICKET_APARTMENT_VIEWED] (_, { requestId, apartmentViewed }) {
-    await TicketsService.viewedApartment(requestId, apartmentViewed);
+    await this.service.user.tickets.viewedApartment(requestId, apartmentViewed);
   },
 
   async [DELETE_USER_TICKET_LIVING] ({ dispatch }, payload) {
-    await TicketsService.deleteTicketLiving(payload);
+    await this.service.user.tickets.deleteTicketLiving(payload);
 
     dispatch(GET_USER_TICKETS_LIVING);
   },
 
   async [CREATE_USER_TICKET_LIVING] (_, payload) {
-    const { data } = await TicketsService.createTicketLiving(payload);
+    const { data } = await this.service.user.tickets.createTicketLiving(payload);
 
     return data;
   },
 
   async [CREATE_LEGAL_TICKET_LIVING] ({ dispatch }, payload) {
     const { documents, ...rest } = payload;
-    const { data: { id } } = await TicketsService.createLegalTicketLiving(rest);
+    const { data: { id } } = await this.service.user.tickets.createLegalTicketLiving(rest);
     const files = await dispatch("bundleFiles", documents, { root: true });
 
     await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
   },
 
   async [ADD_USER_TICKET_FILE_LIVING] (_, { id, payload }) {
-    await TicketsService.addTicketLivingFile(id, payload);
+    await this.service.user.tickets.addTicketLivingFile(id, payload);
   },
 
   async [ADD_USER_TICKET_NEIGHBOR] ({ dispatch }, { ticketId, payload }) {
     const { documents, ...neighbor } = payload;
-    const { data: { id } } = await TicketsService.addTicketLivingNeighbor(ticketId, neighbor);
+    const { data: { id } } = await this.service.user.tickets.addTicketLivingNeighbor(ticketId, neighbor);
     const files = await dispatch("bundleFiles", documents, { root: true });
-    await Promise.all(files.map((f: any) => TicketsService.addTicketLivingNeighborFile(id, ticketId, f)));
+    await Promise.all(files.map((f: any) => this.service.user.tickets.addTicketLivingNeighborFile(id, ticketId, f)));
   },
 
   [REQUEST_APPROVAL_LIVING] ({ dispatch }, id) {
-    return TicketsService.requestApprovalLiving(id)
+    return this.service.user.tickets.requestApprovalLiving(id)
       .then(() => dispatch(GET_USER_TICKETS_LIVING));
   },
 
   [SEND_CONTRACT_INFO_LIVING] ({ dispatch }, { id, payload }) {
-    return TicketsService.sendContractInfoLiving(id, payload)
+    return this.service.user.tickets.sendContractInfoLiving(id, payload)
       .then(() => dispatch(GET_EMPLOYEE_TICKETS_LIVING));
   }
 };

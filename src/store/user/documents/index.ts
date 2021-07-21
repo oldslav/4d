@@ -10,8 +10,6 @@ import {
   GET_USER_DOCUMENTS, STORE_USER_DOCUMENTS, STORE_USER_NEIGHBORS, STORE_USER_VEHICLES,
   UPDATE_USER_DOCUMENTS
 } from "src/store/constants/action-constants";
-import { UserDocumentsService } from "src/api/user/documents";
-import { Service } from "src/api/common";
 
 const initialState = (): IDocumentsState => {
   return {
@@ -54,13 +52,13 @@ const actions: ActionTree<IDocumentsState, TRootState> = {
     dispatch(GET_USER_DOCUMENTS);
   },
   [CREATE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, TRootState>, document) {
-    return UserDocumentsService.createDocument(document);
+    return this.service.user.documents.createDocument(document);
   },
   [DELETE_USER_DOCUMENT] (ctx: ActionContext<IDocumentsState, TRootState>, id) {
-    return UserDocumentsService.deleteDocument(id);
+    return this.service.user.documents.deleteDocument(id);
   },
   async [GET_USER_DOCUMENTS] ({ dispatch }) {
-    const { data } = await UserDocumentsService.getDocuments();
+    const { data } = await this.service.user.documents.getDocuments();
     const { cars, neighbors, images } = data;
     await dispatch(STORE_USER_DOCUMENTS, images);
     dispatch(`user/vehicles/${ STORE_USER_VEHICLES }`, cars, { root: true });
@@ -70,7 +68,7 @@ const actions: ActionTree<IDocumentsState, TRootState> = {
     const result: any = initialState();
     await Promise.all(documents.map(async (doc: any) => {
       const { imagePath, docType, fileName } = doc;
-      const { data } = await Service.getFile(imagePath);
+      const { data } = await this.service.common.getFile(imagePath);
       const file = new File([data], fileName, { type: data.type });
       result.documents[docType.name].push(file);
     }));

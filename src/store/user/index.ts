@@ -10,7 +10,6 @@ import { profileForm, newPasswordForm } from "src/store/user/profile";
 import { IUserState } from "src/store/types/user";
 import { USER_LOGIN } from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_USER } from "src/store/constants/mutation-constants";
-import AuthService from "src/api/auth";
 
 const initialState = (): IUserState => {
   return {
@@ -46,7 +45,7 @@ const actions: ActionTree<IUserState, TRootState> = {
     payload.append("password", "user");
     payload.append("grant_type", "password");
 
-    const { data } = await AuthService.login(payload);
+    const { data } = await this.service.auth.login(payload);
 
     commit(SET_USER, data);
   }

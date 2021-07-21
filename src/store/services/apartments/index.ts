@@ -7,7 +7,6 @@ import {
 import { TRootState } from "src/store/types/root";
 import { GET_APARTMENTS } from "src/store/constants/action-constants";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { ApartmentsService } from "src/api/services/apartments";
 
 const initialState = (): IUserTicketsState => {
   return {
@@ -32,7 +31,7 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_APARTMENTS] ({ state, commit }, requestId) {
-    const { data } = await ApartmentsService.getApartmentsGeo({
+    const { data } = await this.service.services.apartments.getApartmentsGeo({
       requestId,
       ...state.pagination,
       offset: state.pagination.offset - 1

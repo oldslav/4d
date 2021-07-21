@@ -3,8 +3,6 @@ import { TRootState } from "src/store/types/root";
 import { GET_APARTMENTS_GEO, GET_PARKING_GEO } from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
-import { ParkingService } from "src/api/services/parking";
-import { ApartmentsService } from "src/api/services/apartments";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
@@ -27,7 +25,7 @@ const mutations: MutationTree<GeoState> = {
 
 const actions: ActionTree<GeoState, TRootState> = {
   async [GET_PARKING_GEO] ({ commit }) {
-    const { data } = await ParkingService.getParkingGeo();
+    const { data } = await this.service.services.parking.getParkingGeo();
     const { type, features } = data;
 
     const preparedData = {
@@ -54,7 +52,7 @@ const actions: ActionTree<GeoState, TRootState> = {
 
   async [GET_APARTMENTS_GEO] ({ commit }, requestId) {
     // TODO: Это не гео, но здесь должен быть гео в будущем
-    const { data } = await ApartmentsService.getApartmentsGeo(requestId);
+    const { data } = await this.service.services.apartments.getApartmentsGeo(requestId);
     const { type, features } = data;
 
     const preparedData = {
