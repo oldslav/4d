@@ -1,5 +1,6 @@
 <template lang="pug">
   BaseModal(
+    v-if="info"
     :value="value"
     position="standard"
     @input="toggleModal"
@@ -26,23 +27,29 @@
           | Данные об автомобиле
         .row.q-col-gutter-sm
           .col-12.col-md-4
-            q-input(readonly :label="$t('vehicle.type')" :value="info.vehicle.type.name" borderless)
+            q-input(readonly :label="$t('entity.vehicles.type')" :value="info.vehicle.type.name" borderless)
           .col-12.col-md-4
-            q-input(readonly :label="$t('vehicle.brand')" :value="info.vehicle.brand.name" borderless)
+            q-input(readonly :label="$t('entity.vehicles.brand')" :value="info.vehicle.brand.name" borderless)
           .col-12.col-md-4
-            q-input(readonly :label="$t('vehicle.model')" :value="info.vehicle.model.name" borderless)
+            q-input(readonly :label="$t('entity.vehicles.model')" :value="info.vehicle.model.name" borderless)
         .row.q-col-gutter-sm
           .col-12.col-md-4
-            q-input(readonly :label="$t('vehicle.plates')" :value="info.vehicle.number" borderless)
+            q-input(readonly :label="$t('entity.vehicles.plates')" :value="info.vehicle.number" borderless)
       q-separator
       q-card-section
         .text-medium.q-mb-sm
           | Тип аренды
         .row.q-col-gutter-sm
-          .col-12.col-md-10
-            q-input(readonly :value="info.price.name" borderless)
-          .col-12.col-md-2.row.justify-end
-            q-input.text-primary(readonly :value="ticketPrice" borderless)
+          template(v-if="info.price")
+            .col-12.col-md-10
+              q-input(readonly :value="info.price.name" borderless)
+            .col-12.col-md-2.row.justify-end
+              q-input.text-primary(readonly :value="ticketPrice" borderless)
+          template(v-else)
+            .col-12.col-md-10
+              q-input(readonly :value="info.parkingPlace.type.description" borderless)
+            .col-12.col-md-2.row.justify-end
+              q-input.text-primary(readonly :value="ticketPrice" borderless)
       q-separator
       q-card-section(v-if="contactsPresent")
         .text-medium.q-mb-sm
@@ -66,18 +73,19 @@
       },
       info: {
         type: Object,
-        default: () => ({})
+        default: null
       }
     },
     computed: {
       contactsPresent () {
         return !!this.info.contacts.phones.length || this.info.contacts.telegramAlias;
       },
+
       ticketPrice () {
         if (this.info && this.info.parkingPlace.type.id === 2) {
-          return $t("services.parking.rentTypes.social.price.title");
+          return this.$t("entity.services.parking.rentTypes.social.price.title");
         }
-        return `${ this.info.price.price }, руб.`;
+        return this.info.price && `${ this.info.price.price }, руб.`;
       }
     },
     methods: {
