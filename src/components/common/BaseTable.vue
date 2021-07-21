@@ -16,7 +16,7 @@
   )
     template(v-slot:loading)
       q-inner-loading(showing color="primary")
-    template(v-if="passedSlots.top" v-slot:top)
+    template(v-slot:top)
       slot(name="top")
     //template(v-slot:top-left)
     //  slot(name="top-left")
@@ -34,10 +34,6 @@
     props: {
       cardContainerClass: {
         type: String,
-        default: null
-      },
-      slots: {
-        type: Array,
         default: null
       },
       getData: {
@@ -80,12 +76,12 @@
         type: Boolean,
         default: false
       }
-    },
-    computed: {
-      passedSlots () {
-        return this.$refs.baseTable && this.$refs.baseTable.$slots || {};
-      }
     }
+    // computed: {
+    //   passedSlotTop () {
+    //     return this.$refs.baseTable.$slots.top;
+    //   }
+    // }
   };
 </script>
 
