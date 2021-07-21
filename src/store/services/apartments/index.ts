@@ -31,9 +31,10 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
-  async [GET_APARTMENTS] ({ state, commit }, requestId) {
-    const { data } = await ApartmentsService.getApartmentsGeo({
+  async [GET_APARTMENTS] ({ state, commit }, { requestId, buildingId }) {
+    const { data } = await ApartmentsService.getApartments({
       requestId,
+      buildingId,
       ...state.pagination,
       offset: state.pagination.offset - 1
     });

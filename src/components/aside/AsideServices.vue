@@ -42,7 +42,7 @@
               name: "services-apartments"
             },
             icon: "o_person",
-            show: this.isUserNature || this.isUserLegal
+            show: this.$route.query.requestId && this.isUserNature || this.isUserLegal
           },
           {
             label: this.$t("entity.services.commerce"),

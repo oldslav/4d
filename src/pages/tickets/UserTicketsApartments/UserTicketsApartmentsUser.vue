@@ -68,14 +68,6 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-    BaseModal(
-      v-model="isApartmentsListModal"
-      position="standard"
-    )
-      ApartmentsList(
-        :requestId="requestId"
-        @close="apartmentSelected"
-      )
 </template>
 
 <script>
@@ -95,14 +87,12 @@
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
   import BaseModal from "../../../components/common/BaseModal";
-  import ApartmentsList from "../../../components/services/apartments/ApartmentsList";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
 
   export default {
     name: "UserTicketsApartmentsUser",
     components: {
       BaseModal,
-      ApartmentsList,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
       UserTicketsApartmentProgressState,
@@ -115,7 +105,6 @@
     data () {
       return {
         isModalVisible: false,
-        isApartmentsListModal: false,
         requestId: null,
         expanded: [],
         currentRow: null,
@@ -190,14 +179,12 @@
       }),
 
       toApartments (requestId) {
-        this.isApartmentsListModal = true;
-        this.requestId = requestId;
-        // this.$router.push({
-        //   name: "services-apartments",
-        //   query: {
-        //     requestId
-        //   }
-        // });
+        this.$router.push({
+          name: "services-apartments",
+          query: {
+            requestId
+          }
+        });
       },
 
       async getUserTickets (props) {
@@ -214,15 +201,6 @@
       async apartmentViewed (requestId) {
         await this.setApartmentViewed({ requestId, apartmentViewed: true });
         await this.getUserTickets();
-      },
-
-      async apartmentSelected () {
-        await this.getUserTickets();
-        this.isApartmentsListModal = false;
-        this.$q.notify({
-          type: "positive",
-          message: this.$t("entity.services.living.chooseApartmentSuccess")
-        });
       },
 
       openDetails (data) {

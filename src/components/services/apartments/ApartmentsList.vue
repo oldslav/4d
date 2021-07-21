@@ -1,64 +1,67 @@
 <template lang="pug">
-  q-card.modal-container__wide.q-my-lg
-    q-card-section.row.q-col-gutter-md.items-start
-      BaseTable(
-        v-if="tableData"
-        grid
-        row-key="id"
-        :data="tableData"
-        :loading="isLoading"
-        :pagination="tablePagination"
-        :getData="getApartments"
-        card-container-class="cardContainerClass"
-      ).full-width
-        template(v-slot:item="props")
-          .col-12.col-sm-6.col-md-6
-            q-card.row.bg-white.q-ma-sm.q-pa-md.apartments-list-item
-              q-card-section.col-12.col-sm-6.col-md-6.full-height
-                q-img(:src="imagePlan(props.row.plan)" :ratio="16/9" contain).full-height
-              q-card-section.col-12.col-sm-6.col-md-6
-                h5.q-mt-none.text-subtitle {{ $t("entity.services.living.apartment") }} № {{ props.row.number }}
+  q-layout(view="Lhh lpR fff" container).modal-container__wide
+    q-page-container
+      q-page
+        q-card.q-my-lg
+          q-card-section.row.q-col-gutter-md.items-start
+            BaseTable(
+              v-if="tableData"
+              grid
+              row-key="id"
+              :data="tableData"
+              :loading="isLoading"
+              :pagination="tablePagination"
+              :getData="getApartments"
+              card-container-class="cardContainerClass"
+            )
+              template(v-slot:item="props")
+                .col-12.col-sm-6.col-md-6
+                  q-card.row.bg-white.q-ma-sm.q-pa-md.apartments-list-item
+                    q-card-section.col-12.col-sm-6.col-md-6.full-height
+                      q-img(:src="imagePlan(props.row.plan)" :ratio="16/9" contain).full-height
+                    q-card-section.col-12.col-sm-6.col-md-6
+                      h5.q-mt-none.text-subtitle {{ $t("entity.services.living.apartment") }} № {{ props.row.number }}
 
-                .info-table
-                  q-item(dense).q-pa-none.info-table-item
-                    q-item-section
-                      | {{ $t("common.quantity.area") }}
-                    q-item-section(side)
-                      span {{ props.row.number }}
+                      .info-table
+                        q-item(dense).q-pa-none.info-table-item
+                          q-item-section
+                            | {{ $t("common.quantity.area") }}
+                          q-item-section(side)
+                            span {{ props.row.number }}
 
-                  q-item(dense).q-pa-none.info-table-item
-                    q-item-section
-                      | {{ $t("common.quantity.rooms") }}
-                    q-item-section(side)
-                      span {{ props.row.rooms }}
+                        q-item(dense).q-pa-none.info-table-item
+                          q-item-section
+                            | {{ $t("common.quantity.rooms") }}
+                          q-item-section(side)
+                            span {{ props.row.rooms }}
 
-                  q-item(dense).q-pa-none.info-table-item
-                    q-item-section
-                      | {{ $t("common.quantity.entrance") }}
-                    q-item-section(side)
-                      span {{ props.row.entrance }}
+                        q-item(dense).q-pa-none.info-table-item
+                          q-item-section
+                            | {{ $t("common.quantity.entrance") }}
+                          q-item-section(side)
+                            span {{ props.row.entrance }}
 
-                  q-item(dense).q-pa-none.info-table-item
-                    q-item-section
-                      | {{ $t("common.quantity.floor") }}
-                    q-item-section(side)
-                      span {{ props.row.floor }}
+                        q-item(dense).q-pa-none.info-table-item
+                          q-item-section
+                            | {{ $t("common.quantity.floor") }}
+                          q-item-section(side)
+                            span {{ props.row.floor }}
 
-                q-separator.q-mt-md
+                      q-separator.q-mt-md
 
-                q-item(dense).q-pa-none
-                  q-item-section.text-primary
-                    | {{ $t("common.rentPrice") }}
-                  q-item-section(side)
-                    span {{ props.row.price }}
+                      q-item(dense).q-pa-none
+                        q-item-section.text-primary
+                          | {{ $t("common.rentPrice") }}
+                        q-item-section(side)
+                          span {{ props.row.price }}
 
-                .row.q-gutter-md.q-mt-sm
-                  //q-btn(:label="$t('action.details')" color="primary" outline).col
-                  q-btn(
-                    :label="$t('action.rent')"
-                    color="primary"
-                    @click="setTicketApartment(props.row.id)"
-                  ).col
+                      .row.q-gutter-md.q-mt-sm
+                        //q-btn(:label="$t('action.details')" color="primary" outline).col
+                        q-btn(
+                          :label="$t('action.rent')"
+                          color="primary"
+                          @click="setTicketApartment(props.row.id)"
+                        ).col
 </template>
 
 <script>
@@ -76,6 +79,10 @@
       requestId: {
         type: [Number, String],
         required: true
+      },
+      buildingId: {
+        type: [Number, String],
+        default: null
       },
       innerLimit: {
         type: Number,
@@ -132,6 +139,7 @@
       },
 
       async getApartments (props) {
+        const { requestId, buildingId } = this;
         if (props) {
           const { pagination: { page, rowsPerPage } } = props;
 
@@ -139,7 +147,7 @@
           this.offset = page;
         }
 
-        await this.GET_APARTMENTS(this.requestId);
+        await this.GET_APARTMENTS({ requestId, buildingId });
       }
     }
   };

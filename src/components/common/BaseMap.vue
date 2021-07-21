@@ -17,6 +17,7 @@
             :data="data"
             :entities="entities"
           )
+      q-inner-loading(:showing="isLoading")
 </template>
 
 <script>
@@ -37,7 +38,8 @@
         show: true,
         options: {},
         entities: [],
-        geoJson: null
+        geoJson: null,
+        isLoading: true
       };
     },
     computed: {
@@ -48,13 +50,14 @@
       }
     },
     methods: {
-      onReadyViewer (){
+      onReadyViewer () {
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
       },
 
-      onDatasourceReady ({ viewer, cesiumObject }) {
-        viewer.zoomTo(cesiumObject);
+      async onDatasourceReady ({ viewer, cesiumObject }) {
+        await viewer.zoomTo(cesiumObject);
+        this.isLoading = false;
       },
 
       entitySelected (e) {
