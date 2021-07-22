@@ -420,7 +420,18 @@
         }
       },
       "ideas": "Ideas and suggestions",
-      "crowdfunding": "Crowdfunding",
+      "crowdfunding": {
+        "title": "Краудфандинг",
+        "form": {
+          "title": "Название проекта",
+          "description": "Добавьте краткое описание проекта",
+          "dates": {
+            "title": "Выберите сроки реализации проекта",
+            "input": "Сроки реализации"
+          },
+          "category": "Категория"
+        }
+      },
       "employmentCenter": "Employment center",
       "light": "Light",
       "tress": "Tress",

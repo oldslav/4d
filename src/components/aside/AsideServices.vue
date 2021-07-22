@@ -77,6 +77,14 @@
             show: this.isUserNature
           },
           {
+            label: this.$t("entity.services.crowdfunding.title"),
+            action: {
+              name: "services-crowdfunding"
+            },
+            icon: "o_article",
+            show: this.isUserNature
+          },
+          {
             label: this.$t("entity.services.vacancies.title"),
             action: {
               name: "services-vacancies"
