@@ -232,6 +232,8 @@
     "register": "Register",
     "back": "Back",
     "save": "Save",
+    "clear": "Clear",
+    "close": "Close",
     "send": "Send",
     "cancel": "Cancel",
     "delete": "Delete",

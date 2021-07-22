@@ -3,7 +3,8 @@ import { PaginationOutput, Service } from "src/api/common";
 import { VacancyReferencesEnum } from "src/store/types/vacancy";
 
 export interface IVacancy {
-
+  id: number;
+  respondIsPresent: boolean;
 }
 
 export interface IVacancyReference {
@@ -30,6 +31,10 @@ export class VacancyService extends Service {
 
   public getForCompany (params: unknown): AxiosPromise<IVacanciesResponse> {
     return this.api.get("/api/v1/services/vacancy/company", { params });
+  }
+
+  public getUserResponds (params: Record<string, any>): AxiosPromise{
+    return this.api.get("/api/v1/services/vacancy/respond/user", { params });
   }
 
   public createVacancy (values: unknown): AxiosPromise<never> {
@@ -70,5 +75,29 @@ export class VacancyService extends Service {
 
   public attachRespondFile (respondId: number, payload: FormData): AxiosPromise {
     return this.api.post(`/api/v1/services/vacancy/respond/${ respondId }/file`, payload);
+  }
+
+  public getVacancyRespondsForCompany (vacancyId: number, params?: Record<string, any>): AxiosPromise {
+    return this.api.get(`/api/v1/services/vacancy/${ vacancyId }/respond/company`, { params });
+  }
+
+  public rejectVacancyCandidate (candidateId: number, reason: string): AxiosPromise {
+    return this.api.put(`/api/v1/services/vacancy/respond/${ candidateId }/reject`, reason);
+  }
+
+  public inviteVacancyCandidate (candidateId: number, text: string): AxiosPromise {
+    return this.api.put(`/api/v1/services/vacancy/respond/${ candidateId }/invite_for_interview`,text);
+  }
+
+  public interviewPassed (candidateId: number): AxiosPromise {
+    return this.api.put(`/api/v1/services/vacancy/respond/${ candidateId }/interview_success`);
+  }
+
+  public sendOffer (candidateId: number): AxiosPromise {
+    return this.api.put(`/api/v1/services/vacancy/respond/${ candidateId }/job_offer`);
+  }
+
+  public viewRespond (respondId: number): AxiosPromise {
+    return this.api.get(`/api/v1/services/vacancy/respond/${ respondId }`);
   }
 }

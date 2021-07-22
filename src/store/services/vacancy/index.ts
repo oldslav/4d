@@ -12,7 +12,12 @@ import {
   PUBLISH_VACANCY,
   SEARCH_VACANCY,
   RESPOND_VACANCY,
-  FETCH_VACANCY
+  FETCH_VACANCY,
+  REJECT_VACANCY_CANDIDATE,
+  INVITE_VACANCY_CANDIDATE,
+  CANDIDATE_INTERVIEW_PASSED,
+  SEND_CANDIDATE_JOB_OFFER,
+  VIEW_RESPOND
 } from "src/store/constants/action-constants";
 import {
   SET_SEARCH_VACANCY_ERROR,
@@ -48,6 +53,19 @@ const mutations: MutationTree<IServiceVacancyState> = {
   // non constant, private setter
   setExistsReferences (state: IServiceVacancyState, isExists) {
     state.isExistsReferences = isExists;
+  },
+
+  // private mutation
+  RESPOND_VACANCY (state: IServiceVacancyState, id) {
+    const listVacancy = state.vacancies.items.find(x => x.id === id);
+
+    if (listVacancy) {
+      listVacancy.respondIsPresent = true;
+    }
+
+    if (state.currentVacancy && state.currentVacancy.id === id) {
+      state.currentVacancy.respondIsPresent = true;
+    }
   },
 
   [SET_VACANCY_REFERENCES] (state: IServiceVacancyState, references: TVacancyReferencesResponse) {
@@ -119,7 +137,7 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
     return vacancy;
   },
 
-  async [RESPOND_VACANCY] (ctx, { id, payload }) {
+  async [RESPOND_VACANCY] ({ commit }, { id, payload }) {
     const { resumeFile } = payload;
     delete payload.resumeFile;
 
@@ -131,6 +149,32 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
       await this.service.services.vacancy.attachRespondFile(respond.id, formData);
     }
 
+    commit("RESPOND_VACANCY", id);
+    return respond;
+  },
+
+  async [REJECT_VACANCY_CANDIDATE] (ctx, { id, reason }) {
+    const { data: vacancy } = await this.service.services.vacancy.rejectVacancyCandidate(id, reason);
+    return vacancy;
+  },
+
+  async [INVITE_VACANCY_CANDIDATE] (ctx, { id, text }) {
+    const { data: vacancy } = await this.service.services.vacancy.inviteVacancyCandidate(id, text);
+    return vacancy;
+  },
+
+  async [CANDIDATE_INTERVIEW_PASSED] (ctx, id) {
+    const { data: vacancy } = await this.service.services.vacancy.interviewPassed(id);
+    return vacancy;
+  },
+
+  async [SEND_CANDIDATE_JOB_OFFER] (ctx, id) {
+    const { data: vacancy } = await this.service.services.vacancy.sendOffer(id);
+    return vacancy;
+  },
+
+  async [VIEW_RESPOND] (ctx, respondId) {
+    const { data: respond } = await this.service.services.vacancy.viewRespond(respondId);
     return respond;
   }
 };

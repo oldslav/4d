@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosPromise } from "axios";
+import { AxiosInstance, AxiosPromise } from "axios";
 
 interface Aggregates {
   [key: string]: any;

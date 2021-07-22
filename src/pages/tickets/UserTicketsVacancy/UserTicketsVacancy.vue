@@ -56,7 +56,7 @@
         @vacancy:reject="handleRejectVacancy"
       )
 
-      user-vacancy-tickets-table(v-else v-bind="getTableProps")
+      user-vacancy-responds-table(v-else v-bind="getTableProps")
 
       q-inner-loading(v-else showing)
 
@@ -68,38 +68,38 @@
   import { VacancyReferencesEnum } from "../../../store/types/vacancy";
   import BaseInput from "../../../components/common/BaseInput";
   import BaseTable from "../../../components/common/BaseTable";
-  import VacancyTickerStatus from "../../../components/user/tickets/vacancy/VacancyTickerStatus";
   import UserTicketsVacancyNewVacancyModal
     from "../../../components/user/tickets/vacancy/UserTicketsVacancyNewVacancyModal";
   import {
-    CLOSE_VACANCY, EXPORT_USER_VACANCIES,
+    CLOSE_VACANCY,
+    EXPORT_USER_VACANCIES,
     GET_USER_VACANCY,
-    GET_VACANCY_REFERENCES, PUBLISH_VACANCY,
+    GET_VACANCY_REFERENCES,
+    PUBLISH_VACANCY,
     REJECT_VACANCY
   } from "../../../store/constants/action-constants";
   import DateRangePicker from "../../../components/common/DateRangePicker";
-  import UserVacancyTicketsTable from "../../../components/user/tickets/vacancy/table/UserVacancyTicketsTable";
   import LegalUserVacancyTicketsTable
     from "../../../components/user/tickets/vacancy/table/LegalUserVacancyTicketsTable";
   import ManagerUserVacancyTicketsTable
     from "../../../components/user/tickets/vacancy/table/ManagerUserVacancyTicketsTable";
+  import UserVacancyRespondsTable from "../../../components/user/tickets/vacancy/table/UserVacancyRespondsTable";
 
   export default {
     name: "UserTicketsVacancy",
     components: {
+      UserVacancyRespondsTable,
       ManagerUserVacancyTicketsTable,
       LegalUserVacancyTicketsTable,
-      UserVacancyTicketsTable,
       DateRangePicker,
-      VacancyTickerStatus,
       BaseInput,
       BaseTable,
       UserTicketsVacancyNewVacancyModal
     },
-    created () {
+    preFetch ({ store }){
       return Promise.all([
-        this.fetchTickets(),
-        this.fetchVacancyReferences()
+        store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`),
+        store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`)
       ]);
     },
     data () {

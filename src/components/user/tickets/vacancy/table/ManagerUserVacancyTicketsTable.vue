@@ -25,7 +25,7 @@
           | {{  props.row.closedDate | formatDate }}
 
         q-td(key="status" :props="props")
-          vacancy-ticker-status(:value="props.row.status")
+          vacancy-ticket-status(:value="props.row.status")
 
         q-td(auto-width key="actions" :props="props")
           q-btn(flat round dense icon="more_vert")
@@ -43,15 +43,14 @@
                 )
                   q-item-section(no-wrap)
                     | Отправить на доработку
-
 </template>
 <script>
   import BaseTable from "../../../../common/BaseTable";
-  import VacancyTickerStatus from "../VacancyTickerStatus";
+  import VacancyTicketStatus from "../status/VacancyTicketStatus";
   import { VacancyStatusesEnum } from "../../../../../store/types/vacancy";
 
   export default {
-    components: { BaseTable, VacancyTickerStatus },
+    components: { BaseTable, VacancyTicketStatus },
     props: {
       pagination: { type: Object, default:() => ({}) },
       data: { type: Object, default:() => ({}) },

@@ -221,7 +221,7 @@ const routes: RouteConfig[] = [
             path: ":id/candidates",
             name: "user-tickets-vacancy-candidates",
             components: {
-              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserTicketsVacancyInfo.vue")
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserVacancyCandidates.vue")
             },
             meta: {
               toolbar: true,
