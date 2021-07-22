@@ -34,13 +34,13 @@
     computed: {
       nameRules () {
         return [
-          val => !!val || this.$t("common.error.validation.required"),
+          val => !!val,
           ...this.nameMask
         ];
       },
       nameMask () {
         return [
-          val => /^([A-zА-я-])+$/.test(val) || this.$t("common.error.validation.letters")
+          val => /^([A-zА-я-])+$/.test(val)
         ];
       },
       isChanged () {
