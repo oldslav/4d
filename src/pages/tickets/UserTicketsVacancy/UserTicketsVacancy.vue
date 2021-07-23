@@ -8,7 +8,13 @@
       div.row.flex-break.items-center.q-mb-lg-lg(v-if="!isUserNature")
         div.col-md-9
           q-input(
-            v-model="filter.query" outlined dense placeholder='Поиск по названию')
+            v-model="filter.query"
+            @input.native="onTypingQuery"
+            debounce="500"
+            outlined
+            dense
+            placeholder='Поиск по названию'
+          )
         div.col-md-3.q-pl-lg
           q-btn.float-right.full-width(
             v-if="isUserLegal"
@@ -124,6 +130,7 @@
     data () {
       return {
         isVisibleCreateModal: false,
+        isTypingQuery: false,
         filter: {
           dateRange: { "from": null, "to": null },
           query: "",
@@ -166,8 +173,7 @@
         ];
       },
       isLoading () {
-        return this.$store.state.wait[`user/tickets/vacancy/${ GET_USER_VACANCY }`] ||
-          this.$store.state.wait[`services/vacancy/${ GET_VACANCY_REFERENCES }`];
+        return this.$store.state.wait[`user/tickets/vacancy/${ GET_USER_VACANCY }`] || this.isTypingQuery;
       },
       getClosureReasonsOptions () {
         return this.getVacancyReferences[VacancyReferencesEnum.closureReason]
@@ -185,6 +191,10 @@
         closeVacancyById: CLOSE_VACANCY,
         publishVacancyById: PUBLISH_VACANCY
       }),
+
+      onTypingQuery (){
+        this.isTypingQuery = true;
+      },
 
       getVacancyFilter () {
         const { filter } = this;
@@ -210,11 +220,13 @@
       },
 
       fetchTickets () {
-        return this.getUserTickets({ query: this.getVacancyFilter() });
+        this.getUserTickets({ query: this.getVacancyFilter() });
+        this.isTypingQuery = false;
       },
 
       getDataForTable ({ pagination }) {
-        return this.getUserTickets({ pagination, query: this.getVacancyFilter() });
+        this.getUserTickets({ pagination, query: this.getVacancyFilter() });
+        this.isTypingQuery = false;
       },
 
       onCreateVacancy () {
