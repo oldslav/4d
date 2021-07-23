@@ -1,32 +1,34 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"
+      :is-loading="isLoading"
+      :pagination="tablePagination"
     )
       template(v-slot:body="props")
-        q-tr(:props="props")
-          q-td(key="fullname" :props="props" @click="expandRow(props)")
+        q-tr(:props="props"  @click="expandRow(props)")
+          q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
-          q-td(key="parkingAddress" :props="props" @click="expandRow(props)")
+          q-td(key="parkingAddress" :props="props")
             | {{props.row.parkingPlace.address}}
-          q-td(key="parkingNumber" :props="props" @click="expandRow(props)")
+          q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
-          q-td(key="type" :props="props" @click="expandRow(props)")
+          q-td(key="type" :props="props")
             | {{props.row.parkingPlace.type.description}}
-          q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
+          q-td(key="created" :props="props")
+            | {{ props.row.created | ticketDate }}
+          q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
             q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click="onTicketReject(props.row.id)")
             q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onTicketApprove(props.row.id)")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
@@ -55,7 +57,7 @@
               )
             div(v-if="props.row.status.id === 3").q-pa-md
               div.text-body1.text-wrap
-                  | Для продолжения оформления документов дождитесь оплаты.
+                | Для продолжения оформления документов дождитесь оплаты.
             div(v-if="props.row.status.id === 7").q-pa-md
               div.text-body1.text-wrap
                 | Договор подписан.
@@ -109,29 +111,37 @@
                   @click="sendContractInfo(props.row.id)"
                 )
 
-    q-inner-loading(v-else showing)
     TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
-  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
-  import BaseTable from "components/common/BaseTable";
-  import BaseInput from "components/common/BaseInput";
-  import BaseDatepicker from "components/common/BaseDatepicker";
+  import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     GET_EMPLOYEE_TICKETS_PARKING,
     APPROVE_TICKET_PARKING,
     REJECT_TICKET_PARKING,
     SEND_CONTRACT_INFO_PARKING
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
+  import BaseTable from "components/common/BaseTable";
+  import BaseInput from "components/common/BaseInput";
+  import BaseDatepicker from "components/common/BaseDatepicker";
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
 
   export default {
     name: "EmployeeTicketsParking",
-    components: { ApartmentsEmployeeDetailsModal, BaseTable, BaseInput, BaseDatepicker, ApartmentTicketStatus, TicketDetailsModal },
+    components: {
+      ApartmentsEmployeeDetailsModal,
+      BaseTable,
+      BaseInput,
+      BaseDatepicker,
+      ApartmentTicketStatus,
+      TicketDetailsModal
+    },
     async created () {
       await this.getEmployeeTickets();
     },
@@ -146,35 +156,31 @@
           {
             name: "fullname",
             required: true,
-            label: "Full name",
-            align: "left",
-            sortable: true
+            label: this.$t("common.fullname"),
+            align: "left"
           },
           {
             name: "parkingAddress",
             required: false,
-            label: "Address",
-            align: "left",
-            sortable: true
+            label: this.$t("common.address"),
+            align: "left"
           },
           {
             name: "parkingNumber",
             required: false,
-            label: "Number",
-            align: "left",
-            sortable: true
+            label: this.$t("common.number"),
+            align: "left"
           },
           {
             name: "type",
             required: false,
-            label: "Parking type",
-            align: "left",
-            sortable: true
+            label: this.$t("common.type"),
+            align: "left"
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
             format: val => moment(val).format("DD.MM.YYYY"),
@@ -183,7 +189,7 @@
           {
             name: "status",
             required: true,
-            label: "Ticket status",
+            label: this.$t("common.status"),
             align: "left",
             sortable: true
           },
@@ -204,22 +210,39 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/parking", {
-        data: state => state.data
+      ...mapGetters("user/tickets/parking", ["tableData", "tablePagination"]),
+      ...mapFields("user/tickets/parking", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
       }),
       isContractInfoFilled () {
         return !!this.contractInfo.contractNumber
           && !!this.contractInfo.dateContractConcluded
           && !!this.contractInfo.dateContractExpire;
+      },
+      isLoading () {
+        return this.$store.state.wait[`user/tickets/parking/${ GET_EMPLOYEE_TICKETS_PARKING }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/parking", {
-        getEmployeeTickets: GET_EMPLOYEE_TICKETS_PARKING,
+        GET_EMPLOYEE_TICKETS_PARKING,
         REJECT_TICKET_PARKING,
         APPROVE_TICKET_PARKING,
         SEND_CONTRACT_INFO_PARKING
       }),
+
+      async getEmployeeTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_EMPLOYEE_TICKETS_PARKING();
+      },
 
       onTicketReject (id) {
         this.$q.dialog({
@@ -320,9 +343,7 @@
               message: $t("user.tickets.contract.sendFail")
             });
           });
-      },
-
-      moment
+      }
     }
   };
 </script>

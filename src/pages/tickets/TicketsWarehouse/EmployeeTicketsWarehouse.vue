@@ -1,32 +1,34 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"
+      :pagination="tablePagination"
+      :is-loading="isLoading"
     )
       template(#body="props")
-        q-tr(:props="props")
-          q-td(key="fullname" :props="props" @click="expandRow(props)")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
-          q-td(key="warehouseAddress" :props="props" @click="expandRow(props)")
+          q-td(key="warehouseAddress" :props="props")
             | ул. Спортивная, 130, паркинг
-          q-td(key="warehouseType" :props="props" @click="expandRow(props)")
+          q-td(key="warehouseType" :props="props")
             | {{ props.row.serviceOption.service.name }}
-          q-td(key="price" :props="props" @click="expandRow(props)")
+          q-td(key="price" :props="props")
             | {{ props.row.serviceOption.price ? props.row.serviceOption.price : "0" }}
-          q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
+          q-td(key="created" :props="props")
+            | {{ props.row.created | ticketDate }}
+          q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
             q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click="onTicketReject(props.row.id)")
             q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onTicketApprove(props.row.id)")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
@@ -107,23 +109,24 @@
                     :label="$t('user.tickets.actions.next')"
                     @click="sendContractInfo(props.row.id)"
                   )
-    q-inner-loading(v-else showing)
     TicketWarehouseDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
-  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import BaseTable from "components/common/BaseTable";
-  import BaseInput from "components/common/BaseInput";
-  import BaseDatepicker from "components/common/BaseDatepicker";
+  import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     GET_EMPLOYEE_TICKETS_WAREHOUSE,
     APPROVE_TICKET_WAREHOUSE,
     REJECT_TICKET_WAREHOUSE,
     SEND_CONTRACT_INFO_WAREHOUSE
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import BaseTable from "components/common/BaseTable";
+  import BaseInput from "components/common/BaseInput";
+  import BaseDatepicker from "components/common/BaseDatepicker";
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
   import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
 
@@ -150,35 +153,31 @@
           {
             name: "fullname",
             required: true,
-            label: "Full name",
-            align: "left",
-            sortable: true
+            label: this.$t("common.fullname"),
+            align: "left"
           },
           {
             name: "warehouseAddress",
             required: false,
-            label: "Address",
-            align: "left",
-            sortable: true
+            label: this.$t("common.address"),
+            align: "left"
           },
           {
             name: "warehouseType",
             required: false,
-            label: "Type",
-            align: "left",
-            sortable: true
+            label: this.$t("common.type"),
+            align: "left"
           },
           {
             name: "price",
             required: false,
-            label: "Price, rub",
-            align: "left",
-            sortable: true
+            label: this.$t("common.rentPrice"),
+            align: "left"
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
             format: val => moment(val).format("DD.MM.YYYY"),
@@ -187,7 +186,7 @@
           {
             name: "status",
             required: true,
-            label: "Ticket status",
+            label: this.$t("common.status"),
             align: "left",
             sortable: true
           },
@@ -208,8 +207,11 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/warehouse", {
-        data: state => state.data
+      ...mapGetters("user/tickets/warehouse", ["tablePagination", "tableData"]),
+      ...mapFields("user/tickets/warehouse", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
       }),
       isContractInfoFilled () {
         return !!this.contractInfo.number
@@ -218,15 +220,29 @@
       },
       loadingContract () {
         return this.$store.state.wait[`user/tickets/warehouse/${ SEND_CONTRACT_INFO_WAREHOUSE }`];
+      },
+      isLoading (){
+        return this.$store.state.wait[`user/tickets/warehouse/${ GET_EMPLOYEE_TICKETS_WAREHOUSE }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/warehouse", {
-        getEmployeeTickets: GET_EMPLOYEE_TICKETS_WAREHOUSE,
+        GET_EMPLOYEE_TICKETS_WAREHOUSE,
         REJECT_TICKET_WAREHOUSE,
         APPROVE_TICKET_WAREHOUSE,
         SEND_CONTRACT_INFO_WAREHOUSE
       }),
+
+      async getEmployeeTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_EMPLOYEE_TICKETS_WAREHOUSE();
+      },
 
       onTicketReject (id) {
         this.$q.dialog({
@@ -313,9 +329,7 @@
               message: this.$t("user.tickets.contract.sendFail")
             });
           });
-      },
-
-      moment
+      }
     }
   };
 </script>

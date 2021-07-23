@@ -111,6 +111,7 @@
     "status": "Статус",
     "id": "ID",
     "name": "Имя",
+    "fullname": "ФИО",
     "email": "Email",
     "phone": "Телефон",
     "telegram": "Телеграм",

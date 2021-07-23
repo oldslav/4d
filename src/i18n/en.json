@@ -111,6 +111,7 @@
     "status": "Status",
     "id": "ID",
     "name": "Name",
+    "fullname": "Full name",
     "email": "Email",
     "phone": "Phone",
     "telegramAlias": "Telegram",

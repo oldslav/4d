@@ -79,11 +79,15 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination } = state;
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }); // no draft
 
-    const { data } = await this.service.user.tickets.getEmployeeTicketsLiving({ filters: f });
+    const { data } = await this.service.user.tickets.getEmployeeTicketsLiving({
+      filters: f,
+      ...pagination,
+      offset: pagination.offset - 1
+    });
 
     commit(SET_USER_TICKETS, data);
   },
@@ -148,13 +152,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
   tableData (state) {
-    const { data } = state;
-
-    if (data) {
-      return {
-        items: data.items
-      };
-    }
+    return state.data;
   },
 
   tablePagination (state) {

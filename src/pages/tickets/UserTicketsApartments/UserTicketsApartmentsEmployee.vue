@@ -1,12 +1,14 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
-      :data="data"
+      :data="tableData"
       :columns="columns"
+      :is-loading="isLoading"
       :getData="getEmployeeTickets"
       :expanded.sync="expanded"
+      :pagination="tablePagination"
     )
       template(#body="props")
         q-tr(:props="props" @click="expandRow(props)")
@@ -17,7 +19,7 @@
           q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props")
-            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
+            | {{ props.row.created | ticketDate }}
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
@@ -46,18 +48,19 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-    q-inner-loading(v-else showing)
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
     ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :info="activeRow" v-if="activeRow" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     APPROVE_TICKET_LIVING,
     GET_EMPLOYEE_TICKETS_LIVING, REJECT_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
   import BaseTable from "components/common/BaseTable";
@@ -88,28 +91,25 @@
           {
             name: "fullname",
             required: true,
-            label: "Full name",
-            align: "left",
-            sortable: true
+            label: this.$t("common.fullname"),
+            align: "left"
           },
           {
             name: "address",
             required: false,
-            label: "Address",
-            align: "left",
-            sortable: true
+            label: this.$t("common.address"),
+            align: "left"
           },
           {
             name: "price",
             required: false,
-            label: "Price",
-            align: "left",
-            sortable: true
+            label: this.$t("common.rentPrice"),
+            align: "left"
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
             format: val => moment(val).format("DD.MM.YYYY"),
@@ -118,7 +118,7 @@
           {
             name: "status",
             required: true,
-            label: "Ticket status",
+            label: this.$t("common.status"),
             align: "left",
             sortable: true
           },
@@ -134,18 +134,35 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/living", {
-        data: state => state.data
-      })
+      ...mapGetters("user/tickets/living", ["tableData", "tablePagination"]),
+      ...mapFields("user/tickets/living", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
+      isLoading () {
+        return this.$store.state.wait[`user/tickets/living/${ GET_EMPLOYEE_TICKETS_LIVING }`];
+      }
     },
     methods: {
       ...mapActions("user/tickets/living", {
-        getEmployeeTickets: GET_EMPLOYEE_TICKETS_LIVING,
+        GET_EMPLOYEE_TICKETS_LIVING,
         REJECT_TICKET_LIVING,
         APPROVE_TICKET_LIVING,
         SEND_CONTRACT_INFO_LIVING
       }),
-      moment,
+
+      async getEmployeeTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_EMPLOYEE_TICKETS_LIVING();
+      },
+
       expandRow (props) {
         const row = this.expanded.indexOf(props.key);
         if (row === -1) {
