@@ -212,7 +212,7 @@
     computed: {
       ...mapGetters("user/tickets/parking", ["tableData", "tablePagination"]),
       ...mapFields("user/tickets/parking", {
-        fields: ["limit", "offset"],
+        fields: ["limit", "offset", "sort"],
         base: "pagination",
         mutation: UPDATE_PAGINATION
       }),
@@ -235,10 +235,11 @@
 
       async getEmployeeTickets (props) {
         if (props) {
-          const { pagination: { page, rowsPerPage } } = props;
+          const { pagination: { page, rowsPerPage, sortBy } } = props;
 
           this.limit = rowsPerPage;
           this.offset = page;
+          this.sort = sortBy;
         }
 
         await this.GET_EMPLOYEE_TICKETS_PARKING();

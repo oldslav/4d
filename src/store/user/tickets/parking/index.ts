@@ -19,7 +19,8 @@ const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
-    offset: 1
+    offset: 1,
+    sort: null
   },
   data: null
 });
@@ -35,26 +36,27 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_PARKING] ({ state, commit }) {
-    const { filters, pagination } = state;
+    const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.user.tickets.getTicketsParking({
       filters,
-      ...pagination,
-      offset: pagination.offset - 1
+      limit,
+      offset: offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
   },
 
   async [GET_EMPLOYEE_TICKETS_PARKING] ({ state, commit }) {
-    const { filters, pagination } = state;
+    const { filters, pagination: { limit, offset, sort } } = state;
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
 
     const { data } = await this.service.user.tickets.getEmployeeTicketsParking({
       filters: f,
-      ...pagination,
-      offset: pagination.offset - 1
+      limit,
+      offset: offset - 1,
+      ...!!sort && { sort }
     });
 
     commit(SET_USER_TICKETS, data);

@@ -17,7 +17,8 @@ const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
-    offset: 1
+    offset: 1,
+    sort: null
   },
   data: null,
   current: null
@@ -53,12 +54,12 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_USER_TICKETS_WAREHOUSE] ({ state, commit }) {
-    const { filters, pagination } = state;
+    const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.user.tickets.getTicketsWarehouse({
       filters,
-      ...pagination,
-      offset: pagination.offset - 1
+      limit,
+      offset: offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
@@ -80,14 +81,15 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_EMPLOYEE_TICKETS_WAREHOUSE] ({ state, commit }) {
-    const { filters, pagination: { offset, limit } } = state;
+    const { filters, pagination: { offset, limit, sort } } = state;
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
 
     const { data } = await this.service.user.tickets.getEmployeeTicketsWarehouse({
       filters: f,
       limit,
-      offset: offset - 1
+      offset: offset - 1,
+      ...!!sort && { sort }
     });
 
     commit(SET_USER_TICKETS, data);

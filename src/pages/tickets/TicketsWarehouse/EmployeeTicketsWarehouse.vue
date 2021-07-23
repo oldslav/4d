@@ -209,7 +209,7 @@
     computed: {
       ...mapGetters("user/tickets/warehouse", ["tablePagination", "tableData"]),
       ...mapFields("user/tickets/warehouse", {
-        fields: ["limit", "offset"],
+        fields: ["limit", "offset", "sort"],
         base: "pagination",
         mutation: UPDATE_PAGINATION
       }),
@@ -221,7 +221,7 @@
       loadingContract () {
         return this.$store.state.wait[`user/tickets/warehouse/${ SEND_CONTRACT_INFO_WAREHOUSE }`];
       },
-      isLoading (){
+      isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_EMPLOYEE_TICKETS_WAREHOUSE }`];
       }
     },
@@ -235,10 +235,11 @@
 
       async getEmployeeTickets (props) {
         if (props) {
-          const { pagination: { page, rowsPerPage } } = props;
+          const { pagination: { page, rowsPerPage, sortBy } } = props;
 
           this.limit = rowsPerPage;
           this.offset = page;
+          this.sort = sortBy;
         }
 
         await this.GET_EMPLOYEE_TICKETS_WAREHOUSE();
