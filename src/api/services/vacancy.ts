@@ -33,6 +33,10 @@ export class VacancyService extends Service {
     return this.api.get("/api/v1/services/vacancy/company", { params });
   }
 
+  public getForEmployee (params: unknown): AxiosPromise<IVacanciesResponse> {
+    return this.api.get("/api/v1/services/vacancy/employee", { params });
+  }
+
   public getUserResponds (params: Record<string, any>): AxiosPromise{
     return this.api.get("/api/v1/services/vacancy/respond/user", { params });
   }

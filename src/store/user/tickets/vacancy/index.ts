@@ -138,7 +138,7 @@ const actions: ActionTree<IUserVacancyState, TRootState> = {
     const getter = rootGetters.isUserLegal ?
       this.service.services.vacancy.getForCompany :
       rootGetters.isUserNature ? this.service.services.vacancy.getUserResponds :
-      this.service.services.vacancy.getForCurrentUser;
+      this.service.services.vacancy.getForEmployee;
 
     const { data } = await getter.call(this.service.services.vacancy, params);
 

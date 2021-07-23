@@ -37,7 +37,8 @@
       ]);
     },
     computed:{
-      ...mapGetters("user/tickets/vacancy", [ "getVacancy" ])
+      ...mapGetters("user/tickets/vacancy", [ "getVacancy" ]),
+      ...mapGetters(["isUserLegal"])
     }
   };
 </script>

@@ -12,8 +12,8 @@
         q-td(key="position" :props="props")
           | {{ props.row.position }}
 
-        q-td(key="company" :props="props")
-          | {{  props.row.company }}
+        q-td(key="companyName" :props="props")
+          | {{  props.row.companyName }}
 
         q-td(key="publishDate" :props="props")
           | {{  props.row.publishDate | formatDate }}
@@ -28,21 +28,21 @@
           vacancy-ticket-status(:value="props.row.status")
 
         q-td(auto-width key="actions" :props="props")
-          q-btn(flat round dense icon="more_vert")
-            q-menu
-              q-list
-                q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
-                  q-item-section(no-wrap)
-                    | Просмотреть вакансию
-
-                q-item(
-                  v-if="vacancyStatuses.closed !== props.row.status.id"
-                  v-close-popup
-                  clickable
-                  @click="onClickReject(props.row.id)"
-                )
-                  q-item-section(no-wrap)
-                    | Отправить на доработку
+          //q-btn(flat round dense icon="more_vert")
+          //  q-menu
+          //    q-list
+          //      q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
+          //        q-item-section(no-wrap)
+          //          | Просмотреть вакансию
+          //
+          //      q-item(
+          //        v-if="vacancyStatuses.closed !== props.row.status.id"
+          //        v-close-popup
+          //        clickable
+          //        @click="onClickReject(props.row.id)"
+          //      )
+          //        q-item-section(no-wrap)
+          //          | Отправить на доработку
 </template>
 <script>
   import BaseTable from "../../../../common/BaseTable";
@@ -78,7 +78,7 @@
             sortable: false
           },
           {
-            name: "company",
+            name: "companyName",
             required: false,
             label: "Компания",
             align: "left",

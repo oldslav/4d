@@ -10,7 +10,7 @@ import {
 import { ICompanyState } from "src/store/types/user/company";
 import { TRootState } from "src/store/types/root";
 import {
-  GET_COMPANY,
+  GET_COMPANY, SEND_VERIFY_COMPANY_REQUEST,
   UPDATE_COMPANY_BANK,
   UPDATE_COMPANY_CARD, UPDATE_COMPANY_LOGO,
   UPDATE_COMPANY_PROFILE
@@ -125,12 +125,20 @@ const actions: ActionTree<ICompanyState, TRootState> = {
     await Promise.all(deletedIds.map((id: number) => this.service.user.company.deleteCardFile(id)));
     await Promise.all(files.map((f: any) => this.service.user.company.uploadCardFile(f)));
     dispatch(GET_COMPANY);
+  },
+
+  async [SEND_VERIFY_COMPANY_REQUEST] (ctx, payload) {
+    await this.service.user.company.sendVerifyRequest(payload);
+    // console.log(data);
   }
 };
 
 const getters: GetterTree<ICompanyState, TRootState> = {
   getCompanyId (state) {
     return state.id;
+  },
+  isVerifyCompany (state) {
+    return state.isVerify;
   },
   getCompanyProfile (state) {
     return state.profile;
@@ -140,6 +148,9 @@ const getters: GetterTree<ICompanyState, TRootState> = {
   },
   getCompanyBankDetails (state) {
     return state.bankDetails;
+  },
+  isServicesAvailable (state){
+    return state.isVerify;
   }
 };
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-pa-lg.column.q-gutter-y-lg
+  div.q-pa-lg.column.q-gutter-y-lg(:style="{'min-height': `${this.$q.screen.height}px`}")
     BaseTabs
       q-route-tab(:to="{ name: 'user-tickets-apartments' }" name="apartments" :label="$t('entity.tickets.apartments')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-parking' }" name="parking" :label="$t('entity.tickets.parking')")
