@@ -10,14 +10,13 @@
         ref="stepper"
         v-model="step"
         color="primary"
-        contracted
+        alternative-labels
         flat
         animated
       )
         q-step(
           title="Основная информация"
           :done="step > 1"
-          :error="step > 1"
           :name="1"
           icon="edit"
         )
@@ -60,7 +59,7 @@
                       )
           .row
             BaseSelect.col-6(
-              v-model="categoryId"
+              v-model="category"
               :options="categoriesList"
               :label="$t('entity.services.crowdfunding.form.category')"
               outlined
@@ -68,7 +67,7 @@
               :inputDebounce="300"
             )
           .text-medium.q-my-sm
-            | {{ $t("entity.services.crowdfunding.form.dates.title") }}
+            | {{ $t("entity.services.crowdfunding.form.cover") }}
           .row.items-center
             BaseDragDrop.col-6(
               :value="cover"
@@ -83,12 +82,11 @@
         q-step(
           title="Подробное описание проекта"
           :done="step > 2"
-          :error="step > 2"
           :name="2"
-          icon="pedal_bike"
+          icon="edit"
         )
           .text-medium.q-mb-sm
-            | {{ $t("entity.services.crowdfunding.form.dates.title") }}
+            | {{ $t("entity.services.crowdfunding.form.markdownDescription") }}
           q-editor(v-model="markdownContent" min-height="10rem")
 
           q-stepper-navigation.q-gutter-md
@@ -96,20 +94,20 @@
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
 
         q-step(
-          title="Контакты"
+          title="Фотографии и видео"
           :name="3"
-          icon="call"
+          icon="edit"
         )
           .text-medium.q-my-md
-            | Загрузите фотографии и видео, ваиболее полно описывающие ваш проект. 
-            | Максимальный размер файла: 2 Мб
+            | {{ $t("entity.services.crowdfunding.form.media") }}
+            | {{ $t("entity.services.crowdfunding.form.mediaMaxSize") }}
           BaseDragDrop(
             :value="media"
             max-files="3"
             @input="uploadMedia"
           )
           .text-medium.q-my-md
-            | Загруженные фотографии
+            | {{ $t("entity.services.crowdfunding.form.loadedMedia") }}
           .row
             q-img.col-3.q-ml-sm(
               v-for="(preview, index) in mediaPreviews"
@@ -119,12 +117,13 @@
         
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="red" :label="$t('action.back')")
-            q-btn(@click="onSubmit()" color="primary" :disable="!formDone" :label="$t('action.submit')")
+            q-btn(@click="onSubmit()" color="primary" :label="$t('action.submit')")
       q-inner-loading(:showing="isLoading")
         q-spinner(size="50px" color="primary")
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import BaseModal from "components/common/BaseModal";
   import BaseSelect from "components/common/BaseSelect";
   import BaseDragDrop from "components/common/BaseDragDrop";
@@ -149,7 +148,7 @@
         description: "",
         startDate: null,
         endDate: null,
-        categoryId: null,
+        category: "",
         categoriesList: [
           {
             value: 1,
@@ -189,14 +188,11 @@
     },
     computed: {
       isLoading () {
-        return this.$store.state.wait[`user/tickets/parking/${ CREATE_USER_TICKET_CROWDFUNDING }`];
-      },
-      formDone () {
-        // return this.mainInfoDone && this.optionsDone && this.contactsDone;
-        return true;
+        return this.$store.state.wait[`user/tickets/crowdfunding/${ CREATE_USER_TICKET_CROWDFUNDING }`];
       }
     },
     methods: {
+      ...mapActions("user/tickets/crowdfunding", [CREATE_USER_TICKET_CROWDFUNDING]),
       toggleModal (value) {
         this.$emit("input", value);
       },
@@ -225,8 +221,8 @@
         }
       },
       onSubmit () {
-        const { title, description, startDate, endDate, markdownContent } = this;
-        return this.CREATE_USER_TICKET_WAREHOUSE({ title, description, startDate, endDate, markdownContent })
+        const { title, description, startDate, endDate, category, markdownContent, cover, media } = this;
+        return this.CREATE_USER_TICKET_CROWDFUNDING({ title, description, startDate, endDate, categoryId: category.value, markdownContent, cover: cover[0], media })
           .then(() => {
             this.$emit("success");
           })
