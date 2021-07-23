@@ -76,7 +76,7 @@
 
         try {
           await this.sendVerifyRequest(this.values);
-          notifyEnd({ timeout: 0, type: "ongoing" });
+          notifyEnd({ timeout: 1, type: "ongoing" });
           this.onSuccessSendRequest();
         } catch (e) {
           notifyEnd({

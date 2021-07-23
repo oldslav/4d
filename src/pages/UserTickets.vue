@@ -7,6 +7,7 @@
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-warehouse' }" name="warehouse" :label="$t('entity.tickets.warehouse')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-crowdfunding' }" name="crowdfunding" :label="$t('entity.tickets.crowdfunding')")
       q-route-tab(:to="{ name: 'user-tickets-vacancy' }" name="vacancy" :label="$t('entity.tickets.vacancy')")
+      q-route-tab(v-if="isEmployee" :to="{ name: 'user-tickets-verify-requests' }" name="verify-requests" label="Верификация компаний")
     router-view
 </template>
 
@@ -18,7 +19,7 @@
     name: "UserTickets",
     components: { BaseTabs },
     computed: {
-      ...mapGetters(["isUserLegal"])
+      ...mapGetters(["isUserLegal","isEmployee"])
     },
     preFetch ({ store, currentRoute, redirect }) {
       const { isUserLegal } = store.getters;
@@ -32,7 +33,6 @@
     }
   };
 </script>
-
 <style scoped>
 
 </style>

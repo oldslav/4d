@@ -193,7 +193,19 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               content: true
             }
-          }
+          },
+          {
+            path: "verify-requests",
+            name: "user-tickets-verify-requests",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsVerifyRequests.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
         ]
       },
       {

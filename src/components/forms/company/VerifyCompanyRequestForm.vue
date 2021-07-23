@@ -3,7 +3,7 @@
     div.text-medium.q-mb-sm {{ $t('user.verifyCompany.form.commonInfo') }}
 
     q-input.q-mb-md(
-      v-model="model.fullName"
+      v-model="model.name"
       :rules="[requiredString]"
       :label="$t('entity.companyDocuments.fullCompanyName')"
       lazy-rules
@@ -20,7 +20,7 @@
       :label="$t('entity.companyDocuments.realAddress')"
       lazy-rules
     )
-    q-input.q-mb-md(
+    q-input(
       v-model="model.okved"
       :rules="[requiredString]"
       :label="$t('entity.companyDocuments.okved')"
@@ -42,7 +42,7 @@
     data () {
       return {
         model: {
-          "fullName": "",
+          "name": "",
           "legalAddress": "",
           "realAddress": "",
           "okved": ""
@@ -65,7 +65,7 @@
 
       reloadValue () {
         const card = this.getCompanyCard || {};
-        this.model.fullName = card.fullName || "";
+        this.model.name = card.name || "";
         this.model.legalAddress = card.legalAddress || "";
         this.model.realAddress = card.realAddress || "";
         this.model.okved = card.okved || "";

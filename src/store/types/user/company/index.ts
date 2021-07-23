@@ -1,11 +1,17 @@
 import { Document } from "src/store/types/common";
 
+export enum CompanyVerificationRequestStatuses {
+  inProgress = 2,
+  rejected = 4,
+  approved = 10,
+}
+
 export interface ICompanyState {
   id: number | null,
-  isVerify: boolean | null,
   profile: CompanyProfile,
   card: CompanyCard,
   bankDetails: CompanyBank
+  verifyRequest: ICompanyVerifyRequest | null
 }
 
 export interface CompanyProfile {
@@ -41,4 +47,12 @@ export interface CompanyBank {
   kpp: string | null,
   name: string | null,
   realAddress: string | null
+}
+
+export interface ICompanyVerifyRequest {
+  status: {
+    id: number,
+    name: string,
+    description: string
+  }
 }

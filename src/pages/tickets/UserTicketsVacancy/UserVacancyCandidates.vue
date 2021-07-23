@@ -1,15 +1,15 @@
 <template lang="pug">
   div
-    div.row.flex-break.items-start.q-mb-lg-lg
+    div.row.flex-break.items-start.q-mb-md
       div.col-md-3
-        div Дата размещения вакансии
+        div Дата отлика
         date-range-picker(v-model="filter.dateRange")
 
       div.col-md-3.q-pl-lg
-        div Статус вакансии
+        div Статус отклика
           q-select.q-mb-md(
             v-model="filter.statusId"
-            :options="getVacancyStatuses"
+            :options="getRespondsStatuses"
             option-value="id"
             option-label="description"
             map-options
@@ -48,7 +48,7 @@
     SEND_CANDIDATE_JOB_OFFER_AND_RELOAD,
     VIEW_RESPOND_AND_RELOAD_CANDIDATE
   } from "../../../store/constants/action-constants";
-  import { VacancyReferencesEnum } from "../../../store/types/vacancy";
+  import { RespondStatusesEnum, VacancyReferencesEnum } from "../../../store/types/vacancy";
   import VacancyCandidatesTable from "../../../components/user/tickets/vacancy/table/VacancyCandidatesTable";
   import CandidateDetailsModal from "../../../components/user/tickets/vacancy/CandidateDetailsModal";
   import DateRangePicker from "../../../components/common/DateRangePicker";
@@ -60,7 +60,12 @@
       return Promise.all([
         store.dispatch(
           `user/tickets/vacancy/${ FETCH_VACANCY_RESPONDS_FOR_COMPANY }`,
-          { id: currentRoute.params.id }
+          {
+            id: currentRoute.params.id,
+            query:{
+              "filters.statusId": RespondStatusesEnum.not_viewed
+            }
+          }
         ),
         store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`)
       ]);
@@ -71,18 +76,15 @@
         currentDetailsCandidate: null,
         filter: {
           dateRange: { from: null, to: null },
-          statusId: ""
+          statusId: RespondStatusesEnum.not_viewed
         }
       };
     },
     computed: {
       ...mapGetters("user/tickets/vacancy", ["getVacancyCandidatesTableData", "getVacancyCandidatesTablePagination"]),
       ...mapGetters("services/vacancy", ["getVacancyReferences"]),
-      getVacancyStatuses () {
-        return [
-          { id: "", description: "Все" },
-          ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
-        ];
+      getRespondsStatuses () {
+        return this.getVacancyReferences[VacancyReferencesEnum.respondStatus];
       },
       isLoadingTable (){
         return this.$store.state.wait[`user/tickets/vacancy/${ FETCH_VACANCY_RESPONDS_FOR_COMPANY }`];

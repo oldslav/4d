@@ -4,10 +4,11 @@
     service="vacancy"
   )
   div(v-else)
-    div(v-if="canVisibleHeading")
-      div.row.flex-break.items-center.q-mb-lg-lg
+    div
+      div.row.flex-break.items-center.q-mb-lg-lg(v-if="!isUserNature")
         div.col-md-9
-          q-input(v-model="filter.query" outlined dense placeholder='Поиск по названию')
+          q-input(
+            v-model="filter.query" outlined dense placeholder='Поиск по названию')
         div.col-md-3.q-pl-lg
           q-btn.float-right.full-width(
             v-if="isUserLegal"
@@ -30,14 +31,25 @@
 
       div.row.flex-break.items-start.q-mb-lg-lg
         div.col-md-3
-          div Дата размещения вакансии
+          div {{ isUserNature ? 'Дата отклика' : 'Дата размещения вакансии' }}
           date-range-picker(v-model='filter.dateRange')
 
         div.col-md-3.q-pl-lg
-          div Статус вакансии
+          div(v-if="!isUserNature") Статус вакансии
             q-select.q-mb-md(
               v-model="filter.statusId"
               :options="getVacancyStatuses"
+              option-value="id"
+              option-label="description"
+              map-options
+              emit-value
+              outlined
+              dense
+            )
+          div(v-else) Статус отклика
+            q-select.q-mb-md(
+              v-model="filter.statusId"
+              :options="getRespondsStatuses"
               option-value="id"
               option-label="description"
               map-options
@@ -104,9 +116,9 @@
     },
     preFetch ({ store }) {
       return Promise.all([
+        store.getters.isUserLegal ? store.dispatch(`user/company/${ GET_COMPANY }`) : null,
         store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`),
-        store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`),
-        store.getters.isUserLegal ? store.dispatch(`user/company/${ GET_COMPANY }`) : null
+        store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`)
       ]);
     },
     data () {
@@ -120,7 +132,7 @@
       };
     },
     computed: {
-      ...mapGetters(["isUserLegal", "isEmployee"]),
+      ...mapGetters(["isUserLegal", "isEmployee", "isUserNature"]),
       ...mapGetters("user/tickets/vacancy", [
         "tablePagination"
       ]),
@@ -129,9 +141,6 @@
       }),
       ...mapGetters("services/vacancy", ["getVacancyReferences"]),
       ...mapGetters("user/company", ["isServicesAvailable"]),
-      canVisibleHeading () {
-        return this.isUserLegal || this.isEmployee;
-      },
       canVisibleVerifyCompanyCard (){
         return !this.isServicesAvailable && this.isUserLegal;
       },
@@ -148,6 +157,12 @@
         return [
           { id: "", description: "Все" },
           ...this.getVacancyReferences[VacancyReferencesEnum.vacancyStatus]
+        ];
+      },
+      getRespondsStatuses () {
+        return [
+          { id: "", description: "Все" },
+          ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
         ];
       },
       isLoading () {
@@ -294,7 +309,10 @@
     },
 
     watch: {
-      filter: { deep: true, handler: "fetchTickets" }
+      filter: {
+        deep: true,
+        handler: "fetchTickets"
+      }
     }
   };
 </script>
