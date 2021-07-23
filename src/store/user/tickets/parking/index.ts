@@ -1,7 +1,7 @@
-import { ActionTree, Module, MutationTree } from "vuex";
+import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKETS, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
 import {
   ADD_USER_TICKET_FILE_PARKING,
   CREATE_USER_TICKET_PARKING,
@@ -27,15 +27,20 @@ const state = (): IUserTicketsState => ({
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {
     state.data = payload;
+  },
+  [UPDATE_PAGINATION] (state, pagination) {
+    state.pagination = { ...state.pagination, ...pagination };
   }
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_PARKING] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination } = state;
 
     const { data } = await this.service.user.tickets.getTicketsParking({
-      filters
+      filters,
+      ...pagination,
+      offset: pagination.offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
@@ -70,14 +75,6 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     const { data: { id } } = await this.service.user.tickets.createTicketParking(result);
     await dispatch(ADD_PARKING_FILES, { id, documents });
     await this.service.user.tickets.requestApprovalParking(id);
-    // return TicketsService.createTicketParking(result)
-    //   .then(({ data }) => {
-    //     const { id } = data;
-    //     return dispatch(ADD_PARKING_FILES, { id, documents })
-    //       .then(() => {
-    //         return TicketsService.requestApprovalParking(id);
-    //       });
-    //   });
   },
 
   async [SEND_CONTRACT_INFO_PARKING] ({ dispatch }, { id, payload }) {
@@ -102,11 +99,30 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   }
 };
 
+const getters: GetterTree<IUserTicketsState, TRootState> = {
+  tableData (state) {
+    return state.data;
+  },
+
+  tablePagination (state) {
+    const { pagination, data } = state;
+
+    if (data) {
+      return {
+        rowsPerPage: pagination.limit,
+        page: pagination.offset,
+        rowsNumber: data.count
+      };
+    }
+  }
+};
+
 const parking: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };
 
 export default parking;

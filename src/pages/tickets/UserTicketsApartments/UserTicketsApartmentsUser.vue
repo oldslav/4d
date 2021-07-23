@@ -34,7 +34,7 @@
           q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props")
-            | {{ props.row.created | fromNow }}
+            | {{ props.row.created | ticketDate }}
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
@@ -113,15 +113,13 @@
             name: "address",
             required: true,
             label: this.$t("common.address"),
-            align: "left",
-            sortable: true
+            align: "left"
           },
           {
             name: "price",
             required: true,
             label: this.$t("common.rentPrice"),
-            align: "left",
-            sortable: true
+            align: "left"
           },
           {
             name: "created",
@@ -129,15 +127,13 @@
             label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
-            format: val => moment(val).fromNow(),
-            sortable: true
+            format: val => moment(val).fromNow()
           },
           {
             name: "status",
             required: true,
             label: this.$t("common.status"),
-            align: "left",
-            sortable: true
+            align: "left"
           },
           {
             name: "menu",
@@ -250,9 +246,7 @@
 
       goToPayment (id) {
         this.$router.push({ name: "user-bills-apartments", params: { ticket: id } });
-      },
-
-      moment
+      }
     }
   };
 </script>

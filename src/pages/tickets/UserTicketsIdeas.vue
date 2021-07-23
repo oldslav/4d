@@ -82,22 +82,22 @@
         return [
           {
             name: "address",
-            label: "Address",
+            label: this.$t("common.address"),
             align: "left"
           },
           {
             name: "type",
-            label: "Ticket type",
+            label: this.$t("common.type"),
             align: "left"
           },
           {
             name: "date",
-            label: "Ticket date",
+            label: this.$t("common.created"),
             align: "left"
           },
           {
             name: "status",
-            label: "Ticket status",
+            label: this.$t("common.status"),
             align: "left"
           },
           {

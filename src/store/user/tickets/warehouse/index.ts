@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS, SET_USER_TICKET } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKETS, SET_USER_TICKET, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
 import {
   ADD_USER_TICKET_FILE_WAREHOUSE,
   ADD_WAREHOUSE_FILES,
@@ -29,6 +29,9 @@ const mutations: MutationTree<IUserTicketsState> = {
   },
   [SET_USER_TICKET] (state, payload) {
     state.current = payload;
+  },
+  [UPDATE_PAGINATION] (state, pagination) {
+    state.pagination = { ...state.pagination, ...pagination };
   }
 };
 
@@ -50,10 +53,12 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_USER_TICKETS_WAREHOUSE] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination } = state;
 
     const { data } = await this.service.user.tickets.getTicketsWarehouse({
-      filters
+      filters,
+      ...pagination,
+      offset: pagination.offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
@@ -104,7 +109,22 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 };
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
-  getCurrentTicket: (state) => state.current
+  getCurrentTicket: (state) => state.current,
+  tableData (state) {
+    return state.data;
+  },
+
+  tablePagination (state) {
+    const { pagination, data } = state;
+
+    if (data) {
+      return {
+        rowsPerPage: pagination.limit,
+        page: pagination.offset,
+        rowsNumber: data.count
+      };
+    }
+  }
 };
 const warehouse: Module<IUserTicketsState, TRootState> = {
   namespaced: true,

@@ -106,6 +106,8 @@
       "entrance": "Entrance"
     },
     "address": "Address",
+    "number": "Number",
+    "type": "Type",
     "status": "Status",
     "id": "ID",
     "name": "Name",
