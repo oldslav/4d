@@ -303,6 +303,11 @@
           "social": "Social parking",
           "guest": "Guest parking"
         },
+        "ticketType": {
+          "for_disabled_people": "Социальная",
+          "guest": "Гостевая",
+          "regular": "Платная"
+        },
         "rentTypes": {
           "title": "Rent types",
           "description": "Choose one of the suggested rental types. Only the frequency of payment for the service depends on the type of rental.",

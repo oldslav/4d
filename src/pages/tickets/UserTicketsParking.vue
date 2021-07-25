@@ -26,7 +26,7 @@
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
           q-td(key="type" :props="props")
-            | {{props.row.parkingPlace.type.description}}
+            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
           q-td(key="price" :props="props")
             | {{ props.row.price ? props.row.price.price : "0" }}
           q-td(key="created" :props="props")
