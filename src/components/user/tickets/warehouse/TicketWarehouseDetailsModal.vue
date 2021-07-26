@@ -21,6 +21,14 @@
           .col-12.col-md-4
             q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
       q-separator
+      q-card-section
+        .text-medium.q-mb-sm
+          | Документы
+        div(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
+          .text-small.text-primary-light
+            | {{ $t(`entity.files.${type}`) }}
+          DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j")
+      q-separator
       q-card-section(v-if="getCurrentTicket.serviceOption.service.id === 1")
         .text-medium.q-mb-sm
           | {{ $t("entity.services.warehouse.radius") }}
@@ -60,10 +68,11 @@
   import { mapActions, mapGetters } from "vuex";
   import BaseModal from "components/common/BaseModal";
   import { GET_USER_TICKET } from "@/store/constants/action-constants";
+  import DownloaderInput from "components/common/DownloaderInput";
 
   export default {
     name: "TicketWarehouseDetailsModal",
-    components: { BaseModal },
+    components: { BaseModal, DownloaderInput },
     props: {
       value: {
         type: Boolean,

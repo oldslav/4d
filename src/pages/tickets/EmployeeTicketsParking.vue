@@ -307,7 +307,6 @@
       },
 
       expandRow (props) {
-        console.log(props.row);
         const row = this.expanded.indexOf(props.key);
 
         if (row === -1) {

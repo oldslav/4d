@@ -27,7 +27,8 @@
       },
       "response": {
         "oops": "Упс! Произошла ошибка",
-        "tryLater": "Пожалуйста, повторите попытку позже"
+        "tryLater": "Пожалуйста, повторите попытку позже",
+        "downloadFail": "Failed to download file"
       }
     },
     "theme": "Theme",
