@@ -72,7 +72,7 @@
 
 <script>
   import moment from "moment";
-  import { mapActions, mapGetters, mapState } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
@@ -144,13 +144,9 @@
     },
     computed: {
       ...mapGetters("user/tickets/living", [
-        "tablePagination"
+        "tablePagination", "tableData"
       ]),
       ...mapGetters(["isUserLegal"]),
-
-      ...mapState("user/tickets/living", {
-        tableData: state => state.data
-      }),
 
       ...mapFields("user/tickets/living", {
         fields: ["limit", "offset"],

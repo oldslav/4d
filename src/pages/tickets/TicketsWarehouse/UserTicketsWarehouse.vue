@@ -92,10 +92,10 @@
     DELETE_USER_TICKET_WAREHOUSE,
     GET_USER_TICKETS_WAREHOUSE
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import BaseTable from "components/common/BaseTable";
   import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
-  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
 
   export default {
     name: "UserTicketsWarehouse",
