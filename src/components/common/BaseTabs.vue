@@ -35,8 +35,3 @@
     }
   };
 </script>
-<style scoped>
-.base-tabs {
-  width: 100%;
-}
-</style>

@@ -7,6 +7,8 @@ export interface IUserVacancyState {
   entity: IVacancy | null,
   vacancyCandidatesData: PaginationOutput | null,
   vacancyCandidatesPagination: PaginationParams
+  employeeResponds: PaginationOutput | null,
+  employeeRespondsPagination: PaginationParams
 }
 
 

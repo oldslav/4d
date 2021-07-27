@@ -61,10 +61,6 @@ export class VacancyService extends Service {
     return this.api.put(`/api/v1/services/vacancy/${ vacancyId }/reject`);
   }
 
-  public exportVacancies (params: Record<string, any>): AxiosPromise<never> {
-    return this.api.get("/api/v1/services/vacancy/employee/export", params);
-  }
-
   public getVacancyById (vacancyId: number): AxiosPromise<IVacancy> {
     return this.api.get(`/api/v1/services/vacancy/${ vacancyId }`);
   }
@@ -103,5 +99,41 @@ export class VacancyService extends Service {
 
   public viewRespond (respondId: number): AxiosPromise {
     return this.api.get(`/api/v1/services/vacancy/respond/${ respondId }`);
+  }
+
+  public fetchEmployeeResponds (params?: Record<string, any>): AxiosPromise{
+    return this.api.get("/api/v1/services/vacancy/respond/employee", { params });
+  }
+
+  public sendCompanyNotification (respondId: number, text :string): AxiosPromise {
+    return this.api.post(`/api/v1/services/vacancy/respond/${ respondId }/employee/message`, text || "");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,class-methods-use-this
+  public exportVacancies (accessToken: string, params: Record<string, any>) {
+    const url = new URL(`${ process.env.SERVER_API_HOST }/api/v1/services/vacancy/employee/export`);
+    url.searchParams.append("access_token", accessToken);
+
+    for (const name in params) {
+      if (params.hasOwnProperty(name)) {
+        url.searchParams.append(name, params[name]);
+      }
+    }
+
+    window.open(url.toString());
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,class-methods-use-this
+  public exportResponds (accessToken: string, params: Record<string, any>) {
+    const url = new URL(`${ process.env.SERVER_API_HOST }/api/v1/services/vacancy/respond/employee/export`);
+    url.searchParams.append("access_token", accessToken);
+
+    for (const name in params) {
+      if (params.hasOwnProperty(name)) {
+        url.searchParams.append(name, params[name]);
+      }
+    }
+
+    window.open(url.toString());
   }
 }

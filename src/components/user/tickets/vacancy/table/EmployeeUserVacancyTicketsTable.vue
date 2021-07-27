@@ -22,27 +22,27 @@
           | {{  props.row.closedDate | formatDate }}
 
         q-td(key="closeReason" :props="props")
-          | {{  props.row.closedDate | formatDate }}
+          | {{ props.row.closureReason.description }}
 
         q-td(key="status" :props="props")
           vacancy-ticket-status(:value="props.row.status")
 
         q-td(auto-width key="actions" :props="props")
-          //q-btn(flat round dense icon="more_vert")
-          //  q-menu
-          //    q-list
-          //      q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
-          //        q-item-section(no-wrap)
-          //          | Просмотреть вакансию
-          //
-          //      q-item(
-          //        v-if="vacancyStatuses.closed !== props.row.status.id"
-          //        v-close-popup
-          //        clickable
-          //        @click="onClickReject(props.row.id)"
-          //      )
-          //        q-item-section(no-wrap)
-          //          | Отправить на доработку
+          q-btn(flat round dense icon="more_vert")
+            q-menu
+              q-list
+                q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
+                  q-item-section(no-wrap)
+                    | Просмотреть вакансию
+
+                q-item(
+                  v-if="vacancyStatuses.closed !== props.row.status.id"
+                  v-close-popup
+                  clickable
+                  @click="onClickReject(props.row.id)"
+                )
+                  q-item-section(no-wrap)
+                    | Отправить на доработку
 </template>
 <script>
   import BaseTable from "../../../../common/BaseTable";

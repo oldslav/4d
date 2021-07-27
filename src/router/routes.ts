@@ -195,6 +195,18 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "responds",
+            name: "user-tickets-employee-responds",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/UserTicketsEmployeeResponds.vue")
+            },
+            meta: {
+              toolbar: true,
+              asideLeft: true,
+              content: true
+            }
+          },
+          {
             path: "verify-requests",
             name: "user-tickets-verify-requests",
             components: {
@@ -205,7 +217,7 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               content: true
             }
-          },
+          }
         ]
       },
       {

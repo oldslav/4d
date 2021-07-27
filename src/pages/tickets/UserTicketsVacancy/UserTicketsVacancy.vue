@@ -1,5 +1,5 @@
 <template lang="pug">
-  verify-company-card.flex-break(
+  verify-company-card(
     v-if="canVisibleVerifyCompanyCard"
     service="vacancy"
   )
@@ -294,7 +294,7 @@
 
         try {
           await this.rejectVacancyById(vacancyId);
-          notifyEnd({ type: "positive", message: "Вакансия успешно отклонена" });
+          notifyEnd({ type: "positive", message: "Вакансия отправлена на доработку" });
         } catch (e) {
           notifyEnd({
             type: "negative",
@@ -311,6 +311,7 @@
 
         try {
           await this.exportVacancies(this.getVacancyFilter());
+          notifyEnd({ timeout: 1 });
         } catch (e) {
           notifyEnd({
             type: "negative",

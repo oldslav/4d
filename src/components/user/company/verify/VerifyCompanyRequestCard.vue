@@ -9,24 +9,15 @@
     div.verify-company-card__image.flex-break.flex.items-center.justify-center
       img(src="@/assets/svg/verify-company-placeholder.svg")
 
-    verify-company-request-modal(v-model="visibleVerifyModal")
 </template>
 <script>
-  import VerifyCompanyRequestModal from "./VerifyCompanyRequestModal";
-
   export default {
-    components: { VerifyCompanyRequestModal },
-    props:{
+    props: {
       service: { type: String, default: "" }
-    },
-    data (){
-      return {
-        visibleVerifyModal: false
-      };
     },
     methods:{
       onClickSendRequest (){
-        this.visibleVerifyModal = true;
+        this.$emit("request");
       }
     }
   };

@@ -16,7 +16,9 @@ import {
   REJECT_AND_RELOAD_VACANCY_CANDIDATE,
   INVITE_AND_RELOAD_VACANCY_CANDIDATE,
   FETCH_VACANCY_RESPONDS_FOR_COMPANY,
-  CANDIDATE_INTERVIEW_PASSED_AND_RELOAD
+  CANDIDATE_INTERVIEW_PASSED_AND_RELOAD,
+  GET_ACCESS_TOKEN,
+  FETCH_EMPLOYEE_RESPONDS, SEND_COMPANY_RESPOND_NOTIFICATION, EXPORT_RESPONDS
 } from "src/store/constants/action-constants";
 import {
   SET_USER_VACANCIES,
@@ -24,10 +26,12 @@ import {
   UPDATE_USER_VACANCY_PAGINATION,
   SET_VACANCY_CANDIDATES,
   REFRESH_VACANCY_CANDIDATE,
-  UPDATE_USER_VACANCY_CANDIDATES_PAGINATION
+  UPDATE_USER_VACANCY_CANDIDATES_PAGINATION,
+  UPDATE_EMPLOYEE_RESPONDS_PAGINATION,
+  SET_EMPLOYEE_RESPONDS
 } from "src/store/constants/mutation-constants";
 
-const state = () : IUserVacancyState => ({
+const state = (): IUserVacancyState => ({
   pagination: {
     limit: 10,
     offset: 1
@@ -36,6 +40,11 @@ const state = () : IUserVacancyState => ({
   entity: null,
   vacancyCandidatesData: null,
   vacancyCandidatesPagination: {
+    limit: 10,
+    offset: 1
+  },
+  employeeResponds: null,
+  employeeRespondsPagination: {
     limit: 10,
     offset: 1
   }
@@ -66,11 +75,11 @@ const getters: GetterTree<IUserVacancyState, TRootState> = {
     return state.entity;
   },
 
-  getVacancyCandidatesTableData (state){
+  getVacancyCandidatesTableData (state) {
     return state.vacancyCandidatesData;
   },
 
-  getVacancyCandidatesTablePagination (state){
+  getVacancyCandidatesTablePagination (state) {
     const { vacancyCandidatesPagination, vacancyCandidatesData } = state;
 
     if (vacancyCandidatesData) {
@@ -78,6 +87,22 @@ const getters: GetterTree<IUserVacancyState, TRootState> = {
         rowsPerPage: vacancyCandidatesPagination.limit,
         page: vacancyCandidatesPagination.offset,
         rowsNumber: vacancyCandidatesData.count
+      };
+    }
+  },
+
+  getEmployeeRespondsData (state) {
+    return state.employeeResponds;
+  },
+
+  getEmployeeRespondsPagination (state) {
+    const { employeeRespondsPagination, employeeResponds } = state;
+
+    if (employeeResponds) {
+      return {
+        rowsPerPage: employeeRespondsPagination.limit,
+        page: employeeRespondsPagination.offset,
+        rowsNumber: employeeResponds.count
       };
     }
   }
@@ -122,6 +147,18 @@ const mutations: MutationTree<IUserVacancyState> = {
       const rowsPerPage = pagination.rowsPerPage || 10;
       state.vacancyCandidatesPagination = { limit: rowsPerPage, offset: page };
     }
+  },
+
+  [SET_EMPLOYEE_RESPONDS] (state, payload) {
+    state.employeeResponds = payload;
+  },
+
+  [UPDATE_EMPLOYEE_RESPONDS_PAGINATION] (state, pagination) {
+    if (pagination) {
+      const page = pagination.page || 1;
+      const rowsPerPage = pagination.rowsPerPage || 10;
+      state.employeeRespondsPagination = { limit: rowsPerPage, offset: page };
+    }
   }
 };
 
@@ -138,25 +175,11 @@ const actions: ActionTree<IUserVacancyState, TRootState> = {
     const getter = rootGetters.isUserLegal ?
       this.service.services.vacancy.getForCompany :
       rootGetters.isUserNature ? this.service.services.vacancy.getUserResponds :
-      this.service.services.vacancy.getForEmployee;
+        this.service.services.vacancy.getForEmployee;
 
     const { data } = await getter.call(this.service.services.vacancy, params);
 
     commit(SET_USER_VACANCIES, data);
-  },
-
-
-  async [EXPORT_USER_VACANCIES] ({ state }, query) {
-    const params = {
-      limit: state.pagination.limit,
-      offset: state.pagination.offset - 1,
-      ...query || {}
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data } = await this.service.services.vacancy.exportVacancies(params);
-
-    // console.log(data);
   },
 
   async [FETCH_USER_VACANCY_BY_ID] ({ commit }, id) {
@@ -179,28 +202,70 @@ const actions: ActionTree<IUserVacancyState, TRootState> = {
   },
 
   async [VIEW_RESPOND_AND_RELOAD_CANDIDATE] ({ dispatch, commit }, id) {
-    const candidate = await dispatch(`services/vacancy/${ VIEW_RESPOND }`, id, { root :true });
-    commit(REFRESH_VACANCY_CANDIDATE,{ id, candidate });
+    const candidate = await dispatch(`services/vacancy/${ VIEW_RESPOND }`, id, { root: true });
+    commit(REFRESH_VACANCY_CANDIDATE, { id, candidate });
   },
 
   async [REJECT_AND_RELOAD_VACANCY_CANDIDATE] ({ dispatch, commit }, { id, reason }) {
-    const candidate = await dispatch(`services/vacancy/${ REJECT_VACANCY_CANDIDATE }`, { id, reason }, { root :true });
+    const candidate = await dispatch(`services/vacancy/${ REJECT_VACANCY_CANDIDATE }`, { id, reason }, { root: true });
     commit(REFRESH_VACANCY_CANDIDATE, { id, candidate });
   },
 
   async [INVITE_AND_RELOAD_VACANCY_CANDIDATE] ({ dispatch, commit }, { id, text }) {
-    const candidate = await dispatch(`services/vacancy/${ INVITE_VACANCY_CANDIDATE }`, { id, text }, { root :true });
+    const candidate = await dispatch(`services/vacancy/${ INVITE_VACANCY_CANDIDATE }`, { id, text }, { root: true });
     commit(REFRESH_VACANCY_CANDIDATE, { id, candidate });
   },
 
   async [CANDIDATE_INTERVIEW_PASSED_AND_RELOAD] ({ dispatch, commit }, id) {
-    const candidate = await dispatch(`services/vacancy/${ CANDIDATE_INTERVIEW_PASSED }`, id, { root :true });
+    const candidate = await dispatch(`services/vacancy/${ CANDIDATE_INTERVIEW_PASSED }`, id, { root: true });
     commit(REFRESH_VACANCY_CANDIDATE, { id, candidate });
   },
 
   async [SEND_CANDIDATE_JOB_OFFER_AND_RELOAD] ({ dispatch, commit }, id) {
-    const candidate = await dispatch(`services/vacancy/${ SEND_CANDIDATE_JOB_OFFER }`, id, { root :true });
+    const candidate = await dispatch(`services/vacancy/${ SEND_CANDIDATE_JOB_OFFER }`, id, { root: true });
     commit(REFRESH_VACANCY_CANDIDATE, { id, candidate });
+  },
+
+  async [FETCH_EMPLOYEE_RESPONDS] ({ state, commit }, { query, pagination } = {}) {
+    commit(UPDATE_EMPLOYEE_RESPONDS_PAGINATION, pagination);
+
+    const params = {
+      limit: state.employeeRespondsPagination.limit,
+      offset: state.employeeRespondsPagination.offset - 1,
+      ...query || {}
+    };
+
+    const { data } = await this.service.services.vacancy.fetchEmployeeResponds(params);
+    commit(SET_EMPLOYEE_RESPONDS, data);
+  },
+
+  async [SEND_COMPANY_RESPOND_NOTIFICATION] (ctx, { respondId, text }) {
+    const { data } = await this.service.services.vacancy.sendCompanyNotification(respondId, text);
+    return data;
+  },
+
+  async [EXPORT_USER_VACANCIES] ({ state, dispatch }, query) {
+    const params = {
+      limit: state.pagination.limit,
+      offset: state.pagination.offset - 1,
+      ...query || {}
+    };
+
+    const accessToken = await dispatch(GET_ACCESS_TOKEN, null, { root: true });
+
+    this.service.services.vacancy.exportVacancies(accessToken, params);
+  },
+
+  async [EXPORT_RESPONDS] ({ state, dispatch }, query) {
+    const params = {
+      limit: state.employeeRespondsPagination.limit,
+      offset: state.employeeRespondsPagination.offset - 1,
+      ...query || {}
+    };
+
+    const accessToken = await dispatch(GET_ACCESS_TOKEN, null, { root: true });
+
+    this.service.services.vacancy.exportResponds(accessToken, params);
   }
 };
 
