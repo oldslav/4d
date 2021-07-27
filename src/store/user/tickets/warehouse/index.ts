@@ -65,18 +65,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
-  async [GET_USER_TICKET] ({ commit }, id) {
+  async [GET_USER_TICKET] ({ commit, dispatch }, id) {
     const { data } = await this.service.user.tickets.getWarehouseTicketById(id);
     const { images, ...ticket } = data;
     const documents: any = {
       passport: []
     };
-    await Promise.all(images.map(async (doc: any) => {
-      const { imagePath, docType, fileName } = doc;
-      const { data } = await this.service.common.getFile(imagePath);
-      const file = new File([data], fileName, { type: data.type });
-      documents[docType.name].push(file);
-    }));
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
     commit(SET_USER_TICKET, { ...ticket, documents });
   },
 

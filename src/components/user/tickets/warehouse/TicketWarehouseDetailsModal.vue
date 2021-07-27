@@ -23,7 +23,7 @@
       q-separator
       q-card-section
         .text-medium.q-mb-sm
-          | Документы
+          | {{ $t("entity.documents.title") }}
         div(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
           .text-small.text-primary-light
             | {{ $t(`entity.files.${type}`) }}

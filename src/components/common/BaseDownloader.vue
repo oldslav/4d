@@ -11,7 +11,7 @@
     props: {
       value: {
         type: null,
-        default: () => new File([], "")
+        default: () => ({})
       }
     },
     methods: {
