@@ -34,7 +34,7 @@
           q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props")
-            | {{ props.row.created | fromNow }}
+            | {{ props.row.created | ticketDate }}
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
@@ -72,7 +72,7 @@
 
 <script>
   import moment from "moment";
-  import { mapActions, mapGetters, mapState } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   import {
     REQUEST_APPROVAL_LIVING,
     DELETE_USER_TICKET_LIVING,
@@ -113,15 +113,13 @@
             name: "address",
             required: true,
             label: this.$t("common.address"),
-            align: "left",
-            sortable: true
+            align: "left"
           },
           {
             name: "price",
             required: true,
             label: this.$t("common.rentPrice"),
-            align: "left",
-            sortable: true
+            align: "left"
           },
           {
             name: "created",
@@ -129,15 +127,13 @@
             label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
-            format: val => moment(val).fromNow(),
-            sortable: true
+            format: val => moment(val).fromNow()
           },
           {
             name: "status",
             required: true,
             label: this.$t("common.status"),
-            align: "left",
-            sortable: true
+            align: "left"
           },
           {
             name: "menu",
@@ -148,13 +144,9 @@
     },
     computed: {
       ...mapGetters("user/tickets/living", [
-        "tablePagination"
+        "tablePagination", "tableData"
       ]),
       ...mapGetters(["isUserLegal"]),
-
-      ...mapState("user/tickets/living", {
-        tableData: state => state.data
-      }),
 
       ...mapFields("user/tickets/living", {
         fields: ["limit", "offset"],
@@ -250,9 +242,7 @@
 
       goToPayment (id) {
         this.$router.push({ name: "user-bills-apartments", params: { ticket: id } });
-      },
-
-      moment
+      }
     }
   };
 </script>

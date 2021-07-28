@@ -100,11 +100,13 @@
     },
     methods: {
       neighborName (name) {
-        if (!!name.full) {
-          return name.full;
+        const { full, first, last, patronymic } = name;
+        if (!!full) {
+          return full;
         }
-        if (!!name.first) {
-          return name.first;
+        const text = [last, first, patronymic].filter(Boolean).join(" ");
+        if (!!text) {
+          return text;
         }
         return this.$t("entity.neighbors.add");
       },

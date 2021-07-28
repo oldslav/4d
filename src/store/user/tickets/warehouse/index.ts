@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS, SET_USER_TICKET } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKETS, SET_USER_TICKET, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
 import {
   ADD_USER_TICKET_FILE_WAREHOUSE,
   ADD_WAREHOUSE_FILES,
@@ -17,7 +17,8 @@ const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
-    offset: 1
+    offset: 1,
+    sort: null
   },
   data: null,
   current: null
@@ -29,6 +30,9 @@ const mutations: MutationTree<IUserTicketsState> = {
   },
   [SET_USER_TICKET] (state, payload) {
     state.current = payload;
+  },
+  [UPDATE_PAGINATION] (state, pagination) {
+    state.pagination = { ...state.pagination, ...pagination };
   }
 };
 
@@ -50,36 +54,39 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [GET_USER_TICKETS_WAREHOUSE] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.user.tickets.getTicketsWarehouse({
-      filters
+      filters,
+      limit,
+      offset: offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
   },
 
-  async [GET_USER_TICKET] ({ commit }, id) {
+  async [GET_USER_TICKET] ({ commit, dispatch }, id) {
     const { data } = await this.service.user.tickets.getWarehouseTicketById(id);
     const { images, ...ticket } = data;
     const documents: any = {
       passport: []
     };
-    await Promise.all(images.map(async (doc: any) => {
-      const { imagePath, docType, fileName } = doc;
-      const { data } = await this.service.common.getFile(imagePath);
-      const file = new File([data], fileName, { type: data.type });
-      documents[docType.name].push(file);
-    }));
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
     commit(SET_USER_TICKET, { ...ticket, documents });
   },
 
   async [GET_EMPLOYEE_TICKETS_WAREHOUSE] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination: { offset, limit, sort } } = state;
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
 
-    const { data } = await this.service.user.tickets.getEmployeeTicketsWarehouse({ filters: f });
+    const { data } = await this.service.user.tickets.getEmployeeTicketsWarehouse({
+      filters: f,
+      limit,
+      offset: offset - 1,
+      ...!!sort && { sort }
+    });
 
     commit(SET_USER_TICKETS, data);
   },
@@ -104,7 +111,22 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 };
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
-  getCurrentTicket: (state) => state.current
+  getCurrentTicket: (state) => state.current,
+  tableData (state) {
+    return state.data;
+  },
+
+  tablePagination (state) {
+    const { pagination, data } = state;
+
+    if (data) {
+      return {
+        rowsPerPage: pagination.limit,
+        page: pagination.offset,
+        rowsNumber: data.count
+      };
+    }
+  }
 };
 const warehouse: Module<IUserTicketsState, TRootState> = {
   namespaced: true,

@@ -21,7 +21,8 @@ const state = (): IUserTicketsState => ({
   filters: null,
   pagination: {
     limit: 10,
-    offset: 1
+    offset: 1,
+    sort: null
   },
   data: null,
   current: null
@@ -43,20 +44,19 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKETS_LIVING] ({ state, commit }) {
-    const { filters, pagination } = state;
+    const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.user.tickets.getTicketsLiving({
       filters,
-      ...pagination,
-      offset: pagination.offset - 1
+      limit,
+      offset: offset - 1
     });
 
     commit(SET_USER_TICKETS, data);
   },
 
-  async [GET_USER_TICKET] ({ commit }, ticketId) {
+  async [GET_USER_TICKET] ({ commit, dispatch }, ticketId) {
     const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
-
     data.documents = {
       passport: [],
       snils: [],
@@ -64,26 +64,22 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
       job: [],
       job_petition: []
     };
-
-    await Promise.all(data.images.map(async (doc: any) => {
-      const { imagePath, docType, fileName } = doc;
-      const { data: fileData } = await this.service.common.getFile(imagePath);
-      const file = new File([fileData], fileName, {
-        type: fileData.type
-      });
-
-      data.documents[docType.name].push(file);
-    }));
-
+    const files = dispatch("loadFiles", data.images, { root: true });
+    Object.assign(data.documents, files);
     commit(SET_USER_TICKET, data);
   },
 
   async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {
-    const { filters } = state;
+    const { filters, pagination: { sort, offset, limit } } = state;
 
     const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }); // no draft
 
-    const { data } = await this.service.user.tickets.getEmployeeTicketsLiving({ filters: f });
+    const { data } = await this.service.user.tickets.getEmployeeTicketsLiving({
+      filters: f,
+      limit,
+      offset: offset - 1,
+      ...!!sort && { sort }
+    });
 
     commit(SET_USER_TICKETS, data);
   },
@@ -148,13 +144,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
   tableData (state) {
-    const { data } = state;
-
-    if (data) {
-      return {
-        items: data.items
-      };
-    }
+    return state.data;
   },
 
   tablePagination (state) {
