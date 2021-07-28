@@ -420,7 +420,23 @@
         }
       },
       "ideas": "Ideas and suggestions",
-      "crowdfunding": "Crowdfunding",
+      "crowdfunding": {
+        "title": "Краудфандинг",
+        "form": {
+          "title": "Название проекта",
+          "description": "Добавьте краткое описание проекта",
+          "dates": {
+            "title": "Выберите сроки реализации проекта",
+            "input": "Сроки реализации"
+          },
+          "category": "Категория",
+          "cover": "Добавьте обложку проекта",
+          "markdownDescription": "Добавьте описание проекта",
+          "media": "Загрузите фотографии и видео, наиболее полно описывающие ваш проект. Максимальный размер файла: 2 Мб",
+          "mediaMaxSize": "Максимальный размер файла: 2 Мб",
+          "loadedMedia": "Загруженные фотографии"
+        }
+      },
       "employmentCenter": "Employment center",
       "light": "Light",
       "tress": "Tress",
