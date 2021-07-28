@@ -8,7 +8,7 @@
     )
       q-step(
         title="Выбор квартиры"
-        :done="value.id === 12"
+        :done="stepOneDone"
         :name="1"
       )
         .row
@@ -21,7 +21,7 @@
               q-btn(color="primary" label="Перейти к выбору квартиры" @click="onApartmentChoose")
       q-step(
         title="Осмотр квартиры"
-        :done="value.id === 6"
+        :done="stepTwoDone"
         :name="2"
       )
         .row
@@ -32,7 +32,7 @@
               q-btn(color="primary" label="Квартира осмотрена" @click="onApartmentViewed")
       q-step(
         title="Оплата"
-        :done="value.id === 6"
+        :done="stepThreeDone"
         :name="3"
       )
         div.text-body1.text-wrap
@@ -49,7 +49,7 @@
           )
       q-step(
         title="Подписание договора"
-        :done="value.id === 8"
+        :done="stepFourDone"
         :name="4"
       )
         | Договор
@@ -70,6 +70,18 @@
         if (this.value.id === 12) return 2;
         if (this.value.id === 3) return 3;
         if ([5, 6, 7].includes(this.value.id)) return 4;
+      },
+      stepOneDone () {
+        return this.value.id === 12 || this.stepTwoDone;
+      },
+      stepTwoDone () {
+        return this.value.id === 3 || this.stepThreeDone;
+      },
+      stepThreeDone () {
+        return [5, 6, 7].includes(this.value.id) || this.stepFourDone;
+      },
+      stepFourDone () {
+        return this.value.id === 8;
       }
     },
     methods: {
