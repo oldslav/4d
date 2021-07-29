@@ -53,7 +53,7 @@
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
-            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
+            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid" :loading="isTicketCreating")
 </template>
 
 <script>
@@ -134,6 +134,10 @@
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`] ||
           this.$store.state.wait[`user/documents/${ GET_USER_DOCUMENTS }`];
+      },
+
+      isTicketCreating () {
+        return this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`];
       },
 
       isValid () {

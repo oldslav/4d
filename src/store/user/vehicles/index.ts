@@ -75,7 +75,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
     commit(CLEAR_DELETED_IDS);
     await Promise.all(files.map((p: any) => dispatch(CREATE_VEHICLE_DOCUMENT, { payload: p, id })));
   },
-  async [STORE_USER_VEHICLES] ({ commit }, vehicles) {
+  async [STORE_USER_VEHICLES] ({ commit, dispatch }, vehicles) {
     const result: any = [];
     await Promise.all(vehicles.map(async (v: any) => {
       const documents: any = {
@@ -83,12 +83,8 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
         pts: []
       };
       const { id, model, brand, type, number, images } = v;
-      await Promise.all(images.map(async (doc: any) => {
-        const { imagePath, docType, fileName } = doc;
-        const { data } = await this.service.common.getFile(imagePath);
-        const file = new File([data], fileName, { type: data.type });
-        documents[docType.name].push(file);
-      }));
+      const files = await dispatch("loadFiles", images, { root: true });
+      Object.assign(documents, files);
       result.push({ id, model, brand, type, number, documents });
     }));
     commit(SET_ITEMS, result);

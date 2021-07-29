@@ -22,7 +22,7 @@
     name: "BaseSelect",
     props: {
       value: {
-        type: [String, Number, Array, null],
+        type: [String, Number, Array, Object, null],
         default: null
       },
       label: {

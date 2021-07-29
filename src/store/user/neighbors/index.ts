@@ -63,7 +63,7 @@ const actions: ActionTree<INeighborsState, TRootState> = {
     commit(CLEAR_DELETED_IDS);
     await Promise.all(files.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
   },
-  async [STORE_USER_NEIGHBORS] ({ commit }, neighbors) {
+  async [STORE_USER_NEIGHBORS] ({ commit, dispatch }, neighbors) {
     const result: any = [];
     await Promise.all(neighbors.map(async (n: any) => {
       const documents: any = {
@@ -76,12 +76,8 @@ const actions: ActionTree<INeighborsState, TRootState> = {
         consent_processing_personal_data: []
       };
       const { id, name, images, neighborType } = n;
-      await Promise.all(images.map(async (doc: any) => {
-        const { imagePath, docType, fileName } = doc;
-        const { data } = await this.service.common.getFile(imagePath);
-        const file = new File([data], fileName, { type: data.type });
-        documents[docType.name].push(file);
-      }));
+      const files = await dispatch("loadFiles", images, { root: true });
+      Object.assign(documents, files);
       result.push({ id, name, documents, neighborType });
     }));
     commit(SET_ITEMS, result);
