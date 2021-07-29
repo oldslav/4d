@@ -228,6 +228,22 @@
         "paid": "Оплачен",
         "pending": "Ожидает оплаты"
       }
+    },
+    "verifyCompany": {
+      "requestCard": {
+        "title": "The function is available only to verified companies",
+        "firstDescPart": "Submit",
+        "action": "request",
+        "vacancy-description": "to the City Hall of Innpolis to provide access to the city vacancy service. You will then be able to post vacancies and view candidates' responses."
+      },
+      "form": {
+        "title": "Company verification request",
+        "loading": "Submitting a request",
+        "requestError": "There was an error sending your request, please try again later",
+        "requestSuccessTitle": "Thank you! Your request has been sent successfully",
+        "requestSuccessDescription": "Thank you! Your request has been sent successfully",
+        "commonInfo": "Basic Information"
+      }
     }
   },
   "action": {
@@ -241,6 +257,8 @@
     "register": "Register",
     "back": "Back",
     "save": "Save",
+    "clear": "Clear",
+    "close": "Close",
     "send": "Send",
     "cancel": "Cancel",
     "delete": "Delete",

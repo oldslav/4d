@@ -1,9 +1,10 @@
 <template lang="pug">
-  q-tabs(
+  q-tabs.base-tabs(
     :value="value"
     @input="onChange"
     align="left"
     :dense="dense"
+    outside-arrows
     mobile-arrows
     :class="{ 'full-width': isFullWidth }"
   )
@@ -34,7 +35,3 @@
     }
   };
 </script>
-
-<style scoped>
-
-</style>
