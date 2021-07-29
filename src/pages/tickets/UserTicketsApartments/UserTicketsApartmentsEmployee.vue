@@ -49,7 +49,7 @@
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
-    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :info="activeRow" v-if="activeRow" @reject="onReject" @approve="onApprove")
+    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
@@ -81,7 +81,7 @@
     },
     data () {
       return {
-        activeRow: null,
+        activeId: null,
         approvedId: null,
         showApprove: false,
         showDetailsModal: false,
@@ -230,7 +230,7 @@
           });
       },
       showDetails (row) {
-        this.activeRow = row;
+        this.activeId = row.id;
         this.showDetailsModal = true;
       },
       sendContractInfo (payload, id) {
