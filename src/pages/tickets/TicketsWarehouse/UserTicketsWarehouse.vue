@@ -1,13 +1,14 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :loading="isLoading"
       :getData="getUserTickets"
       :expanded.sync="expanded"
+      :pagination="tablePagination"
     )
       template(v-slot:top)
         .full-width.text-right
@@ -18,19 +19,19 @@
             :label="$t('action.toMap')"
           )
       template(v-slot:body="props")
-        q-tr(:props="props")
-          q-td(key="warehouseAddress" :props="props" @click="expandRow(props)")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="warehouseAddress" :props="props")
             | ул. Спортивная, 130, паркинг
-          q-td(key="warehouseType" :props="props" @click="expandRow(props)")
+          q-td(key="warehouseType" :props="props")
             | {{ props.row.serviceOption.service.name }}
-          q-td(key="price" :props="props" @click="expandRow(props)")
+          q-td(key="price" :props="props")
             | {{ props.row.serviceOption.price ? props.row.serviceOption.price : "0" }}
-          q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
+          q-td(key="created" :props="props")
+            | {{ props.row.created | ticketDate }}
+          q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
@@ -85,11 +86,13 @@
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     DELETE_USER_TICKET_WAREHOUSE,
     GET_USER_TICKETS_WAREHOUSE
   } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import BaseTable from "components/common/BaseTable";
   import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
@@ -109,39 +112,34 @@
           {
             name: "warehouseAddress",
             required: false,
-            label: "Address",
-            align: "left",
-            sortable: true
+            label: this.$t("common.address"),
+            align: "left"
           },
           {
             name: "warehouseType",
             required: false,
-            label: "Type",
-            align: "left",
-            sortable: true
+            label: this.$t("common.type"),
+            align: "left"
           },
           {
             name: "price",
             required: false,
-            label: "Price, rub",
-            align: "left",
-            sortable: true
+            label: this.$t("common.rentPrice"),
+            align: "left"
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
-            format: val => moment(val).format("DD.MM.YYYY"),
-            sortable: true
+            format: val => moment(val).format("DD.MM.YYYY")
           },
           {
             name: "status",
             required: true,
-            label: "Ticket status",
-            align: "left",
-            sortable: true
+            label: this.$t("common.status"),
+            align: "left"
           },
           {
             name: "menu",
@@ -151,9 +149,7 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/warehouse", {
-        data: state => state.data
-      }),
+      ...mapGetters("user/tickets/warehouse", ["tableData", "tablePagination"]),
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKETS_WAREHOUSE }`];
@@ -161,9 +157,24 @@
     },
     methods: {
       ...mapActions("user/tickets/warehouse", {
-        getUserTickets: GET_USER_TICKETS_WAREHOUSE,
+        GET_USER_TICKETS_WAREHOUSE,
         deleteUserTicket: DELETE_USER_TICKET_WAREHOUSE
       }),
+      ...mapFields("user/tickets/warehouse", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
+      async getUserTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_USER_TICKETS_WAREHOUSE();
+      },
 
       openDetails (id) {
         this.currentId = id;
@@ -190,9 +201,7 @@
 
       goToPayment (id) {
         this.$router.push({ name: "user-bills-warehouse", params: { ticket: id } });
-      },
-
-      moment
+      }
     }
   };
 </script>

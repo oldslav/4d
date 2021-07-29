@@ -390,6 +390,18 @@ const routes: RouteConfig[] = [
         }
       },
       {
+        path: "crowdfunding",
+        name: "services-crowdfunding",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceCrowdfunding.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesCrowdfunding.vue")
+        },
+        meta: {
+          asideServices: true,
+          toolbar: true
+        }
+      },
+      {
         path: "vacancies",
         name: "services-vacancies",
         components: {

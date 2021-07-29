@@ -7,7 +7,10 @@ import {
   GET_EMPLOYEE_TICKETS_CROWDFUNDING,
   REJECT_TICKET_CROWDFUNDING,
   APPROVE_TICKET_CROWDFUNDING,
-  DELETE_USER_TICKET_CROWDFUNDING
+  DELETE_USER_TICKET_CROWDFUNDING,
+  CREATE_USER_TICKET_CROWDFUNDING,
+  ADD_USER_TICKET_CROWDFUNDING_COVER,
+  ADD_USER_TICKET_CROWDFUNDING_FILES
 } from "src/store/constants/action-constants";
 
 const state: IUserTicketsState = {
@@ -26,6 +29,32 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
+  async [CREATE_USER_TICKET_CROWDFUNDING] ({ dispatch }, payload) {
+    const { cover, media, ...result } = payload;
+    const params = { clean: true };
+    const { data: { id } } = await this.service.user.tickets.createTicketCrowdfunding(params);
+    await this.service.user.tickets.updateTicketCrowdfunding(id, result);
+    if (cover) await dispatch(ADD_USER_TICKET_CROWDFUNDING_COVER, { id, cover });
+    if (media && media.length > 0) await dispatch(ADD_USER_TICKET_CROWDFUNDING_FILES, { id, media });
+  },
+
+  async [ADD_USER_TICKET_CROWDFUNDING_COVER] (_, { id, cover }) {
+    const payload = new FormData();
+    payload.append("file", cover);
+    
+    await this.service.user.tickets.addTicketCrowdfundingCover(id, payload);
+  },
+
+  async [ADD_USER_TICKET_CROWDFUNDING_FILES] (_, { id, media }) {
+    await Promise.all(
+      media.map(async (file: any) => {
+        const payload = new FormData();
+        payload.append("file", file);
+        await this.service.user.tickets.addTicketCrowdfundingFile(id, payload);
+      })
+    );
+  },
+
   async [GET_USER_TICKETS_CROWDFUNDING] ({ state, commit }) {
     const { filters } = state;
 

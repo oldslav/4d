@@ -64,14 +64,10 @@ const actions: ActionTree<IDocumentsState, TRootState> = {
     dispatch(`user/vehicles/${ STORE_USER_VEHICLES }`, cars, { root: true });
     dispatch(`user/neighbors/${ STORE_USER_NEIGHBORS }`, neighbors, { root: true });
   },
-  async [STORE_USER_DOCUMENTS] ({ commit }, documents) {
+  async [STORE_USER_DOCUMENTS] ({ commit, dispatch }, documents) {
     const result: any = initialState();
-    await Promise.all(documents.map(async (doc: any) => {
-      const { imagePath, docType, fileName } = doc;
-      const { data } = await this.service.common.getFile(imagePath);
-      const file = new File([data], fileName, { type: data.type });
-      result.documents[docType.name].push(file);
-    }));
+    const files = await dispatch("loadFiles", documents, { root: true });
+    Object.assign(result.documents, files);
     Object.assign(defaultState, result);
     commit(SET_STATE, result);
   }

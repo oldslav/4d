@@ -27,7 +27,8 @@
       },
       "response": {
         "oops": "Упс! Произошла ошибка",
-        "tryLater": "Пожалуйста, повторите попытку позже"
+        "tryLater": "Пожалуйста, повторите попытку позже",
+        "downloadFail": "Failed to download file"
       }
     },
     "theme": "Theme",
@@ -48,6 +49,7 @@
         "dataProcessing": "processing of personal data "
       },
       "messages": {
+        "registered": "User registered",
         "success": "A confirmation email has been sent to your mailbox",
         "fail": "An error occurred during registration"
       }
@@ -106,9 +108,12 @@
       "entrance": "Entrance"
     },
     "address": "Address",
+    "number": "Number",
+    "type": "Type",
     "status": "Status",
     "id": "ID",
     "name": "Name",
+    "fullname": "Full name",
     "email": "Email",
     "phone": "Phone",
     "telegramAlias": "Telegram",
@@ -218,6 +223,10 @@
       "dateContractExpire": "Дата окончания",
       "columns": {
         "paymentAmount": "Payment amount"
+      },
+      "statuses": {
+        "paid": "Оплачен",
+        "pending": "Ожидает оплаты"
       }
     },
     "verifyCompany": {
@@ -261,6 +270,7 @@
     "pay": "Pay",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
+    "registerUser": "Register employee",
     "select": {
       "building": "Select a building",
       "parking": {
@@ -317,6 +327,11 @@
           "common": "Parking",
           "social": "Social parking",
           "guest": "Guest parking"
+        },
+        "ticketType": {
+          "for_disabled_people": "Социальная",
+          "guest": "Гостевая",
+          "regular": "Платная"
         },
         "rentTypes": {
           "title": "Rent types",
@@ -438,7 +453,23 @@
         }
       },
       "ideas": "Ideas and suggestions",
-      "crowdfunding": "Crowdfunding",
+      "crowdfunding": {
+        "title": "Краудфандинг",
+        "form": {
+          "title": "Название проекта",
+          "description": "Добавьте краткое описание проекта",
+          "dates": {
+            "title": "Выберите сроки реализации проекта",
+            "input": "Сроки реализации"
+          },
+          "category": "Категория",
+          "cover": "Добавьте обложку проекта",
+          "markdownDescription": "Добавьте описание проекта",
+          "media": "Загрузите фотографии и видео, наиболее полно описывающие ваш проект. Максимальный размер файла: 2 Мб",
+          "mediaMaxSize": "Максимальный размер файла: 2 Мб",
+          "loadedMedia": "Загруженные фотографии"
+        }
+      },
       "employmentCenter": "Employment center",
       "light": "Light",
       "tress": "Tress",

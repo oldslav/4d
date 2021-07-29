@@ -73,7 +73,7 @@ const mutations: MutationTree<ICompanyState> = {
 };
 
 const actions: ActionTree<ICompanyState, TRootState> = {
-  [GET_COMPANY] ({ commit }) {
+  [GET_COMPANY] ({ commit, dispatch }) {
     return this.service.user.company.getCompany()
       .then(({ data }) => {
         const { id, verifyRequest, bankDetails, companyCard, companyProfile } = data;
@@ -88,17 +88,8 @@ const actions: ActionTree<ICompanyState, TRootState> = {
           ogrn: [],
           egrjul: []
         };
-        if (images.length) {
-          images.forEach((doc: any) => {
-            const { id, imagePath, docType, fileName } = doc;
-            const file = {
-              id,
-              imagePath,
-              name: fileName
-            };
-            documents[docType.name].push(file);
-          });
-        }
+        const files = dispatch("loadFiles", images, { root: true });
+        Object.assign(documents, files);
         commit(SET_COMPANY_CARD, { ...cardPayload, documents });
       });
   },

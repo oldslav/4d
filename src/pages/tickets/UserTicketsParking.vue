@@ -1,13 +1,14 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :loading="isLoading"
       :getData="getUserTickets"
       :expanded.sync="expanded"
+      :pagination="tablePagination"
     )
       template(v-slot:top)
         .full-width.text-right
@@ -19,21 +20,21 @@
           )
         TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
-        q-tr(:props="props")
-          q-td(key="parkingAddress" :props="props" @click="expandRow(props)")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="parkingAddress" :props="props" )
             | {{props.row.parkingPlace.address}}
-          q-td(key="parkingNumber" :props="props" @click="expandRow(props)")
+          q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
-          q-td(key="type" :props="props" @click="expandRow(props)")
-            | {{props.row.parkingPlace.type.description}}
-          q-td(key="price" :props="props" @click="expandRow(props)")
+          q-td(key="type" :props="props")
+            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
+          q-td(key="price" :props="props")
             | {{ props.row.price ? props.row.price.price : "0" }}
-          q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
+          q-td(key="created" :props="props")
+            | {{ props.row.created | ticketDate }}
+          q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
@@ -84,20 +85,21 @@
               div.text-body1.text-wrap
                 | Ваш договор готов к подписанию!
                 | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
-    q-inner-loading(v-else showing)
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
-  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import BaseTable from "../../components/common/BaseTable";
-  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
+  import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     DELETE_USER_TICKET_PARKING,
     GET_USER_TICKETS_PARKING,
     GET_USER_TICKET_PARKING_PAYMENT_LINK
-  } from "../../store/constants/action-constants";
+  } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import BaseTable from "../../components/common/BaseTable";
+  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
 
   export default {
     name: "UserTicketsParking",
@@ -114,46 +116,40 @@
           {
             name: "parkingAddress",
             required: false,
-            label: "Address",
-            align: "left",
-            sortable: true
+            label: this.$t("common.address"),
+            align: "left"
           },
           {
             name: "parkingNumber",
             required: false,
-            label: "Number",
-            align: "left",
-            sortable: true
+            label: this.$t("common.number"),
+            align: "left"
           },
           {
             name: "type",
             required: false,
-            label: "Parking type",
-            align: "left",
-            sortable: true
+            label: this.$t("common.type"),
+            align: "left"
           },
           {
             name: "price",
             required: false,
-            label: "Parking price, rub",
-            align: "left",
-            sortable: true
+            label: this.$t("common.rentPrice"),
+            align: "left"
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
-            format: val => moment(val).format("DD.MM.YYYY"),
-            sortable: true
+            format: val => moment(val).format("DD.MM.YYYY")
           },
           {
             name: "status",
             required: true,
-            label: "Ticket status",
-            align: "left",
-            sortable: true
+            label: this.$t("common.status"),
+            align: "left"
           },
           {
             name: "menu",
@@ -163,8 +159,12 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/parking", {
-        data: state => state.data
+      ...mapGetters("user/tickets/parking", ["tableData", "tablePagination"]),
+
+      ...mapFields("user/tickets/parking", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
       }),
 
       isLoading () {
@@ -177,10 +177,21 @@
     },
     methods: {
       ...mapActions("user/tickets/parking", {
-        getUserTickets: GET_USER_TICKETS_PARKING,
+        GET_USER_TICKETS_PARKING,
         deleteUserTicket: DELETE_USER_TICKET_PARKING,
         GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
+
+      async getUserTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_USER_TICKETS_PARKING();
+      },
 
       openDetails (data) {
         this.currentRow = data;
@@ -207,9 +218,7 @@
 
       goToPayment (id) {
         this.$router.push({ name: "user-bills-parking", params: { ticket: id } });
-      },
-
-      moment
+      }
     }
   };
 </script>

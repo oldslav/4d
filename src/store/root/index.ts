@@ -30,7 +30,7 @@ const actions: ActionTree<TRootState, TRootState> = {
     const result: any = [];
     Object.entries(files).forEach(([key, val]: any) => {
       val.forEach((file: any) => {
-        if(!file.id) {
+        if (!file.id) {
           const type = rootGetters["references/getDocTypeByName"](key);
           const payload = new FormData();
           payload.append("file", file);
@@ -39,6 +39,20 @@ const actions: ActionTree<TRootState, TRootState> = {
         }
       });
     });
+    return Promise.resolve(result);
+  },
+
+  async loadFiles (_, documents: any[]) {
+    const result: any = {};
+    await Promise.all(documents.map(async (doc: any) => {
+      const { imagePath, docType, fileName } = doc;
+      const { data } = await this.service.common.getFile(imagePath);
+      const file = new File([data], fileName, { type: data.type });
+      if (!result[docType.name]) {
+        result[docType.name] = [];
+      }
+      result[docType.name].push(file);
+    }));
     return Promise.resolve(result);
   }
 };
