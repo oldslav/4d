@@ -34,7 +34,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     const { data } = await this.service.services.apartments.getApartments({
       requestId,
       buildingId,
-      ...state.pagination,
+      limit: state.pagination.limit,
       offset: state.pagination.offset - 1
     });
 

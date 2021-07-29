@@ -48,6 +48,7 @@
         "dataProcessing": "processing of personal data "
       },
       "messages": {
+        "registered": "User registered",
         "success": "A confirmation email has been sent to your mailbox",
         "fail": "An error occurred during registration"
       }
@@ -218,6 +219,10 @@
       "dateContractExpire": "Дата окончания",
       "columns": {
         "paymentAmount": "Payment amount"
+      },
+      "statuses": {
+        "paid": "Оплачен",
+        "pending": "Ожидает оплаты"
       }
     }
   },
@@ -243,6 +248,7 @@
     "pay": "Pay",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
+    "registerUser": "Register employee",
     "select": {
       "building": "Select a building",
       "parking": {
