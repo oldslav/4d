@@ -1,51 +1,29 @@
 <template lang="pug">
   q-form(@submit.stop.prevent="onSubmit()")
     q-input(
-      v-model="model.number"
+      v-model="number"
       :rules="[ val => val !== null && val !== '' || '']"
       :label="$t('user.bills.contractNumber')"
       type="number"
     )
-    .row.q-col-gutter-sm
-      .col-6
-        q-input(
-          ref="date"
-          filled
-          v-model="model.startDate"
-          :label="$t('user.bills.dateContractConcluded')"
-          lazy-rules
-          :rules="[ val => val !== null && val !== '' || '']"
-          @click="$refs.qDateConcludedProxy.show()"
-        )
-          template(v-slot:append)
-            q-icon(name="event" class="cursor-pointer")
-              q-popup-proxy(ref="qDateConcludedProxy")
-                q-date(
-                  v-model="model.startDate"
-                  :options="startOptions"
-                  :mask="'YYYY-MM-DD'"
-                  @input="$refs.qDateConcludedProxy.hide()"
-                )
-      .col-6
-        q-input(
-          ref="date"
-          filled
-          v-model="model.endDate"
-          :label="$t('user.bills.dateContractExpire')"
-          lazy-rules
-          :rules="[ val => val !== null && val !== '' || '']"
-          @click="$refs.qDateExpireProxy.show()"
-          :disable="!model.startDate"
-        )
-          template(v-slot:append)
-            q-icon(name="event" class="cursor-pointer")
-              q-popup-proxy(ref="qDateExpireProxy")
-                q-date(
-                  v-model="model.endDate"
-                  :mask="'YYYY-MM-DD'"
-                  :options="endOptions"
-                  @input="$refs.qDateExpireProxy.hide()"
-                )
+    q-input(
+      :value="innerValue"
+      :label="$t('entity.tickets.contract.dateRange')"
+      lazy-rules
+      readonly
+      :rules="[ () => !!range.to && !!range.from || '']"
+      @click="$refs.dateRange.show()"
+    )
+      template(v-slot:prepend)
+        q-icon(name="event" class="cursor-pointer")
+          q-popup-proxy(ref="dateRange")
+            q-date(
+              v-model="range"
+              :options="startOptions"
+              range
+              :mask="'YYYY-MM-DD'"
+              @input="$refs.dateRange.hide()"
+            )
     .text-right
       q-btn(color="primary" label="Далее" type="submit" :disabled="!contractValid")
 </template>
@@ -57,23 +35,31 @@
     name: "FormContract",
     data () {
       return {
-        model: {
-          number: null,
-          startDate: null,
-          endDate: null
+        number: null,
+        range: {
+          from: null,
+          to: null
         },
-        startOptions: date => moment(date).isSameOrAfter(moment()),
-        endOptions: date => moment(date).isAfter(moment(this.model.startDate))
+        startOptions: date => moment(date).isSameOrAfter(moment())
       };
     },
     computed: {
       contractValid () {
-        return Object.values(this.model).every((v) => !!v);
+        return !!this.number && Object.values(this.range).every((v) => !!v);
+      },
+      innerValue () {
+        return `${ this.range.from || "" } - ${ this.range.to || "" }`;
       }
     },
     methods: {
       onSubmit () {
-        this.$emit("submit", this.model);
+        const { number, range: { from, to } } = this;
+        const payload = {
+          number,
+          startDate: from,
+          endDate: to
+        };
+        this.$emit("submit", payload);
       }
     }
   };
