@@ -31,7 +31,7 @@
             div.text-caption.text-grey-8.q-mb-sm {{ $t('common.address') }}
             div.text-body2 {{ getCurrentVacancy.address }}
 
-    div.q-px-md.q-py-md
+    div.q-px-md.q-py-md(v-if="isUserNature")
       q-btn.full-width(
         v-if="!getCurrentVacancy.respondIsPresent"
         :label="$t('entity.services.vacancies.sendRespond')"
@@ -60,9 +60,10 @@
       };
     },
     computed: {
-      ...mapGetters("services/vacancy", ["getCurrentVacancy"])
+      ...mapGetters("services/vacancy", ["getCurrentVacancy"]),
+      ...mapGetters(["isUserNature"])
     },
-    methods:{
+    methods: {
       onClickRespondVacancy (){
         this.visibleRespondModal = true;
       }

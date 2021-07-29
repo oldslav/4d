@@ -49,6 +49,7 @@
         "dataProcessing": "processing of personal data "
       },
       "messages": {
+        "registered": "User registered",
         "success": "A confirmation email has been sent to your mailbox",
         "fail": "An error occurred during registration"
       }
@@ -222,6 +223,26 @@
       "dateContractExpire": "Дата окончания",
       "columns": {
         "paymentAmount": "Payment amount"
+      },
+      "statuses": {
+        "paid": "Оплачен",
+        "pending": "Ожидает оплаты"
+      }
+    },
+    "verifyCompany": {
+      "requestCard": {
+        "title": "The function is available only to verified companies",
+        "firstDescPart": "Submit",
+        "action": "request",
+        "vacancy-description": "to the City Hall of Innpolis to provide access to the city vacancy service. You will then be able to post vacancies and view candidates' responses."
+      },
+      "form": {
+        "title": "Company verification request",
+        "loading": "Submitting a request",
+        "requestError": "There was an error sending your request, please try again later",
+        "requestSuccessTitle": "Thank you! Your request has been sent successfully",
+        "requestSuccessDescription": "Thank you! Your request has been sent successfully",
+        "commonInfo": "Basic Information"
       }
     }
   },
@@ -236,6 +257,8 @@
     "register": "Register",
     "back": "Back",
     "save": "Save",
+    "clear": "Clear",
+    "close": "Close",
     "send": "Send",
     "cancel": "Cancel",
     "delete": "Delete",
@@ -248,6 +271,7 @@
     "download": "Download",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
+    "registerUser": "Register employee",
     "select": {
       "building": "Select a building",
       "parking": {

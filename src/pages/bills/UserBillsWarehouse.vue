@@ -17,6 +17,8 @@
           q-td(key="price" :props="props" @click="expandRow(props)")
             | {{ props.row ? props.row.amount.total : "0" }}
           q-td(key="status" :props="props" @click="expandRow(props)")
+            .text-small.text-primary-light.q-mb-xs
+              | {{ props.row.paid ? $t("user.bills.statuses.paid") : $t("user.bills.statuses.pending") }}
             BaseStatus(:value="+props.row.paid*10")
 
         q-tr(v-show="props.expand")

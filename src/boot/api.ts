@@ -17,6 +17,7 @@ import { TicketsService } from "src/api/user/tickets/tickets";
 import { UserVehiclesService } from "src/api/user/vehicles";
 import { UsersService } from "src/api/users";
 import { IdeasService } from "src/api/services/ideas";
+import { VerificationRequestService } from "src/api/user/verification-request";
 
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,7 +40,8 @@ declare module "vuex/types/index" {
         neighbors: UserNeighborsService,
         profile: UserProfileService,
         tickets: TicketsService,
-        vehicles: UserVehiclesService
+        vehicles: UserVehiclesService,
+        verificationRequests: VerificationRequestService
       },
       users: UsersService
     }
@@ -70,7 +72,8 @@ export default boot(({ app }) => {
       neighbors: new UserNeighborsService(axios),
       profile: new UserProfileService(axios),
       tickets: new TicketsService(axios),
-      vehicles: new UserVehiclesService(axios)
+      vehicles: new UserVehiclesService(axios),
+      verificationRequests: new VerificationRequestService(axios)
     },
     users: new UsersService(axios)
   };

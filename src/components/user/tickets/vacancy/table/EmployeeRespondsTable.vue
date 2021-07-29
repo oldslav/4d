@@ -8,64 +8,63 @@
     :isLoading="isLoading"
   )
     template(v-slot:body="props")
-      q-tr(:props="props")
-        q-td(key="position" :props="props")
-          | {{ props.row.position }}
+      q-tr
+        q-td(key="name" :props="props")
+          | {{ props.row.name.full }}
 
-        q-td(key="company" :props="props")
-          | {{  props.row.companyName }}
+        q-td(key="companyName" :props="props")
+          | {{ props.row.vacancy.companyName }}
 
-        q-td(key="publishDate" :props="props") Дата отклика
+        q-td(key="created" :props="props")
+          | {{ props.row.created | formatDate }}
 
-        q-td(key="status" :props="props") status
-
+        q-td(auto-width key="actions" :props="props")
+          q-btn(
+            @click="onClickSendNotification(props.row.id)"
+            flat
+            color="primary"
+            label="Уведомить компанию"
+          )
 </template>
 <script>
   import BaseTable from "../../../../common/BaseTable";
-  import VacancyTickerStatus from "../VacancyTickerStatus";
-  import { VacancyStatusesEnum } from "../../../../../store/types/vacancy";
 
   export default {
-    components:{ BaseTable, VacancyTickerStatus },
+    components: { BaseTable },
     props:{
       pagination: { type: Object, default:() => ({}) },
       data: { type: Object, default:() => ({}) },
       getData: { type: Function, default:() => () => ({}) },
       isLoading: { type: Boolean, default: false }
     },
-    data (){
-      return {
-        vacancyStatuses: VacancyStatusesEnum
-      };
-    },
     computed: {
       getTableColumns () {
         return [
           {
-            name: "position",
+            name: "name",
             required: false,
-            label: "Название",
+            label: "Ф.И.О. заявителя",
             align: "left",
             sortable: false
           },
           {
-            name: "company",
+            name: "companyName",
             required: false,
             label: "Компания",
             align: "left",
             sortable: false
           },
           {
-            name: "publishDate",
+            name: "created",
             required: false,
             label: "Дата отклика",
             align: "left",
             sortable: false
           },
           {
-            name: "status",
+            name: "actions",
             required: false,
-            label: "Статус",
+            label: "",
             align: "left",
             sortable: false
           }
@@ -73,11 +72,8 @@
       }
     },
     methods:{
-      onClickClose (vacancyId){
-        this.$emit("vacancy:close", vacancyId);
-      },
-      onClickPublish (vacancyId){
-        this.$emit("vacancy:publish", vacancyId);
+      onClickSendNotification (id) {
+        this.$emit("notify", id);
       }
     }
   };

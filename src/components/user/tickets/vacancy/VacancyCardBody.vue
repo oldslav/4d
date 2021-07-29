@@ -31,15 +31,15 @@
     .col-12.col-sm-6.col-md-8.q-pl-lg
       div.q-mb-lg
         div.text-medium.q-mb-sm Обязанности
-        div.text-body1 {{ value.duties }}
+        div.text-body1.rich-text {{ value.duties }}
 
       div.q-mb-lg
         div.text-medium.q-mb-sm Требования
-        div.text-body1 {{ value.requirements }}
+        div.text-body1.rich-text {{ value.requirements }}
 
       div.q-mb-lg
         div.text-medium.q-mb-sm Условия
-        div.text-body1 {{ value.conditions }}
+        div.text-body1.rich-text {{ value.conditions }}
 </template>
 <script>
   export default {
