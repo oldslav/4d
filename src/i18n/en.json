@@ -245,6 +245,7 @@
     "accept": "Accept",
     "reject": "Reject",
     "pay": "Pay",
+    "download": "Download",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
     "select": {
@@ -585,7 +586,12 @@
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
       "vacancy": "Городские вакансии",
-      "warehouse": "Warehouse rent"
+      "warehouse": "Warehouse rent",
+      "contract": {
+        "number": "Номер договора",
+        "startDate": "Дата заключения",
+        "message": "Если вы хотите расторгнуть договор, пожалуйста, скачайте соглашение о расторжении."
+      }
     },
     "bills": "Bills",
     "main": "Main",

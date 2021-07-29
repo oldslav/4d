@@ -4,6 +4,7 @@
       v-model="model.number"
       :rules="[ val => val !== null && val !== '' || '']"
       :label="$t('user.bills.contractNumber')"
+      type="number"
     )
     .row.q-col-gutter-sm
       .col-6
