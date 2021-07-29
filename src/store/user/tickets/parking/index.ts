@@ -71,7 +71,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [DELETE_USER_TICKET_PARKING] ({ dispatch }, payload) {
-    await this.service.user.tickets.deleteTicketLiving(payload);
+    await this.service.user.tickets.deleteTicketParking(payload);
 
     dispatch(GET_USER_TICKETS_PARKING);
   },
