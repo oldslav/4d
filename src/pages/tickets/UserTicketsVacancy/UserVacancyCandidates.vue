@@ -2,11 +2,11 @@
   div
     div.row.flex-break.items-start.q-mb-md
       div.col-md-3
-        div Дата отлика
+        div {{ $t('user.tickets.responds.respondDate') }}
         date-range-picker(v-model="filter.dateRange")
 
       div.col-md-3.q-pl-lg
-        div Статус отклика
+        div {{ $t('user.tickets.responds.respondStatus') }}
           q-select.q-mb-md(
             v-model="filter.statusId"
             :options="getRespondsStatuses"
@@ -150,57 +150,72 @@
       },
 
       async tryRejectCandidate (id, reason) {
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Отклоняем кандидата" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.responds.reject.progress")
+        });
 
         try {
           await this.rejectCandidate({ id, reason });
-          notifyEnd({ type: "positive", message: "Кандидат успешно отклонён" });
+          notifyEnd({
+            type: "positive",
+            message: this.$t("user.tickets.responds.reject.success")
+          });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При отклонении кандидата произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.responds.reject.error")
           });
         }
       },
 
       async tryAcceptCandidate (id, text) {
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Отправляем приглашение" });
+        const notifyEnd = this.$q.notify({ type: "ongoing", message: this.$t("user.tickets.responds.approve.progress") });
 
         try {
           await this.inviteCandidate({ id, text });
-          notifyEnd({ type: "positive", message: "Приглашение успешно отправлено" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.responds.approve.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При отправке приглашения произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.responds.approve.error")
           });
         }
       },
 
       async trySuccessCandidateInterview (candidateId){
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Ставим отметку о прохождении интервью" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.responds.interviewApprove.progress")
+        });
 
         try {
           await this.interviewPassed(candidateId);
-          notifyEnd({ type: "positive", message: "Отметка успешно поставлена" });
+          notifyEnd({
+            type: "positive",
+            message: this.$t("user.tickets.responds.interviewApprove.success")
+          });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "Произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.responds.interviewApprove.error")
           });
         }
       },
 
       async trySendCandidateOffer (candidateId){
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Отправляем приглашение" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.responds.sendOffer.progress")
+        });
 
         try {
           await this.sendCandidateOffer(candidateId);
-          notifyEnd({ type: "positive", message: "Приглашение успешно отправлено" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.responds.sendOffer.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При отправке приглашения произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.responds.sendOffer.error")
           });
         }
       },
@@ -220,11 +235,11 @@
 
       showAcceptDialog (){
         return this.$q.dialog({
-          title: this.$t("user.tickets.vacancies.acceptCandidateTitle"),
-          message: this.$t("user.tickets.vacancies.acceptCandidateHint"),
+          title: this.$t("user.tickets.responds.approve.title"),
+          message: this.$t("user.tickets.responds.approve.hint"),
           class: "candidate-workflow-dialog",
           prompt: {
-            model: this.$t("user.tickets.vacancies.acceptCandidateMessage"),
+            model: this.$t("user.tickets.responds.approve.message"),
             isValid: val => val.length > 0,
             type: "textarea",
             outlined: true
@@ -237,11 +252,11 @@
 
       showRejectDialog (){
         return this.$q.dialog({
-          title: this.$t("user.tickets.vacancies.rejectCandidateTitle"),
-          message: this.$t("user.tickets.vacancies.rejectCandidateHint"),
+          title: this.$t("user.tickets.responds.reject.title"),
+          message: this.$t("user.tickets.responds.reject.title"),
           class: "candidate-workflow-dialog",
           prompt: {
-            model: this.$t("user.tickets.vacancies.rejectCandidateMessage"),
+            model: this.$t("user.tickets.responds.reject.title"),
             isValid: val => val.length > 0,
             type: "textarea",
             outlined: true

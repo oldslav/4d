@@ -22,7 +22,7 @@
           | {{  props.row.closedDate | formatDate }}
 
         q-td(key="closeReason" :props="props")
-          | {{ props.row.closureReason.description }}
+          | {{ props.row.closureReason ? props.row.closureReason.description : '' }}
 
         q-td(key="status" :props="props")
           vacancy-ticket-status(:value="props.row.status")
@@ -33,7 +33,7 @@
               q-list
                 q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
                   q-item-section(no-wrap)
-                    | Просмотреть вакансию
+                    | {{ $t("user.tickets.vacancies.table.viewResponds") }}
 
                 q-item(
                   v-if="vacancyStatuses.closed !== props.row.status.id"
@@ -42,7 +42,7 @@
                   @click="onClickReject(props.row.id)"
                 )
                   q-item-section(no-wrap)
-                    | Отправить на доработку
+                    | {{ $t("user.tickets.vacancies.table.rejectVacancy") }}
 </template>
 <script>
   import BaseTable from "../../../../common/BaseTable";
@@ -73,41 +73,41 @@
           {
             name: "position",
             required: false,
-            label: "Название",
+            label: this.$t("user.tickets.vacancies.table.name"),
             align: "left",
             sortable: false
           },
           {
             name: "companyName",
             required: false,
-            label: "Компания",
+            label: this.$t("user.tickets.vacancies.table.companyName"),
             align: "left",
             sortable: false
           },
           {
             name: "publishDate",
             required: false,
-            label: isVisibleFinishedVacancies ? "Дата открытия" : "Дата размещения",
+            label: isVisibleFinishedVacancies ? this.$t("user.tickets.vacancies.table.openDate") : this.$t("user.tickets.vacancies.table.publishDate"),
             align: "left",
             sortable: false
           },
           isVisibleFinishedVacancies ? {
             name: "closedDate",
             required: false,
-            label: "Дата закрытия",
+            label: this.$t("user.tickets.vacancies.table.closedDate"),
             align: "left",
             sortable: false
           } : null,
           isVisibleFinishedVacancies ? {
             name: "closeReason",
             required: false,
-            label: "Причина закрытия",
+            label: this.$t("user.tickets.vacancies.table.closeReason"),
             align: "left",
             sortable: false
           } : {
             name: "status",
             required: false,
-            label: "Статус",
+            label: this.$t("user.tickets.vacancies.table.status"),
             align: "left",
             sortable: false
           },
