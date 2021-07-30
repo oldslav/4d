@@ -1,5 +1,5 @@
 <template lang="pug">
-  BaseModal(
+  BaseModal.q-pa-xs-none(
     :value="value"
     position="standard"
     persistent
