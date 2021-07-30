@@ -22,8 +22,8 @@
           icon="edit"
         )
           FormName(v-model="name")
-          FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
-          FilePicker(v-model="documents.snils" :label="$t('entity.files.snils')").q-mt-sm
+          MyDocumentsForm(isLocal v-model="documents" attachedDocuments)
+          //FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -123,10 +123,11 @@
   import VehicleForm from "../../forms/documents/VehicleForm";
   import FormContacts from "@/components/common/form/FormContacts";
   import TicketVehicle from "components/common/TicketVehicle";
+  import MyDocumentsForm from "../../forms/documents/MyDocumentsForm";
 
   export default {
     name: "NewParkingTicket",
-    components: { VehicleForm, FormContacts, TicketVehicle, BaseInput, FilePicker, BaseModal, FormName },
+    components: { VehicleForm, FormContacts, TicketVehicle, BaseInput, FilePicker, BaseModal, FormName, MyDocumentsForm },
     props: {
       value: {
         type: Boolean,
@@ -148,8 +149,7 @@
         },
         vehicle: null,
         documents: {
-          passport: null,
-          snils: null
+          passport: null
         },
         contacts: {
           phones: []
@@ -182,8 +182,7 @@
 
       isUserInfo () {
         return !!this.name.first
-          && (this.documents.passport && this.documents.passport.length > 0)
-          && (this.documents.snils && this.documents.snils.length > 0);
+          && (this.documents.passport && this.documents.passport.length > 0);
       }
     },
     methods: {

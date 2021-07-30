@@ -6,6 +6,10 @@ export class UsersService extends Service {
     return this.api.get("api/v1/profile/users", { params });
   }
 
+  public registerEmployee (params: any): AxiosPromise<any> {
+    return this.api.post("api/v1/profile/create", { ...params });
+  }
+
   public blockUser (id: number): AxiosPromise<any> {
     return this.api.put(`api/v1/profile/${ id }/block_user`);
   }

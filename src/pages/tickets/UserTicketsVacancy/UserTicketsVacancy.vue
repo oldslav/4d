@@ -1,9 +1,20 @@
 <template lang="pug">
-  div
-    div(v-if="canVisibleHeading")
-      div.row.flex-break.items-center.q-mb-lg-lg
+  verify-company-card(
+    v-if="canVisibleVerifyCompanyCard"
+    service="vacancy"
+  )
+  div(v-else)
+    div
+      div.row.flex-break.items-center.q-mb-lg-lg(v-if="!isUserNature")
         div.col-md-9
-          q-input(v-model="filter.query" outlined dense placeholder='Поиск по названию')
+          q-input(
+            v-model="filter.query"
+            @input.native="onTypingQuery"
+            debounce="500"
+            outlined
+            dense
+            placeholder='Поиск по названию'
+          )
         div.col-md-3.q-pl-lg
           q-btn.float-right.full-width(
             v-if="isUserLegal"
@@ -26,14 +37,25 @@
 
       div.row.flex-break.items-start.q-mb-lg-lg
         div.col-md-3
-          div Дата размещения вакансии
+          div {{ isUserNature ? 'Дата отклика' : 'Дата размещения вакансии' }}
           date-range-picker(v-model='filter.dateRange')
 
         div.col-md-3.q-pl-lg
-          div Статус вакансии
+          div(v-if="!isUserNature") Статус вакансии
             q-select.q-mb-md(
               v-model="filter.statusId"
               :options="getVacancyStatuses"
+              option-value="id"
+              option-label="description"
+              map-options
+              emit-value
+              outlined
+              dense
+            )
+          div(v-else) Статус отклика
+            q-select.q-mb-md(
+              v-model="filter.statusId"
+              :options="getRespondsStatuses"
               option-value="id"
               option-label="description"
               map-options
@@ -50,13 +72,13 @@
         @vacancy:publish="handlePublishVacancy"
       )
 
-      manager-user-vacancy-tickets-table(
-        v-else-if="isUserManager"
+      employee-user-vacancy-tickets-table(
+        v-else-if="isEmployee"
         v-bind="getTableProps"
         @vacancy:reject="handleRejectVacancy"
       )
 
-      user-vacancy-tickets-table(v-else v-bind="getTableProps")
+      user-vacancy-responds-table(v-else v-bind="getTableProps")
 
       q-inner-loading(v-else showing)
 
@@ -66,45 +88,49 @@
 <script>
   import { mapActions, mapGetters, mapState } from "vuex";
   import { VacancyReferencesEnum } from "../../../store/types/vacancy";
-  import BaseInput from "../../../components/common/BaseInput";
-  import BaseTable from "../../../components/common/BaseTable";
-  import VacancyTickerStatus from "../../../components/user/tickets/vacancy/VacancyTickerStatus";
-  import UserTicketsVacancyNewVacancyModal
-    from "../../../components/user/tickets/vacancy/UserTicketsVacancyNewVacancyModal";
   import {
-    CLOSE_VACANCY, EXPORT_USER_VACANCIES,
+    CLOSE_VACANCY,
+    EXPORT_USER_VACANCIES, GET_COMPANY,
     GET_USER_VACANCY,
-    GET_VACANCY_REFERENCES, PUBLISH_VACANCY,
+    GET_VACANCY_REFERENCES,
+    PUBLISH_VACANCY,
     REJECT_VACANCY
   } from "../../../store/constants/action-constants";
+  import BaseInput from "../../../components/common/BaseInput";
+  import BaseTable from "../../../components/common/BaseTable";
+  import UserTicketsVacancyNewVacancyModal
+    from "../../../components/user/tickets/vacancy/UserTicketsVacancyNewVacancyModal";
   import DateRangePicker from "../../../components/common/DateRangePicker";
-  import UserVacancyTicketsTable from "../../../components/user/tickets/vacancy/table/UserVacancyTicketsTable";
   import LegalUserVacancyTicketsTable
     from "../../../components/user/tickets/vacancy/table/LegalUserVacancyTicketsTable";
-  import ManagerUserVacancyTicketsTable
-    from "../../../components/user/tickets/vacancy/table/ManagerUserVacancyTicketsTable";
+  import EmployeeUserVacancyTicketsTable
+    from "../../../components/user/tickets/vacancy/table/EmployeeUserVacancyTicketsTable";
+  import UserVacancyRespondsTable from "../../../components/user/tickets/vacancy/table/UserVacancyRespondsTable";
+  import VerifyCompanyCard from "../../../components/user/company/verify/VerifyCompanyCard";
 
   export default {
     name: "UserTicketsVacancy",
     components: {
-      ManagerUserVacancyTicketsTable,
+      VerifyCompanyCard,
+      UserVacancyRespondsTable,
+      EmployeeUserVacancyTicketsTable,
       LegalUserVacancyTicketsTable,
-      UserVacancyTicketsTable,
       DateRangePicker,
-      VacancyTickerStatus,
       BaseInput,
       BaseTable,
       UserTicketsVacancyNewVacancyModal
     },
-    created () {
+    preFetch ({ store }) {
       return Promise.all([
-        this.fetchTickets(),
-        this.fetchVacancyReferences()
+        store.getters.isUserLegal ? store.dispatch(`user/company/${ GET_COMPANY }`) : null,
+        store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`),
+        store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`)
       ]);
     },
     data () {
       return {
         isVisibleCreateModal: false,
+        isTypingQuery: false,
         filter: {
           dateRange: { "from": null, "to": null },
           query: "",
@@ -113,7 +139,7 @@
       };
     },
     computed: {
-      ...mapGetters(["isUserLegal"]),
+      ...mapGetters(["isUserLegal", "isEmployee", "isUserNature"]),
       ...mapGetters("user/tickets/vacancy", [
         "tablePagination"
       ]),
@@ -121,13 +147,11 @@
         tableData: state => state.data
       }),
       ...mapGetters("services/vacancy", ["getVacancyReferences"]),
-      isUserManager (){
-        return false;
+      ...mapGetters("user/company", ["isServicesAvailable"]),
+      canVisibleVerifyCompanyCard (){
+        return !this.isServicesAvailable && this.isUserLegal;
       },
-      canVisibleHeading (){
-        return this.isUserLegal || this.isUserManager;
-      },
-      getTableProps (){
+      getTableProps () {
         return {
           data: this.tableData,
           isLoading: this.isLoading,
@@ -142,9 +166,14 @@
           ...this.getVacancyReferences[VacancyReferencesEnum.vacancyStatus]
         ];
       },
+      getRespondsStatuses () {
+        return [
+          { id: "", description: "Все" },
+          ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
+        ];
+      },
       isLoading () {
-        return this.$store.state.wait[`user/tickets/vacancy/${ GET_USER_VACANCY }`] ||
-          this.$store.state.wait[`services/vacancy/${ GET_VACANCY_REFERENCES }`];
+        return this.$store.state.wait[`user/tickets/vacancy/${ GET_USER_VACANCY }`] || this.isTypingQuery;
       },
       getClosureReasonsOptions () {
         return this.getVacancyReferences[VacancyReferencesEnum.closureReason]
@@ -162,6 +191,10 @@
         closeVacancyById: CLOSE_VACANCY,
         publishVacancyById: PUBLISH_VACANCY
       }),
+
+      onTypingQuery (){
+        this.isTypingQuery = true;
+      },
 
       getVacancyFilter () {
         const { filter } = this;
@@ -187,11 +220,13 @@
       },
 
       fetchTickets () {
-        return this.getUserTickets({ query: this.getVacancyFilter() });
+        this.getUserTickets({ query: this.getVacancyFilter() });
+        this.isTypingQuery = false;
       },
 
       getDataForTable ({ pagination }) {
-        return this.getUserTickets({ pagination, query: this.getVacancyFilter() });
+        this.getUserTickets({ pagination, query: this.getVacancyFilter() });
+        this.isTypingQuery = false;
       },
 
       onCreateVacancy () {
@@ -207,7 +242,7 @@
         };
       },
 
-      handleCloseVacancy (vacancyId){
+      handleCloseVacancy (vacancyId) {
         const options = this.getClosureReasonsOptions;
         this.$q.dialog({
           title: "Закрытие вакансии",
@@ -237,7 +272,7 @@
         await this.fetchTickets();
       },
 
-      async handlePublishVacancy (vacancyId){
+      async handlePublishVacancy (vacancyId) {
         const notifyEnd = this.$q.notify({ type: "ongoing", message: "Публикуем вакансию" });
 
         try {
@@ -254,12 +289,12 @@
         await this.fetchTickets();
       },
 
-      async handleRejectVacancy (vacancyId){
+      async handleRejectVacancy (vacancyId) {
         const notifyEnd = this.$q.notify({ type: "ongoing", message: "Отправляем на доработку" });
 
         try {
           await this.rejectVacancyById(vacancyId);
-          notifyEnd({ type: "positive", message: "Вакансия успешно отклонена" });
+          notifyEnd({ type: "positive", message: "Вакансия отправлена на доработку" });
         } catch (e) {
           notifyEnd({
             type: "negative",
@@ -276,6 +311,7 @@
 
         try {
           await this.exportVacancies(this.getVacancyFilter());
+          notifyEnd({ timeout: 1 });
         } catch (e) {
           notifyEnd({
             type: "negative",
@@ -286,7 +322,10 @@
     },
 
     watch: {
-      filter: { deep: true, handler: "fetchTickets" }
+      filter: {
+        deep: true,
+        handler: "fetchTickets"
+      }
     }
   };
 </script>

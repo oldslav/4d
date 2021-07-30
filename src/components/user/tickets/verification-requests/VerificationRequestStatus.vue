@@ -6,8 +6,10 @@
 </template>
 
 <script>
+  import { CompanyVerificationRequestStatuses } from "../../../../store/types/user/company";
+
   export default {
-    name: "VacancyTickerStatus",
+    name: "VerificationRequestStatus",
     props: {
       value: {
         type: Object,
@@ -16,23 +18,15 @@
     },
     computed: {
       getState () {
-        if (this.value.id === 1) {
-          return { color: "primary", value: 0 };
-        }
-
-        if (this.value.id === 2) {
-          return { color: "primary", value: 0.5 };
-        }
-
-        if (this.value.id === 3) {
+        if (CompanyVerificationRequestStatuses.rejected === this.value.id) {
           return { color: "red", value: 1 };
         }
 
-        if (this.value.id === 4) {
-          return { color: "status-green", value: 1 };
+        if (CompanyVerificationRequestStatuses.approved === this.value.id) {
+          return { color: "green", value: 1 };
         }
 
-        return { color: "red", value: 1 };
+        return { color: "orange", value: 0.33 };
       }
     }
   };

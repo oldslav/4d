@@ -31,4 +31,8 @@ export class UserCompanyService extends Service {
   public updateCompanyLogo (payload: unknown): AxiosPromise<any> {
     return this.api.put("/api/v1/profile/company/logo", payload);
   }
+
+  public sendVerifyRequest (payload: Record<string, any>): AxiosPromise<any> {
+    return this.api.post("/api/v1/profile/company/request", payload);
+  }
 }

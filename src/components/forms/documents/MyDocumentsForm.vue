@@ -42,9 +42,23 @@
         type: Boolean,
         default: false
       },
+      attachedDocuments: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Object,
         default: null
+      }
+    },
+    async created () {
+      if (this.attachedDocuments && this.isLocal) {
+        await this.GET_USER_DOCUMENTS();
+        Object.keys(this.documents).forEach(type => {
+          if (this.getDocuments[type]) {
+            this.setDocuments(type, this.getDocuments[type]);
+          }
+        });
       }
     },
     computed: {

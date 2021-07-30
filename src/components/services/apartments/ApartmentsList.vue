@@ -27,7 +27,7 @@
                           q-item-section
                             | {{ $t("common.quantity.area") }}
                           q-item-section(side)
-                            span {{ props.row.number }}
+                            span {{ props.row.area.toFixed(0) }}
 
                         q-item(dense).q-pa-none.info-table-item
                           q-item-section
