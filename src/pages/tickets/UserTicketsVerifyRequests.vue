@@ -67,6 +67,9 @@
         store.dispatch(`user/tickets/verification-request/${ FETCH_VERIFICATION_REQUESTS }`, {
           query: {
             "filters.statusId": CompanyVerificationRequestStatuses.inProgress
+          },
+          pagination: {
+            offset: 1
           }
         })
       ]);
@@ -124,7 +127,10 @@
       },
 
       onChangeFilter () {
-        this.fetchRequests({ query: this.getFilter() });
+        this.fetchRequests({
+          query: this.getFilter(),
+          pagination:{ offset: 1 }
+        });
         this.isTypingQuery = false;
       },
 

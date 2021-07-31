@@ -51,7 +51,9 @@
       if (!store.getters.isEmployee) {
         return redirect({ name:"user-tickets" });
       }
-      return store.dispatch(`user/tickets/vacancy/${ FETCH_EMPLOYEE_RESPONDS }`);
+      return store.dispatch(`user/tickets/vacancy/${ FETCH_EMPLOYEE_RESPONDS }`, {
+        pagination: { offset: 1 }
+      });
     },
     data () {
       return {
@@ -75,7 +77,7 @@
         exportResponds: EXPORT_RESPONDS
       }),
 
-      onTypingQuery (){
+      onTypingQuery () {
         this.isTypingQuery = true;
       },
 

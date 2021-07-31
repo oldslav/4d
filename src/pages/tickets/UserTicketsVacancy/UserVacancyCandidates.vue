@@ -64,6 +64,9 @@
             id: currentRoute.params.id,
             query:{
               "filters.statusId": RespondStatusesEnum.not_viewed
+            },
+            pagination: {
+              offset: 1
             }
           }
         ),

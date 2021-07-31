@@ -4,7 +4,7 @@
       div.q-mb-md.sm-hide.xs-hide
         q-badge(color="blue-grey-1" text-color="dark") {{ value.profIndustry.description }}
       div.row
-        div.col-md.col-xs-12.col-sm-12
+        div.col-md.col-lg.col-xs-12.col-sm-12.q-pr-md-md.q-pr-md-lg
           div.text-h6
             router-link.no-text-decoration(
               :class="{'text-black': !$q.dark.isActive, 'text-white': $q.dark.isActive}"
@@ -14,7 +14,7 @@
           div.text-caption.text-grey-8 {{ value.companyName }}
           div.text-body2.q-mt-md.rich-text.break-word {{ value.duties }}
 
-        div.column.col-md-auto.items-md-end.col-xs-12.col-sm-12.q-mt-xs-lg.q-mt-xs-lg
+        div.column.col-md-auto.col-mdlg-auto.items-md-end.items-lg-end.col-xs-12.col-sm-12.q-mt-xs-lg.q-mt-xs-lg
           div.text-h6.text-blue-9.col.sm-hide.xs-hide {{ $n(value.salary, 'currency', 'ru') }}
           div.text-center(v-if="isUserNature")
             q-btn(

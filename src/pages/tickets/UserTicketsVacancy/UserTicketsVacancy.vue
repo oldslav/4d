@@ -35,7 +35,7 @@
             @click="onClickExportVacancies"
           )
 
-      div.row.flex-break.items-start.q-mb-lg-lg
+      div.row.flex-break.items-start.q-mb-lg-lg(v-if="!isUserNature")
         div.col-md-3
           div {{ isUserNature ? $t('user.tickets.vacancies.respondDate') : $t('user.tickets.vacancies.createdEntity') }}
           date-range-picker(v-model='filter.dateRange')
@@ -123,7 +123,9 @@
     preFetch ({ store }) {
       return Promise.all([
         store.getters.isUserLegal ? store.dispatch(`user/company/${ GET_COMPANY }`) : null,
-        store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`),
+        store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`,{
+          pagination: { offset: 1 }
+        }),
         store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`)
       ]);
     },
@@ -220,7 +222,10 @@
       },
 
       fetchTickets () {
-        this.getUserTickets({ query: this.getVacancyFilter() });
+        this.getUserTickets({
+          query: this.getVacancyFilter(),
+          pagination: { offset: 1 }
+        });
         this.isTypingQuery = false;
       },
 
