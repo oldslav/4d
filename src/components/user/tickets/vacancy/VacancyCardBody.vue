@@ -5,7 +5,7 @@
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.profIndustry') }}
-        div.text-body1.q-mt-sm {{ value.profIndustry.description }}
+        div.text-body1.q-mt-sm.break-word {{ value.profIndustry.description }}
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.salary') }}
@@ -28,18 +28,18 @@
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.address') }}
         div.text-body1.q-mt-sm {{ value.address }}
 
-    .col-12.col-sm-6.col-md-8.q-pl-lg
+    .col-12.col-sm-6.col-md-8.q-pl-lg-md
       div.q-mb-lg
         div.text-medium.q-mb-sm  {{ $t('entity.services.vacancies.duties') }}
-        div.text-body1.rich-text {{ value.duties }}
+        div.text-body1.rich-text.break-word {{ value.duties }}
 
       div.q-mb-lg
         div.text-medium.q-mb-sm  {{ $t('entity.services.vacancies.requirements') }}
-        div.text-body1.rich-text {{ value.requirements }}
+        div.text-body1.rich-text.break-word {{ value.requirements }}
 
       div.q-mb-lg
         div.text-medium.q-mb-sm  {{ $t('entity.services.vacancies.conditions') }}
-        div.text-body1.rich-text {{ value.conditions }}
+        div.text-body1.rich-text.break-word {{ value.conditions }}
 </template>
 <script>
   export default {
