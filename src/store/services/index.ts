@@ -1,6 +1,6 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
-import { GET_APARTMENTS_GEO, GET_IDEAS_GEO, GET_PARKING_GEO } from "src/store/constants/action-constants";
+import { GET_APARTMENTS_GEO, GET_IDEAS_GEO, GET_PARKING_GEO, GET_TREES_GEO } from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
@@ -65,6 +65,18 @@ const actions: ActionTree<GeoState, TRootState> = {
 
   async [GET_IDEAS_GEO] ({ commit }) {
     const { data } = await this.service.services.ideas.getIdeas();
+    const { type, features } = data;
+
+    const preparedData = {
+      type,
+      features
+    };
+
+    commit(SET_GEODATA, preparedData);
+  },
+
+  async [GET_TREES_GEO] ({ commit }) {
+    const { data } = await this.service.services.trees.getTrees();
     const { type, features } = data;
 
     const preparedData = {

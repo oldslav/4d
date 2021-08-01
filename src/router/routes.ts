@@ -424,6 +424,18 @@ const routes: RouteConfig[] = [
           asideServices: true,
           toolbar: true
         }
+      },
+      {
+        path: "trees",
+        name: "services-trees",
+        components: {
+          default: (): Promise<any> => import("src/pages/services/ServiceTrees.vue"),
+          asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
+        },
+        meta: {
+          asideServices: true,
+          toolbar: true
+        }
       }
     ]
   },

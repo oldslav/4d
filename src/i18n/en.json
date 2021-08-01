@@ -472,7 +472,9 @@
       },
       "employmentCenter": "Employment center",
       "light": "Light",
-      "tress": "Tress",
+      "trees":  {
+        "title": "Trees"
+      },
       "vacancies": {
         "title": "City vacancies",
         "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
