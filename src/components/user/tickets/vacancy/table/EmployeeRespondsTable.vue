@@ -21,9 +21,9 @@
         q-td(auto-width key="actions" :props="props")
           q-btn(
             @click="onClickSendNotification(props.row.id)"
+            :label="$t('user.tickets.responds.sendNotify')"
             flat
             color="primary"
-            label="Уведомить компанию"
           )
 </template>
 <script>
@@ -43,21 +43,21 @@
           {
             name: "name",
             required: false,
-            label: "Ф.И.О. заявителя",
+            label: this.$t("user.tickets.responds.applicantName"),
             align: "left",
             sortable: false
           },
           {
             name: "companyName",
             required: false,
-            label: "Компания",
+            label: this.$t("user.tickets.vacancies.table.companyName"),
             align: "left",
             sortable: false
           },
           {
             name: "created",
             required: false,
-            label: "Дата отклика",
+            label: this.$t("user.tickets.vacancies.table.respondDate"),
             align: "left",
             sortable: false
           },

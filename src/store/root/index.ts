@@ -1,6 +1,12 @@
 import { TRootState } from "src/store/types/root";
 import { ActionContext, ActionTree, MutationTree } from "vuex";
-import { GET_ACCOUNT, GET_REFERENCES, SERVER_INIT } from "src/store/constants/action-constants";
+import {
+  GET_ACCESS_TOKEN,
+  GET_ACCOUNT,
+  GET_REFERENCES,
+  SERVER_INIT,
+  DOWNLOAD_FILE
+} from "src/store/constants/action-constants";
 
 const state = (): TRootState => ({
   wait: process.env.SERVER ? {} : undefined
@@ -54,6 +60,15 @@ const actions: ActionTree<TRootState, TRootState> = {
       result[docType.name].push(file);
     }));
     return Promise.resolve(result);
+  },
+
+  async [DOWNLOAD_FILE] ({ dispatch }, fileUrl) {
+    const accessToken = await dispatch(GET_ACCESS_TOKEN, null, { root: true });
+
+    const url = new URL(`${ process.env.SERVER_API_HOST }${ fileUrl }`);
+    url.searchParams.append("access_token", accessToken);
+
+    window.open(url.toString());
   }
 };
 

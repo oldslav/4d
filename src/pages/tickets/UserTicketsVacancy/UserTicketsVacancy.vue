@@ -10,10 +10,10 @@
           q-input(
             v-model="filter.query"
             @input.native="onTypingQuery"
+            :placeholder="$t('entity.vacancy.search')"
             debounce="500"
             outlined
             dense
-            placeholder='Поиск по названию'
           )
         div.col-md-3.q-pl-lg
           q-btn.float-right.full-width(
@@ -22,26 +22,26 @@
             outline
             size="sm"
             color="primary"
-            :label="$t('entity.vacancy.add')"
+            :label="$t('user.tickets.vacancies.add')"
             @click="isVisibleCreateModal=true"
           )
           q-btn.float-right.full-width(
             v-if="!isUserLegal"
+            :label="$t('user.tickets.vacancies.export')"
             icon="download"
             outline
             size="sm"
             color="primary"
-            label="Скачать Excel"
             @click="onClickExportVacancies"
           )
 
-      div.row.flex-break.items-start.q-mb-lg-lg
+      div.row.flex-break.items-start.q-mb-lg-lg(v-if="!isUserNature")
         div.col-md-3
-          div {{ isUserNature ? 'Дата отклика' : 'Дата размещения вакансии' }}
+          div {{ isUserNature ? $t('user.tickets.vacancies.respondDate') : $t('user.tickets.vacancies.createdEntity') }}
           date-range-picker(v-model='filter.dateRange')
 
         div.col-md-3.q-pl-lg
-          div(v-if="!isUserNature") Статус вакансии
+          div(v-if="!isUserNature") {{ $t('user.tickets.vacancies.entityStatus') }}
             q-select.q-mb-md(
               v-model="filter.statusId"
               :options="getVacancyStatuses"
@@ -52,7 +52,7 @@
               outlined
               dense
             )
-          div(v-else) Статус отклика
+          div(v-else) {{ $t('user.tickets.vacancies.respondStatus') }}
             q-select.q-mb-md(
               v-model="filter.statusId"
               :options="getRespondsStatuses"
@@ -123,7 +123,9 @@
     preFetch ({ store }) {
       return Promise.all([
         store.getters.isUserLegal ? store.dispatch(`user/company/${ GET_COMPANY }`) : null,
-        store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`),
+        store.dispatch(`user/tickets/vacancy/${ GET_USER_VACANCY }`,{
+          pagination: { offset: 1 }
+        }),
         store.dispatch(`services/vacancy/${ GET_VACANCY_REFERENCES }`)
       ]);
     },
@@ -162,13 +164,13 @@
       },
       getVacancyStatuses () {
         return [
-          { id: "", description: "Все" },
+          { id: "", description: this.$t("common.all") },
           ...this.getVacancyReferences[VacancyReferencesEnum.vacancyStatus]
         ];
       },
       getRespondsStatuses () {
         return [
-          { id: "", description: "Все" },
+          { id: "", description: this.$t("common.all") },
           ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
         ];
       },
@@ -220,7 +222,10 @@
       },
 
       fetchTickets () {
-        this.getUserTickets({ query: this.getVacancyFilter() });
+        this.getUserTickets({
+          query: this.getVacancyFilter(),
+          pagination: { offset: 1 }
+        });
         this.isTypingQuery = false;
       },
 
@@ -245,9 +250,9 @@
       handleCloseVacancy (vacancyId) {
         const options = this.getClosureReasonsOptions;
         this.$q.dialog({
-          title: "Закрытие вакансии",
+          title: this.$t("user.tickets.vacancies.closeVacancy.modalTitle"),
           options: { type: "radio", model: options[0].value, items: options },
-          ok: { color: "primary", label: "Отправить" },
+          ok: { color: "primary", label: this.$t("action.send") },
           cancel: true,
           persistent: true
         }).onOk(
@@ -256,15 +261,18 @@
       },
 
       async closeVacancy (vacancyId, closeReasonId) {
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Закрываем вакансию" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.vacancies.closeVacancy.progress")
+        });
 
         try {
           await this.closeVacancyById({ id: vacancyId, closeReasonId });
-          notifyEnd({ type: "positive", message: "Вакансия успешно закрыта" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.vacancies.closeVacancy.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При закрытии вакансии произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.vacancies.closeVacancy.error")
           });
           return;
         }
@@ -273,15 +281,18 @@
       },
 
       async handlePublishVacancy (vacancyId) {
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Публикуем вакансию" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.vacancies.publishVacancy.progress")
+        });
 
         try {
           await this.publishVacancyById(vacancyId);
-          notifyEnd({ type: "positive", message: "Вакансия успешно опубликована" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.vacancies.publishVacancy.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При публикации вакансии произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.vacancies.publishVacancy.error")
           });
           return;
         }
@@ -290,15 +301,18 @@
       },
 
       async handleRejectVacancy (vacancyId) {
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Отправляем на доработку" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.vacancies.rejectVacancy.error")
+        });
 
         try {
           await this.rejectVacancyById(vacancyId);
-          notifyEnd({ type: "positive", message: "Вакансия отправлена на доработку" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.vacancies.rejectVacancy.error") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При отправке вакансии на доработку произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.vacancies.rejectVacancy.error")
           });
           return;
         }
@@ -307,7 +321,10 @@
       },
 
       async onClickExportVacancies () {
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Подготавливаем файл" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.vacancies.exportVacancies.error")
+        });
 
         try {
           await this.exportVacancies(this.getVacancyFilter());
@@ -315,7 +332,7 @@
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При экспорте вакансий произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.vacancies.exportVacancies.error")
           });
         }
       }

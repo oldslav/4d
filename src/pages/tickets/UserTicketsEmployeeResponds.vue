@@ -5,24 +5,24 @@
         q-input(
           v-model="filter.query"
           @input.native="onTypingQuery"
+          :placeholder="$t('user.tickets.responds.search')"
           debounce="500"
           outlined
           dense
-          placeholder='Поиск по названию'
         )
       div.col-md-4.q-pl-lg
         q-btn.float-right.full-width(
+          @click="onClickExportResponds"
+          :label="$t('user.tickets.responds.export.action')"
           icon="download"
           outline
           size="sm"
           color="primary"
-          label="Скачать список всех откликов"
-          @click="onClickExportResponds"
         )
 
     div.row.flex-break.items-start.q-mb-md
       div.col-md-3
-        div Дата отлика
+        div {{ $t('user.tickets.responds.respondDate') }}
         date-range-picker(v-model="filter.dateRange")
 
     employee-responds-table(
@@ -30,7 +30,7 @@
       :data="getEmployeeRespondsData"
       :getData="fetchTable"
       :is-loading="isLoadingTable"
-      @notify="sendRespondNotification"
+      @notify="trySendRespondNotification"
     )
 </template>
 <script>
@@ -51,7 +51,9 @@
       if (!store.getters.isEmployee) {
         return redirect({ name:"user-tickets" });
       }
-      return store.dispatch(`user/tickets/vacancy/${ FETCH_EMPLOYEE_RESPONDS }`);
+      return store.dispatch(`user/tickets/vacancy/${ FETCH_EMPLOYEE_RESPONDS }`, {
+        pagination: { offset: 1 }
+      });
     },
     data () {
       return {
@@ -75,7 +77,7 @@
         exportResponds: EXPORT_RESPONDS
       }),
 
-      onTypingQuery (){
+      onTypingQuery () {
         this.isTypingQuery = true;
       },
 
@@ -112,30 +114,58 @@
         this.fetchResponds(pagination);
       },
 
-      async sendRespondNotification (respondId){
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Отправляем уведомление" });
+      trySendRespondNotification (respondId){
+        this.$q.dialog({
+          title: this.$t("user.tickets.responds.notify.title"),
+          prompt: {
+            model: "",
+            isValid: val => val.length > 0,
+            type: "textarea",
+            outlined: true,
+            placeholder: "PLACEHOLDER"
+          },
+          cancel: true,
+          ok: { label: this.$t("action.send") },
+          persistent: true
+        })
+          .onOk(
+            text => this.sendRespondNotification(respondId, text)
+          );
+      },
+
+      async sendRespondNotification (respondId, text){
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.responds.notify.progress")
+        });
 
         try {
-          await this.sendNotification({ respondId });
-          notifyEnd({ type: "positive", message: "Уведомление успешно отправлено" });
+          await this.sendNotification({ respondId, text });
+          notifyEnd({
+            type: "positive",
+            message: this.$t("user.tickets.responds.notify.success")
+          });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При отправке уведомления произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.responds.notify.error")
           });
         }
       },
 
       async onClickExportResponds (){
-        const notifyEnd = this.$q.notify({ type: "ongoing", message: "Подготавливаем файл" });
+        const notifyEnd = this.$q.notify({
+          type: "ongoing",
+          message: this.$t("user.tickets.responds.export.progress")
+        });
 
         try {
-          await this.exportResponds(this.getVacancyFilter());
+          await this.exportResponds(this.getRequestQuery());
           notifyEnd({ timeout: 1 });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При экспорте откликов произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.responds.export.error")
           });
         }
       }

@@ -38,7 +38,7 @@
               q-list
                 q-item(:to="{ name: 'services-vacancies-item', params: { id: props.row.vacancy.id} }" v-close-popup)
                   q-item-section(no-wrap)
-                    | Просмотреть детали вакансии
+                    | {{ $t("user.tickets.vacancies.table.viewDetails") }}
 
       q-tr(v-show="props.expand")
         q-td.no-padding(colspan="100%" no-hover)
@@ -73,28 +73,28 @@
           {
             name: "position",
             required: false,
-            label: "Название",
+            label: this.$t("user.tickets.vacancies.table.name"),
             align: "left",
             sortable: false
           },
           {
             name: "company",
             required: false,
-            label: "Компания",
+            label: this.$t("user.tickets.vacancies.table.companyName"),
             align: "left",
             sortable: false
           },
           {
             name: "publishDate",
             required: false,
-            label: "Дата отклика",
+            label: this.$t("user.tickets.vacancies.table.respondDate"),
             align: "left",
             sortable: false
           },
           {
             name: "status",
             required: false,
-            label: "Статус",
+            label: this.$t("user.tickets.vacancies.table.status"),
             align: "left",
             sortable: false
           },

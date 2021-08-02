@@ -10,7 +10,7 @@
       q-step(
         :name="1"
         :done="currentStep > 1"
-        :title="$t('user.tickets.vacancies.userSteps.first.title')"
+        :title="$t('user.tickets.vacancies.workflow.applicant.first.title')"
         prefix="1"
       )
         div.rich-text {{ value.invitationText }}
@@ -18,22 +18,20 @@
       q-step(
         :name="2"
         :done="currentStep > 2"
-        :title="$t('user.tickets.vacancies.userSteps.second.title')"
+        :title="$t('user.tickets.vacancies.workflow.applicant.second.title')"
         prefix="2"
         active-icon="question_answer"
       )
-        div.rich-text
-          | Поздравляем!
-          | Вы успешно прошли собеседования. С вами свяжется наш HR-менеджер для уточнения деталей.
+        div.rich-text {{ $t('user.tickets.vacancies.workflow.applicant.second.description') }}
 
       q-step(
         :name="3"
         :done="currentStep > 3"
-        :title="$t('user.tickets.vacancies.userSteps.third.title')"
+        :title="$t('user.tickets.vacancies.workflow.applicant.third.title')"
         prefix="3"
       )
         div.rich-text(v-show="isReject") {{ value.rejectionText }}
-        div.rich-text(v-show="!isReject") {{ $t('user.tickets.vacancies.userSteps.third.successDescription') }}
+        div.rich-text(v-show="!isReject") {{ $t('user.tickets.vacancies.workflow.applicant.third.successDescription') }}
 </template>
 <script>
   import { RespondStatusesEnum } from "../../../../../store/types/vacancy";
