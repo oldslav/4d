@@ -11,8 +11,20 @@ export enum VacancyReferencesEnum {
 }
 
 export enum VacancyStatusesEnum {
+  new = 1,
+  moderation = 2,
+  rejected = 3,
   published = 4,
-  closed = 5
+  closed = 5,
+}
+
+export enum RespondStatusesEnum {
+  not_viewed = 1,
+  viewed = 2,
+  invite = 3,
+  reject = 4,
+  interview_success = 5,
+  job_offer = 6
 }
 
 export interface IServiceVacancyState {

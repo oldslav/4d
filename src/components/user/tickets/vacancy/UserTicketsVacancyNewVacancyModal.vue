@@ -8,7 +8,7 @@
     q-card.full-width.new-vacancy-card
       q-card-section.row.items-center
         .text-medium
-          | Новая вакансия
+          | {{ $t('user.tickets.vacancies.modals.create.title') }}
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
 
@@ -20,9 +20,9 @@
       q-card-actions(align="right")
         q-btn(
           :disabled="!isValidForm"
+          :label="$t('user.tickets.vacancies.modals.create.submit')"
           color="primary"
           size="md"
-          label="Добавить"
           @click="onSubmit()"
         )
 </template>
@@ -70,17 +70,17 @@
         const values = this.$refs.form.getValues();
         const notifyEnd = this.$q.notify({
           type: "ongoing",
-          message: "Создаем вакансию"
+          message: this.$t("user.tickets.vacancies.modals.create.progress")
         });
 
         try {
           const vacancy = await this.createVacancy(values);
           this.$emit("done", vacancy);
-          notifyEnd({ type: "positive", message: "Вакансия успешно создана" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.vacancies.modals.create.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При создании вакансии произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.vacancies.modals.create.error")
           });
         }
       }

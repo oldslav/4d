@@ -31,7 +31,23 @@
             div.text-caption.text-grey-8.q-mb-sm {{ $t('common.address') }}
             div.text-body2 {{ getCurrentVacancy.address }}
 
-    div.q-px-md.q-py-md
+    div.q-px-md(v-if="extended")
+      div.q-mb-lg
+        div.text-h6.q-mb-md {{ $t('entity.services.vacancies.duties') }}
+        div.text-body1.rich-text.break-word {{ getCurrentVacancy.duties }}
+
+      div.q-mb-lg
+        div.text-h6.q-mb-md {{ $t('entity.services.vacancies.requirements') }}
+        div.text-body1.rich-text.break-word {{ getCurrentVacancy.requirements }}
+
+      div.q-mb-lg
+        div.text-h6.q-mb-md {{ $t('entity.services.vacancies.conditions') }}
+        div.text-body1.rich-text.break-word {{ getCurrentVacancy.conditions }}
+
+    div.q-px-md.q-py-md.bg-white(
+      v-if="isUserNature"
+      :class="{'aside-vacancy-respond-sticky': $q.screen.sm || $q.screen.xs, 'aside-vacancy-respond-sticky__mobile': !$q.platform.is.desktop}"
+    )
       q-btn.full-width(
         v-if="!getCurrentVacancy.respondIsPresent"
         :label="$t('entity.services.vacancies.sendRespond')"
@@ -54,23 +70,34 @@
   export default {
     name: "AsideServicesVacancyItem",
     components: { VacancyRespondModal },
+    props: {
+      extended: { type: Boolean, default: false }
+    },
     data (){
       return {
         visibleRespondModal: false
       };
     },
     computed: {
-      ...mapGetters("services/vacancy", ["getCurrentVacancy"])
+      ...mapGetters("services/vacancy", ["getCurrentVacancy"]),
+      ...mapGetters(["isUserNature"])
     },
-    methods:{
+    methods: {
       onClickRespondVacancy (){
         this.visibleRespondModal = true;
       }
     }
   };
 </script>
-<style>
-.aside-services-vacancy {
+<style lang="stylus">
+.aside-services-vacancy
   min-height: 100%;
-}
+
+.aside-vacancy-respond-sticky
+  position: sticky;
+  background: $background;
+  bottom: 0;
+
+.aside-vacancy-respond-sticky__mobile
+  bottom: 48px;
 </style>

@@ -15,7 +15,8 @@
           q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
           q-td(key="address" :props="props")
-            | {{ $t("user.messages.apartmentNotSelected") }}
+            span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
+            span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props")
@@ -23,8 +24,8 @@
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
-            q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click="onReject(props.row.id)")
-            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onApprove(props.row.id)")
+            q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click.stop="onReject(props.row.id)")
+            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click.stop="onApprove(props.row.id)")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
@@ -49,7 +50,7 @@
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
-    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :info="activeRow" v-if="activeRow" @reject="onReject" @approve="onApprove")
+    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
@@ -81,7 +82,7 @@
     },
     data () {
       return {
-        activeRow: null,
+        activeId: null,
         approvedId: null,
         showApprove: false,
         showDetailsModal: false,
@@ -230,7 +231,7 @@
           });
       },
       showDetails (row) {
-        this.activeRow = row;
+        this.activeId = row.id;
         this.showDetailsModal = true;
       },
       sendContractInfo (payload, id) {

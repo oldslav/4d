@@ -7,7 +7,13 @@ import {
   SET_FILTERS,
   UPDATE_PAGINATION
 } from "src/store/constants/mutation-constants";
-import { ACCOUNT_BLOCK, ACCOUNT_SET_ROLES, ACCOUNT_UNBLOCK, GET_DATA } from "src/store/constants/action-constants";
+import {
+  ACCOUNT_BLOCK,
+  ACCOUNT_SET_ROLES,
+  ACCOUNT_UNBLOCK,
+  GET_DATA,
+  REGISTER_EMPLOYEE
+} from "src/store/constants/action-constants";
 
 const initialState = (): IUsersState => {
   return {
@@ -51,6 +57,10 @@ const actions: ActionTree<IUsersState, TRootState> = {
 
   async [ACCOUNT_SET_ROLES] (_, { id, roles }) {
     await this.service.users.changeUserRoles(id, roles);
+  },
+
+  async [REGISTER_EMPLOYEE] (_, params) {
+    await this.service.users.registerEmployee(params);
   }
 };
 

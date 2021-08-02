@@ -65,6 +65,10 @@
               @viewed="apartmentViewed(props.row.id)"
               @pay="goToPayment(props.row.id)"
             )
+            ValidContractState(
+              v-if="props.row.status.id === 8 && !!props.row.contract"
+              :contract="props.row.contract"
+            ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -88,10 +92,12 @@
   import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
   import BaseModal from "../../../components/common/BaseModal";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "UserTicketsApartmentsUser",
     components: {
+      ValidContractState,
       BaseModal,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
@@ -246,7 +252,3 @@
     }
   };
 </script>
-
-<style lang="stylus">
-
-</style>

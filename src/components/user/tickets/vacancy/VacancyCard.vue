@@ -9,7 +9,7 @@
           div(v-if="!visibleForm")
             q-btn(
               @click="onClickEdit"
-              label="Редактировать"
+              :label="$t('user.tickets.vacancies.edit')"
               color="primary"
               size="12px"
               outline
@@ -18,7 +18,7 @@
           div(v-if="visibleForm")
             q-btn.q-mr-lg(
               @click="onClickCancelChange"
-              label="Отмена"
+              :label="$t('action.cancel')"
               outline
               flat
               color="primary"
@@ -27,7 +27,7 @@
             q-btn(
               @click="onSubmitForm"
               :disable="!isValidForm"
-              label="Сохранить"
+              :label="$t('action.save')"
               color="primary"
               size="12px"
             )

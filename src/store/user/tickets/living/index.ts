@@ -57,16 +57,17 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   async [GET_USER_TICKET] ({ commit, dispatch }, ticketId) {
     const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
-    data.documents = {
+    const { images, ...ticket } = data;
+    const documents: any = {
       passport: [],
       snils: [],
       inn: [],
       job: [],
       job_petition: []
     };
-    const files = dispatch("loadFiles", data.images, { root: true });
-    Object.assign(data.documents, files);
-    commit(SET_USER_TICKET, data);
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
+    commit(SET_USER_TICKET, { ...ticket, documents });
   },
 
   async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {
@@ -143,6 +144,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 };
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
+  getCurrentTicket: (state) => state.current,
   tableData (state) {
     return state.data;
   },

@@ -58,6 +58,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
   }
 
+  public deleteTicketParking (id: number): AxiosPromise<TicketsResponse> {
+    return this.api.put(`/api/v1/services/parking/user/tickets/${ id }/cancel`);
+  }
+
   public requestApprovalLiving (id: number): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/send_on_approval`);
   }

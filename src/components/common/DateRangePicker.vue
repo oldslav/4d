@@ -7,9 +7,8 @@
           q-popup-proxy(ref='rangePicker' transition-show='scale' transition-hide='scale')
             q-date(v-model='currentValue' @input="onInput()" range)
               .row.items-center.justify-end
-                q-btn(v-close-popup='' @click="onClickClear" label='Clear' color='primary' flat='')
-
-                q-btn(v-close-popup='' label='Close' color='primary' flat='')
+                q-btn(v-close-popup @click="onClickClear" :label="$t('action.clear')" color='primary' flat)
+                q-btn(v-close-popup :label="$t('action.close')" color='primary' flat)
 </template>
 <script>
   import moment from "moment";
@@ -91,7 +90,10 @@
         deep:true,
         immediate: true,
         handler (val){
-          this.currentValue = val;
+          this.currentValue = {
+            from : val.from ? moment(val.from).format("YYYY/MM/DD") : null,
+            to : val.to ? moment(val.to).format("YYYY/MM/DD") : null
+          };
         }
       }
     }
