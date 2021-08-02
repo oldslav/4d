@@ -25,8 +25,8 @@
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
-            q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click="onTicketReject(props.row.id)")
-            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onTicketApprove(props.row.id)")
+            q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click.stop="onTicketReject(props.row.id)")
+            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click.stop="onTicketApprove(props.row.id)")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
@@ -59,57 +59,14 @@
               div.text-body1.text-wrap
                 | Для продолжения оформления документов дождитесь оплаты.
             div(v-if="props.row.status.id === 7").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан.
-                | Введите данные договора.
               .row
-                BaseInput.col-2.q-my-md(
-                  v-model="contractInfo.contractNumber"
-                  :rules="[ val => val !== null && val !== '' || '']"
-                  :label="$t('user.bills.contractNumber')"
-                )
-              .row
-                q-input.col-2.q-mr-lg(
-                  ref="date"
-                  filled
-                  v-model="contractInfo.dateContractConcluded"
-                  :label="$t('user.bills.dateContractConcluded')"
-                  lazy-rules
-                  :rules="[ val => val !== null && val !== '' || '']"
-                  @click="$refs.qDateConcludedProxy.show()"
-                )
-                  template(v-slot:append)
-                    q-icon(name="event" class="cursor-pointer")
-                      q-popup-proxy(ref="qDateConcludedProxy")
-                        q-date(
-                          v-model="contractInfo.dateContractConcluded"
-                          :mask="'YYYY-MM-DD'"
-                          @input="$refs.qDateConcludedProxy.hide()"
-                        )
-                q-input.col-2(
-                  ref="date"
-                  filled
-                  v-model="contractInfo.dateContractExpire"
-                  :label="$t('user.bills.dateContractExpire')"
-                  lazy-rules
-                  :rules="[ val => val !== null && val !== '' || '']"
-                  @click="$refs.qDateExpireProxy.show()"
-                )
-                  template(v-slot:append)
-                    q-icon(name="event" class="cursor-pointer")
-                      q-popup-proxy(ref="qDateExpireProxy")
-                        q-date(
-                          v-model="contractInfo.dateContractExpire"
-                          :mask="'YYYY-MM-DD'"
-                          @input="$refs.qDateExpireProxy.hide()"
-                        )
-              .row
-                q-btn(
-                  :disable="!isContractInfoFilled"
-                  color="primary"
-                  :label="$t('user.tickets.actions.next')"
-                  @click="sendContractInfo(props.row.id)"
-                )
+                .col-6.offset-6
+                  .text-body1.q-col-gutter-md
+                    div
+                      | Договор подписан.
+                    div
+                      | Введите данные договора.
+                    FormContract(@submit="sendContractInfo($event, props.row.id)")
 
     TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
@@ -131,10 +88,12 @@
   import BaseInput from "components/common/BaseInput";
   import BaseDatepicker from "components/common/BaseDatepicker";
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import FormContract from "components/common/form/FormContract";
 
   export default {
     name: "EmployeeTicketsParking",
     components: {
+      FormContract,
       ApartmentsEmployeeDetailsModal,
       BaseTable,
       BaseInput,
@@ -201,12 +160,7 @@
             name: "menu",
             align: "right"
           }
-        ],
-        contractInfo: {
-          contractNumber: null,
-          dateContractConcluded: null,
-          dateContractExpire: null
-        }
+        ]
       };
     },
     computed: {
@@ -216,11 +170,6 @@
         base: "pagination",
         mutation: UPDATE_PAGINATION
       }),
-      isContractInfoFilled () {
-        return !!this.contractInfo.contractNumber
-          && !!this.contractInfo.dateContractConcluded
-          && !!this.contractInfo.dateContractExpire;
-      },
       isLoading () {
         return this.$store.state.wait[`user/tickets/parking/${ GET_EMPLOYEE_TICKETS_PARKING }`];
       }
@@ -311,9 +260,6 @@
 
         if (row === -1) {
           this.expanded.push(props.key);
-          this.contractInfo.contractNumber = null;
-          this.contractInfo.dateContractConcluded = null;
-          this.contractInfo.dateContractExpire = null;
         } else {
           this.expanded.splice(row, 1);
         }
@@ -324,13 +270,7 @@
         this.showDetailsModal = true;
       },
 
-      sendContractInfo (id) {
-        const { contractNumber, dateContractConcluded, dateContractExpire } = this.contractInfo;
-        const payload = {
-          startDate: dateContractConcluded,
-          endDate: dateContractExpire,
-          number: contractNumber
-        };
+      sendContractInfo (payload, id) {
         this.SEND_CONTRACT_INFO_PARKING({ id, payload })
           .then(() => {
             this.$q.notify({

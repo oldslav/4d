@@ -17,15 +17,22 @@
     methods: {
       onDownload () {
         const { name, type } = this.value;
+        if (!name || !type) {
+          this.failedToDownload();
+          return;
+        }
 
         try {
           exportFile(name, this.value, type);
         } catch (e) {
-          this.$q.notify({
-            type: "negative",
-            message: this.$t("common.error.response.downloadFail")
-          });
+          this.failedToDownload();
         }
+      },
+      failedToDownload () {
+        this.$q.notify({
+          type: "negative",
+          message: this.$t("common.error.response.downloadFail")
+        });
       }
     }
   };

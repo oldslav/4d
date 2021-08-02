@@ -466,6 +466,7 @@
     "accept": "Accept",
     "reject": "Reject",
     "pay": "Pay",
+    "download": "Download",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
     "registerUser": "Register employee",
@@ -806,10 +807,16 @@
       "ideas": "Ideas and suggestions",
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
-      "vacancy": "City vacancies",
+      "vacancy": "Городские вакансии",
       "warehouse": "Warehouse rent",
       "responds": "Responses",
-      "verifyRequests": "Verifying Companies"
+      "verifyRequests": "Verifying Companies",
+      "contract": {
+        "number": "Номер договора",
+        "startDate": "Дата заключения",
+        "dateRange": "Срок действия",
+        "message": "Если вы хотите расторгнуть договор, пожалуйста, скачайте соглашение о расторжении."
+      }
     },
     "bills": "Bills",
     "main": "Main",
@@ -919,6 +926,10 @@
           "fail": "An error occurred during relative deletion"
         }
       }
+    },
+    "vacancy": {
+      "search": "Поиск по названию",
+      "add": "Добавить вакансию"
     }
   }
 }

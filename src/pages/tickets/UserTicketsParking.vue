@@ -52,6 +52,7 @@
               color="primary"
               flat
               animated
+              v-if="props.row.status.id >= 3 && props.row.status.id < 8"
             )
               q-step(
                 title="Оплата"
@@ -85,6 +86,10 @@
               div.text-body1.text-wrap
                 | Ваш договор готов к подписанию!
                 | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
 </template>
 
 <script>
@@ -100,10 +105,11 @@
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import BaseTable from "../../components/common/BaseTable";
   import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "UserTicketsParking",
-    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal },
+    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal, ValidContractState },
     async created () {
       await this.getUserTickets();
     },
