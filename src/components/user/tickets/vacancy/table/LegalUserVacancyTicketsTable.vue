@@ -13,7 +13,7 @@
           | {{ props.row.vac_position }}
 
         q-td(key="profIndustry" :props="props")
-          | {{  props.row.profIndustry.description }}
+          div.break-spaces {{ props.row.profIndustry.description }}
 
         q-td(key="publishDate" :props="props")
           | {{  props.row.publishDate | formatDate }}
@@ -30,11 +30,11 @@
               q-list
                 q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
                   q-item-section(no-wrap)
-                    | Просмотреть вакансию
+                    | {{ $t("user.tickets.vacancies.table.viewVacancy") }}
 
                 q-item(:to="{ name: 'user-tickets-vacancy-candidates', params: { id: props.row.id} }" v-close-popup)
                   q-item-section(no-wrap)
-                    | Просмотреть кандитатов
+                    | {{ $t("user.tickets.vacancies.table.viewResponds") }}
 
                 q-item(
                   v-if="vacancyStatuses.closed !== props.row.status.id"
@@ -43,7 +43,7 @@
                   @click="onClickClose(props.row.id)"
                 )
                   q-item-section(no-wrap).text-red
-                    | Закрыть вакансию
+                    | {{ $t("user.tickets.vacancies.table.closeVacancy") }}
 
                 q-item(
                   v-if="vacancyStatuses.closed === props.row.status.id"
@@ -52,7 +52,7 @@
                   @click="onClickPublish(props.row.id)"
                 )
                   q-item-section(no-wrap)
-                    | Снова открыть вакансию
+                    | {{ $t("user.tickets.vacancies.table.reopenVacancy") }}
 </template>
 <script>
   import BaseTable from "../../../../common/BaseTable";
@@ -78,35 +78,35 @@
           {
             name: "vac_position",
             required: false,
-            label: "Название",
+            label: this.$t("user.tickets.vacancies.table.name"),
             align: "left",
             sortable: false
           },
           {
             name: "profIndustry",
             required: false,
-            label: "Профессиональная отрасль",
+            label: this.$t("user.tickets.vacancies.table.profIndustry"),
             align: "left",
             sortable: false
           },
           {
             name: "publishDate",
             required: false,
-            label: "Дата размещения",
+            label: this.$t("user.tickets.vacancies.table.publishDate"),
             align: "left",
             sortable: false
           },
           {
             name: "respondsCount",
             required: false,
-            label: "Кандидаты",
+            label: this.$t("user.tickets.vacancies.table.respondsCount"),
             align: "left",
             sortable: false
           },
           {
             name: "status",
             required: false,
-            label: "Статус",
+            label: this.$t("user.tickets.vacancies.table.status"),
             align: "left",
             sortable: false
           },

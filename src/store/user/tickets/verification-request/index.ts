@@ -57,7 +57,7 @@ const mutations: MutationTree<IUserVerificationRequestState> = {
   [UPDATE_VERIFICATION_REQUESTS_PAGINATION] (state, pagination) {
     if (pagination) {
       const page = pagination.page || 1;
-      const rowsPerPage = pagination.rowsPerPage || 10;
+      const rowsPerPage = pagination.rowsPerPage || state.pagination.limit || 10;
       state.pagination = { limit: rowsPerPage, offset: page };
     }
   }

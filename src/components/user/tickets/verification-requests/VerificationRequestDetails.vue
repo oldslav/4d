@@ -7,7 +7,7 @@
   )
     q-card.full-width.verification-request-details-card
       q-card-section.row.items-center
-        .text-medium Запрос на верификацию компании
+        .text-medium {{ $t('user.tickets.verifyRequests.detailsTitle') }}
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
       q-separator

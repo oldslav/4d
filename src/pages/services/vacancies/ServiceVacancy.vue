@@ -30,6 +30,7 @@
           :max="getPagesCount"
           color="primary"
           boundary-numbers
+          unelevated
           @input="onChangeCurrentPage"
         )
 

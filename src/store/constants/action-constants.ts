@@ -1,4 +1,5 @@
 export const SERVER_INIT = "SERVER_INIT";
+export const DOWNLOAD_FILE = "DOWNLOAD_FILE";
 
 export const GET_PARKING_GEO = "GET_PARKING_GEO";
 export const GET_PARKING_PLACES = "GET_PARKING_PLACES";

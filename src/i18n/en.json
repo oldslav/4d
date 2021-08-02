@@ -31,6 +31,7 @@
         "downloadFail": "Failed to download file"
       }
     },
+    "all": "Все",
     "theme": "Theme",
     "login": {
       "title": "Login",
@@ -178,6 +179,201 @@
           "first": "Оплата",
           "second": "Подписание договора и получение ключа"
         }
+      },
+      "vacancies": {
+        "export": "Download Excel",
+        "respondDate": "Response date",
+        "createdEntity": "Date the job was posted",
+        "entityStatus": "Job Status",
+        "respondStatus": "Response Status",
+        "add": "Add vacancy",
+        "edit": "Edit",
+        "table": {
+          "name": "Name",
+          "profIndustry": "Professional Industry",
+          "publishDate": "Publish date",
+          "closedDate": "Closing date",
+          "openDate": "Opening date",
+          "respondsCount": "Applicants",
+          "status": "Status",
+          "viewVacancy": "View vacancy",
+          "viewResponds": "View candidates",
+          "closeVacancy": "Close vacancy",
+          "reopenVacancy": "Open vacancy again",
+          "companyName": "Company",
+          "closeReason": "Closing reason",
+          "rejectVacancy": "Submit for revision",
+          "viewDetails": "View job details",
+          "respondDate": "Response date"
+        },
+        "workflow": {
+          "applicant": {
+            "first": {
+              "title": "Response"
+            },
+            "second": {
+              "title": "Interview",
+              "description": "Congratulations! \n\nYou have successfully completed your interviews. Our HR manager will contact you to clarify the details."
+            },
+            "third": {
+              "title": "Hiring Decision",
+              "successDescription": "Good afternoon! \n nThank you for your interest in our vacancy. \nWe would like to invite you for a meeting. Our HR manager will contact you to clarify the details."
+            }
+          }
+        },
+        "modals": {
+          "create": {
+            "title": "New vacancy",
+            "progress": "Create vacancy",
+            "success": "The vacancy was successfully created",
+            "error": "An error occurred while creating the job, please try again later",
+            "submit": "Add"
+          }
+        },
+        "forms": {
+          "create": {
+            "details": "Details",
+            "positionName": "Position name",
+            "profIndustry": "Professional Industry",
+            "salary": "Salary (rubles)",
+            "experience": "Work experience",
+            "schedule": "Schedule",
+            "employmentType": "Employment type",
+            "address": "Office or workplace address",
+            "dutiesHint": "Please describe in detail the duties of the candidate",
+            "requirementsHint": "Specify the requirements for the candidate",
+            "conditionsHint": "Tell us about the working conditions and benefits of your company"
+          },
+          "update": {
+            "progress": "Updating vacancy",
+            "success": "Vacancy has been successfully updated",
+            "error": "An error occurred while updating the vacancy, please try again later"
+          }
+        },
+        "entity": {
+          "info": "Job description",
+          "candidates": "Candidates"
+        },
+        "closeVacancy": {
+          "modalTitle": "Closing vacancy",
+          "progress": "Closing the vacancy",
+          "success": "The vacancy was successfully closed",
+          "error": "An error occurred while closing the vacancy, please try again later"
+        },
+        "publishVacancy": {
+          "progress": "Publishing a vacancy",
+          "success": "The vacancy was successfully published",
+          "error": "An error occurred while posting this job, please try again later."
+        },
+        "rejectVacancy": {
+          "progress": "Submitting for revision",
+          "success": "Vacancy has been sent for revision",
+          "error": "An error occurred while submitting a vacancy for revision, please try again later"
+        },
+        "exportVacancies": {
+          "progress": "Preparing the file",
+          "error": "An error occurred while exporting jobs, please try again later."
+        }
+      },
+      "responds": {
+        "respondDate": "Response date",
+        "respondStatus": "Response Status",
+        "details": "Response details",
+        "table": {
+          "fullName": "Full name of the candidate",
+          "status": "Status"
+        },
+        "companyWorkflow": {
+          "steps": {
+            "first": {
+              "description": "You have invited a candidate for an interview! \n\nAfter the interview, please do not forget to inform the candidate of your decision.",
+              "reject": "Reject",
+              "approve": "Interview passed"
+            },
+            "second": {
+              "description": "Completed the interview stage, please remember to inform the candidate about your hiring decision.",
+              "approve": "Hire"
+            }
+          }
+        },
+        "reject": {
+          "progress": "Rejecting the candidate",
+          "success": "The candidate was successfully rejected",
+          "error": "An error occurred while rejecting the candidate, please try again later",
+          "title": "Candidate rejection",
+          "hint": "Rejection text",
+          "message": "Hello! \n\nThank you very much for your interest in this vacancy. Unfortunately, at the moment we are not ready to invite you for a further interview for this vacancy. We have carefully reviewed your resume and may return to Your candidacy when we have such a need. "
+        },
+        "approve": {
+          "progress": "Sending invitation",
+          "success": "The invitation was successfully sent",
+          "error": "There was an error sending the invitation, please try again later",
+          "title": "Candidate invitation",
+          "hint": "Invitation text",
+          "message": "Good afternoon! \n\nThank you for your interest in our vacancy. \nWe would like to invite you for a meeting. Our HR manager will contact you to clarify the details."
+        },
+        "interviewApprove": {
+          "progress": "We are putting a mark on the passage of the interview",
+          "success": "The check mark was successfully set",
+          "error": "An error has occurred, please try again later"
+        },
+        "sendOffer": {
+          "progress": "Sending invitation",
+          "success": "The invitation was successfully sent",
+          "error": "There was an error sending the invitation, please try again later."
+        },
+        "modals": {
+          "details": {
+            "title": "Response details",
+            "name": "Full name of the candidate",
+            "resumeLink": "Open link",
+            "resume": "Resume file",
+            "respondText": "Cover Letter",
+            "contacts": "Contacts",
+            "sendInvite": "Invite for an interview"
+          }
+        },
+        "applicantName": "name of the applicant",
+        "sendNotify": "Notify company",
+        "search": "Search by title",
+        "notify": {
+          "progress": "Sending notification",
+          "success": "Notification sent successfully",
+          "error": "An error occurred while sending the notification, please try again later",
+          "title": "Company Notice"
+        },
+        "export": {
+          "action": "Download the list of all responses",
+          "progress": "Preparing the file",
+          "error": "An error occurred while exporting responses, please try again later."
+        }
+      },
+      "verifyRequests": {
+        "search": "Search by title",
+        "publishDate": "Order placement date",
+        "status": "Application status",
+        "detailsTitle": "Company verification request",
+        "approve": {
+          "title": "Application approval",
+          "message": "Congratulations, your application has been approved! \n\n\n nInnopolis City Development Fund",
+          "progress": "We approve the application",
+          "success": "Application was successfully approved",
+          "error": "An error occurred while approving the application, please try again later."
+        },
+        "reject": {
+          "title": "Application rejection",
+          "message": "Dear {authorName}. \n\nYour application for company verification was rejected due to the reason (please indicate the reason for refusal) \n\nInnopolis City Development Fund",
+          "progress": "Rejecting the request",
+          "success": "The application was successfully sent for revision",
+          "error": "An error occurred while rejecting the application, please try again later."
+        },
+        "table": {
+          "details": "View application details",
+          "companyName": "Company name",
+          "legalAddress": "Legal Address",
+          "created": "Date of application",
+          "status": "Status"
+        }
       }
     },
     "firstName": "Firstname",
@@ -234,8 +430,10 @@
         "title": "The function is available only to verified companies",
         "firstDescPart": "Submit",
         "action": "request",
-        "vacancy-description": "to the City Hall of Innpolis to provide access to the city vacancy service. You will then be able to post vacancies and view candidates' responses."
+        "vacancy-description": "to the City Hall of Innpolis to provide access to the city vacancy service. You will then be able to post vacancies and view candidates' responses.",
+        "rejectDescription": "Sorry, your verification request was rejected. \n\nYou can send a new one."
       },
+      "awaitCardText": "This function is only available to verified companies. \n\nYou have already sent a verification request. Please wait for a response.",
       "form": {
         "title": "Company verification request",
         "loading": "Submitting a request",
@@ -268,6 +466,7 @@
     "accept": "Accept",
     "reject": "Reject",
     "pay": "Pay",
+    "download": "Download",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
     "registerUser": "Register employee",
@@ -498,7 +697,7 @@
         "workTime": "Work mode",
         "salary": "Salary",
         "experience": "Work experience",
-        "employmentType": "Employment",
+        "employmentType": "Work schedule",
         "workSchedule": "Employment type",
         "sendRespond": "Apply for vacancy",
         "respondForm": {
@@ -609,7 +808,15 @@
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
       "vacancy": "Городские вакансии",
-      "warehouse": "Warehouse rent"
+      "warehouse": "Warehouse rent",
+      "responds": "Responses",
+      "verifyRequests": "Verifying Companies",
+      "contract": {
+        "number": "Номер договора",
+        "startDate": "Дата заключения",
+        "dateRange": "Срок действия",
+        "message": "Если вы хотите расторгнуть договор, пожалуйста, скачайте соглашение о расторжении."
+      }
     },
     "bills": "Bills",
     "main": "Main",
