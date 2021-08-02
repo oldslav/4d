@@ -3,17 +3,16 @@
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-4
 
-        div.text-medium.q-mb-sm Детали
+        div.text-medium.q-mb-sm {{ $t('user.tickets.vacancies.forms.create.details') }}
 
         q-input.q-mb-md(
           v-model="values.position"
-          label='Название должности'
+          :label="$t('user.tickets.vacancies.forms.create.positionName')"
         )
-
 
         q-select.q-mb-md(
           v-model="values.profIndustryId"
-          label="Профессиональная отрасль"
+          :label="$t('user.tickets.vacancies.forms.create.profIndustry')"
           :options="getProfIndustryReferences"
           option-value="id"
           option-label="description"
@@ -23,14 +22,14 @@
 
         q-input.q-mb-md(
           v-model="values.salary"
-          label='Заработная плата (руб.)'
+          :label="$t('user.tickets.vacancies.forms.create.salary')"
           type="number"
           min="0"
         )
 
         q-select.q-mb-md(
           v-model="values.experienceId"
-          label="Опыт работы"
+          :label="$t('user.tickets.vacancies.forms.create.experience')"
           :options="getExperienceReferences"
           option-value="id"
           option-label="description"
@@ -40,7 +39,7 @@
 
         q-select.q-mb-md(
           v-model="values.workScheduleId"
-          label="График работы"
+          :label="$t('user.tickets.vacancies.forms.create.schedule')"
           :options="getWorkScheduleReferences"
           option-value="id"
           option-label="description"
@@ -50,7 +49,7 @@
 
         q-select.q-mb-md(
           v-model="values.employmentTypeId"
-          label="Тип занятости"
+          :label="$t('user.tickets.vacancies.forms.create.employmentType')"
           :options="getEmploymentTypeReferences"
           option-value="id"
           option-label="description"
@@ -60,34 +59,34 @@
 
         q-input.q-mb-md(
           v-model="values.address"
-          label='Адрес офиса или рабочего места'
+          :label="$t('user.tickets.vacancies.forms.create.address')"
         )
 
       .col-12.col-sm-6.col-md-8.q-pl-lg
         div.q-mb-md
-          div.text-medium.q-mb-sm Обязанности
+          div.text-medium.q-mb-sm {{ $t('entity.services.vacancies.duties') }}
           q-input(
             type="textarea"
             v-model="values.duties"
-            placeholder="Подробно опишите обязанности кандидата"
+            :placeholder="$t('user.tickets.vacancies.forms.create.dutiesHint')"
             outlined
           )
 
         div.q-mb-md
-          div.text-medium.q-mb-sm Требования
+          div.text-medium.q-mb-sm {{ $t('entity.services.vacancies.requirements') }}
           q-input(
             type="textarea"
             v-model="values.requirements"
-            placeholder="Обозначьте требования к кандидату"
+            :placeholder="$t('user.tickets.vacancies.forms.create.requirementsHint')"
             outlined
           )
 
         div
-          div.text-medium.q-mb-sm Условия
+          div.text-medium.q-mb-sm {{ $t('entity.services.vacancies.conditions') }}
           q-input.q-mb-md(
             type="textarea"
             v-model="values.conditions"
-            placeholder="Расскажите об условиях работы и преимуществах вашей компании"
+            :placeholder="$t('user.tickets.vacancies.forms.create.conditionsHint')"
             outlined
           )
 

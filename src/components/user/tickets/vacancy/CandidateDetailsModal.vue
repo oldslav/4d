@@ -7,7 +7,7 @@
   )
     q-card.full-width.candidate-details-card
       q-card-section.row.items-center
-        .text-medium Детали отклика
+        .text-medium {{ $t('user.tickets.responds.modals.details.title') }}
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
 
@@ -16,33 +16,35 @@
       q-card-section(v-if="candidate")
         div.row.q-mb-lg
           div.col-md-6
-            div.text-caption.text-grey-8 Ф.И.О. кандидата
+            div.text-caption.text-grey-8 {{ $t('user.tickets.responds.modals.details.name') }}
             div.text-body1.q-mt-sm {{ candidate.name.full }}
 
           div.col-md-6(v-if="candidate.resumeLink")
-            div.text-caption.text-grey-8 Резюме
+            div.text-caption.text-grey-8 {{ $t('entity.services.vacancies.respondForm.resume') }}
             div.text-body1.q-mt-sm
-              a.text-blue.no-text-decoration(:href="candidate.resumeLink" target="_blank") Открыть ссылку
+              a.text-blue.no-text-decoration(:href="candidate.resumeLink" target="_blank")
+                | {{ $t('user.tickets.responds.modals.details.resumeLink') }}
 
-        div.q-mb-lg-lg
-          div.text-caption.text-grey-8 Файл резюме
-          div.text-body1.q-mt-sm Resume.pdf
+        div.q-hoverable.cursor-pointer.q-mb-lg-lg(v-if="candidate.resumeFile" @click="onClickDownloadResume")
+          div.text-caption.text-grey-8 {{ $t('user.tickets.responds.modals.details.resume') }}
+          div.text-body1.q-mt-sm.text-blue
+            | {{ candidate.resumeFileName }}
 
         div
-          div.text-body1.q-mt-sm Сопроводительное письмо
+          div.text-body1.q-mt-sm {{ $t('user.tickets.responds.modals.details.respondText') }}
           q-field(outlined)
             template(v-slot:control)
               div.rich-text {{ candidate.text }}
 
         div.q-mt-lg
-          div.text-body1.q-mb-md.text-grey-9 Контакты
+          div.text-body1.q-mb-md.text-grey-9 {{ $t('user.tickets.responds.modals.details.contacts') }}
 
           div(v-for="(phone, i) in candidate.contacts.phones" :key="i")
-            div.text-caption.text-grey-8 Телефон
+            div.text-caption.text-grey-8 {{ $t('user.profile.mainForm.phone') }}
             div.text-body1.q-mt-xs {{ phone }}
 
           div.q-mt-md(v-if="candidate.contacts.telegramAlias")
-            div.text-caption.text-grey-8 Telegram (алиас)
+            div.text-caption.text-grey-8 {{ $t('user.profile.mainForm.telegramAlias') }}
             div.text-body1.q-mt-xs @{{ candidate.contacts.telegramAlias }}
 
       q-separator(v-if="candidate" v-show="candidate.status.id === vacancyStatuses.not_viewed")
@@ -55,18 +57,20 @@
           @click="onClickReject"
           flat
           color="red"
-        ) Отклонить
+        ) {{ $t('action.reject') }}
         q-btn(
           @click="onClickAccept"
           color="primary"
           unelevated
-        ) Пригласить на собеседование
+        ) {{ $t('user.tickets.responds.modals.details.sendInvite') }}
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import BaseModal from "../../../common/BaseModal";
   import VacancyForm from "../../../forms/tickets/VacancyForm";
   import { VacancyStatusesEnum } from "../../../../store/types/vacancy";
+  import { DOWNLOAD_FILE } from "../../../../store/constants/action-constants";
 
   export default {
     name: "CandidateDetailsModal",
@@ -81,6 +85,9 @@
       };
     },
     methods: {
+      ...mapActions({
+        downloadFile: DOWNLOAD_FILE
+      }),
       toggleModal (val) {
         this.$emit("input", val);
       },
@@ -91,6 +98,10 @@
 
       onClickAccept (){
         this.$emit("candidate:accept", this.candidate.id);
+      },
+
+      onClickDownloadResume (){
+        this.downloadFile(this.candidate.resumeFile);
       }
     }
   };

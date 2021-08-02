@@ -3,20 +3,20 @@
     div.full.q-mb-lg
       q-input(
         v-model="filter.query"
+        :placeholder="$t('user.tickets.verifyRequests.search')"
         @input.native="onTypingQuery"
         debounce="500"
         outlined
         dense
-        placeholder='Поиск по названию'
       )
 
     div.row.flex-break.items-start.q-mb-lg-lg
       div.col-md-3
-        div Дата размещения вакансии
+        div {{ $t('user.tickets.verifyRequests.publishDate') }}
         date-range-picker(v-model='filter.dateRange')
 
       div.col-md-3.q-pl-lg
-        div Статус заявки
+        div {{ $t('user.tickets.verifyRequests.status') }}
           q-select.q-mb-md(
             v-model="filter.statusId"
             :options="getVerificationRequestsStatuses"
@@ -67,6 +67,9 @@
         store.dispatch(`user/tickets/verification-request/${ FETCH_VERIFICATION_REQUESTS }`, {
           query: {
             "filters.statusId": CompanyVerificationRequestStatuses.inProgress
+          },
+          pagination: {
+            offset: 1
           }
         })
       ]);
@@ -124,7 +127,10 @@
       },
 
       onChangeFilter () {
-        this.fetchRequests({ query: this.getFilter() });
+        this.fetchRequests({
+          query: this.getFilter(),
+          pagination:{ offset: 1 }
+        });
         this.isTypingQuery = false;
       },
 
@@ -138,13 +144,6 @@
         this.visibleDetails = true;
       },
 
-      onRejectRequest (id) {
-        this.visibleDetails = false;
-        this.confirmRejectRequest().onOk(
-          (reason) => this.rejectRequest(id, reason)
-        );
-      },
-
       onApproveRequest (id) {
         this.visibleDetails = false;
         this.confirmApproveRequest().onOk(
@@ -152,12 +151,20 @@
         );
       },
 
+      onRejectRequest (id) {
+        this.visibleDetails = false;
+        const request = this.tableData.items.find(x => x.id === id);
+        this.confirmRejectRequest(request).onOk(
+          (reason) => this.rejectRequest(id, reason)
+        );
+      },
+
       confirmApproveRequest () {
         return this.$q.dialog({
-          title: "Одобрение заявки",
+          title: this.$t("user.tickets.verifyRequests.approve.title"),
           class: "verify-request-action-dialog",
           prompt: {
-            model: "Поздравляем, ваша заявка одобрена!\n\n\n\nФонд развития города Иннополис",
+            model: this.$t("user.tickets.verifyRequests.approve.message"),
             isValid: val => val.length > 0,
             type: "textarea",
             outlined: true
@@ -168,12 +175,12 @@
         });
       },
 
-      confirmRejectRequest () {
+      confirmRejectRequest (request) {
         return this.$q.dialog({
-          title: "Отклонение заявки",
+          title: this.$t("user.tickets.verifyRequests.reject.title"),
           class: "verify-request-action-dialog",
           prompt: {
-            model: "Уважаемый (имя пользователя)\n\nВаша заявка на верификацию компани отклонена по причине (укажите, пожалуйста, причину отказа)\n\n\Фонд развития города Иннополис",
+            model: this.$t("user.tickets.verifyRequests.reject.message", { authorName: request.author.name.full }),
             isValid: val => val.length > 0,
             type: "textarea",
             outlined: true
@@ -187,16 +194,16 @@
       async rejectRequest (id, reason) {
         const notifyEnd = this.$q.notify({
           type: "ongoing",
-          message: "Отклоняем заявку"
+          message: this.$t("user.tickets.verifyRequests.reject.progress")
         });
 
         try {
           await this.rejectRequestById({ id, reason });
-          notifyEnd({ type: "positive", message: "Заявка успешно отклонена" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.verifyRequests.reject.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При отклонении заявки произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.verifyRequests.reject.error")
           });
         }
       },
@@ -204,16 +211,16 @@
       async approveRequest (id, text) {
         const notifyEnd = this.$q.notify({
           type: "ongoing",
-          message: "Одобряем заявку"
+          message: this.$t("user.tickets.verifyRequests.approve.progress")
         });
 
         try {
           await this.approveRequestById({ id, text });
-          notifyEnd({ type: "positive", message: "Заявка успешно одобрена" });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.verifyRequests.approve.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При одобрении заявки произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.verifyRequests.approve.error")
           });
         }
       }

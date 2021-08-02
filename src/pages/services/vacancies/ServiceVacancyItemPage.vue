@@ -1,21 +1,22 @@
 <template lang="pug">
   q-page.bg-white
-    div.row.service-vacancy-item-box.q-pa-lg
+    // DESKTOP
+    div.row.service-vacancy-item-box.q-pa-lg.sm-hide.xs-hide
       div.col-md-8.q-pr-lg
         q-card.q-mb-lg
           q-card-section
             div.text-h6.q-mb-md {{ $t('entity.services.vacancies.duties') }}
-            div.text-body1.rich-text {{ getCurrentVacancy.duties }}
+            div.text-body1.rich-text.break-word {{ getCurrentVacancy.duties }}
 
         q-card.q-mb-lg
           q-card-section
             div.text-h6.q-mb-md {{ $t('entity.services.vacancies.requirements') }}
-            div.text-body1.rich-text {{ getCurrentVacancy.requirements }}
+            div.text-body1.rich-text.break-word {{ getCurrentVacancy.requirements }}
 
         q-card.q-mb-lg
           q-card-section
             div.text-h6.q-mb-md {{ $t('entity.services.vacancies.conditions') }}
-            div.text-body1.rich-text {{ getCurrentVacancy.conditions }}
+            div.text-body1.rich-text.break-word {{ getCurrentVacancy.conditions }}
 
       div.col-md-4
         q-card.q-mb-lg.full-height
@@ -49,14 +50,19 @@
               div.text-caption.text-grey-8.q-mb-sm {{ $t('entity.services.vacancies.workTime') }}
               div.text-body2 {{ getCurrentVacancy.company.workTime }}
 
+    // MOBILE
+    div.md-hide.lg-hide
+      aside-services-vacancy-item(extended)
 </template>
 
 <script>
   import { mapGetters } from "vuex";
+  import AsideServicesVacancyItem from "../../../components/aside/services/AsideServicesVacancyItem";
   import { FETCH_VACANCY } from "../../../store/constants/action-constants";
 
   export default {
     name: "ServiceVacancyItemPage",
+    components: { AsideServicesVacancyItem },
     preFetch ({ store, currentRoute }) {
       return store.dispatch(`services/vacancy/${ FETCH_VACANCY }`, currentRoute.params.id);
     },
