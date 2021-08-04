@@ -7,7 +7,7 @@ import warehouse from "src/store/user/tickets/warehouse";
 import vacancy from "src/store/user/tickets/vacancy";
 import crowdfunding from "src/store/user/tickets/crowdfunding";
 import verificationRequest from "src/store/user/tickets/verification-request";
-
+import commerce from "src/store/user/tickets/commerce";
 
 const mutations: MutationTree<IUserTicketsState> = {
 
@@ -25,6 +25,7 @@ const tickets: Module<IUserTicketsState, TRootState> = {
     warehouse,
     vacancy,
     crowdfunding,
+    commerce,
     "verification-request" : verificationRequest
   },
   mutations,

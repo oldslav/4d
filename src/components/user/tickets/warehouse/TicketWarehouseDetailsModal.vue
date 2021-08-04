@@ -3,6 +3,7 @@
     :value="value"
     position="standard"
     @input="toggleModal"
+    :loading="loadingTicket"
   )
     q-card.full-width(v-if="getCurrentTicket")
       q-card-section.row.items-center.q-pb-none
@@ -59,9 +60,6 @@
       q-card-actions(align="right" v-if="isEmployee")
         q-btn(v-close-popup flat color="red" :label="$t('action.reject')" @click="onReject()")
         q-btn(v-close-popup color="primary" :label="$t('action.accept')" @click="onApprove()").q-px-md
-
-    div
-      q-inner-loading(:showing="loadingTicket")
 </template>
 
 <script>

@@ -17,6 +17,7 @@ import { TicketsService } from "src/api/user/tickets/tickets";
 import { UserVehiclesService } from "src/api/user/vehicles";
 import { UsersService } from "src/api/users";
 import { IdeasService } from "src/api/services/ideas";
+import { CommerceService } from "src/api/services/commerce";
 import { VerificationRequestService } from "src/api/user/verification-request";
 
 declare module "vuex/types/index" {
@@ -31,6 +32,7 @@ declare module "vuex/types/index" {
         apartments: ApartmentsService,
         parking: ParkingService,
         vacancy: VacancyService,
+        commerce: CommerceService,
         ideas: IdeasService
       },
       user: {
@@ -63,6 +65,7 @@ export default boot(({ app }) => {
       apartments: new ApartmentsService(axios),
       parking: new ParkingService(axios),
       vacancy: new VacancyService(axios),
+      commerce: new CommerceService(axios),
       ideas: new IdeasService(axios)
     },
     user: {
