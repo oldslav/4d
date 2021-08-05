@@ -12,6 +12,7 @@
         contracted
         flat
         animated
+        keep-alive
       )
         q-step(
           title="Основная информация"
@@ -20,30 +21,27 @@
           :name="1"
           icon="edit"
         )
-          div.row.q-col-gutter-md
-            BaseInput(v-model="lastname" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="firstname" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
-          FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
-          FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
+          FormName(v-model="name")
+          MyDocumentsForm(isLocal v-model="documents" attachedDocuments)
+          //FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Данные об авто"
           :done="step > 2"
-          :error="!isUserInfo && step > 2"
+          :error="!isCarInfo && step > 2"
           :name="2"
           icon="directions_car"
         )
-          VehicleForm(v-model="auto" unmanaged)
+          TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Срок аренды"
           :done="step > 3"
-          :error="!isUserInfo && step > 3"
+          :error="!rentOption && step > 3"
           :name="3"
           icon="schedule"
         )
@@ -60,7 +58,7 @@
                   q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
               template(v-else)
                 q-item-section
-                 q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
+                  q-item-label {{ $t("entity.services.parking.rentTypes.short.title") }}
                 q-item-section(side)
                   q-item-label.text-primary {{ $t("entity.services.parking.rentTypes.short.price.title") }}
 
@@ -99,7 +97,7 @@
                   q-item-label(caption).text-primary {{ $t("entity.services.parking.rentTypes.long.price.description") }}
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
@@ -111,20 +109,25 @@
           FormContacts(v-model="contacts")
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
 <script>
+  import { mapActions } from "vuex";
+  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
+  import FormName from "components/common/form/FormName";
   import VehicleForm from "../../forms/documents/VehicleForm";
-  import Vehicles from "../../user/documents/Vehicles";
+  import FormContacts from "@/components/common/form/FormContacts";
+  import TicketVehicle from "components/common/TicketVehicle";
+  import MyDocumentsForm from "../../forms/documents/MyDocumentsForm";
 
   export default {
     name: "NewParkingTicket",
-    components: { VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
+    components: { VehicleForm, FormContacts, TicketVehicle, BaseInput, FilePicker, BaseModal, FormName, MyDocumentsForm },
     props: {
       value: {
         type: Boolean,
@@ -139,52 +142,73 @@
       return {
         step: 1,
         neighbors: {},
-        firstname: null,
-        lastname: null,
-        patronymic: null,
-        passport: null,
-        snils: null,
-        auto: {
-          type: null,
-          brand: null,
-          model: null,
-          number: null,
-          documents: {
-            sts: [],
-            pts: []
-          }
+        name: {
+          first: null,
+          last: null,
+          patronymic: null
+        },
+        vehicle: null,
+        documents: {
+          passport: null
         },
         contacts: {
-          phone: null
+          phones: []
         },
-        telegram: null,
         rentOption: null
       };
     },
     computed: {
+      isLoading () {
+        return this.$store.state.wait[`user/tickets/parking/${ CREATE_USER_TICKET_PARKING }`];
+      },
+
       isMobile () {
         return this.$q.platform.is.mobile;
       },
 
       isValid () {
-        return this.isUserInfo && this.isCarInfo;
+        return this.isUserInfo && this.isCarInfo && this.rentOption;
       },
 
       isCarInfo () {
-        return !!this.firstname
-          && !!this.lastname
-          && !!this.auto;
+        return !!this.vehicle
+          && this.vehicle.type
+          && this.vehicle.brand
+          && this.vehicle.model
+          && this.vehicle.number
+          && this.vehicle.documents.pts.length > 0
+          && this.vehicle.documents.sts.length > 0;
       },
 
       isUserInfo () {
-        return !!this.firstname
-          && !!this.lastname
-          && !!this.auto;
+        return !!this.name.first
+          && (this.documents.passport && this.documents.passport.length > 0);
       }
     },
     methods: {
+      ...mapActions("user/tickets/parking", [CREATE_USER_TICKET_PARKING]),
+
       createParkingTicket () {
-        this.updateModal(true);
+        const documents = { ...this.documents, ...this.vehicle.documents };
+        const vehicle = ({ documents, ...rest }) => rest;
+        const { parkingPlaceId, name, rentOption, contacts } = this;
+        return this.CREATE_USER_TICKET_PARKING({
+          parkingPlaceId,
+          name,
+          documents,
+          vehicle: vehicle(this.vehicle),
+          contacts,
+          priceId: rentOption
+        })
+          .then(() => {
+            this.$emit("success");
+          })
+          .catch(() => {
+            this.$emit("fail");
+          })
+          .finally(() => {
+            this.updateModal(true);
+          });
       },
 
       toggleModal (value) {

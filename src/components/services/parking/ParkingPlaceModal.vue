@@ -2,7 +2,7 @@
   BaseModal(
     :value="value"
     position="standard"
-    @input="toggleModal"
+    @input="closeModal"
   )
     q-card.modal-container
       q-card-section
@@ -14,6 +14,8 @@
           :label="$t('action.select.parking.lot')"
           @input="onParkingPlaceChange"
           outlined
+          autocomplete
+          :inputDebounce="300"
         )
 </template>
 
@@ -28,17 +30,21 @@
       value: {
         type: Boolean,
         required: true
+      },
+      parkingPlaces: {
+        type: Array,
+        required: true
       }
     },
     data () {
       return {
-        parkingPlace: null,
-        parkingPlaces: [1, 2, 3]
+        parkingPlace: null
       };
     },
     methods: {
-      toggleModal (value) {
+      closeModal (value) {
         this.$emit("input", value);
+        Object.assign(this.$data, this.$options.data.call(this));
       },
 
       onParkingPlaceChange (value) {

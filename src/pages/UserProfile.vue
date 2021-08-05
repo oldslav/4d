@@ -20,12 +20,12 @@
               q-input(
                 v-model="lastName"
                 :label="$t('user.lastName')"
-                :rules="validateNames"
+                :rules="validateName"
               )
               q-input(
                 v-model="firstName"
                 :label="$t('user.firstName')"
-                :rules="validateNames"
+                :rules="validateName"
               )
               q-input.col-grow(
                 v-model="patronymic"
@@ -42,12 +42,12 @@
             q-input(
               v-model="lastName"
               :label="$t('user.lastName')"
-              :rules="validateNames"
+              :rules="validateName"
             )
             q-input(
               v-model="firstName"
               :label="$t('user.firstName')"
-              :rules="validateNames"
+              :rules="validateName"
             )
             .row
               q-input.col-grow(
@@ -77,7 +77,7 @@
               readonly
             )
           .col.flex.items-center.justify-end
-            router-link(:to="{ name: 'change-email' }")
+            q-btn(:to="{ name: 'change-email' }" flat color="primary")
               | {{ $t("user.profile.mainForm.change") }}
         q-separator.q-my-lg
         .password-block.row
@@ -91,7 +91,7 @@
               readonly
             )
           .col.flex.items-center.justify-end
-            router-link(:to="{ name: 'change-password' }")
+            q-btn(:to="{ name: 'change-password' }" flat color="primary")
               | {{ $t("user.profile.mainForm.change") }}
         q-separator.q-mt-lg
         .contacts-block.row
@@ -144,9 +144,13 @@
   import AvatarUploadable from "components/common/AvatarUploadable";
   import { mapActions, mapState } from "vuex";
   import { GET_ACCOUNT, UPDATE_USER_PROFILE, UPDATE_USER_PROFILE_AVATAR } from "@/store/constants/action-constants";
+  import InputsMixin from "../components/auth/InputsMixin";
 
   export default {
     name: "UserProfile",
+    mixins: [
+      InputsMixin
+    ],
     components: {
       BaseInput,
       BaseModal,
@@ -160,6 +164,11 @@
       };
     },
     computed: {
+      ...mapState({
+        account: state => state.account.account,
+        profileForm: state => state.user.profileForm
+      }),
+
       firstName: {
         get () {
           return this.profileForm.name.first !== null ? this.profileForm.name.first : this.account.name.first;
@@ -170,6 +179,7 @@
           this.checkFormChange(value, this.account.name.first);
         }
       },
+
       lastName: {
         get () {
           return this.profileForm.name.last !== null ? this.profileForm.name.last : this.account.name.last;
@@ -180,6 +190,7 @@
           this.checkFormChange(value, this.account.name.last);
         }
       },
+
       patronymic: {
         get () {
           if (this.noPatronymic) return "";
@@ -191,6 +202,7 @@
           this.checkFormChange(value, this.account.name.patronymic);
         }
       },
+
       noPatronymic: {
         get () {
           return this.profileForm.name.noPatronymic !== null ? this.profileForm.name.noPatronymic : this.account.name.noPatronymic;
@@ -202,11 +214,13 @@
           this.checkFormChange(value, this.account.name.noPatronymic);
         }
       },
+
       email: {
         get () {
           return this.account.contacts.email;
         }
       },
+
       phone: {
         get () {
           return this.profileForm.contacts.phone !== null ? this.profileForm.contacts.phone : this.account.contacts.phone;
@@ -217,6 +231,7 @@
           this.checkFormChange(value, this.account.contacts.phone);
         }
       },
+
       telegramAlias: {
         get () {
           return this.profileForm.contacts.telegramAlias !== null ? this.profileForm.contacts.telegramAlias : this.account.contacts.telegramAlias;
@@ -227,6 +242,7 @@
           this.checkFormChange(value, this.account.contacts.telegramAlias);
         }
       },
+
       avatarUrl () {
         if (this.profileForm.avatarUrl) {
           return this.profileForm.avatarUrl;
@@ -235,53 +251,52 @@
         }
         return null;
       },
-      validateNames () {
-        return [
-          val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
-        ];
-      },
+
       validatePatronymic () {
         if (this.noPatronymic) {
           return [];
         } else {
           return [
-            val => val && val.length > 0, val => val && /^[A-zА-яЁё]*$/.test(val)
+            val => val && val.length > 0 && val.length < 50, val => val && /^[A-zА-яЁё '.-]*$/.test(val)
           ];
         }
       },
+
       validatePhone () {
         return [
-          val => val.length === 0 || val.length === 11
+          val => val && val.length === 11
         ];
       },
+
       validateTelegram () {
         return [
           val => val.length === 0 || val.length >= 5 && val.length <= 32,
           val => /^[a-zA-Z0-9_.]*$/.test(val)
         ];
       },
+
       isLoading () {
         return this.$store.state.wait[GET_ACCOUNT];
       },
+
       isMobile () {
         return this.$q.platform.is.mobile;
-      },
-      ...mapState({
-        account: state => state.account.account,
-        profileForm: state => state.user.profileForm
-      })
+      }
     },
     methods: {
       ...mapActions([
         GET_ACCOUNT
       ]),
+
       ...mapActions("user/profileForm", [
         UPDATE_USER_PROFILE,
         UPDATE_USER_PROFILE_AVATAR
       ]),
+
       toggleModal (value) {
         if (!value) this.$router.push({ name: "user-profile" });
       },
+
       onValidationError () {
         this.$q.notify({
           message: "Ошибка при валидации",
@@ -289,6 +304,7 @@
           position: "bottom"
         });
       },
+
       async updateProfile () {
         try {
           await this.UPDATE_USER_PROFILE();
@@ -307,6 +323,7 @@
           });
         }
       },
+
       onImageUpload (image) {
         const reader = new FileReader();
 
@@ -332,6 +349,7 @@
 
         reader.readAsDataURL(image);
       },
+
       checkFormChange (value, defaultValue) {
         if (!this.isFormChanged && value !== defaultValue) {
           this.isFormChanged = true;
@@ -346,4 +364,13 @@
 <style lang="stylus" scoped>
   ::v-deep .q-item
     padding: 0
+  .avatar-uploadable__input
+    ::v-deep .q-field
+      width: 10rem
+    ::v-deep .q-field__control-container
+      justify-content: center
+    ::v-deep .q-field__native
+      display: none
+    .avatar-uploadable__image
+      object-fit: cover
 </style>

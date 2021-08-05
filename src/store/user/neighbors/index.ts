@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { INeighbor, INeighborsState } from "../../types/user/neighbors";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import {
   CREATE_NEIGHBOR_DOCUMENT,
   CREATE_USER_NEIGHBOR, DELETE_NEIGHBOR_DOCUMENT,
@@ -8,13 +8,12 @@ import {
   STORE_USER_NEIGHBORS, UPDATE_NEIGHBOR_DOCUMENTS,
   UPDATE_USER_NEIGHBOR
 } from "src/store/constants/action-constants";
-import { UserNeighborsService } from "src/api/user/neighbors";
 import { CLEAR_DELETED_IDS, SET_DELETED_ID, SET_ITEMS } from "src/store/constants/mutation-constants";
 
-const state: INeighborsState = {
+const state = (): INeighborsState => ({
   items: [],
   deletedIds: []
-};
+});
 
 const mutations: MutationTree<INeighborsState> = {
   [SET_ITEMS] (state: INeighborsState, payload: INeighbor[]) {
@@ -28,58 +27,46 @@ const mutations: MutationTree<INeighborsState> = {
   }
 };
 
-const actions: ActionTree<INeighborsState, IRootState> = {
-  [CREATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, IRootState>, neighbor) {
+const actions: ActionTree<INeighborsState, TRootState> = {
+  [CREATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, neighbor) {
     const { documents, ...payload } = neighbor;
-    return UserNeighborsService.createNeighbor(payload)
+    return this.service.user.neighbors.createNeighbor(payload)
       .then(({ data }) => {
         const { id } = data;
         return dispatch(UPDATE_NEIGHBOR_DOCUMENTS, { documents, id });
       })
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [UPDATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, IRootState>, neighbor) {
+  [UPDATE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, neighbor) {
     const { documents, ...payload } = neighbor;
-    return UserNeighborsService.updateNeighbor(payload)
+    return this.service.user.neighbors.updateNeighbor(payload)
       .then(({ data }) => {
         const { id } = data;
         return dispatch(UPDATE_NEIGHBOR_DOCUMENTS, { documents, id });
       })
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
-  [DELETE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, IRootState>, id) {
-    return UserNeighborsService.deleteNeighbor(id)
+  [DELETE_USER_NEIGHBOR] ({ dispatch }: ActionContext<INeighborsState, TRootState>, id) {
+    return this.service.user.neighbors.deleteNeighbor(id)
       .then(() => dispatch(`user/documents/${ GET_USER_DOCUMENTS }`, null, { root: true }));
   },
   [CREATE_NEIGHBOR_DOCUMENT] (ctx, { payload, id }) {
-    return UserNeighborsService.createNeighborFile(payload, id);
+    return this.service.user.neighbors.createNeighborFile(payload, id);
   },
   [DELETE_NEIGHBOR_DOCUMENT] (ctx, id) {
-    return UserNeighborsService.deleteNeighborFile(id);
+    return this.service.user.neighbors.deleteNeighborFile(id);
   },
-  [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state, rootGetters }, { documents, id }) {
+  async [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state }, { documents, id }) {
     const { deletedIds } = state;
-    const awaitsCreate: any = [];
-    Object.entries(documents).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        if (!file.id) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          awaitsCreate.push(payload);
-        }
-      });
-    });
-    return Promise.all(deletedIds.map((id) => dispatch(DELETE_NEIGHBOR_DOCUMENT, id)))
-      .then(() => {
-        commit(CLEAR_DELETED_IDS);
-        return Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
-      });
+    const files = await dispatch("bundleFiles", documents, { root: true });
+    await Promise.all(deletedIds.map((id) => dispatch(DELETE_NEIGHBOR_DOCUMENT, id)));
+    commit(CLEAR_DELETED_IDS);
+    await Promise.all(files.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
   },
-  [STORE_USER_NEIGHBORS] ({ commit }, neighbors) {
-    const result = neighbors.map((n: any) => {
-      const documents = {
+  async [STORE_USER_NEIGHBORS] ({ commit, dispatch }, neighbors) {
+    const result: any = [];
+    await Promise.all(neighbors.map(async (n: any) => {
+      const documents: any = {
         inn: [],
         snils: [],
         passport: [],
@@ -89,30 +76,21 @@ const actions: ActionTree<INeighborsState, IRootState> = {
         consent_processing_personal_data: []
       };
       const { id, name, images, neighborType } = n;
-      images.forEach((doc: any) => {
-        const { id, imagePath, docType, fileName } = doc;
-        const file = {
-          id,
-          imagePath,
-          name: fileName
-        };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        documents[docType.name].push(file);
-      });
-      return { id, name, documents, neighborType };
-    });
+      const files = await dispatch("loadFiles", images, { root: true });
+      Object.assign(documents, files);
+      result.push({ id, name, documents, neighborType });
+    }));
     commit(SET_ITEMS, result);
   }
 };
 
-const getters: GetterTree<INeighborsState, IRootState> = {
+const getters: GetterTree<INeighborsState, TRootState> = {
   getNeighbors (state: INeighborsState) {
     return state.items;
   }
 };
 
-const neighbors: Module<INeighborsState, IRootState> = {
+const neighbors: Module<INeighborsState, TRootState> = {
   namespaced: true,
   state,
   mutations,

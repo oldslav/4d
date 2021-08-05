@@ -13,6 +13,7 @@
     :option-label="field"
     :options="computedOptions"
     :label="label"
+    ref="field"
     :clearable="clearable"
     :outlined="outlined"
     :readonly="readonly"
@@ -21,6 +22,7 @@
     :hide-selected="hideSelected && !multiple"
     @filter="filter"
     @input="onInput"
+    @clear="onInput(null)"
   )
     template(v-slot:prepend)
       slot(name="prepend")
@@ -29,8 +31,11 @@
 </template>
 
 <script>
+  import BaseFieldMixin from "components/common/BaseFieldMixin";
+
   export default {
     name: "BaseAutocomplete",
+    mixins: [BaseFieldMixin],
     props: {
       label: {
         type: String,
@@ -108,9 +113,7 @@
     },
     methods: {
       onInput (value) {
-        if (!!value) {
-          this.$emit("input", value);
-        }
+        this.$emit("input", value);
       },
 
       filter (val, update) {

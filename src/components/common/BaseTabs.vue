@@ -1,9 +1,10 @@
 <template lang="pug">
-  q-tabs(
-    v-model="currentTab"
+  q-tabs.base-tabs(
+    :value="value"
     @input="onChange"
     align="left"
     :dense="dense"
+    outside-arrows
     mobile-arrows
     :class="{ 'full-width': isFullWidth }"
   )
@@ -14,6 +15,10 @@
   export default {
     name: "BaseTabs",
     props: {
+      value: {
+        type: [String, Number],
+        default: null
+      },
       isFullWidth: {
         type: Boolean,
         default: false
@@ -23,11 +28,6 @@
         default: true
       }
     },
-    data () {
-      return {
-        currentTab: null
-      };
-    },
     methods: {
       onChange (event) {
         this.$emit("input", event);
@@ -35,7 +35,3 @@
     }
   };
 </script>
-
-<style scoped>
-
-</style>

@@ -28,10 +28,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["getUserRolesNames"]),
-      isUser () {
-        return this.getUserRolesNames.includes("ROLE_USER");
-      },
+      ...mapGetters(["isUserNature", "isUserLegal"]),
 
       meta () {
         return this.$route.meta;
@@ -40,12 +37,12 @@
       items () {
         return [
           {
-            label: this.$t("entity.services.living"),
+            label: this.$t("entity.services.living.title"),
             action: {
-              name: "services-living"
+              name: "services-apartments"
             },
             icon: "o_person",
-            show: this.isUser
+            show: this.$route.query.requestId && this.isUserNature || this.isUserLegal
           },
           {
             label: this.$t("entity.services.commerce"),
@@ -53,7 +50,7 @@
               name: "services-commerce"
             },
             icon: "o_text_snippet",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.parking.title"),
@@ -61,15 +58,15 @@
               name: "services-parking"
             },
             icon: "o_library_add_check",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
-            label: this.$t("entity.services.warehouse"),
+            label: this.$t("entity.services.warehouse.title"),
             action: {
               name: "services-warehouse"
             },
             icon: "o_article",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.ideas"),
@@ -77,15 +74,23 @@
               name: "services-ideas"
             },
             icon: "o_article",
-            show: this.isUser
+            show: this.isUserNature
           },
           {
-            label: this.$t("entity.services.vacancies"),
+            label: this.$t("entity.services.crowdfunding.title"),
+            action: {
+              name: "services-crowdfunding"
+            },
+            icon: "o_article",
+            show: this.isUserNature
+          },
+          {
+            label: this.$t("entity.services.vacancies.title"),
             action: {
               name: "services-vacancies"
             },
             icon: "o_article",
-            show: this.isUser
+            show: this.isUserNature
           }
         ];
       }

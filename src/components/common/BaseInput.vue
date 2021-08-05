@@ -11,6 +11,7 @@
     :readonly="readonly"
     :disable="disable"
     :rules="rules"
+    :reactive-rules="reactiveRules"
     :mask="mask"
     :unmasked-value="unmaskedValue"
   )
@@ -27,6 +28,10 @@
       prepend: {
         type: Boolean,
         default: null
+      },
+      reactiveRules: {
+        type: Boolean,
+        default: false
       },
       append: {
         type: Boolean,

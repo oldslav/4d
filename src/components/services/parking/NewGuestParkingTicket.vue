@@ -12,6 +12,7 @@
         contracted
         flat
         animated
+        keep-alive
       )
         q-step(
           title="Основная информация"
@@ -20,28 +21,24 @@
           :name="1"
           icon="edit"
         )
-          div.row.q-col-gutter-md
-            BaseInput(v-model="lastname" :label="$t('user.lastName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="firstname" :label="$t('user.firstName')" clearable).col-12.col-sm-6.col-md-4
-            BaseInput(v-model="patronymic" :label="$t('user.patronymic')" clearable).col-12.col-sm-6.col-md-4
-
+          FormName(v-model="name")
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Данные об авто"
           :done="step > 2"
-          :error="!isUserInfo && step > 2"
+          :error="!isCarInfo && step > 2"
           :name="2"
           icon="directions_car"
         )
-          VehicleForm(v-model="auto" unmanaged)
+          TicketVehicle(v-model="vehicle")
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Срок аренды"
           :done="step > 3"
-          :error="!isUserInfo && step > 3"
+          :error="!isDate && step > 3"
           :name="3"
           icon="schedule"
         )
@@ -67,7 +64,7 @@
                   q-item-label.text-primary {{ $t("entity.guestCard.price") }}
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
           title="Контакты"
@@ -79,23 +76,25 @@
           FormContacts(v-model="contacts")
 
           q-stepper-navigation.q-gutter-md
-            q-btn(@click="step--" color="red" :label="$t('action.back')")
+            q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
 </template>
 
 <script>
+  import { mapActions } from "vuex";
+  import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
   import moment from "moment";
   import BaseDatepicker from "../../common/BaseDatepicker";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
+  import FormName from "components/common/form/FormName";
   import FormContacts from "../../common/form/FormContacts";
-  import VehicleForm from "../../forms/documents/VehicleForm";
-  import Vehicles from "../../user/documents/Vehicles";
+  import TicketVehicle from "components/common/TicketVehicle";
 
   export default {
     name: "NewGuestParkingTicket",
-    components: { FormContacts, BaseDatepicker, VehicleForm, Vehicles, BaseInput, FilePicker, BaseModal },
+    components: { FormName, FormContacts, BaseDatepicker, TicketVehicle, BaseInput, FilePicker, BaseModal },
     props: {
       value: {
         type: Boolean,
@@ -110,23 +109,14 @@
       return {
         step: 1,
         neighbors: {},
-        firstname: null,
-        lastname: null,
-        patronymic: null,
-        passport: null,
-        snils: null,
-        auto: {
-          type: null,
-          brand: null,
-          model: null,
-          number: null,
-          documents: {
-            sts: [],
-            pts: []
-          }
+        name: {
+          first: null,
+          last: null,
+          patronymic: null
         },
+        vehicle: null,
         contacts: {
-          phone: null
+          phones: []
         },
         telegram: null,
         isGuestCard: null,
@@ -135,18 +125,26 @@
       };
     },
     computed: {
+      isLoading () {
+        return this.$store.state.wait[`user/tickets/parking/${ CREATE_USER_TICKET_PARKING }`];
+      },
+
       isMobile () {
         return this.$q.platform.is.mobile;
       },
 
       isValid () {
-        return this.isUserInfo && this.isCarInfo;
+        return this.isUserInfo && this.isCarInfo && this.isDate;
       },
 
       isCarInfo () {
-        return !!this.firstname
-          && !!this.lastname
-          && !!this.auto;
+        return !!this.vehicle
+          && this.vehicle.type
+          && this.vehicle.brand
+          && this.vehicle.model
+          && this.vehicle.number
+          && this.vehicle.documents.pts.length > 0
+          && this.vehicle.documents.sts.length > 0;
       },
 
       isDate () {
@@ -155,16 +153,33 @@
       },
 
       isUserInfo () {
-        return !!this.firstname
-          && !!this.lastname
-          && !!this.auto;
+        return !!this.name.first;
       }
     },
     methods: {
-      moment,
-
+      ...mapActions("user/tickets/parking", [CREATE_USER_TICKET_PARKING]),
       createParkingTicket () {
-        this.updateModal(true);
+        const { documents, ...vehicle } = this.vehicle;
+        const { parkingPlaceId, name, isGuestCard, period, contacts } = this;
+        return this.CREATE_USER_TICKET_PARKING({
+          parkingPlaceId,
+          name,
+          documents,
+          vehicle,
+          contacts,
+          guestCard: isGuestCard,
+          startDate: period.from,
+          endDate: period.to
+        })
+          .then(() => {
+            this.$emit("success");
+          })
+          .catch(() => {
+            this.$emit("fail");
+          })
+          .finally(() => {
+            this.updateModal(true);
+          });
       },
 
       toggleModal (value) {

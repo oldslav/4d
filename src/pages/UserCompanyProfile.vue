@@ -14,7 +14,7 @@
     name: "UserCompanyProfile",
     components: { CompanyForm },
     created () {
-      // this.GET_COMPANY();
+      this.GET_COMPANY();
     },
     methods: {
       ...mapActions("user/company", [GET_COMPANY])

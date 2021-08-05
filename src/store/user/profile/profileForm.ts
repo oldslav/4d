@@ -1,7 +1,7 @@
 import { ActionTree, Module, MutationTree } from "vuex";
-import { IRootState } from "src/store/types/root";
+import { TRootState } from "src/store/types/root";
 import { IProfileFormState } from "../../types/user/profile";
-import { 
+import {
   SET_PROFILE_FORM_FIRSTNAME,
   SET_PROFILE_FORM_LASTNAME,
   SET_PROFILE_FORM_PATRONYMIC,
@@ -18,9 +18,8 @@ import {
   UPDATE_USER_PROFILE_AVATAR,
   CHANGE_USER_PROFILE_EMAIL
 } from "src/store/constants/action-constants";
-import { UserProfileService } from "src/api/user/profile";
 
-const state: IProfileFormState = {
+const state = (): IProfileFormState => ({
   name: {
     first: null,
     full: null,
@@ -36,7 +35,7 @@ const state: IProfileFormState = {
   avatarUrl: null,
   avatarFile: null,
   newEmail: null
-};
+});
 
 const mutations: MutationTree<IProfileFormState> = {
   [SET_PROFILE_FORM_FIRSTNAME] (state, payload) {
@@ -46,23 +45,23 @@ const mutations: MutationTree<IProfileFormState> = {
   [SET_PROFILE_FORM_LASTNAME] (state, payload) {
     state.name.last = payload;
   },
-  
+
   [SET_PROFILE_FORM_PATRONYMIC] (state, payload) {
     state.name.patronymic = payload;
   },
-  
+
   [SET_PROFILE_FORM_NO_PATRONYMIC] (state, payload) {
     state.name.noPatronymic = payload;
   },
-  
+
   [SET_PROFILE_FORM_EMAIL] (state, payload) {
     state.contacts.email = payload;
   },
-  
+
   [SET_PROFILE_FORM_PHONE] (state, payload) {
     state.contacts.phone = payload;
   },
-  
+
   [SET_PROFILE_FORM_TELEGRAM_ALIAS] (state, payload) {
     state.contacts.telegramAlias = payload;
   },
@@ -70,16 +69,16 @@ const mutations: MutationTree<IProfileFormState> = {
   [SET_PROFILE_FORM_AVATAR_URL] (state, payload) {
     state.avatarUrl = payload;
   },
-  
+
   [SET_PROFILE_FORM_NEW_EMAIL] (state, payload) {
     state.newEmail = payload;
   }
 };
 
-const actions: ActionTree<IProfileFormState, IRootState> = {
+const actions: ActionTree<IProfileFormState, TRootState> = {
 
   [GET_USER_PROFILE_DEFAULT] ({ commit, rootGetters }) {
-    const { name, contacts, avatar } = rootGetters["getAccount"];
+    const { name, contacts, avatar } = rootGetters.getAccount;
     commit(SET_PROFILE_FORM_FIRSTNAME, name.first);
     commit(SET_PROFILE_FORM_LASTNAME, name.last);
     commit(SET_PROFILE_FORM_PATRONYMIC, name.patronymic);
@@ -95,19 +94,19 @@ const actions: ActionTree<IProfileFormState, IRootState> = {
       name: state.name,
       contacts: state.contacts
     };
-    return UserProfileService.updateProfile(payload);
+    return this.service.user.profile.updateProfile(payload);
   },
 
   [UPDATE_USER_PROFILE_AVATAR] ({}, avatarFile) {
-    return UserProfileService.updateAvatar(avatarFile);
+    return this.service.user.profile.updateAvatar(avatarFile);
   },
-  
+
   [CHANGE_USER_PROFILE_EMAIL] ({ state }) {
-    return UserProfileService.changeEmail(state.newEmail);
+    return this.service.user.profile.changeEmail(state.newEmail);
   }
 };
 
-const profileForm: Module<IProfileFormState, IRootState> = {
+const profileForm: Module<IProfileFormState, TRootState> = {
   namespaced: true,
   state,
   mutations,

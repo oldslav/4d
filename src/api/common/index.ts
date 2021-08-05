@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import { AxiosInstance, AxiosPromise } from "axios";
 
 interface Aggregates {
   [key: string]: any;
@@ -26,6 +26,7 @@ export interface ProfileFormPayload {
     telegramAlias: string | null
   }
 }
+
 export interface NewPasswordPayload {
   oldPassword: string | null,
   password: string | null,
@@ -42,8 +43,17 @@ export interface PaginationOutput {
 export interface PaginationParams {
   limit: number;
   offset: number;
+  sort?: string | null;
 }
 
 export class Service {
-  protected static api: AxiosInstance = axios;
+  protected api: AxiosInstance;
+
+  constructor (axios: AxiosInstance) {
+    this.api = axios;
+  }
+
+  public getFile (url: string): AxiosPromise<any> {
+    return this.api.get(url, { responseType: "blob" });
+  }
 }

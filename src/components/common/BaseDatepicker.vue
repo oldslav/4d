@@ -46,7 +46,7 @@
     data () {
       return {
         innerValue: null,
-        dateMask: "MM.DD.YYYY",
+        dateMask: "YYYY-MM-DD",
         inputMask: "##.##.####",
         inputRules: [
           val => !!val || this.$t("common.error.validation.required")

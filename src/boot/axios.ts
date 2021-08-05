@@ -1,14 +1,16 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Store } from "vuex";
 import { boot } from "quasar/wrappers";
-import { IRootState } from "../store/types/root";
 import qs from "qs";
-import { ACCESS_TOKEN_COOKIE, FETCH_ACCESS_TOKEN } from "src/store/constants/action-constants";
+import { GET_ACCESS_TOKEN } from "src/store/constants/action-constants";
 import { LocalStorage } from "quasar";
+import { TRootState } from "../store/types/root";
 
 axios.defaults.baseURL = process.env.SERVER_API_HOST;
-axios.interceptors.request.use(
-  config => {
+
+const paramsSerializerInterceptor = [
+    (config: AxiosRequestConfig) => {
     config.paramsSerializer = (params: any): string => qs.stringify(params, {
       skipNulls: true,
       allowDots: true,
@@ -17,9 +19,16 @@ axios.interceptors.request.use(
 
     return config;
   },
+    (error: any) => Promise.reject(error)
+];
 
-  error => Promise.reject(error)
-);
+const responseStatusInterceptor = [
+  undefined,
+  (error: { code: any; response: { status: number; }; }) => {
+    error.code = error.response.status || 0;
+    return Promise.reject(error);
+  }
+];
 
 declare module "vue/types/vue" {
   interface Vue {
@@ -30,15 +39,8 @@ declare module "vue/types/vue" {
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Store<S> {
-    $axios: AxiosInstance
-    REFRESH_PROMISE: null | Promise<void>
-  }
-}
-
-declare module "vuex/types/index" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Store<S> {
     $local: LocalStorage
+    $axios: AxiosInstance
   }
 }
 
@@ -49,28 +51,43 @@ declare module "axios" {
 }
 
 const requestInterceptor = (store: Store<any>) => {
-  return async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+  return async function (config: AxiosRequestConfig): Promise<AxiosRequestConfig> {
     if (config.skipAuth) {
       return config;
     }
 
-    const headers = config.headers as {[key: string]: string};
-    const accessToken = store.getters.isAccessToken
-      ? store.state.account.accessToken.token
-      : store.$local.getItem(ACCESS_TOKEN_COOKIE);
+    const accessToken = await store.dispatch(GET_ACCESS_TOKEN);
 
-    if (accessToken === null) {
-      await store.dispatch(FETCH_ACCESS_TOKEN);
+    if (accessToken !== null) {
+      const headers = config.headers || {};
+
+      return {
+        ...config,
+        headers: Object.assign({}, headers,{ Authorization : `Bearer ${ accessToken }` })
+      };
     }
-
-    headers.Authorization = `Bearer ${ accessToken }`;
 
     return config;
   };
 };
 
+
 export default boot(({ app }) => {
-  axios.interceptors.request.use(requestInterceptor(app.store as Store<IRootState>));
+  const axiosInstance = axios.create();
+
+  const authInterceptor = requestInterceptor(app.store as Store<TRootState>);
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  axiosInstance.interceptors.request.use(...paramsSerializerInterceptor);
+  axiosInstance.interceptors.request.use(authInterceptor);
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  axiosInstance.interceptors.response.use(...responseStatusInterceptor);
+
+  app.store!.$axios = axiosInstance;
+
   if (app.store) {
     app.store.$local = LocalStorage;
   }

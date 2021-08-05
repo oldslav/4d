@@ -4,12 +4,13 @@
     :rules="rules"
     no-error-icon
     dense
-    ref="picker"
     :label="label"
     bottom-slots
     borderless
     multiple
     append
+    ref="field"
+    :readonly="readonly"
     :lazy-rules="lazy"
     :accept="accept"
     :max-files="maxFiles"
@@ -21,15 +22,23 @@
     template(#hint)
       | {{ description }}
     template(#file="{ index, file }")
-      q-chip.file-picker__chip.q-pl-none.q-ml-none(removable color="transparent" @remove="removeFile(index)" icon-remove="o_delete")
+      q-chip.file-picker__chip.q-pl-none.q-ml-none(removable color="transparent" @remove="removeFile(index)" :disable="readonly" icon-remove="o_delete")
         div.ellipsis
           | {{ file.name }}
       .flex-break
 </template>
 
 <script>
+  import BaseFieldMixin from "components/common/BaseFieldMixin";
+
   export default {
+    name: "FilePicker",
+    mixins: [BaseFieldMixin],
     props: {
+      readonly: {
+        type: Boolean,
+        default: false
+      },
       value: {
         type: Array,
         default: () => []
@@ -73,13 +82,13 @@
         this.$emit("input", value);
       },
       removeFile (index) {
-        this.$refs.picker.removeAtIndex(index);
+        process.browser && this.$refs.field.removeAtIndex(index);
         if (!!this.value[index].id) {
           this.$emit("remove", this.value[index].id);
         }
       },
       pickFiles (evt) {
-        this.$refs.picker.pickFiles(evt);
+        process.browser && this.$refs.field.pickFiles(evt);
       }
     }
   };

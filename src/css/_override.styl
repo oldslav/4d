@@ -30,8 +30,9 @@
     margin-bottom: 20px
 
   &-subtitle
-    margin-top: 20px
-    margin-bottom: 20px
+    &_m
+      margin-top: 20px
+      margin-bottom: 20px
 
   &-primary-flat
     background: $primary-light
@@ -67,8 +68,20 @@
 .bg-secondary-light
   background $background-secondary
 
+.text-status-green
+  color $secondary
+
+
 .modal-container
-  min-width: 40vw
+  min-width: 40vw !important
+
+  &__wide
+    max-width: 1600px !important
+
+  &__dense
+    max-width: 400px !important
+    max-height: 600px !important
+
 
 .mobile
   .q-toolbar

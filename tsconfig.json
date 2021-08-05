@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "sourceMap": false,
     "moduleResolution": "node"
   },
@@ -19,6 +19,7 @@
     "tests/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/boot/cesium.ts"
   ]
 }

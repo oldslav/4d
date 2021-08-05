@@ -1,11 +1,11 @@
 <template lang="pug">
-  q-avatar.avatar-uploadable(size="10rem")
-    q-file.avatar-uploadable__input(
-      :value="avatarImage"
-      accept="image/*"
-      @input="onInput"
-      borderless
-    )
+  q-file.avatar-uploadable__input(
+    :value="avatarImage"
+    accept="image/*"
+    @input="onInput"
+    borderless
+  )
+    q-avatar.avatar-uploadable(size="10rem")
       img.avatar-img.full-width.full-height.avatar-uploadable__image(
         :src="avatarUrl"
       )

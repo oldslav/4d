@@ -1,7 +1,7 @@
 import { route } from "quasar/wrappers";
 import VueRouter from "vue-router";
 import { Store } from "vuex";
-import { IRootState } from "../store/types/root";
+import { TRootState } from "../store/types/root";
 import routes from "./routes";
 
 /*
@@ -9,7 +9,7 @@ import routes from "./routes";
  * directly export the Router instantiation
  */
 
-export default route<Store<IRootState>>(function ({ store, Vue }) {
+export default route<Store<TRootState>>(function ({ store, Vue }) {
   Vue.use(VueRouter);
 
   const Router = new VueRouter({
@@ -22,18 +22,17 @@ export default route<Store<IRootState>>(function ({ store, Vue }) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   });
-  
-  Router.beforeEach((to, from, next) => {
-    const isUser = store.getters.getAccount;
-  
-    if (to.name && !to.name.startsWith("profile")) {
-      if (!isUser) {
+
+  if (!process.env.SERVER) {
+    Router.beforeEach((to, from, next) => {
+      const isAuthenticated = store.getters.isAuthenticated;
+
+      if (to.name && to.name !== "main" && !to.name.startsWith("profile") && !isAuthenticated) {
         return next({ name: "main" });
       }
-    }
-    
-    next();
-  });
 
+      next();
+    });
+  }
   return Router;
 });

@@ -1,37 +1,40 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="tableData"
       row-key="id"
       :columns="columns"
-      :data="data"
+      :data="tableData"
       :loading="isLoading"
       :getData="getUserTickets"
       :expanded.sync="expanded"
+      :pagination="tablePagination"
     )
-      template(v-slot:top-right)
-        q-btn(
-          icon="add"
-          outline
-          color="primary"
-          @click="isModalVisible = true"
-          :label="$t('user.tickets.actions.create')"
-        )
-        UserTicketsApartmentsNewTicketModal(v-model="isModalVisible" :data="currentRow" @update="getUserTickets")
+      template(v-slot:top)
+        .full-width.text-right
+          q-btn(
+            outline
+            color="primary"
+            @click="toServiceParking"
+            :label="$t('action.toMap')"
+          )
+        TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
       template(v-slot:body="props")
-        q-tr(:props="props")
-          q-td(key="address" :props="props" @click="expandRow(props)")
-            span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
-            span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
-          q-td(key="price" :props="props" @click="expandRow(props)")
-            | {{ props.row.apartment ? props.row.apartment.price : "0" }}
-          q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).fromNow() }}
-          q-td(key="status" :props="props" @click="expandRow(props)")
-            | {{ props.row.status.description }}
-            BaseStatus(:value="props.row.status.id")
+        q-tr(:props="props" @click="expandRow(props)")
+          q-td(key="parkingAddress" :props="props" )
+            | {{props.row.parkingPlace.address}}
+          q-td(key="parkingNumber" :props="props")
+            | {{props.row.parkingPlace.number}}
+          q-td(key="type" :props="props")
+            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
+          q-td(key="price" :props="props")
+            | {{ props.row.price ? props.row.price.price : "0" }}
+          q-td(key="created" :props="props")
+            | {{ props.row.created | ticketDate }}
+          q-td(key="status" :props="props")
+            ApartmentTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
-            q-btn(flat round dense icon="more_vert")
+            q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
@@ -49,42 +52,64 @@
               color="primary"
               flat
               animated
+              v-if="props.row.status.id >= 3 && props.row.status.id < 8"
             )
               q-step(
-                title="Новая"
-                :done="props.row.status.id > 1"
-                :name="1"
-              )
-              q-step(
-                title="В работе"
-                :done="props.row.status.id > 2"
-                :name="2"
-              )
-              q-step(
-                title="Действие договора"
+                title="Оплата"
                 :done="props.row.status.id > 3"
                 :name="3"
               )
               q-step(
-                title="Завершена"
-                :done="props.row.status.id > 10"
-                :name="4"
+                title="Подписание договора и получение ключа"
+                :done="props.row.status.id > 7"
+                :name="7"
               )
-    q-inner-loading(v-else showing)
+            div(v-if="props.row.status.id < 3").q-pa-md
+              div.text-body1.text-wrap
+                | Пожалуйста, дождитесь решения по вашей заявке.
+                | Фонд развития города Иннополис
+            div(v-if="props.row.status.id === 3").q-pa-md
+              div.text-body1.text-wrap
+                | Поздравляем, ваша заявка одобрена!
+                | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
+                | Перед оплатой ознакомьтесь с публичной офертой и примите ее.
+                | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
+                | Фонд развития города Иннополис.
+              div.text-right
+                q-btn(
+                  :loading="isPaymentLinkLoading"
+                  color="primary"
+                  label="Перейти к оплате"
+                  @click="goToPayment(props.row.id)"
+                )
+            div(v-if="props.row.status.id === 7").q-pa-md
+              div.text-body1.text-wrap
+                | Ваш договор готов к подписанию!
+                | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
 </template>
 
 <script>
   import moment from "moment";
-  import { mapActions, mapState } from "vuex";
-  import BaseTable from "../../components/common/BaseTable";
+  import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     DELETE_USER_TICKET_PARKING,
-    GET_USER_TICKETS_PARKING
-  } from "../../store/constants/action-constants";
+    GET_USER_TICKETS_PARKING,
+    GET_USER_TICKET_PARKING_PAYMENT_LINK
+  } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import BaseTable from "../../components/common/BaseTable";
+  import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "UserTicketsParking",
-    components: { BaseTable },
+    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal, ValidContractState },
     async created () {
       await this.getUserTickets();
     },
@@ -95,34 +120,42 @@
         currentRow: null,
         columns: [
           {
-            name: "address",
-            required: true,
-            label: "Address",
-            align: "left",
-            sortable: true
+            name: "parkingAddress",
+            required: false,
+            label: this.$t("common.address"),
+            align: "left"
+          },
+          {
+            name: "parkingNumber",
+            required: false,
+            label: this.$t("common.number"),
+            align: "left"
+          },
+          {
+            name: "type",
+            required: false,
+            label: this.$t("common.type"),
+            align: "left"
           },
           {
             name: "price",
-            required: true,
-            label: "Rent price",
-            align: "left",
-            sortable: true
+            required: false,
+            label: this.$t("common.rentPrice"),
+            align: "left"
           },
           {
             name: "created",
             required: true,
-            label: "Ticket created",
+            label: this.$t("common.created"),
             align: "left",
             field: row => row.created,
-            format: val => moment(val).fromNow(),
-            sortable: true
+            format: val => moment(val).format("DD.MM.YYYY")
           },
           {
             name: "status",
             required: true,
-            label: "Ticket status",
-            align: "left",
-            sortable: true
+            label: this.$t("common.status"),
+            align: "left"
           },
           {
             name: "menu",
@@ -132,23 +165,47 @@
       };
     },
     computed: {
-      ...mapState("user/tickets/parking", {
-        data: state => state.data
+      ...mapGetters("user/tickets/parking", ["tableData", "tablePagination"]),
+
+      ...mapFields("user/tickets/parking", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
       }),
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKETS_PARKING }`];
+      },
+
+      isPaymentLinkLoading () {
+        return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKET_PARKING_PAYMENT_LINK }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/parking", {
-        getUserTickets: GET_USER_TICKETS_PARKING,
-        deleteUserTicket: DELETE_USER_TICKET_PARKING
+        GET_USER_TICKETS_PARKING,
+        deleteUserTicket: DELETE_USER_TICKET_PARKING,
+        GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
+
+      async getUserTickets (props) {
+        if (props) {
+          const { pagination: { page, rowsPerPage } } = props;
+
+          this.limit = rowsPerPage;
+          this.offset = page;
+        }
+
+        await this.GET_USER_TICKETS_PARKING();
+      },
 
       openDetails (data) {
         this.currentRow = data;
         this.isModalVisible = true;
+      },
+
+      toServiceParking () {
+        this.$router.push({ name: "services-parking" });
       },
 
       expandRow (props) {
@@ -165,7 +222,9 @@
         this.deleteUserTicket(id);
       },
 
-      moment
+      goToPayment (id) {
+        this.$router.push({ name: "user-bills-parking", params: { ticket: id } });
+      }
     }
   };
 </script>

@@ -1,9 +1,8 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import ReferencesService from "src/api/references";
 import { GET_REFERENCES } from "src/store/constants/action-constants";
 import { SET_STATE } from "src/store/constants/mutation-constants";
 
-const state: any = {};
+const state: any = () => ({});
 
 const mutations: MutationTree<any> = {
   [SET_STATE] (state: any, payload) {
@@ -13,8 +12,8 @@ const mutations: MutationTree<any> = {
 
 const actions: ActionTree<any, any> = {
   [GET_REFERENCES] ({ commit }) {
-    const type = ["docTypes", "roles", "docTypes", "neighborTypes", "rentStatuses", "requestStatuses"].toString();
-    return ReferencesService.getReferences(type)
+    const type = ["docTypes", "roles", "warehouseServices", "neighborTypes", "rentStatuses", "requestStatuses"].toString();
+    return this.service.references.getReferences(type)
       .then(({ data }) => {
         commit(SET_STATE, data);
       });
