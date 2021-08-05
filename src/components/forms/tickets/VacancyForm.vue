@@ -62,7 +62,7 @@
           :label="$t('user.tickets.vacancies.forms.create.address')"
         )
 
-      .col-12.col-sm-6.col-md-8.q-pl-lg
+      .col-12.col-sm-6.col-md-8.q-pl-lg-md
         div.q-mb-md
           div.text-medium.q-mb-sm {{ $t('entity.services.vacancies.duties') }}
           q-input(
