@@ -1,11 +1,11 @@
 <template lang="pug">
-  div
+  div.full-width
     div.row.flex-break.items-start.q-mb-md
-      div.col-md-3
+      div.col-md-3.col-sm-6.col-xs-12.q-mb-xs-lg
         div {{ $t('user.tickets.responds.respondDate') }}
         date-range-picker(v-model="filter.dateRange")
 
-      div.col-md-3.q-pl-lg
+      div.col-md-3.q-pl-sm-lg.q-pl-md-lg.q-pl-lg-lg.col-sm-6.col-xs-12
         div {{ $t('user.tickets.responds.respondStatus') }}
           q-select.q-mb-md(
             v-model="filter.statusId"
