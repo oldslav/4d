@@ -57,14 +57,18 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
-  async [GET_COMPANY_COMMERCE_TICKET] ({ commit }, id) {
-    const { data } = await this.service.user.tickets.getCompanyCommerceTicketById(id);
-    commit(SET_USER_TICKET, data);
+  async [GET_COMPANY_COMMERCE_TICKET] ({ commit, dispatch }, ticketId) {
+    const { data } = await this.service.user.tickets.getCompanyCommerceTicketById(ticketId);
+    const { images, ...ticket } = data;
+    const documents = await dispatch("loadFiles", images, { root: true });
+    commit(SET_USER_TICKET, { ...ticket, documents });
   },
 
-  async [GET_EMPLOYEE_COMMERCE_TICKET] ({ commit }, id) {
+  async [GET_EMPLOYEE_COMMERCE_TICKET] ({ commit, dispatch }, id) {
     const { data } = await this.service.user.tickets.getEmployeeCommerceTicketById(id);
-    commit(SET_USER_TICKET, data);
+    const { images, ...ticket } = data;
+    const documents = await dispatch("loadFiles", images, { root: true });
+    commit(SET_USER_TICKET, { ...ticket, documents });
   },
 
   async [CREATE_COMMERCE_TICKET] ({ dispatch }, { placeId, payload }) {
@@ -112,7 +116,8 @@ const getters: GetterTree<IUserTicketsState, TRootState> = {
         rowsNumber: data.count
       };
     }
-  }
+  },
+  getCurrentTicket: (state) => state.current
 };
 
 const commerce: Module<IUserTicketsState, TRootState> = {

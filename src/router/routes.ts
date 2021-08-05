@@ -159,6 +159,13 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "commerce",
+            name: "user-tickets-commerce",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsCommerce.vue")
+            }
+          },
+          {
             path: "warehouse",
             name: "user-tickets-warehouse",
             components: {

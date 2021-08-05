@@ -219,16 +219,16 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/commerce/company/tickets", { params });
   }
 
-  public getCompanyCommerceTicketById (id: number): AxiosPromise<TicketResponse> {
-    return this.api.get(`/api/v1/services/commerce/company/tickets/${ id }`);
+  public getCompanyCommerceTicketById (ticketId: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/commerce/company/tickets/${ ticketId }`);
   }
 
   public getEmployeeTicketsCommerce (params?: unknown): AxiosPromise<TicketResponse> {
     return this.api.get("/api/v1/services/commerce/employee/tickets", { params });
   }
 
-  public getEmployeeCommerceTicketById (id: number): AxiosPromise<TicketResponse> {
-    return this.api.get(`/api/v1/services/commerce/employee/tickets/${ id }`);
+  public getEmployeeCommerceTicketById (ticketId: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/commerce/employee/tickets/${ ticketId }`);
   }
 
   public createCommerceTicket (placeId: number, payload: unknown): AxiosPromise<any> {
