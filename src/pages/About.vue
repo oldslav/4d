@@ -3,9 +3,9 @@
     .about__model.row.q-py-xl.q-px-md.q-px-md-xl
       .col-12.col-md-6.flex.items-center.justify-center
         img.about__model-image(src="@/assets/svg/lady-tablet.svg")
-      .col-12.col-md-6.flex.justify-center.items-center
+      .col-12.col-md-6.flex.justify-center.items-center.q-mt-sm-lg
         div
-          h1.about__header
+          h2.about__header.q-mb-md
             | {{$t("entity.about.model.title")}}
           .about__caption-large
             | {{$t("entity.about.model.caption")}}
@@ -13,21 +13,21 @@
       img.about__inno-image(src="@/assets/svg/noon.svg")
       .col-12.col-md-6.flex.items-center.justify-center.z-fab
         div
-          h2.about__title.text-primary
+          h2.about__header.text-primary
             | {{$t("entity.about.inno.title")}}
           .about__caption-large
             | {{$t("entity.about.inno.caption")}}
       .col-12.col-md-6.flex.items-center.z-fab
         div.flex.column.justify-between
           .about__stats(v-for="(stat, index) in innoInfo" :key="index").q-mb-md
-            h2.about__title.no-margin
+            .about__subtitle.no-margin.text-weight-bold
               | {{ stat.amount }}
             .about__caption-small
               | {{ stat.caption }}
             q-separator(v-if="index < innoInfo.length - 1").q-mt-lg
     .about__sections.relative-position.q-py-xl.q-px-md.q-px-md-xl
       img.about__sections-blob.rotate-180(src="@/assets/svg/blob.svg")
-      h2.about__title.z-fab
+      h2.about__header.z-fab
         | {{$t("entity.about.sections.title")}}
       .about__cards.z-fab
         q-card.cursor-pointer.about__card.flex.column.justify-around(v-for="(card, index) in sections" :key="index" @click="goTo(card.name)")
@@ -38,15 +38,17 @@
     .about__services.relative-position.q-py-xl.q-px-md.q-px-md-xl
       img.about__services-blob(src="@/assets/svg/blob.svg")
       img.about__services-image(src="@/assets/svg/big-tablet.svg")
-      h2.about__title.z-fab
+      h2.about__header.z-fab
         | {{$t("entity.about.service.title")}}
+      .about__caption-medium.q-mb-md
+        | {{ $t("entity.about.service.subtitle") }}
       .about__services-grid.z-fab
-        .row(v-for="(service, index) in services" :key="index").z-fab
+        .row(v-for="(service, index) in services" :key="index").z-fab.items-start
           .col-2
-            .about__header.text-primary
+            .about__title.text-primary.text-weight-bold
               | {{ `0${index + 1}` }}
           .col-10
-            .about__title
+            .about__subtitle.text-weight-bold.q-mb-lg
               | {{ service.title }}
             .about__caption-medium
               | {{ service.caption }}
@@ -170,7 +172,7 @@
   .about {
     &__header {
       font-weight 600
-      font-size 69px
+      font-size 32px
     }
 
     &__caption-large {
@@ -188,8 +190,11 @@
     }
 
     &__title {
-      font-size 40px
-      line-height 120%
+      font-size 36px
+    }
+
+    &__subtitle {
+      font-size 24px
     }
 
     &__model {
@@ -257,17 +262,9 @@
   }
 
 
-  @media (max-width: 1400px) {
-    .about__header {
-      font-size 32px
-    }
-
+  @media (max-width: $breakpoint-md-max) {
     .about__services-image {
       max-width 40%
-    }
-
-    .about__title {
-      font-size 24px
     }
 
     .about__caption-large {
@@ -279,9 +276,13 @@
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: $breakpoint-sm-max) {
     .about__model-image {
       max-width 100%
+    }
+
+    .about__title {
+      font-size 24px
     }
 
     .about__model {
