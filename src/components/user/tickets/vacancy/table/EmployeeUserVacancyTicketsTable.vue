@@ -33,7 +33,7 @@
               q-list
                 q-item(:to="{ name: 'user-tickets-vacancy-page', params: { id: props.row.id} }" v-close-popup)
                   q-item-section(no-wrap)
-                    | {{ $t("user.tickets.vacancies.table.viewResponds") }}
+                    | {{ $t("user.tickets.vacancies.table.viewVacancy") }}
 
                 q-item(
                   v-if="vacancyStatuses.closed !== props.row.status.id"

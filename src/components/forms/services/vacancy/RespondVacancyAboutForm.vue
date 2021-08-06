@@ -114,7 +114,6 @@
         this.model.resumeFile = this.resumeFilesModel[0] || null;
 
         if (this.model.resumeFile) {
-          this.model.resumeLink = "";
           this.$refs.resumeLink.resetValidation();
         }
       }
