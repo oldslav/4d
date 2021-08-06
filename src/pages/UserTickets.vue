@@ -5,7 +5,7 @@
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-parking' }" name="parking" :label="$t('entity.tickets.parking')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-ideas' }" name="ideas" :label="$t('entity.tickets.ideas')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-warehouse' }" name="warehouse" :label="$t('entity.tickets.warehouse')")
-      q-route-tab(v-if="!isUserNature" :to="{name: 'user-tickets-commerce'}" name="user-tickets-commerce" :label="$t('entity.tickets.commerce')")
+      q-route-tab(v-if="!isUserNature" :to="{name: 'user-tickets-commerce'}" name="user-tickets-commerce" :label="$t('entity.tickets.commerce.title')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-crowdfunding' }" name="crowdfunding" :label="$t('entity.tickets.crowdfunding')")
       q-route-tab(:to="{ name: 'user-tickets-vacancy' }" name="vacancy" :label="$t('entity.tickets.vacancy')")
       q-route-tab(v-if="isEmployee" :to="{ name: 'user-tickets-employee-responds' }" name="employee-responds" :label="$t('entity.tickets.responds')")

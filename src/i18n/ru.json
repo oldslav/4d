@@ -28,7 +28,8 @@
       "response": {
         "oops": "Упс! Произошла ошибка",
         "tryLater": "Пожалуйста, повторите попытку позже",
-        "downloadFail": "Ошибка при загрузке файла"
+        "downloadFail": "Ошибка при загрузке файла",
+        "getTicketFail": "Ошибка при получении заявки"
       }
     },
     "all": "Все",
@@ -135,7 +136,7 @@
       "ROLE_EMPLOYEE_EMPLOYMENT_CENTER": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.employmentCenter",
       "ROLE_EMPLOYEE_LIGHT": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.light",
       "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
-      "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce",
+      "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce.title",
       "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
     }
   },
@@ -467,6 +468,7 @@
     "accept": "Принять",
     "reject": "Отклонить",
     "pay": "Оплатить",
+    "book": "Забронировать",
     "download": "Скачать",
     "toProfile": "Перейти в личный кабинет",
     "toMap": "Перейти к карте",
@@ -519,7 +521,15 @@
         },
         "chooseApartmentSuccess": "Квартира выбрана"
       },
-      "commerce": "Коммерческая недвижимость",
+      "commerce": {
+        "title": "Коммерческая недвижимость",
+        "premisesNumber": "Помещение № {number}",
+        "ceilingHeight": "Высота потолка, м",
+        "premisesCount": "Количество помещений",
+        "area": "Плошадь, кв.м",
+        "price": "Стоимость аренды, руб",
+        "minimalRent": "Минимальный срок аренды, мес"
+      },
       "parking": {
         "title": "Парковки",
         "lots": {
@@ -823,7 +833,11 @@
         "dateRange": "Срок действия",
         "message": "Если вы хотите расторгнуть договор, пожалуйста, скачайте соглашение о расторжении."
       },
-      "commerce": "Коммерческая недвижимость"
+      "commerce": {
+        "title": "Коммерческая недвижимость",
+        "activityType": "Напишите название вида деятельности",
+        "ticketTitle": "Заявка на коммерческую недвижимость"
+      }
     },
     "bills": "Счета",
     "main": "Главная",

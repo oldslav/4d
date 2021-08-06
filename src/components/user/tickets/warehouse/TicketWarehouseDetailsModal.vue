@@ -8,7 +8,7 @@
     q-card.full-width(v-if="getCurrentTicket")
       q-card-section.row.items-center.q-pb-none
         .text-medium
-          | Заявка на хранение
+          | {{$t("entity.tickets.commerce.ticketTitle")}}
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
       q-card-section
@@ -87,7 +87,7 @@
       } catch (e) {
         this.$q.notify({
           type: "negative",
-          message: "Ошибка при получении заявки"
+          message: this.$t("common.error.response.getTicketFail")
         });
         this.toggleModal(false);
       }

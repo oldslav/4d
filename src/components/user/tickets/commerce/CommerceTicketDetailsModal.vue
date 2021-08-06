@@ -45,7 +45,7 @@
 
 <script>
   import { mapActions, mapGetters } from "vuex";
-  import { GET_COMPANY_COMMERCE_TICKET } from "@/store/constants/action-constants";
+  import { GET_COMPANY_COMMERCE_TICKET, GET_EMPLOYEE_COMMERCE_TICKET } from "@/store/constants/action-constants";
   import BaseModal from "components/common/BaseModal";
   import DownloaderInput from "components/common/DownloaderInput";
 
@@ -64,11 +64,11 @@
     },
     async created () {
       try {
-        await this.GET_COMPANY_COMMERCE_TICKET(this.id);
+        await this.getTicket(this.id);
       } catch (e) {
         this.$q.notify({
           type: "negative",
-          message: "Ошибка при получении заявки"
+          message: this.$t("common.error.response.getTicketFail")
         });
         this.toggleModal(false);
       }
@@ -77,21 +77,27 @@
       ...mapGetters("user/tickets/commerce", ["getCurrentTicket"]),
       ...mapGetters(["isEmployee"]),
       loadingTicket () {
-        return this.$store.state.wait[`user/tickets/commerce/${ GET_COMPANY_COMMERCE_TICKET }`];
+        return this.$store.state.wait[`user/tickets/commerce/${ GET_COMPANY_COMMERCE_TICKET }`]
+          || this.$store.state.wait[`user/tickets/commerce/${ GET_EMPLOYEE_COMMERCE_TICKET }`];
       },
       contactsPresent () {
         return !!this.getCurrentTicket.contacts.phones.length || this.getCurrentTicket.contacts.telegramAlias;
       }
     },
     methods: {
-      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKET]),
+      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKET, GET_EMPLOYEE_COMMERCE_TICKET]),
+      getTicket (id) {
+        return this.isEmployee ? this.GET_EMPLOYEE_COMMERCE_TICKET(id) : this.GET_COMPANY_COMMERCE_TICKET(id);
+      },
       toggleModal (val) {
         this.$emit("input", val);
         this.$emit("update:id", null);
       },
       onReject () {
+        this.$emit("reject", this.id);
       },
       onApprove () {
+        this.$emit("approve", this.id);
       }
     }
   };

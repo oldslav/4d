@@ -10,34 +10,34 @@
       div.q-px-md.q-pt-md
         .row.items-center.justify-between.no-wrap
           .text-body1
-            | Адрес
+            | {{$t('common.address')}}
           .text-body1.text-primary
             | {{ `${getCurrentPlace.address.street} ${getCurrentPlace.address.house}` }}
         q-separator.q-my-md
         .row.items-center.justify-between
           .text-body1.text-primary-light
-            | Стоимость аренды, руб.
+            | {{$t("entity.services.commerce.price")}}
           .text-body1
             | {{ actualPrice }}
         .row.items-center.justify-between.q-mt-md
           .text-body1.text-primary-light
-            | Минимальный срок аренды, мес.
+            | {{$t("entity.services.commerce.minimalRent")}}
           .text-body1
             | {{ getCurrentPlace.minRentPeriod }}
         q-separator.q-my-md
         .row.items-center.justify-between
           .text-body1.text-primary-light
-            | Площадь, кв.м.
+            | {{$t("entity.services.commerce.area")}}
           .text-body1
             | {{ getCurrentPlace.area }}
         .row.items-center.justify-between.q-mt-md
           .text-body1.text-primary-light
-            | Количество помещений
+            | {{$t("entity.services.commerce.premisesCount")}}
           .text-body1
             | {{ getCurrentPlace.premisesCount }}
         .row.items-center.justify-between.q-mt-md
           .text-body1.text-primary-light
-            | Высота потолка, м
+            | {{$t("entity.services.commerce.ceilingHeight")}}
           .text-body1
             | {{ getCurrentPlace.ceilingHeight }}
 </template>

@@ -45,7 +45,7 @@
             show: this.$route.query.requestId && this.isUserNature || this.isUserLegal
           },
           {
-            label: this.$t("entity.services.commerce"),
+            label: this.$t("entity.services.commerce.title"),
             action: {
               name: "services-commerce"
             },

@@ -5,9 +5,10 @@
       :data="tableData"
       :getData="getCompanyTickets"
       row-key="id"
-      :loading="isLoading"
+      :is-loading="isLoading"
       :columns="columns"
       :pagination="tablePagination"
+      :expanded.sync="expanded"
     )
       template(#top)
         .full-width.text-right
@@ -18,7 +19,7 @@
             :label="$t('action.toMap')"
           )
       template(#body="props")
-        q-tr(:props="props" @click="expandRow")
+        q-tr(:props="props" @click="expandRow(props)")
           q-td(key="address" :props="props")
             | {{ props.row.commerce.address.street }} {{ props.row.commerce.address.house }}
           q-td(key="premisesNumber" :props="props")
@@ -26,7 +27,7 @@
           q-td(key="created" :props="props")
             | {{ props.row.created | ticketDate }}
           q-td(key="status" :props="props")
-            ApartmentTicketStatus(:value="props.row.status.id")
+            CommerceTicketStatus(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
@@ -37,6 +38,22 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
+        q-tr(v-show="props.expand" :props="props")
+          q-td(colspan="100%").is-paddingless
+            div.column(v-if="props.row.status.id === 2").q-pa-md
+              div.text-body1.text-wrap
+                | Дождитесь рассмотрения вашей заявки
+            div.column(v-if="props.row.status.id === 7").q-pa-md.q-col-gutter-md
+              div.text-body1.text-wrap
+                | Ваш договор готов к подписанию!
+              div.text-body1.text-wrap
+                | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+            div.column(v-if="props.row.status.id === 8").q-pa-md
+              div.text-body1.text-wrap
+                | Договор подписан
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
+              div.text-body1.text-wrap
+                | Работа над заявкой завершена
     CommerceTicketDetailsModal(v-model="isModalVisible" :id.sync="currentId" v-if="currentId")
 </template>
 
@@ -46,12 +63,12 @@
   import { CANCEL_TICKET_COMMERCE, GET_COMPANY_COMMERCE_TICKETS } from "@/store/constants/action-constants";
   import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import BaseTable from "components/common/BaseTable";
-  import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import CommerceTicketDetailsModal from "components/user/tickets/commerce/CommerceTicketDetailsModal";
+  import CommerceTicketStatus from "components/user/tickets/commerce/CommerceTicketStatus";
 
   export default {
     name: "TicketsCommerceCompany",
-    components: { CommerceTicketDetailsModal, ApartmentTicketStatus, BaseTable },
+    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable },
     async created () {
       await this.getCompanyTickets();
     },
@@ -59,6 +76,7 @@
       return {
         currentId: null,
         isModalVisible: false,
+        expanded: [],
         columns: [
           {
             name: "address",
@@ -118,8 +136,13 @@
         this.currentId = id;
         this.isModalVisible = true;
       },
-      expandRow () {
-
+      expandRow (props) {
+        const row = this.expanded.indexOf(props.key);
+        if (row === -1) {
+          this.expanded.push(props.key);
+        } else {
+          this.expanded.splice(row, 1);
+        }
       },
       onCancel (id) {
         this.$q.dialog({

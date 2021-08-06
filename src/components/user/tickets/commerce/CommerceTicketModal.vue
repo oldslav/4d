@@ -41,7 +41,7 @@
             outlined
             :rules="otherActive ? [(val) => !!val] : null"
             :disable="!otherActive"
-            label="Напишите название вида деятельности"
+            :label="$t('entity.tickets.commerce.activityType')"
           ).q-mt-md
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
