@@ -5,7 +5,7 @@
         q-item.q-py-lg.text-subtitle(clickable @click="$router.back()")
           q-item-section.list-item-avatar(avatar)
             q-icon.text-primary(name="arrow_back")
-          q-item-section(avatar)
+          q-item-section.break-word(avatar)
             | {{ getCurrentVacancy.position }}
 
         q-separator
@@ -28,7 +28,7 @@
             div.text-body2 {{ getCurrentVacancy.workSchedule.description }}
 
           div.q-mb-lg
-            div.text-caption.text-grey-8.q-mb-sm {{ $t('common.address') }}
+            div.text-caption.text-grey-8.q-mb-sm.break-word {{ $t('common.address') }}
             div.text-body2 {{ getCurrentVacancy.address }}
 
     div.q-px-md(v-if="extended")
@@ -53,6 +53,7 @@
         :label="$t('entity.services.vacancies.sendRespond')"
         @click="onClickRespondVacancy"
         color="primary"
+        unelevated
       )
       div.text-center.text-grey-8(v-else)
         | {{ $t('entity.services.vacancies.respondPresent') }}

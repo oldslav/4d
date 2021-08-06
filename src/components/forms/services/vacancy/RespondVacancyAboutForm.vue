@@ -14,6 +14,7 @@
         file-picker(
           v-model="resumeFilesModel"
           @input="onChangeResumeFiles"
+          accept=".pdf, .doc, .docx"
           :max-files="1"
           :label="$t('entity.services.vacancies.respondForm.resumeFile')"
           :description="$t('entity.services.vacancies.respondForm.resumeFileFormat')"

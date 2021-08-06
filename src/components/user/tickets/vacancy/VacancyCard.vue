@@ -2,10 +2,9 @@
   q-card
     q-card-section
       .row.q-col-gutter-sm.items-center
-        div.text-h6.col-grow {{ value.position }}
+        div.text-h6.col.break-word {{ value.position }}
 
-        div(v-if="!readonly")
-
+        div.col-auto.q-pl-sm(v-if="!readonly")
           div(v-if="!visibleForm")
             q-btn(
               @click="onClickEdit"
@@ -23,7 +22,7 @@
               flat
               color="primary"
             )
-            q-btn.q-mr-lg.xs-show.sm-hide(
+            q-btn.q-mr-lg.xs-show.sm-hide.md-hide.lg-hide(
               @click="onClickCancelChange"
               icon="close"
               outline
@@ -37,8 +36,9 @@
               :label="$t('action.save')"
               color="primary"
               size="12px"
+              unelevated
             )
-            q-btn.xs-show.sm-hide(
+            q-btn.xs-show.sm-hide.md-hide.lg-hide(
               @click="onSubmitForm"
               :disable="!isValidForm"
               color="primary"
