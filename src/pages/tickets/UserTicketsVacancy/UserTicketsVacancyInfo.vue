@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.full-width
     vacancy-card(
       v-model="getVacancy"
       :editor-mode.sync="isEnableEditorMode"

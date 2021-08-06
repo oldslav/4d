@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.full-width
     div.full.q-mb-lg
       q-input(
         v-model="filter.query"
@@ -11,11 +11,11 @@
       )
 
     div.row.flex-break.items-start.q-mb-lg-lg
-      div.col-md-3
+      div.col-md-3.col-sm-6.col-xs-12.q-mb-xs-lg
         div {{ $t('user.tickets.verifyRequests.publishDate') }}
         date-range-picker(v-model='filter.dateRange')
 
-      div.col-md-3.q-pl-lg
+      div.col-md-3.col-sm-6.col-xs-12.q-pl-xs-none.q-pl-md-lg.q-pl-sm-lg
         div {{ $t('user.tickets.verifyRequests.status') }}
           q-select.q-mb-md(
             v-model="filter.statusId"

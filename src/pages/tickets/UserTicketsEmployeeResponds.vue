@@ -1,7 +1,7 @@
 <template lang="pug">
-  div
-    div.row.flex-break.items-center.q-mb-lg-lg
-      div.col-md-8
+  div.full-width
+    div.row.flex-break.items-center.q-mb-sm-lg
+      div.col-md-8.col-xs-12.col-sm-6
         q-input(
           v-model="filter.query"
           @input.native="onTypingQuery"
@@ -10,8 +10,8 @@
           outlined
           dense
         )
-      div.col-md-4.q-pl-lg
-        q-btn.float-right.full-width(
+      div.col-md-4.col-sm-6.col-xs-12.q-pl-lg.q-pl-xs-none.q-mt-xs-lg
+        q-btn.full-width(
           @click="onClickExportResponds"
           :label="$t('user.tickets.responds.export.action')"
           icon="download"
@@ -20,8 +20,8 @@
           color="primary"
         )
 
-    div.row.flex-break.items-start.q-mb-md
-      div.col-md-3
+    div.row.flex-break.items-start.q-mb-md.q-mt-xs-lg
+      div.col-md-3.col-sm-12.col-xs-12
         div {{ $t('user.tickets.responds.respondDate') }}
         date-range-picker(v-model="filter.dateRange")
 

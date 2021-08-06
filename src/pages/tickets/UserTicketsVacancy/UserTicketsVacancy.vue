@@ -3,46 +3,48 @@
     v-if="canVisibleVerifyCompanyCard"
     service="vacancy"
   )
-  div(v-else)
+  div.overflow-hidden.full-width(v-else)
     div
-      div.row.flex-break.items-center.q-mb-lg-lg(v-if="!isUserNature")
-        div.col-md-9
+      div.row.flex-break.items-center.q-mb-lg(v-if="!isUserNature")
+        div.col-md.col-xs-12
           q-input(
             v-model="filter.query"
             @input.native="onTypingQuery"
-            :placeholder="$t('entity.vacancy.search')"
+            :placeholder="$t('user.tickets.responds.search')"
             debounce="500"
             outlined
             dense
           )
-        div.col-md-3.q-pl-lg
-          q-btn.float-right.full-width(
+        div.col-md-auto.q-pl-md-md.q-pt-xs-lg.col-xs-12
+          q-btn.q-mb-md-lg(
             v-if="isUserLegal"
+            :label="$t('user.tickets.vacancies.add')"
+            :class="{'full-width': $q.screen.xs || $q.screen.sm}"
+            @click="isVisibleCreateModal=true"
             icon="add"
             outline
             size="sm"
             color="primary"
-            :label="$t('user.tickets.vacancies.add')"
-            @click="isVisibleCreateModal=true"
           )
-          q-btn.float-right.full-width(
+          q-btn.q-mb-md-lg(
             v-if="!isUserLegal"
             :label="$t('user.tickets.vacancies.export')"
+            :class="{'full-width': $q.screen.xs || $q.screen.sm}"
+            @click="onClickExportVacancies"
             icon="download"
             outline
             size="sm"
             color="primary"
-            @click="onClickExportVacancies"
           )
 
-      div.row.flex-break.items-start.q-mb-lg-lg(v-if="!isUserNature")
-        div.col-md-3
+      div.row.flex-break.items-start.q-mb-lg-lg.q-mb-sm-md.q-mb-xs-md(v-if="!isUserNature")
+        div.col-md-auto.col-xs-12.q-mb-sm-md.q-mb-xs-md(style="min-width: 300px")
           div {{ isUserNature ? $t('user.tickets.vacancies.respondDate') : $t('user.tickets.vacancies.createdEntity') }}
           date-range-picker(v-model='filter.dateRange')
 
-        div.col-md-3.q-pl-lg
+        div.col-md-auto.q-pl-md-lg.col-xs-12.q-mb-md-sm(style="min-width: 300px")
           div(v-if="!isUserNature") {{ $t('user.tickets.vacancies.entityStatus') }}
-            q-select.q-mb-md(
+            q-select(
               v-model="filter.statusId"
               :options="getVacancyStatuses"
               option-value="id"
@@ -53,7 +55,7 @@
               dense
             )
           div(v-else) {{ $t('user.tickets.vacancies.respondStatus') }}
-            q-select.q-mb-md(
+            q-select(
               v-model="filter.statusId"
               :options="getRespondsStatuses"
               option-value="id"

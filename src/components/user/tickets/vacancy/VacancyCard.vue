@@ -16,20 +16,35 @@
             )
 
           div(v-if="visibleForm")
-            q-btn.q-mr-lg(
+            q-btn.q-mr-lg.xs-hide(
               @click="onClickCancelChange"
               :label="$t('action.cancel')"
               outline
               flat
               color="primary"
             )
+            q-btn.q-mr-lg.xs-show.sm-hide(
+              @click="onClickCancelChange"
+              icon="close"
+              outline
+              round
+              color="primary"
+            )
 
-            q-btn(
+            q-btn.xs-hide(
               @click="onSubmitForm"
               :disable="!isValidForm"
               :label="$t('action.save')"
               color="primary"
               size="12px"
+            )
+            q-btn.xs-show.sm-hide(
+              @click="onSubmitForm"
+              :disable="!isValidForm"
+              color="primary"
+              icon="done"
+              outline
+              round
             )
 
     q-separator
