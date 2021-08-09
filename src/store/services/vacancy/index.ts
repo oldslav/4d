@@ -17,7 +17,7 @@ import {
   INVITE_VACANCY_CANDIDATE,
   CANDIDATE_INTERVIEW_PASSED,
   SEND_CANDIDATE_JOB_OFFER,
-  VIEW_RESPOND
+  GET_RESPOND
 } from "src/store/constants/action-constants";
 import {
   SET_SEARCH_VACANCY_ERROR,
@@ -138,16 +138,18 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
   },
 
   async [RESPOND_VACANCY] ({ commit }, { id, payload }) {
-    const { resumeFile } = payload;
-    delete payload.resumeFile;
+    const { resumeFiles } = payload;
+    delete payload.resumeFiles;
 
     const { data: respond } = await this.service.services.vacancy.respond(id, payload);
 
-    if (resumeFile) {
+    const awaits = resumeFiles.map((file: File) => {
       const formData = new FormData();
-      formData.append("file", resumeFile);
-      await this.service.services.vacancy.attachRespondFile(respond.id, formData);
-    }
+      formData.append("file", file);
+      return this.service.services.vacancy.attachRespondFile(respond.id, formData);
+    });
+
+    await Promise.all(awaits);
 
     commit("RESPOND_VACANCY", id);
     return respond;
@@ -173,8 +175,8 @@ const actions: ActionTree<IServiceVacancyState, TRootState> = {
     return vacancy;
   },
 
-  async [VIEW_RESPOND] (ctx, respondId) {
-    const { data: respond } = await this.service.services.vacancy.viewRespond(respondId);
+  async [GET_RESPOND] (ctx, respondId) {
+    const { data: respond } = await this.service.services.vacancy.getRespond(respondId);
     return respond;
   }
 };
