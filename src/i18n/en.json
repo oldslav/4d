@@ -722,7 +722,7 @@
           "resumeHint": "You can attach a file with a resume or a link",
           "resumeError": "You must attach a file or provide a link to your resume",
           "resumeFile": "Resume file",
-          "resumeFileFormat": "pdf format",
+          "resumeFileFormat": "pdf, doc, docx format",
           "resumeLink": "Resume link",
           "textHint": "Add cover letter text",
           "textPlaceholder": "Tell us about yourself",

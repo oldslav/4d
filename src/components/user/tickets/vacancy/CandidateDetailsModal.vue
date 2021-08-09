@@ -34,7 +34,7 @@
           div.text-body1.q-mt-sm {{ $t('user.tickets.responds.modals.details.respondText') }}
           q-field(outlined)
             template(v-slot:control)
-              div.rich-text {{ candidate.text }}
+              div.rich-text.break-word {{ candidate.text }}
 
         div.q-mt-lg
           div.text-body1.q-mb-md.text-grey-9 {{ $t('user.tickets.responds.modals.details.contacts') }}

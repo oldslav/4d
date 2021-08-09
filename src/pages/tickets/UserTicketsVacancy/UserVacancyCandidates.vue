@@ -48,7 +48,7 @@
     SEND_CANDIDATE_JOB_OFFER_AND_RELOAD,
     VIEW_RESPOND_AND_RELOAD_CANDIDATE
   } from "../../../store/constants/action-constants";
-  import { RespondStatusesEnum, VacancyReferencesEnum } from "../../../store/types/vacancy";
+  import { VacancyReferencesEnum } from "../../../store/types/vacancy";
   import VacancyCandidatesTable from "../../../components/user/tickets/vacancy/table/VacancyCandidatesTable";
   import CandidateDetailsModal from "../../../components/user/tickets/vacancy/CandidateDetailsModal";
   import DateRangePicker from "../../../components/common/DateRangePicker";
@@ -62,9 +62,6 @@
           `user/tickets/vacancy/${ FETCH_VACANCY_RESPONDS_FOR_COMPANY }`,
           {
             id: currentRoute.params.id,
-            query:{
-              "filters.statusId": RespondStatusesEnum.not_viewed
-            },
             pagination: {
               offset: 1
             }
@@ -79,7 +76,7 @@
         currentDetailsCandidate: null,
         filter: {
           dateRange: { from: null, to: null },
-          statusId: RespondStatusesEnum.not_viewed
+          statusId: ""
         }
       };
     },
@@ -87,7 +84,10 @@
       ...mapGetters("user/tickets/vacancy", ["getVacancyCandidatesTableData", "getVacancyCandidatesTablePagination"]),
       ...mapGetters("services/vacancy", ["getVacancyReferences"]),
       getRespondsStatuses () {
-        return this.getVacancyReferences[VacancyReferencesEnum.respondStatus];
+        return [
+          { id:"", description: this.$t("common.all") },
+          ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
+        ];
       },
       isLoadingTable (){
         return this.$store.state.wait[`user/tickets/vacancy/${ FETCH_VACANCY_RESPONDS_FOR_COMPANY }`];

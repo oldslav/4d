@@ -14,6 +14,7 @@
         file-picker(
           v-model="resumeFilesModel"
           @input="onChangeResumeFiles"
+          accept=".pdf, .doc, .docx"
           :max-files="1"
           :label="$t('entity.services.vacancies.respondForm.resumeFile')"
           :description="$t('entity.services.vacancies.respondForm.resumeFileFormat')"
@@ -113,7 +114,6 @@
         this.model.resumeFile = this.resumeFilesModel[0] || null;
 
         if (this.model.resumeFile) {
-          this.model.resumeLink = "";
           this.$refs.resumeLink.resetValidation();
         }
       }
