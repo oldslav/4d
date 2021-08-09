@@ -159,6 +159,13 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "commerce",
+            name: "user-tickets-commerce",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsCommerce.vue")
+            }
+          },
+          {
             path: "warehouse",
             name: "user-tickets-warehouse",
             components: {
@@ -228,7 +235,7 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserVacancyPage.vue")
         },
         meta: { toolbar: true, asideLeft: true, content: true },
-        children:[
+        children: [
           {
             path: ":id",
             name: "user-tickets-vacancy-info",
@@ -349,7 +356,7 @@ const routes: RouteConfig[] = [
         path: "commerce",
         name: "services-commerce",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/ServiceCommerce.vue")
         },
         meta: {
           toolbar: true
@@ -426,6 +433,17 @@ const routes: RouteConfig[] = [
         }
       }
     ]
+  },
+  {
+    path: "/services/commerce/:id",
+    name: "services-commerce-place",
+    components: {
+      default: (): Promise<any> => import("pages/services/commerce/CommercePlaceInfo.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/services/AsideServicesCommercePlace.vue")
+    },
+    meta: {
+      toolbar: true
+    }
   },
   {
     path: "/users",

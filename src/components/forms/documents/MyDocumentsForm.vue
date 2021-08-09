@@ -9,6 +9,7 @@
         @input="setDocuments(type, $event)"
         @remove="isLocal || onRemove"
         :label="$t(`entity.files.${ type }`)"
+        :rules="allRequired ? docRequired : null"
       )
     template(v-else)
       file-picker.q-mt-sm(:max-files="5" :value="documents.passport" @input="setDocuments('passport', $event)" @remove="onRemove" :label="$t('entity.files.passport')")
@@ -31,8 +32,9 @@
     SET_STATE_DEFAULT,
     SET_DOCUMENTS
   } from "@/store/constants/mutation-constants";
-  import FilePicker from "components/common/FilePicker";
   import { UPDATE_USER_DOCUMENTS, GET_USER_DOCUMENTS } from "@/store/constants/action-constants";
+  import { isDocumentPresent } from "@/util/validators";
+  import FilePicker from "components/common/FilePicker";
 
   export default {
     name: "MyDocumentsForm",
@@ -49,6 +51,10 @@
       value: {
         type: Object,
         default: null
+      },
+      allRequired: {
+        type: Boolean,
+        default: false
       }
     },
     async created () {
@@ -63,7 +69,11 @@
     },
     computed: {
       ...mapGetters("user/documents", ["isChanged", "getDocuments"]),
-
+      docRequired () {
+        return [
+          isDocumentPresent
+        ];
+      },
       documents () {
         if (this.value) {
           return this.value;
@@ -88,7 +98,7 @@
         GET_USER_DOCUMENTS
       ]),
 
-      setDocuments (type,val) {
+      setDocuments (type, val) {
         if (this.isLocal) {
           this.value[type] = val;
         } else {

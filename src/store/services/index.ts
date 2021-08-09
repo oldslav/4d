@@ -1,11 +1,17 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
-import { GET_APARTMENTS_GEO, GET_IDEAS_GEO, GET_PARKING_GEO } from "src/store/constants/action-constants";
+import {
+  GET_APARTMENTS_GEO,
+  GET_COMMERCE_GEO,
+  GET_IDEAS_GEO,
+  GET_PARKING_GEO
+} from "src/store/constants/action-constants";
 import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
+import commerce from "src/store/services/commerce";
 
 const initialState = (): GeoState => {
   return {
@@ -73,6 +79,15 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
 
     commit(SET_GEODATA, preparedData);
+  },
+
+  async [GET_COMMERCE_GEO] ({ commit }) {
+    const { data: { type, features } } = await this.service.services.commerce.getCommerce();
+    const preparedData = {
+      type,
+      features
+    };
+    commit(SET_GEODATA, preparedData);
   }
 };
 
@@ -81,6 +96,9 @@ const getters: GetterTree<GeoState, TRootState> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return state.geoJson && state.geoJson.features.find(i => Number(i.id) === Number(state.pickedFeatureId));
+  },
+  getPickedFeatureId (state) {
+    return state.pickedFeatureId;
   }
 };
 
@@ -93,7 +111,8 @@ const services: Module<GeoState, TRootState> = {
   modules: {
     parking,
     apartments,
-    vacancy
+    vacancy,
+    commerce
   }
 };
 
