@@ -21,8 +21,8 @@
         vehicles.q-mt-sm
       q-inner-loading(:showing="loadingVehicles")
         q-spinner(size="50px" color="primary")
-    q-inner-loading(:showing="loadingPage")
-      q-spinner(size="50px" color="primary")
+    //q-inner-loading(:showing="loadingPage")
+      //q-spinner(size="50px" color="primary")
 </template>
 
 <script>
