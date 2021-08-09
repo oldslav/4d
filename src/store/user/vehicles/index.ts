@@ -79,8 +79,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
     const result: any = [];
     await Promise.all(vehicles.map(async (v: any) => {
       const documents: any = {
-        sts: [],
-        pts: []
+        sts: []
       };
       const { id, model, brand, type, number, images } = v;
       const files = await dispatch("loadFiles", images, { root: true });

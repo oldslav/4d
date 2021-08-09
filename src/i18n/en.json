@@ -522,7 +522,7 @@
         "chooseApartmentSuccess": "Квартира выбрана"
       },
       "commerce": {
-        "title":"Commercial real estate",
+        "title": "Commercial real estate",
         "premisesNumber": "Premises № {number}",
         "ceilingHeight": "Высота потолка, м",
         "premisesCount": "Количество помещений",
@@ -804,11 +804,11 @@
       "birth": "Birth certificate scan",
       "marriage": "Marriage certificate scan",
       "children_registration": "Residence permit scan",
-      "sts": "Vehicle registration certificate scan",
+      "sts": "Vehicle registration certificate or vehicle passport scan",
       "pts": "Vehicle passport scan",
       "consent_processing_personal_data": "Consent to the processing of personal data",
       "job_petition": "Application from the employer",
-      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
+      "social_confirm": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
       "ogrn": "Скан-копия ОГРН",
       "egrjul": "Скан-копия выписки из ЕГРЮЛ",
       "partner_card": "Скан-копия карты партнера"

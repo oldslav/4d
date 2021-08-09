@@ -77,13 +77,14 @@
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
-            q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
+            q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid" :loading="isLoading")
 </template>
 
 <script>
+  import moment from "moment";
   import { mapActions } from "vuex";
   import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
-  import moment from "moment";
+  import { isDocumentPresent } from "@/util/validators";
   import BaseDatepicker from "../../common/BaseDatepicker";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
@@ -143,8 +144,7 @@
           && this.vehicle.brand
           && this.vehicle.model
           && this.vehicle.number
-          && this.vehicle.documents.pts.length > 0
-          && this.vehicle.documents.sts.length > 0;
+          && isDocumentPresent(this.vehicle.documents.sts);
       },
 
       isDate () {
