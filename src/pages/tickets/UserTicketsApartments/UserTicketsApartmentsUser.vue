@@ -44,7 +44,10 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup @click="openDetails(props.row)")
+                  q-item(clickable v-close-popup v-if="props.row.status === 1" @click="onEdit(props.row)")
+                    q-item-section(no-wrap)
+                      | {{ $t("user.tickets.actions.edit") }}
+                  q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
@@ -72,6 +75,7 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
+    ApartmentsTicketDetailsModal(v-model="isDetailsVisible" v-if="currentId" id.sync="currentId")
 </template>
 
 <script>
@@ -93,10 +97,12 @@
   import BaseModal from "../../../components/common/BaseModal";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import ApartmentsTicketDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
 
   export default {
     name: "UserTicketsApartmentsUser",
     components: {
+      ApartmentsTicketDetailsModal,
       ValidContractState,
       BaseModal,
       ApartmentTicketStatus,
@@ -110,6 +116,8 @@
     },
     data () {
       return {
+        isDetailsVisible: false,
+        currentId: null,
         isModalVisible: false,
         requestId: null,
         expanded: [],
@@ -201,9 +209,14 @@
         await this.getUserTickets();
       },
 
-      openDetails (data) {
+      onEdit (data) {
         this.currentRow = data;
         this.isModalVisible = true;
+      },
+
+      openDetails (id) {
+        this.isDetailsVisible = true;
+        this.currentId = id;
       },
 
       expandRow (props) {

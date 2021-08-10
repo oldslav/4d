@@ -3,6 +3,7 @@
     :value="value"
     position="standard"
     @input="toggleModal"
+    :loading="loadingTicket"
   )
     q-card.full-width(v-if="getCurrentTicket")
       q-card-section.row.items-center.q-pb-none
@@ -27,7 +28,7 @@
             | {{ $t(`entity.files.${type}`) }}
           DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j")
       q-separator
-      
+
       q-card-section(v-if="getCurrentTicket.neighbors.length > 0")
         .text-medium.q-mb-sm
           | {{ $t("entity.neighbors.data") }}
@@ -55,12 +56,9 @@
           .col
             q-input(readonly :label="$t('entity.contacts.phone')" :value="getCurrentTicket.contacts.phones[0]" borderless v-if="getCurrentTicket.contacts.phones.length")
             q-input(readonly :label="$t('entity.contacts.telegram')" :value="getCurrentTicket.contacts.telegramAlias" borderless v-if="getCurrentTicket.contacts.telegramAlias")
-      q-card-actions(v-if="getCurrentTicket.status.id === 2" align="right")
+      q-card-actions(v-if="getCurrentTicket.status.id === 2 && isEmployee" align="right")
         q-btn(v-close-popup flat color="red" :label="$t('action.reject')" @click="onReject()")
         q-btn(v-close-popup color="primary" :label="$t('action.accept')" @click="onApprove()").q-px-md
-
-    div
-      q-inner-loading(:showing="loadingTicket")
 </template>
 
 <script>
@@ -70,7 +68,7 @@
   import DownloaderInput from "components/common/DownloaderInput";
 
   export default {
-    name: "ApartmentsEmployeeDetailsModal",
+    name: "ApartmentsTicketDetailsModal",
     components: { BaseModal, DownloaderInput },
     props: {
       value: {
@@ -94,6 +92,7 @@
     },
     computed: {
       ...mapGetters("user/tickets/living", ["getCurrentTicket"]),
+      ...mapGetters(["isEmployee"]),
       contactsPresent () {
         return !!this.getCurrentTicket.contacts.phones.length || this.getCurrentTicket.contacts.telegramAlias;
       },
