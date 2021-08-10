@@ -155,7 +155,11 @@
     },
     computed: {
       ...mapGetters("user/tickets/warehouse", ["tableData", "tablePagination"]),
-
+      ...mapFields("user/tickets/warehouse", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKETS_WAREHOUSE }`];
       }
@@ -164,11 +168,6 @@
       ...mapActions("user/tickets/warehouse", {
         GET_USER_TICKETS_WAREHOUSE,
         deleteUserTicket: DELETE_USER_TICKET_WAREHOUSE
-      }),
-      ...mapFields("user/tickets/warehouse", {
-        fields: ["limit", "offset"],
-        base: "pagination",
-        mutation: UPDATE_PAGINATION
       }),
       async getUserTickets (props) {
         if (props) {

@@ -4,6 +4,6 @@ export interface IDocumentsState {
     snils: Array<any> | null;
     inn: Array<any> | null;
     job: Array<any> | null;
-    deletedIds: number[];
   }
+  deletedIds: number[];
 }

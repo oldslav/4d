@@ -12,6 +12,8 @@
     @input="toggleModal"
   )
     slot
+    div(v-if="loading")
+      q-inner-loading(:showing="loading")
 </template>
 
 <script>
@@ -39,6 +41,10 @@
         default: "right"
       },
       maximized: {
+        type: Boolean,
+        default: false
+      },
+      loading: {
         type: Boolean,
         default: false
       }

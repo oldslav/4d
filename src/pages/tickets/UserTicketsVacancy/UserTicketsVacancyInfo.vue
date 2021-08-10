@@ -2,6 +2,7 @@
   div.full-width
     vacancy-card(
       v-model="getVacancy"
+      :readonly="isReadonly"
       :editor-mode.sync="isEnableEditorMode"
       @submit="onSubmitVacancy"
     )
@@ -20,9 +21,13 @@
       };
     },
     computed: {
+      ...mapGetters([ "getAccount" ]),
       ...mapGetters("user/tickets/vacancy", [
         "getVacancy"
-      ])
+      ]),
+      isReadonly (){
+        return this.getVacancy.author.id !== this.getAccount.id;
+      }
     },
     methods: {
       ...mapActions("services/vacancy", { updateVacancy: UPDATE_VACANCY }),

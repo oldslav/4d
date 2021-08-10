@@ -10,8 +10,8 @@
           outlined
           dense
         )
-      div.col-md-4.col-sm-6.col-xs-12.q-pl-lg.q-pl-xs-none.q-mt-xs-lg
-        q-btn.full-width(
+      div.col-md-4.col-sm-6.col-xs-12.q-pl-md-lg.q-pl-xs-lg.q-pl-lg-lg.q-mt-xs-lg
+        q-btn.full-width.q-mb-lg(
           @click="onClickExportResponds"
           :label="$t('user.tickets.responds.export.action')"
           icon="download"

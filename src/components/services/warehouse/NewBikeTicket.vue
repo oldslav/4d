@@ -22,7 +22,7 @@
           icon="edit"
         )
           FormName(v-model="name")
-          MyDocumentsForm(v-model="documents" is-local)
+          MyDocumentsForm(v-model="documents" is-local all-required)
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(

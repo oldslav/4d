@@ -22,10 +22,7 @@
           icon="edit"
         )
           FormName(v-model="name")
-          FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
-          FilePicker(v-model="documents.snils" :label="$t('entity.files.snils')").q-mt-sm
-          FilePicker(v-model="documents.social_confirm" :label="$t('entity.files.social')").q-mt-sm
-
+          MyDocumentsForm(is-local v-model="documents" all-required attached-documents)
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
@@ -84,22 +81,24 @@
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
-            q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
+            q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid" :loading="isLoading")
 </template>
 
 <script>
   import { mapActions } from "vuex";
   import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
+  import { isDocumentPresent } from "@/util/validators";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
   import FormName from "components/common/form/FormName";
   import FormContacts from "../../common/form/FormContacts";
   import TicketVehicle from "components/common/TicketVehicle";
+  import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
 
   export default {
     name: "NewSocialParkingTicket",
-    components: { TicketVehicle, FormName, FormContacts, BaseInput, FilePicker, BaseModal },
+    components: { MyDocumentsForm, TicketVehicle, FormName, FormContacts, BaseInput, FilePicker, BaseModal },
     props: {
       value: {
         type: Boolean,
@@ -122,8 +121,7 @@
         vehicle: null,
         documents: {
           social_confirm: null,
-          passport: null,
-          snils: null
+          passport: null
         },
         contacts: {
           phones: []
@@ -150,15 +148,11 @@
           && this.vehicle.brand
           && this.vehicle.model
           && this.vehicle.number
-          && this.vehicle.documents.pts.length > 0
-          && this.vehicle.documents.sts.length > 0;
+          && isDocumentPresent(this.vehicle.documents.sts);
       },
 
       isUserInfo () {
-        return !!this.name.first
-          && (this.documents.social_confirm && this.documents.social_confirm.length > 0)
-          && (this.documents.passport && this.documents.passport.length > 0)
-          && (this.documents.snils && this.documents.snils.length > 0);
+        return !!this.name.first && Object.values(this.documents).every(isDocumentPresent);
       }
     },
     methods: {

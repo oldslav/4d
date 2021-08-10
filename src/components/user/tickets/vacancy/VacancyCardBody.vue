@@ -26,7 +26,7 @@
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.address') }}
-        div.text-body1.q-mt-sm {{ value.address }}
+        div.text-body1.q-mt-sm.break-word {{ value.address }}
 
     .col-12.col-sm-6.col-md-8.q-pl-lg-md
       div.q-mb-lg

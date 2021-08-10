@@ -89,7 +89,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [ADD_PARKING_FILES] ({ dispatch }, { id, documents }) {
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
     await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_PARKING, { id, payload: f })));
   },
 
