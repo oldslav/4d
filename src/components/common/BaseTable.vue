@@ -9,6 +9,7 @@
     :columns="columns"
     :row-key="rowKey"
     :pagination="pagination"
+    :filter="filter"
     :expanded.sync="expanded"
     :card-container-class="cardContainerClass"
     @request="getData"
@@ -53,6 +54,10 @@
         required: true
       },
       pagination: {
+        type: Object,
+        default: () => {}
+      },
+      filter: {
         type: Object,
         default: () => {}
       },

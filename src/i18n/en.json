@@ -103,6 +103,9 @@
     "notice": "Message",
     "reason": "Reason",
     "rentPrice": "Rent price, rubles",
+    "street": "Street",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
     "quantity": {
       "area": "Area, sq.m",
       "rooms": "Rooms",
@@ -115,6 +118,7 @@
     "type": "Type",
     "status": "Status",
     "id": "ID",
+    "nameOf": "Name",
     "name": "Name",
     "fullname": "Full name",
     "email": "Email",
@@ -482,6 +486,16 @@
     }
   },
   "entity": {
+    "estate": "Estate Object",
+    "transport": "Transport Infrastructure",
+    "landscape": "Urban Landscaping",
+    "lighting": "Urban Lighting",
+    "tourism": "Tourism Infrastructure",
+    "ideas": "Ideas and Propositions",
+    "planning": "Urban Planning",
+    "engineering": "Engineering and Municipal Infrastructure",
+    "environment": "Environment Conditions",
+    "safety": "The Safety of the City",
     "socialTypes": {
       "title": "Категория граждан, имеющих право на льготы",
       "largeFamily": "Large family",
@@ -854,17 +868,7 @@
         "events": "major events are held annually"
       },
       "sections": {
-        "title": "Sections",
-        "estate": "Estate Object",
-        "transport": "Transport Infrastructure",
-        "landscape": "Urban Landscaping",
-        "lighting": "Urban Lighting",
-        "tourism": "Tourism Infrastructure",
-        "ideas": "Ideas and Propositions",
-        "planning": "Urban Planning",
-        "engineering": "Engineering and Municipal Infrastructure",
-        "environment": "Environment Conditions",
-        "safety": "The Safety of the City"
+        "title": "Sections"
       },
       "service": {
         "title": "Services for residents and guests of the city",
