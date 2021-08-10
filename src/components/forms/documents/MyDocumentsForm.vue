@@ -9,13 +9,38 @@
         @input="setDocuments(type, $event)"
         @remove="isLocal || onRemove"
         :label="$t(`entity.files.${ type }`)"
-        :rules="allRequired ? docRequired : null"
+        :rules="allRequired ? documentRequired : null"
       )
     template(v-else)
-      file-picker.q-mt-sm(:max-files="5" :value="documents.passport" @input="setDocuments('passport', $event)" @remove="onRemove" :label="$t('entity.files.passport')")
-      file-picker.q-mt-sm(:value="documents.snils" @input="setDocuments('snils', $event)" @remove="onRemove" :label="$t('entity.files.snils')")
-      file-picker.q-mt-sm(:value="documents.inn" @input="setDocuments('inn', $event)" @remove="onRemove" :label="$t('entity.files.inn')")
-      file-picker.q-mt-sm(:value="documents.job" @input="setDocuments('job', $event)" @remove="onRemove" :label="$t('entity.files.job')")
+      file-picker.q-mt-sm(
+        :max-files="5"
+        :value="documents.passport"
+        @input="setDocuments('passport', $event)"
+        @remove="onRemove"
+        :label="$t('entity.files.passport')"
+        :rules="allRequired ? documentRequired : null"
+        )
+      file-picker.q-mt-sm(
+        :value="documents.snils"
+        @input="setDocuments('snils', $event)"
+        @remove="onRemove"
+        :label="$t('entity.files.snils')"
+        :rules="allRequired ? documentRequired : null"
+        )
+      file-picker.q-mt-sm(
+        :value="documents.inn"
+        @input="setDocuments('inn', $event)"
+        @remove="onRemove"
+        :label="$t('entity.files.inn')"
+        :rules="allRequired ? documentRequired : null"
+        )
+      file-picker.q-mt-sm(
+        :value="documents.job"
+        @input="setDocuments('job', $event)"
+        @remove="onRemove"
+        :label="$t('entity.files.job')"
+        :rules="allRequired ? documentRequired : null"
+        )
     div.text-right.q-mt-md(v-show="isChanged && !isLocal")
       q-btn.q-mr-md(flat @click="onCancel()" :label="this.$t('action.cancel')")
       q-btn(color="primary" :label="this.$t('action.save')" type="submit")
@@ -69,7 +94,7 @@
     },
     computed: {
       ...mapGetters("user/documents", ["isChanged", "getDocuments"]),
-      docRequired () {
+      documentRequired () {
         return [
           isDocumentPresent
         ];

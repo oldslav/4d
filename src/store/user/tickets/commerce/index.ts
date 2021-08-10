@@ -74,7 +74,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [CREATE_COMMERCE_TICKET] ({ dispatch }, { placeId, payload }) {
     const { documents, ...rest } = payload;
     const { data: { id } } = await this.service.user.tickets.createCommerceTicket(placeId, rest);
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
     await Promise.all(files.map((f: any) => this.service.user.tickets.uploadCommerceTicketFile(id, f)));
     await dispatch(REQUEST_APPROVAL_COMMERCE, id);
   },

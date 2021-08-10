@@ -58,7 +58,7 @@ const actions: ActionTree<INeighborsState, TRootState> = {
   },
   async [UPDATE_NEIGHBOR_DOCUMENTS] ({ commit, dispatch, state }, { documents, id }) {
     const { deletedIds } = state;
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents }, { root: true });
     await Promise.all(deletedIds.map((id) => dispatch(DELETE_NEIGHBOR_DOCUMENT, id)));
     commit(CLEAR_DELETED_IDS);
     await Promise.all(files.map((p: any) => dispatch(CREATE_NEIGHBOR_DOCUMENT, { payload: p, id })));
