@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-form(@submit="onSubmit")
+  q-form(@submit="onSubmit" ref="form" no-error-focus)
     .row.q-col-gutter-sm
       .col-12.col-sm-6.col-md-3
         BaseAutocomplete(
@@ -158,12 +158,14 @@
         this.vehicle.brand = null;
         this.vehicle.model = null;
         this.vehicle.type && this.loadBrands();
+        this.$nextTick(() => this.$refs.form.validate());
       },
       onInputBrand () {
         this.vehicle.model = null;
         if (this.vehicle.type && this.vehicle.brand) {
           this.loadModels();
         }
+        this.$nextTick(() => this.$refs.form.validate());
       },
       loadBrands () {
         this.loadingBrands = true;
