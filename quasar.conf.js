@@ -114,8 +114,8 @@ module.exports = configure(function (ctx) {
         });
       },
       env: {
-        SERVER_API_HOST: ctx.dev ? "https://4d-dev.innopolis.university" : "https://4d-prod.innopolis.university",
-        BROWSER_API_HOST: ctx.dev ? "https://4d-dev.innopolis.university" : "https://4d-prod.innopolis.university"
+        SERVER_API_HOST: "https://4d-dev.innopolis.university",
+        BROWSER_API_HOST: "https://4d-dev.innopolis.university"
         // SERVER_API_HOST: "https://4d{{ENVIRONMENT}}.innopolis.university",
         // BROWSER_API_HOST: "https://4d{{ENVIRONMENT}}.innopolis.university"
       }
