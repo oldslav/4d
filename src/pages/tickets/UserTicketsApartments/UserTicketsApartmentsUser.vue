@@ -72,6 +72,7 @@
             ValidContractState(
               v-if="props.row.status.id === 8 && !!props.row.contract"
               :contract="props.row.contract"
+              :termination="contractTermination"
             ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
@@ -175,6 +176,10 @@
 
       ticketModal () {
         return this.isUserLegal ? CompanyApartmentsNewTicketModal : UserTicketsApartmentsNewTicketModal;
+      },
+
+      contractTermination () {
+        return "/uploads/templates/living_contract_termination.pdf";
       }
     },
     methods: {
