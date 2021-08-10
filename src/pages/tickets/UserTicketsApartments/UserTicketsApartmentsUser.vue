@@ -44,7 +44,7 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup v-if="props.row.status === 1" @click="onEdit(props.row)")
+                  q-item(clickable v-close-popup v-if="props.row.status.id === 1" @click="onEdit(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.edit") }}
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
@@ -75,7 +75,7 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-    ApartmentsTicketDetailsModal(v-model="isDetailsVisible" v-if="currentId" id.sync="currentId")
+    ApartmentsTicketDetailsModal(v-model="isDetailsVisible" v-if="currentId" :id.sync="currentId")
 </template>
 
 <script>

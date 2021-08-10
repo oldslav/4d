@@ -76,7 +76,7 @@
         default: false
       },
       id: {
-        type: Number,
+        type: [Number, String],
         default: null
       }
     },
