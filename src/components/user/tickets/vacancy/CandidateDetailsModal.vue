@@ -25,10 +25,10 @@
               a.text-blue.no-text-decoration(:href="candidate.resumeLink" target="_blank")
                 | {{ $t('user.tickets.responds.modals.details.resumeLink') }}
 
-        div.q-hoverable.cursor-pointer.q-mb-lg-lg(v-if="candidate.resumeFile" @click="onClickDownloadResume")
+        div.q-hoverable.cursor-pointer.q-mb-lg-lg(v-for="file in candidate.files" @click="onClickDownloadResume(file)")
           div.text-caption.text-grey-8 {{ $t('user.tickets.responds.modals.details.resume') }}
           div.text-body1.q-mt-sm.text-blue
-            | {{ candidate.resumeFileName }}
+            | {{ file.fileName }}
 
         div
           div.text-body1.q-mt-sm {{ $t('user.tickets.responds.modals.details.respondText') }}
@@ -100,8 +100,8 @@
         this.$emit("candidate:accept", this.candidate.id);
       },
 
-      onClickDownloadResume (){
-        this.downloadFile(this.candidate.resumeFile);
+      onClickDownloadResume (file){
+        this.downloadFile(file.imagePath);
       }
     }
   };

@@ -112,7 +112,7 @@ const actions: ActionTree<ICompanyState, TRootState> = {
   async [UPDATE_COMPANY_CARD] ({ dispatch }, { card, deletedIds }) {
     const { documents, ...payload } = card;
     await this.service.user.company.updateCompanyCard(payload);
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents }, { root: true });
     await Promise.all(deletedIds.map((id: number) => this.service.user.company.deleteCardFile(id)));
     await Promise.all(files.map((f: any) => this.service.user.company.uploadCardFile(f)));
     dispatch(GET_COMPANY);

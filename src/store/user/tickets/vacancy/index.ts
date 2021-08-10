@@ -9,7 +9,7 @@ import {
   GET_USER_VACANCY,
   INVITE_VACANCY_CANDIDATE,
   REJECT_VACANCY_CANDIDATE,
-  VIEW_RESPOND,
+  GET_RESPOND,
   SEND_CANDIDATE_JOB_OFFER,
   VIEW_RESPOND_AND_RELOAD_CANDIDATE,
   SEND_CANDIDATE_JOB_OFFER_AND_RELOAD,
@@ -202,8 +202,9 @@ const actions: ActionTree<IUserVacancyState, TRootState> = {
   },
 
   async [VIEW_RESPOND_AND_RELOAD_CANDIDATE] ({ dispatch, commit }, id) {
-    const candidate = await dispatch(`services/vacancy/${ VIEW_RESPOND }`, id, { root: true });
+    const candidate = await dispatch(`services/vacancy/${ GET_RESPOND }`, id, { root: true });
     commit(REFRESH_VACANCY_CANDIDATE, { id, candidate });
+    return candidate;
   },
 
   async [REJECT_AND_RELOAD_VACANCY_CANDIDATE] ({ dispatch, commit }, { id, reason }) {

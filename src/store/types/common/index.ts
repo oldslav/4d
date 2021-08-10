@@ -17,6 +17,7 @@ interface DocType {
 export interface GeoState {
   geoJson: GeoJsonCollection | null
   pickedFeatureId: GeoJsonFeature | null
+  pointCoords: any | null
 }
 
 export interface GeoJsonCollection {

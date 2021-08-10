@@ -40,8 +40,7 @@
     model: null,
     number: null,
     documents: {
-      sts: [],
-      pts: []
+      sts: []
     }
   });
 

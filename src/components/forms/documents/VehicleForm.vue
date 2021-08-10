@@ -44,16 +44,7 @@
         q-input(:label="$t('entity.vehicles.plates')" :disable="!vehicle.model" v-model="vehicle.number" :readonly="readonly || existing" maxlength="12")
     .text-subtitle.q-my-sm
       FilePicker(
-        :max-files="2"
-        v-model="vehicle.documents.pts"
-        @remove="onRemoveFile"
-        :label="this.$t('entity.files.pts')"
-        :readonly="readonly"
-        :rules="requiredFile"
-        lazy
-      )
-      FilePicker(
-        :max-files="2"
+        :max-files="5"
         v-model="vehicle.documents.sts"
         @remove="onRemoveFile"
         :label="this.$t('entity.files.sts')"

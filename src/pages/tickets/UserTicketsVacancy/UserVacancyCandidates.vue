@@ -224,13 +224,9 @@
       },
 
       async showCandidateDetails (candidateId){
-        const candidate = this.getVacancyCandidatesTableData.items.find(x => x.id === candidateId);
-
-        this.currentDetailsCandidate = candidate;
-        this.visibleDetails = !!candidate;
-
         try {
-          await this.viewRespond(candidateId);
+          this.currentDetailsCandidate = await this.viewRespond(candidateId);
+          this.visibleDetails = true;
         } catch (e) {
           // Do nothing
         }

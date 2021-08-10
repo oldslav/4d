@@ -6,17 +6,26 @@ import {
   GET_IDEAS_GEO,
   GET_PARKING_GEO
 } from "src/store/constants/action-constants";
-import { SET_EMPTY, SET_FEATURE_ID, SET_GEODATA, SET_USER } from "src/store/constants/mutation-constants";
+import {
+  SET_EMPTY,
+  SET_FEATURE_ID,
+  SET_GEODATA,
+  SET_POINT_COORDS,
+  SET_USER
+} from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
+import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
+import estate from "src/store/services/estate";
 
 const initialState = (): GeoState => {
   return {
     geoJson: null,
-    pickedFeatureId: null
+    pickedFeatureId: null,
+    pointCoords: null
   };
 };
 
@@ -26,7 +35,8 @@ const mutations: MutationTree<GeoState> = {
   [SET_USER]: (state, payload) => Object.assign(state, payload),
   [SET_EMPTY]: state => Object.assign(state, initialState()),
   [SET_GEODATA]: (state, payload) => state.geoJson = payload,
-  [SET_FEATURE_ID]: (state, payload) => state.pickedFeatureId = payload
+  [SET_FEATURE_ID]: (state, payload) => state.pickedFeatureId = payload,
+  [SET_POINT_COORDS]: (state, payload) => state.pointCoords = payload
 };
 
 const actions: ActionTree<GeoState, TRootState> = {
@@ -71,11 +81,29 @@ const actions: ActionTree<GeoState, TRootState> = {
 
   async [GET_IDEAS_GEO] ({ commit }) {
     const { data } = await this.service.services.ideas.getIdeas();
-    const { type, features } = data;
+    // const { type, features } = data;
+
+    // const preparedData = {
+    //   type,
+    //   features
+    // };
 
     const preparedData = {
-      type,
-      features
+      type: "FeatureCollection",
+      features: data.items.map(({ geometry, title, id }: any) => ({
+        type: "Feature",
+        geometry: {
+          coordinates: [
+            geometry.x,
+            geometry.y
+          ],
+          type: "Point"
+        },
+        id,
+        properties: {
+          title
+        }
+      }))
     };
 
     commit(SET_GEODATA, preparedData);
@@ -112,7 +140,9 @@ const services: Module<GeoState, TRootState> = {
     parking,
     apartments,
     vacancy,
-    commerce
+    ideas,
+    commerce,
+    estate
   }
 };
 

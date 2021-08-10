@@ -116,7 +116,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [CREATE_LEGAL_TICKET_LIVING] ({ dispatch }, payload) {
     const { documents, ...rest } = payload;
     const { data: { id } } = await this.service.user.tickets.createLegalTicketLiving(rest);
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
 
     await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
   },
@@ -128,7 +128,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [ADD_USER_TICKET_NEIGHBOR] ({ dispatch }, { ticketId, payload }) {
     const { documents, ...neighbor } = payload;
     const { data: { id } } = await this.service.user.tickets.addTicketLivingNeighbor(ticketId, neighbor);
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
     await Promise.all(files.map((f: any) => this.service.user.tickets.addTicketLivingNeighborFile(id, ticketId, f)));
   },
 
