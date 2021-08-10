@@ -153,6 +153,7 @@
       "actions": {
         "create": "Create new ticket",
         "details": "Show ticket details",
+        "edit": "edit",
         "cancel": "Cancel ticket",
         "next": "Далее"
       },

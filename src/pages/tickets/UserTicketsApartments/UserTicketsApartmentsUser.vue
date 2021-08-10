@@ -44,7 +44,10 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup @click="openDetails(props.row)")
+                  q-item(clickable v-close-popup v-if="props.row.status.id === 1" @click="onEdit(props.row)")
+                    q-item-section(no-wrap)
+                      | {{ $t("user.tickets.actions.edit") }}
+                  q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
@@ -58,9 +61,10 @@
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Дождитесь рассмотрения вашей заявки
-            UserTicketsApartmentProgressState(
+            ApartmentTicketUserFlow(
               v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
               :value="props.row.status"
+              :name="props.row.name.full"
               @choose="toApartments(props.row.id)"
               @viewed="apartmentViewed(props.row.id)"
               @pay="goToPayment(props.row.id)"
@@ -68,10 +72,12 @@
             ValidContractState(
               v-if="props.row.status.id === 8 && !!props.row.contract"
               :contract="props.row.contract"
+              :termination="contractTermination"
             ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
+    ApartmentsTicketDetailsModal(v-model="isDetailsVisible" v-if="currentId" :id.sync="currentId")
 </template>
 
 <script>
@@ -89,19 +95,21 @@
   import UserTicketsApartmentsNewTicketModal
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
+  import ApartmentTicketUserFlow from "components/user/tickets/apartments/ApartmentTicketUserFlow";
   import BaseModal from "../../../components/common/BaseModal";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import ApartmentsTicketDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
 
   export default {
     name: "UserTicketsApartmentsUser",
     components: {
+      ApartmentsTicketDetailsModal,
       ValidContractState,
       BaseModal,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
-      UserTicketsApartmentProgressState,
+      ApartmentTicketUserFlow,
       CompanyApartmentsNewTicketModal,
       BaseTable
     },
@@ -110,6 +118,8 @@
     },
     data () {
       return {
+        isDetailsVisible: false,
+        currentId: null,
         isModalVisible: false,
         requestId: null,
         expanded: [],
@@ -166,6 +176,10 @@
 
       ticketModal () {
         return this.isUserLegal ? CompanyApartmentsNewTicketModal : UserTicketsApartmentsNewTicketModal;
+      },
+
+      contractTermination () {
+        return "/uploads/templates/living_contract_termination.pdf";
       }
     },
     methods: {
@@ -201,9 +215,14 @@
         await this.getUserTickets();
       },
 
-      openDetails (data) {
+      onEdit (data) {
         this.currentRow = data;
         this.isModalVisible = true;
+      },
+
+      openDetails (id) {
+        this.isDetailsVisible = true;
+        this.currentId = id;
       },
 
       expandRow (props) {

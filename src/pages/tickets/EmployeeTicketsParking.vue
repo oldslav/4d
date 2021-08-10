@@ -87,7 +87,7 @@
   import BaseTable from "components/common/BaseTable";
   import BaseInput from "components/common/BaseInput";
   import BaseDatepicker from "components/common/BaseDatepicker";
-  import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import FormContract from "components/common/form/FormContract";
 
   export default {

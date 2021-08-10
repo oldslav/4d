@@ -57,7 +57,16 @@
 
   export default {
     name: "ServiceParking",
-    components: { ParkingHoverModal, NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect, ModalFail, ModalSuccess },
+    components: {
+      ParkingHoverModal,
+      NewSocialParkingTicket,
+      NewGuestParkingTicket,
+      ParkingPlaceModal,
+      NewParkingTicket,
+      BaseSelect,
+      ModalFail,
+      ModalSuccess
+    },
     async created () {
       await Promise.all([this.GET_PARKING_GEO(), this.GET_USER_DOCUMENTS(), this.GET_REFERENCES()]);
     },
