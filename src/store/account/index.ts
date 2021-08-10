@@ -168,6 +168,12 @@ const getters: GetterTree<IAccountState, TRootState> = {
     return state.account.roles.some(role => role.name === "ROLE_USER");
   },
 
+  isUserGIS (state) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return state.account.roles.some(role => role.name === "ROLE_QGIS");
+  },
+
   isUserLegal (state) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
