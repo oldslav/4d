@@ -15,7 +15,7 @@
           v-model="resumeFilesModel"
           @input="onChangeResumeFiles"
           accept=".pdf, .doc, .docx"
-          :max-files="1"
+          :max-files="5"
           :label="$t('entity.services.vacancies.respondForm.resumeFile')"
           :description="$t('entity.services.vacancies.respondForm.resumeFileFormat')"
         )
@@ -48,7 +48,7 @@
 
   const defaults = () => ({
     name: {},
-    resumeFile: null,
+    resumeFiles: [],
     resumeLink: "",
     text: ""
   });
@@ -98,7 +98,7 @@
       },
 
       validateResume (){
-        return this.model.resumeLink !== "" || this.model.resumeFile;
+        return this.model.resumeLink !== "" || this.model.resumeFiles.length;
       },
 
       validateURL (value){
@@ -106,14 +106,14 @@
           // eslint-disable-next-line no-new
           new URL(value);
         } catch (_) {
-          return this.model.resumeFile || this.$t("entity.services.vacancies.respondForm.resumeLinkRequired");
+          return this.model.resumeFiles.length || this.$t("entity.services.vacancies.respondForm.resumeLinkRequired");
         }
       },
 
       onChangeResumeFiles (){
-        this.model.resumeFile = this.resumeFilesModel[0] || null;
+        this.model.resumeFiles = this.resumeFilesModel;
 
-        if (this.model.resumeFile) {
+        if (this.model.resumeFiles.length) {
           this.$refs.resumeLink.resetValidation();
         }
       }
