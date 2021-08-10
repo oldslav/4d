@@ -61,9 +61,10 @@
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Дождитесь рассмотрения вашей заявки
-            UserTicketsApartmentProgressState(
+            ApartmentTicketUserFlow(
               v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
               :value="props.row.status"
+              :name="props.row.name.full"
               @choose="toApartments(props.row.id)"
               @viewed="apartmentViewed(props.row.id)"
               @pay="goToPayment(props.row.id)"
@@ -93,7 +94,7 @@
   import UserTicketsApartmentsNewTicketModal
     from "components/user/tickets/apartments/UserTicketsApartmentsNewTicketModal";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
-  import UserTicketsApartmentProgressState from "components/user/tickets/apartments/UserTicketsApartmentProgressState";
+  import ApartmentTicketUserFlow from "components/user/tickets/apartments/ApartmentTicketUserFlow";
   import BaseModal from "../../../components/common/BaseModal";
   import CompanyApartmentsNewTicketModal from "components/user/tickets/apartments/CompanyApartmentsNewTicketModal";
   import ValidContractState from "components/user/tickets/ValidContractState";
@@ -107,7 +108,7 @@
       BaseModal,
       ApartmentTicketStatus,
       UserTicketsApartmentsNewTicketModal,
-      UserTicketsApartmentProgressState,
+      ApartmentTicketUserFlow,
       CompanyApartmentsNewTicketModal,
       BaseTable
     },
