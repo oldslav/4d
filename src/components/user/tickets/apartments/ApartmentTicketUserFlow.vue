@@ -14,6 +14,7 @@
         .row
           .col-6
             | Вы можете ознакомиться с образцом договора.
+            DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
           .col-6
             div.text-body1.text-wrap
               | Поздравляем, ваша заявка одобрена!<br><br>Для начала оформления договора выберите квартиру. Обратите внимание, что после бронирования у вас будет 24 часа для осмотра помещения и оплаты. В случае отсутствия оплаты через 24 часа заявка будет отменена автоматически.<br><br>Фонд развития города Иннополис
@@ -27,6 +28,7 @@
         .row
           .col-6
             | Вы можете ознакомиться с образцом договора.
+            DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
           .col-6.text-body1.text-wrap
             | Для осмотра квартиры вы можете связаться с сотрудниками “Фонда развития города Иннополис”<br><br>По телефону +7xxxxxxxxxxxx или в телеграмме @алиас.<br><br>Осмотр квартиры является необязательным, вы можете сразу перейти к оплате.<br><br>Фонд развития города Иннополис
             div.text-right.q-mt-lg
@@ -39,6 +41,7 @@
         .row
           .col-6
             | Вы можете ознакомиться с образцом договора.
+            DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
           .col-6.text-body1.text-wrap
             | Уважаемый {{name}}.<br>
             | Для вас  сформирована задолженность в размере обеспечительного платежа и стоимости одного месяца аренды.<br>
@@ -59,6 +62,7 @@
         .row
           .col-6.text-body1
             | Вы можете ознакомиться с образцом договора.
+            DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
           .col-6.text-body1.text-wrap
             | Ваш договор готов к подписанию!<br>
             | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
@@ -85,8 +89,12 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+  import DownloadTemplate from "components/user/tickets/DownloadTemplate";
+
   export default {
     name: "ApartmentTicketUserFlow",
+    components: { DownloadTemplate },
     props: {
       value: {
         type: Object,
@@ -98,6 +106,10 @@
       }
     },
     computed: {
+      ...mapGetters(["isUserLegal"]),
+      templatePath () {
+        return this.isUserLegal ? "/uploads/templates/living_contract_jur_template.pdf" : "/uploads/templates/living_contract_template.pdf";
+      },
       stepsValue () {
         if (this.value.id === 11) return 1;
         if (this.value.id === 12) return 2;
