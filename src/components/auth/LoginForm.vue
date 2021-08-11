@@ -54,7 +54,6 @@
 
           this.$emit("submit");
         } catch (e) {
-          console.log(e);
           // if (e.response.status === 401) {
           //   this.$q.notify({
           //     type: "negative",
