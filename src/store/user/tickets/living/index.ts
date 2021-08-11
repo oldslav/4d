@@ -14,7 +14,7 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING, UPDATE_TICKET
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -109,6 +109,12 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   async [CREATE_USER_TICKET_LIVING] (_, payload) {
     const { data } = await this.service.user.tickets.createTicketLiving(payload);
+
+    return data;
+  },
+
+  async [UPDATE_TICKET] (_, { ticketId, payload }) {
+    const { data } = await this.service.user.tickets.updateTicketLiving(ticketId, payload);
 
     return data;
   },
