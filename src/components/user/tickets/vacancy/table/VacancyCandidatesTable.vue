@@ -14,14 +14,14 @@
         :class="{'cursor-pointer': activeExpandStatuses.includes(props.row.status.id)}"
         @click="expandRow(props)"
       )
-        q-td(key="fullName" :props="props")
+        q-td(key="fullName" :props="props" style="max-width: 400px")
           q-icon.q-mr-sm.text-grey-8(
             v-if="activeExpandStatuses.includes(props.row.status.id)"
             :class="{'rotate-180': props.expand}"
             name="expand_more"
             style="font-size: 18px"
           )
-          | {{ props.row.name.full }}
+          div.break-word.break-spaces {{ props.row.name.full }}
 
         q-td(key="respondDate" :props="props")
           | {{ props.row.created | formatDate }}
