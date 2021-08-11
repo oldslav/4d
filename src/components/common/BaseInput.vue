@@ -3,6 +3,10 @@
     ref="input"
     v-model="computedValue"
     color="primary"
+    :dense="dense"
+    :autogrow="autogrow"
+    :counter="counter"
+    :maxlength="type === 'textarea' && maxlength || undefined"
     :filled="filled"
     :type="type"
     :label="label"
@@ -37,6 +41,14 @@
         type: Boolean,
         default: null
       },
+      autogrow: {
+        type: Boolean,
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
       filled: {
         type: Boolean,
         default: null
@@ -52,6 +64,10 @@
       value: {
         type: String,
         default: null
+      },
+      maxlength: {
+        type: Number,
+        default: 30
       },
       clearable: {
         type: Boolean,
@@ -78,6 +94,10 @@
         default: ""
       },
       unmaskedValue: {
+        type: Boolean,
+        default: false
+      },
+      counter: {
         type: Boolean,
         default: false
       }
