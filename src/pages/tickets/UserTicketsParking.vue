@@ -26,7 +26,7 @@
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
           q-td(key="type" :props="props")
-            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
+            | {{parkingType(props.row)}}
           q-td(key="price" :props="props")
             | {{ props.row.price ? props.row.price.price : "0" }}
           q-td(key="created" :props="props")
@@ -187,6 +187,13 @@
         deleteUserTicket: DELETE_USER_TICKET_PARKING,
         GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
+
+      parkingType (row) {
+        if (row.isGuestVisit) {
+          return this.$t("entity.services.parking.ticketType.guest");
+        }
+        return this.$t(`entity.services.parking.ticketType.${ row.parkingPlace.type.name }`);
+      },
 
       async getUserTickets (props) {
         if (props) {
