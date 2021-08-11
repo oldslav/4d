@@ -102,7 +102,6 @@
       },
 
       async onDatasourceReady ({ viewer, cesiumObject }) {
-        console.log(cesiumObject);
         await viewer.zoomTo(cesiumObject);
         this.isLoading = false;
       },

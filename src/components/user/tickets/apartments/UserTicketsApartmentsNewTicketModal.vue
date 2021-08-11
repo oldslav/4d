@@ -138,7 +138,7 @@
       },
 
       isValid () {
-        return this.isUserInfo && this.isAdditionalInfo;
+        return this.isUserInfo && this.isAdditionalInfo && !this.ticketId;
       },
 
       isUserInfo () {
