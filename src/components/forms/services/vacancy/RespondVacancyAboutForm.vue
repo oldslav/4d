@@ -35,6 +35,7 @@
           v-model="model.text"
           :rules="[requiredString]"
           :label="$t('entity.services.vacancies.respondForm.textPlaceholder')"
+          maxlength="1000"
           type="textarea"
           lazy-rules
           outlined
