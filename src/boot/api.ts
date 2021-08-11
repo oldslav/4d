@@ -17,7 +17,9 @@ import { TicketsService } from "src/api/user/tickets/tickets";
 import { UserVehiclesService } from "src/api/user/vehicles";
 import { UsersService } from "src/api/users";
 import { IdeasService } from "src/api/services/ideas";
+import { CommerceService } from "src/api/services/commerce";
 import { VerificationRequestService } from "src/api/user/verification-request";
+import { EstateService } from "src/api/services/estate";
 
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,7 +33,9 @@ declare module "vuex/types/index" {
         apartments: ApartmentsService,
         parking: ParkingService,
         vacancy: VacancyService,
-        ideas: IdeasService
+        commerce: CommerceService,
+        ideas: IdeasService,
+        estate: EstateService
       },
       user: {
         bills: BillsService,
@@ -63,7 +67,9 @@ export default boot(({ app }) => {
       apartments: new ApartmentsService(axios),
       parking: new ParkingService(axios),
       vacancy: new VacancyService(axios),
-      ideas: new IdeasService(axios)
+      commerce: new CommerceService(axios),
+      ideas: new IdeasService(axios),
+      estate: new EstateService(axios)
     },
     user: {
       bills: new BillsService(axios),

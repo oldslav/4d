@@ -79,52 +79,52 @@
       sections () {
         return [
           {
-            title: this.$t("entity.about.sections.estate"),
+            title: this.$t("entity.estate"),
             image: require("@/assets/svg/building.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.transport"),
+            title: this.$t("entity.transport"),
             image: require("@/assets/svg/two-wheels.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.landscape"),
+            title: this.$t("entity.landscape"),
             image: require("@/assets/svg/benches.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.lighting"),
+            title: this.$t("entity.lighting"),
             image: require("@/assets/svg/lights.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.tourism"),
+            title: this.$t("entity.tourism"),
             image: require("@/assets/svg/hike.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.ideas"),
+            title: this.$t("entity.ideas"),
             image: require("@/assets/svg/lady-tag.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.planning"),
+            title: this.$t("entity.planning"),
             image: require("@/assets/svg/big-phone.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.engineering"),
+            title: this.$t("entity.engineering"),
             image: require("@/assets/svg/chart.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.environment"),
+            title: this.$t("entity.environment"),
             image: require("@/assets/svg/bushes.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.safety"),
+            title: this.$t("entity.safety"),
             image: require("@/assets/svg/city-lock.svg"),
             name: ""
           }

@@ -6,7 +6,7 @@
       div.row
         div.col-md.col-lg.col-xs-12.col-sm-12.q-pr-md-md.q-pr-md-lg
           div.text-h6
-            router-link.no-text-decoration(
+            router-link.no-text-decoration.break-word(
               :class="{'text-black': !$q.dark.isActive, 'text-white': $q.dark.isActive}"
               :to="{ name: 'services-vacancies-item', params: { id: value.id } }"
             )

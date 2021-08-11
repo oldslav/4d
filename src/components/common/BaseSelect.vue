@@ -1,8 +1,8 @@
 <template lang="pug">
   q-select(
-    :value="value"
-    @input="onInput"
+    v-model="computedValue"
     color="primary"
+    :dense="dense"
     :options="options"
     :label="label"
     :clearable="clearable"
@@ -10,6 +10,8 @@
     :readonly="readonly"
     :disable="disable"
     :multiple="multiple"
+    :option-key="optionKey"
+    :option-value="optionValue"
     )
     template(v-slot:prepend)
       slot(name="prepend")
@@ -29,29 +31,41 @@
         type: String,
         default: null
       },
+      optionKey: {
+        type: String,
+        default: "label"
+      },
+      optionValue: {
+        type: String,
+        default: "value"
+      },
       options: {
         type: Array,
         required: true
       },
       clearable: {
         type: Boolean,
-        default: null
+        default: false
       },
       outlined: {
         type: Boolean,
-        default: null
+        default: false
       },
       readonly: {
         type: Boolean,
-        default: null
+        default: false
       },
       disable: {
         type: Boolean,
-        default: null
+        default: false
       },
       multiple: {
         type: Boolean,
-        default: null
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -59,10 +73,24 @@
         innerValue: null
       };
     },
-    methods: {
-      onInput (value) {
-        this.innerValue = value;
-        this.$emit("input", value);
+    computed: {
+      computedValue: {
+        get () {
+          if (this.innerValue) {
+            return this.innerValue;
+          } else {
+            return this.value;
+          }
+        },
+
+        set (value) {
+          this.innerValue = value;
+          if (value) {
+            this.$emit("input", value[this.optionValue]);
+          } else {
+            this.$emit("input", value);
+          }
+        }
       }
     }
   };

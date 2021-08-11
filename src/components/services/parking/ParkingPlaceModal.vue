@@ -8,14 +8,13 @@
       q-card-section
         ParkingPlacesScheme
       q-card-section
-        BaseSelect(
+        q-select(
           v-model="parkingPlace"
           :options="parkingPlaces"
           :label="$t('action.select.parking.lot')"
           @input="onParkingPlaceChange"
           outlined
           autocomplete
-          :inputDebounce="300"
         )
 </template>
 
@@ -23,6 +22,7 @@
   import ParkingPlacesScheme from "../../../assets/svg/ParkingPlacesScheme";
   import BaseModal from "../../common/BaseModal";
   import BaseSelect from "../../common/BaseSelect";
+
   export default {
     name: "ParkingPlaceModal",
     components: { BaseSelect, ParkingPlacesScheme, BaseModal },

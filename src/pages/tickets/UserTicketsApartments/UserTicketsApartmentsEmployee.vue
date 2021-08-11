@@ -50,7 +50,7 @@
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
-    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
+    ApartmentsTicketDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
@@ -65,13 +65,13 @@
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
   import BaseTable from "components/common/BaseTable";
-  import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import ApartmentsTicketDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import ApartmentTicketEmployeeFlow from "components/user/tickets/apartments/ApartmentTicketEmployeeFlow";
 
   export default {
     name: "UserTicketsApartmentsEmployee",
     components: {
-      ApartmentsEmployeeDetailsModal,
+      ApartmentsTicketDetailsModal,
       BaseTable,
       ApartmentTicketStatus,
       ApproveTicketModal,

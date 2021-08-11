@@ -3,51 +3,34 @@
     :value="value"
     position="standard"
     @input="toggleModal"
+    :loading="loadingTicket"
   )
     q-card.full-width(v-if="getCurrentTicket")
       q-card-section.row.items-center.q-pb-none
         .text-medium
-          | Заявка на аренду квартиры
+          | Заявка на коммерческую недвижимость
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
+      q-separator.q-mt-sm
       q-card-section
         .text-medium.q-mb-sm
           | {{ $t("entity.services.mainInfo") }}
+        q-input(readonly borderless :value="getCurrentTicket.companyName" :label="$t('user.companyName')")
         .row.q-col-gutter-sm
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.name.last" borderless)
+            q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.name.last" v-if="!!getCurrentTicket.name.last" borderless)
           .col-12.col-md-4
             q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.name.first" borderless)
           .col-12.col-md-4
             q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
-
-      q-card-section
-        .q-mb-lg(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
-          .text-small.text-primary-light
-            | {{ $t(`entity.files.${type}`) }}
-          DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j")
+        q-input(readonly borderless :value="getCurrentTicket.jobPosition" :label="$t('common.position')")
       q-separator
-      
-      q-card-section(v-if="getCurrentTicket.neighbors.length > 0")
-        .text-medium.q-mb-sm
-          | {{ $t("entity.neighbors.data") }}
-        div(v-for="(neighbor, index) in getCurrentTicket.neighbors")
-          .row.q-col-gutter-sm
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.lastName')" :value="neighbor.name.last" borderless)
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.firstName')" :value="neighbor.name.first" borderless)
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.patronymic')" :value="neighbor.name.patronymic" v-if="!!neighbor.name.patronymic" borderless)
-      q-separator(v-if="getCurrentTicket.neighbors.length > 0")
-
       q-card-section
         .text-medium.q-mb-sm
-          | {{ $t("entity.services.living.roomsAmount") }}
-        div(v-for="(room, index) in getCurrentTicket.rooms" :key="index").q-mb-sm
-          | {{ $tc("entity.services.living.info.rooms", +room) }}
+          | {{ $t("entity.documents.title") }}
+        div(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
+          DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j" :label="$t(`entity.files.${type}`)").q-mb-sm
       q-separator
-
       q-card-section(v-if="contactsPresent")
         .text-medium.q-mb-sm
           | {{ $t("entity.contacts.title") }}
@@ -55,23 +38,20 @@
           .col
             q-input(readonly :label="$t('entity.contacts.phone')" :value="getCurrentTicket.contacts.phones[0]" borderless v-if="getCurrentTicket.contacts.phones.length")
             q-input(readonly :label="$t('entity.contacts.telegram')" :value="getCurrentTicket.contacts.telegramAlias" borderless v-if="getCurrentTicket.contacts.telegramAlias")
-      q-card-actions(v-if="getCurrentTicket.status.id === 2" align="right")
+      q-card-actions(align="right" v-if="isEmployee && getCurrentTicket.status.id === 2")
         q-btn(v-close-popup flat color="red" :label="$t('action.reject')" @click="onReject()")
         q-btn(v-close-popup color="primary" :label="$t('action.accept')" @click="onApprove()").q-px-md
-
-    div
-      q-inner-loading(:showing="loadingTicket")
 </template>
 
 <script>
   import { mapActions, mapGetters } from "vuex";
+  import { GET_COMPANY_COMMERCE_TICKET, GET_EMPLOYEE_COMMERCE_TICKET } from "@/store/constants/action-constants";
   import BaseModal from "components/common/BaseModal";
-  import { GET_USER_TICKET } from "@/store/constants/action-constants";
   import DownloaderInput from "components/common/DownloaderInput";
 
   export default {
-    name: "ApartmentsEmployeeDetailsModal",
-    components: { BaseModal, DownloaderInput },
+    name: "CommerceTicketDetailsModal",
+    components: { DownloaderInput, BaseModal },
     props: {
       value: {
         type: Boolean,
@@ -84,34 +64,40 @@
     },
     async created () {
       try {
-        await this.GET_USER_TICKET(this.id);
+        await this.getTicket(this.id);
       } catch (e) {
         this.$q.notify({
           type: "negative",
-          message: "Ошибка при получении заявки"
+          message: this.$t("common.error.response.getTicketFail")
         });
+        this.toggleModal(false);
       }
     },
     computed: {
-      ...mapGetters("user/tickets/living", ["getCurrentTicket"]),
+      ...mapGetters("user/tickets/commerce", ["getCurrentTicket"]),
+      ...mapGetters(["isEmployee"]),
+      loadingTicket () {
+        return this.$store.state.wait[`user/tickets/commerce/${ GET_COMPANY_COMMERCE_TICKET }`]
+          || this.$store.state.wait[`user/tickets/commerce/${ GET_EMPLOYEE_COMMERCE_TICKET }`];
+      },
       contactsPresent () {
         return !!this.getCurrentTicket.contacts.phones.length || this.getCurrentTicket.contacts.telegramAlias;
-      },
-      loadingTicket () {
-        return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`];
       }
     },
     methods: {
-      ...mapActions("user/tickets/living", [GET_USER_TICKET]),
+      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKET, GET_EMPLOYEE_COMMERCE_TICKET]),
+      getTicket (id) {
+        return this.isEmployee ? this.GET_EMPLOYEE_COMMERCE_TICKET(id) : this.GET_COMPANY_COMMERCE_TICKET(id);
+      },
       toggleModal (val) {
         this.$emit("input", val);
         this.$emit("update:id", null);
       },
       onReject () {
-        this.$emit("reject", this.getCurrentTicket.id);
+        this.$emit("reject", this.id);
       },
       onApprove () {
-        this.$emit("approve", this.getCurrentTicket.id);
+        this.$emit("approve", this.id);
       }
     }
   };

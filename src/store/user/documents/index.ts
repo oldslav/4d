@@ -2,7 +2,7 @@ import { ActionContext, ActionTree, GetterTree, Module, MutationTree } from "vue
 import { TRootState } from "../../types/root";
 import { IDocumentsState } from "../../types/user/documents";
 import {
-  SET_STATE, CLEAR_DELETED_IDS, SET_STATE_DEFAULT, SET_DOCUMENTS
+  SET_STATE, CLEAR_DELETED_IDS, SET_STATE_DEFAULT, SET_DOCUMENTS, SET_DELETED_ID
 } from "src/store/constants/mutation-constants";
 import {
   CREATE_USER_DOCUMENT,
@@ -17,9 +17,9 @@ const initialState = (): IDocumentsState => {
       passport: [],
       snils: [],
       inn: [],
-      job: [],
-      deletedIds: []
-    }
+      job: []
+    },
+    deletedIds: []
   };
 };
 
@@ -34,8 +34,11 @@ const mutations: MutationTree<IDocumentsState> = {
   [SET_STATE] (state: IDocumentsState, payload) {
     Object.assign(state, payload);
   },
+  [SET_DELETED_ID] (state: IDocumentsState, id) {
+    state.deletedIds.push(id);
+  },
   [CLEAR_DELETED_IDS] (state: IDocumentsState) {
-    state.documents.deletedIds = [];
+    state.deletedIds = [];
   },
   [SET_STATE_DEFAULT] (state) {
     Object.assign(state, defaultState);
@@ -44,10 +47,10 @@ const mutations: MutationTree<IDocumentsState> = {
 
 const actions: ActionTree<IDocumentsState, TRootState> = {
   async [UPDATE_USER_DOCUMENTS] ({ state, dispatch, commit }) {
-    const { documents: { deletedIds }, documents: { ...files } } = state;
-    const awaitsCreate = await dispatch("bundleFiles", files, { root: true });
+    const { deletedIds, documents: { ...files } } = state;
     await Promise.all(deletedIds.map((id: number) => dispatch(DELETE_USER_DOCUMENT, id)));
     commit(CLEAR_DELETED_IDS);
+    const awaitsCreate = await dispatch("bundleFiles", { files }, { root: true });
     await Promise.all(awaitsCreate.map((p: any) => dispatch(CREATE_USER_DOCUMENT, p)));
     dispatch(GET_USER_DOCUMENTS);
   },

@@ -159,6 +159,13 @@ const routes: RouteConfig[] = [
             }
           },
           {
+            path: "commerce",
+            name: "user-tickets-commerce",
+            components: {
+              default: (): Promise<any> => import("pages/tickets/TicketsCommerce.vue")
+            }
+          },
+          {
             path: "warehouse",
             name: "user-tickets-warehouse",
             components: {
@@ -228,7 +235,7 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserVacancyPage.vue")
         },
         meta: { toolbar: true, asideLeft: true, content: true },
-        children:[
+        children: [
           {
             path: ":id",
             name: "user-tickets-vacancy-info",
@@ -319,6 +326,7 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/maps/MapApartments.vue")
         },
         meta: {
+          map: true,
           toolbar: true
         }
       }
@@ -336,12 +344,73 @@ const routes: RouteConfig[] = [
     },
     children: [
       {
+        path: "estate",
+        name: "services-estate",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "transport",
+        name: "services-transport",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "landscape",
+        name: "services-landscape",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "lighting",
+        name: "services-lighting",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "tourism",
+        name: "services-tourism",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "planning",
+        name: "services-planning",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
         path: "apartments",
         name: "services-apartments",
         components: {
           default: (): Promise<any> => import("pages/services/ServiceApartments.vue")
         },
         meta: {
+          map: true,
           toolbar: true
         }
       },
@@ -349,10 +418,12 @@ const routes: RouteConfig[] = [
         path: "commerce",
         name: "services-commerce",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/ServiceCommerce.vue")
         },
         meta: {
-          toolbar: true
+          map: true,
+          toolbar: true,
+          creatorPoint: true
         }
       },
       {
@@ -363,6 +434,7 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesParking.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }
@@ -383,9 +455,10 @@ const routes: RouteConfig[] = [
         path: "ideas",
         name: "services-ideas",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/ServiceIdeas.vue")
         },
         meta: {
+          map: true,
           toolbar: true
         }
       },
@@ -397,6 +470,7 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesCrowdfunding.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }
@@ -426,6 +500,17 @@ const routes: RouteConfig[] = [
         }
       }
     ]
+  },
+  {
+    path: "/services/commerce/:id",
+    name: "services-commerce-place",
+    components: {
+      default: (): Promise<any> => import("pages/services/commerce/CommercePlaceInfo.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/services/AsideServicesCommercePlace.vue")
+    },
+    meta: {
+      toolbar: true
+    }
   },
   {
     path: "/users",

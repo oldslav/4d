@@ -97,7 +97,7 @@ export class VacancyService extends Service {
     return this.api.put(`/api/v1/services/vacancy/respond/${ candidateId }/job_offer`);
   }
 
-  public viewRespond (respondId: number): AxiosPromise {
+  public getRespond (respondId: number): AxiosPromise {
     return this.api.get(`/api/v1/services/vacancy/respond/${ respondId }`);
   }
 

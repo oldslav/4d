@@ -22,8 +22,7 @@
           icon="edit"
         )
           FormName(v-model="name")
-          MyDocumentsForm(isLocal v-model="documents" attachedDocuments)
-          //FilePicker(:max-files="5" v-model="documents.passport" :label="$t('entity.files.passport')").q-mt-sm
+          MyDocumentsForm(isLocal v-model="documents" attachedDocuments all-required)
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -110,12 +109,13 @@
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
-            q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid")
+            q-btn(@click="createParkingTicket" color="primary" :label="$t('action.create')" :disable="!isValid" :loading="isLoading")
 </template>
 
 <script>
   import { mapActions } from "vuex";
   import { CREATE_USER_TICKET_PARKING } from "@/store/constants/action-constants";
+  import { isDocumentPresent } from "@/util/validators";
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import FilePicker from "../../common/FilePicker";
@@ -127,7 +127,16 @@
 
   export default {
     name: "NewParkingTicket",
-    components: { VehicleForm, FormContacts, TicketVehicle, BaseInput, FilePicker, BaseModal, FormName, MyDocumentsForm },
+    components: {
+      VehicleForm,
+      FormContacts,
+      TicketVehicle,
+      BaseInput,
+      FilePicker,
+      BaseModal,
+      FormName,
+      MyDocumentsForm
+    },
     props: {
       value: {
         type: Boolean,
@@ -176,13 +185,11 @@
           && this.vehicle.brand
           && this.vehicle.model
           && this.vehicle.number
-          && this.vehicle.documents.pts.length > 0
-          && this.vehicle.documents.sts.length > 0;
+          && isDocumentPresent(this.vehicle.documents.sts);
       },
 
       isUserInfo () {
-        return !!this.name.first
-          && (this.documents.passport && this.documents.passport.length > 0);
+        return !!this.name.first && isDocumentPresent(this.documents.passport);
       }
     },
     methods: {

@@ -10,7 +10,7 @@
         flat
       )
 
-    BaseTabs
+    BaseTabs(v-if="isUserLegal")
       q-route-tab(:to="{ name: 'user-tickets-vacancy-info' }" name="info" :label="$t('user.tickets.vacancies.entity.info')")
       q-route-tab(:to="{ name: 'user-tickets-vacancy-candidates' }" name="candidates")
         div

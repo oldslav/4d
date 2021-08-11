@@ -34,6 +34,7 @@
             @click="onClickNext()"
             color="primary"
             :label="currentStep === 2 ? $t('action.send') : $t('action.continue')"
+            unelevated
           )
 </template>
 <script>

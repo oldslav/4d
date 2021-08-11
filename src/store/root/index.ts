@@ -32,11 +32,12 @@ const actions: ActionTree<TRootState, TRootState> = {
     // your code
   },
 
-  bundleFiles ({ rootGetters }, files: any[]) {
+  bundleFiles ({ rootGetters }, { files, asNew = false }) {
     const result: any = [];
     Object.entries(files).forEach(([key, val]: any) => {
       val.forEach((file: any) => {
-        if (!file.id) {
+        const passed = !file.id || asNew;
+        if (passed) {
           const type = rootGetters["references/getDocTypeByName"](key);
           const payload = new FormData();
           payload.append("file", file);
@@ -51,9 +52,15 @@ const actions: ActionTree<TRootState, TRootState> = {
   async loadFiles (_, documents: any[]) {
     const result: any = {};
     await Promise.all(documents.map(async (doc: any) => {
-      const { imagePath, docType, fileName } = doc;
+      const { imagePath, docType, fileName, id } = doc;
       const { data } = await this.service.common.getFile(imagePath);
       const file = new File([data], fileName, { type: data.type });
+      Object.defineProperty(file, "id", {
+        value: id,
+        writable: true,
+        enumerable: true,
+        configurable: true
+      });
       if (!result[docType.name]) {
         result[docType.name] = [];
       }
