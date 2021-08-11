@@ -744,7 +744,7 @@
           "resumeFileFormat": "Формат pdf, doc, docx",
           "resumeLink": "Ссылка на резюме",
           "textHint": "Добавьте текст сопроводительного письма",
-          "textPlaceholder": "Расскажите о себе",
+          "textPlaceholder": "Расскажите о себе(не более 1000 символов)",
           "resumeLinkRequired": "Необходимо указать ссылку к резюме"
         }
       }
