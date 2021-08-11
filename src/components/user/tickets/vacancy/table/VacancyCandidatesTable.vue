@@ -21,7 +21,7 @@
             name="expand_more"
             style="font-size: 18px"
           )
-          | {{ props.row.name.full }}
+          div.break-word.break-spaces {{ props.row.name.full }}
 
         q-td(key="respondDate" :props="props")
           | {{ props.row.created | formatDate }}
