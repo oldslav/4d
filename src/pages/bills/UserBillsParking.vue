@@ -11,7 +11,7 @@
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="created" :props="props" @click="expandRow(props)")
-            | {{ moment(props.row.created).format("DD.MM.YYYY") }}
+            | {{ props.row.created | ticketDate }}
           q-td(key="address" :props="props" @click="expandRow(props)")
             span(v-if="props.row") {{ getFullAddress(props.row.address) }}
             span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
@@ -34,6 +34,10 @@
                   .title
                     | {{ $t("user.bills.monthlyPrice") }}
                   | {{ props.row.amount.details[0].amount }}
+                .row.justify-between(v-if="!!props.row.amount.details[1]")
+                  .title
+                    | {{ $t("user.bills.cardPrice") }}
+                  | {{ props.row.amount.details[1].amount }}
               .col-xs-12.col-md-4.column.q-pa-sm
                 .title
                   | {{ $t("user.bills.totalPrice") }}
@@ -162,9 +166,7 @@
 
       getFullAddress (address) {
         return `${ address.street } ${ address.house }`;
-      },
-
-      moment
+      }
     }
   };
 </script>

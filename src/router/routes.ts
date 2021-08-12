@@ -20,6 +20,46 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/design",
+    name: "design",
+    redirect: {
+      name: "design-intro"
+    },
+    components: {
+      default: (): Promise<any> => import("pages/design-code/DesignCode.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/design-code/AsideDesignCode.vue")
+    },
+    meta: {
+      toolbar: true,
+      asideLeft: true
+    },
+    children: [
+      {
+        path: "intro",
+        name: "design-intro",
+        components: {
+          default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true
+        }
+      },
+      {
+        path: "section/:id",
+        name: "design-section",
+        components: {
+          default: (): Promise<any> => import("pages/design-code/DesignSection.vue"),
+          asideSection: (): Promise<any> => import("components/aside/design-code/AsideDesignSection.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideSection: true
+        }
+      }
+    ]
+  },
+  {
     path: "/playground",
     name: "playground",
     redirect: {
@@ -300,13 +340,6 @@ const routes: RouteConfig[] = [
   {
     path: "/data",
     name: "data",
-    components: {
-      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
-    }
-  },
-  {
-    path: "/design",
-    name: "design",
     components: {
       default: (): Promise<any> => import("pages/UnderDevelopment.vue")
     }

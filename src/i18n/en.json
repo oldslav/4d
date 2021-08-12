@@ -422,6 +422,7 @@
       "monthlyPrice": "Payment per month",
       "depositPrice": "Deposit payment",
       "totalPrice": "Total amount",
+      "cardPrice": "Card price",
       "dateContractConcluded": "Дата заключения",
       "dateContractExpire": "Дата окончания",
       "columns": {
@@ -587,7 +588,7 @@
             "title": "Guest visit",
             "description": "",
             "price": {
-              "title": "100 rubles per day",
+              "title": "70 rubles per day",
               "description": ""
             }
           },
