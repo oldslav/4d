@@ -47,9 +47,23 @@
         return this.getAccount.contacts;
       },
       validateTelegram () {
+        const validate = (val) => {
+          if (!val.length) {
+            return this.$t("common.error.validation.required");
+          }
+
+          if (val.length < 5 || val.length > 32) {
+            return this.$t("common.error.validation.length", { length: "5 - 32" });
+          }
+
+          return /^[a-zA-Z0-9_.]*$/.test(val) || this.$t("common.error.validation.invalid");
+        };
+
         return [
-          val => val.length === 0 || val.length >= 5 && val.length <= 32,
-          val => /^[a-zA-Z0-9_.]*$/.test(val)
+          (val) => {
+            const pcmTelegram = this.model.pcm.telegram;
+            return pcmTelegram ? validate(val) : val.length === 0 || validate(val);
+          }
         ];
       }
     },
@@ -57,7 +71,7 @@
       defaultModel () {
         return {
           phones: [this.contacts.phone],
-          telegramAlias: this.contacts.telegramAlias,
+          telegramAlias: this.contacts.telegramAlias || "",
           pcm: { ...this.contacts.pcm }
         };
       },

@@ -741,7 +741,8 @@
           "resumeLink": "Resume link",
           "textHint": "Add cover letter text",
           "textPlaceholder": "Tell us about yourself",
-          "resumeLinkRequired": "You must provide a link to your resume"
+          "resumeLinkRequired": "You must provide a link to your resume",
+          "resumeLinkInvalid": "Некорректная ссылка"
         }
       }
     },
