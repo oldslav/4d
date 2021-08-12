@@ -814,7 +814,7 @@
       "passport": "Passport scan",
       "snils": "SNILS scan",
       "inn": "INN scan",
-      "inn_jur": "Company INN",
+      "inn_jur": "@:entity.files.inn",
       "job": "Employment certificate",
       "birth": "Birth certificate scan",
       "marriage": "Marriage certificate scan",
