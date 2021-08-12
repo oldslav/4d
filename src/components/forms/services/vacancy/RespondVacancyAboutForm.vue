@@ -103,6 +103,7 @@
 
       validateURL (value){
         try {
+          // eslint-disable-next-line no-new
           new URL(value);
         } catch (e) {
           if (value === "") {

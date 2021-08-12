@@ -25,9 +25,9 @@
               a.text-blue.no-text-decoration(:href="candidate.resumeLink" target="_blank")
                 | {{ $t('user.tickets.responds.modals.details.resumeLink') }}
 
-        div.q-hoverable.cursor-pointer.q-mb-lg-lg(v-for="file in candidate.files" @click="onClickDownloadResume(file)")
+        div.q-hoverable.cursor-pointer.q-mb-lg-lg(v-if="candidate.files.length")
           div.text-caption.text-grey-8 {{ $t('user.tickets.responds.modals.details.resume') }}
-          div.text-body1.q-mt-sm.text-blue
+          div.text-body1.q-mt-sm.text-blue(v-for="file in candidate.files" @click="onClickDownloadResume(file)")
             | {{ file.fileName }}
 
         div
