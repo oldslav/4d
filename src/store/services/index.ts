@@ -22,6 +22,7 @@ import vacancy from "src/store/services/vacancy";
 import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
+import tourism from "src/store/services/tourism";
 
 const initialState = (): GeoState => {
   return {
@@ -203,7 +204,8 @@ const services: Module<GeoState, TRootState> = {
     vacancy,
     ideas,
     commerce,
-    estate
+    estate,
+    tourism,
   }
 };
 
