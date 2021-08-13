@@ -1,7 +1,7 @@
 <template lang="pug">
   .row.q-pa-lg
     .col-9
-      SubSection(v-for="(section, index) in getCurrentSection.sub_sections" :key="index" :value="section").q-mb-lg
+      SubSection(v-for="(section, index) in getCurrentSection.subSections" :key="index" :value="section").q-mb-lg
 </template>
 
 <script>

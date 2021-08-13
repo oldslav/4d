@@ -24,7 +24,7 @@
     computed: {
       ...mapGetters("design", ["getCurrentSection"]),
       subSections () {
-        return this.getCurrentSection.sub_sections.map(({ name, number }) => ({
+        return this.getCurrentSection.subSections.map(({ name, number }) => ({
           name,
           number
         }));
@@ -33,7 +33,7 @@
     methods: {
       ...mapActions([DOWNLOAD_FILE]),
       downloadSection () {
-        return this.DOWNLOAD_FILE(this.getCurrentSection.doc_url);
+        return this.DOWNLOAD_FILE(this.getCurrentSection.docUrl);
       }
     }
 

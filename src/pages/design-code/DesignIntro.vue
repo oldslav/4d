@@ -1,6 +1,6 @@
 <template lang="pug">
-  div
-    | TODO
+  div.bg-blue
+    .col-12.
 </template>
 
 <script>
