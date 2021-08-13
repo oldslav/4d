@@ -9,7 +9,7 @@
             | {{$t("entity.about.model.title")}}
           .about__caption-large
             | {{$t("entity.about.model.caption")}}
-    .about__inno.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
+    .about__inno.bg-blue.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
       img.about__inno-image(src="@/assets/svg/noon.svg")
       .col-12.col-md-6.flex.items-center.justify-center.z-fab
         div
@@ -206,7 +206,7 @@
     }
 
     &__inno {
-      background-color $illustration-light
+      // background-color $illustration-light
       position relative
     }
 
