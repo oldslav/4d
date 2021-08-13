@@ -206,7 +206,6 @@
     }
 
     &__inno {
-      // background-color $illustration-light
       position relative
     }
 

@@ -43,43 +43,81 @@
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
-            div(v-if="props.row.status.id < 3").q-pa-md
+            div.column(v-if="props.row.status.id === 1").q-pa-md
+              div.text-body1.text-wrap
+                | Для подачи заявки продолжите заполнение формы.
+            div(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Пожалуйста, дождитесь решения по вашей заявке.
                 | Фонд развития города Иннополис
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
+              div.text-body1.text-wrap
+                | Работа над заявкой завершена
             q-stepper(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
               flat
               animated
-              v-if="props.row.status.id >= 3 && props.row.status.id < 8"
+              v-if="[3, 7].includes(props.row.status.id)"
             )
               q-step(
-                title="Оплата"
+                :title="$t('user.tickets.warehouse.steps.first')"
                 :done="props.row.status.id > 3"
                 :name="3"
               )
-                div.text-body1.text-wrap
-                  | Поздравляем, ваша заявка одобрена!
-                  | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
-                  | Перед оплатой ознакомьтесь с публичной офертой и примите ее.
-                  | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
-                  | Фонд развития города Иннополис.
-                div.text-right
-                  q-btn(
-                    color="primary"
-                    label="Перейти к оплате"
-                    @click="goToPayment(props.row.id)"
-                  )
+                .row
+                  .col-6
+                    | Вы можете ознакомиться с образцом договора.
+                    DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
+                  .col-6.text-wrap
+                    | Поздравляем, ваша заявка одобрена!
+                    | <br>Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
+                    | <br>Перед оплатой ознакомьтесь с публичной офертой и примите ее.
+                    | <br>Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
+                    | <br>Фонд развития города Иннополис.
+                    div.text-right
+                      q-btn(
+                        color="primary"
+                        label="Перейти к оплате"
+                        @click="goToPayment(props.row.id)"
+                      )
+
               q-step(
-                title="Подписание договора и получение ключа"
+                :title="$t('user.tickets.warehouse.steps.second')"
                 :done="props.row.status.id > 7"
                 :name="7"
               )
-                div.text-body1.text-wrap
-                  | Ваш договор готов к подписанию!
-                  | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+                .row
+                  .col-6
+                    | Вы можете ознакомиться с образцом договора.
+                    DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
+                  .col-6.text-body1.text-wrap
+                    | Ваш договор готов к подписанию!<br>
+                    | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+                    div.q-col-gutter-sm.q-mt-md
+                      .text-primary-light
+                        | Адрес
+                      div
+                        | г. Иннополис, ул. Спортивная, 112
+                      .text-primary-light
+                        | Время работы
+                      .flex.items-center.justify-between
+                        div
+                          | понедельник - четверг
+                        div
+                          | 9:00 - 18:00
+                      .flex.items-center.justify-between
+                        div
+                          | пятница
+                        div
+                          | 9:00 - 17:00
+                      div
+                        | Если вы хотите отменить заявку, свяжитесь с сотрудниками “Фонда развития города Иннополис” по телефону +7xxxxxxxxxxxx или в телеграмме @алиас<br>
+                        | Фонд развития города Иннополис
+                        div.text-body1.text-wrap
+                          | Ваш договор готов к подписанию!
+                          | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
             ValidContractState(
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
@@ -101,10 +139,11 @@
   import BaseTable from "components/common/BaseTable";
   import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import DownloadTemplate from "components/user/tickets/DownloadTemplate";
 
   export default {
     name: "UserTicketsWarehouse",
-    components: { ValidContractState, TicketWarehouseDetailsModal, ApartmentTicketStatus, BaseTable },
+    components: { DownloadTemplate, ValidContractState, TicketWarehouseDetailsModal, ApartmentTicketStatus, BaseTable },
     async created () {
       await this.getUserTickets();
     },
@@ -160,6 +199,9 @@
         base: "pagination",
         mutation: UPDATE_PAGINATION
       }),
+      templatePath () {
+        return "/uploads/templates/warehouse_contract_template.pdf";
+      },
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKETS_WAREHOUSE }`];
       }
