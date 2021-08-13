@@ -422,6 +422,7 @@
       "monthlyPrice": "Сумма ежемесячной аренды",
       "depositPrice": "Сумма обеспечительного платежа",
       "totalPrice": "Итоговая сумма",
+      "cardPrice": "Стоимость карты",
       "dateContractConcluded": "Дата заключения",
       "dateContractExpire": "Дата окончания",
       "columns": {
@@ -591,7 +592,7 @@
             "title": "Гостевой визит",
             "description": "",
             "price": {
-              "title": "100 руб. в день",
+              "title": "70 руб. в день",
               "description": ""
             }
           },

@@ -128,14 +128,22 @@ module.exports = configure(function (ctx) {
       open: true, // opens browser window automatically,
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
-        "/api": {
+        "^/(api|oauth)": {
           target: "https://4d{{ENVIRONMENT}}.innopolis.university",
           changeOrigin: true
         },
-        "/oauth": {
-          target: "https://4d{{ENVIRONMENT}}.innopolis.university",
+        "/uploads": {
+          target: "https://4d-dev.innopolis.university",
           changeOrigin: true
         }
+        // "/api": {
+        //   target: "https://4d{{ENVIRONMENT}}.innopolis.university",
+        //   changeOrigin: true
+        // },
+        // "/oauth": {
+        //   target: "https://4d{{ENVIRONMENT}}.innopolis.university",
+        //   changeOrigin: true
+        // }
       }
     },
 
