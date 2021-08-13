@@ -26,7 +26,6 @@
           :label="$t('entity.services.vacancies.respondForm.resumeLink')"
           :rules="[validateURL]"
           ref="resumeLink"
-          lazy-rules
         )
 
       div.q-mt-md
@@ -106,8 +105,11 @@
         try {
           // eslint-disable-next-line no-new
           new URL(value);
-        } catch (_) {
-          return this.model.resumeFiles.length || this.$t("entity.services.vacancies.respondForm.resumeLinkRequired");
+        } catch (e) {
+          if (value === "") {
+            return;
+          }
+          return this.$t("entity.services.vacancies.respondForm.resumeLinkInvalid");
         }
       },
 

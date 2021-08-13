@@ -742,7 +742,8 @@
           "resumeLink": "Resume link",
           "textHint": "Add cover letter text",
           "textPlaceholder": "Tell us about yourself",
-          "resumeLinkRequired": "You must provide a link to your resume"
+          "resumeLinkRequired": "You must provide a link to your resume",
+          "resumeLinkInvalid": "Некорректная ссылка"
         }
       }
     },
@@ -815,7 +816,7 @@
       "passport": "Passport scan",
       "snils": "SNILS scan",
       "inn": "INN scan",
-      "inn_jur": "Company INN",
+      "inn_jur": "@:entity.files.inn",
       "job": "Employment certificate",
       "birth": "Birth certificate scan",
       "marriage": "Marriage certificate scan",

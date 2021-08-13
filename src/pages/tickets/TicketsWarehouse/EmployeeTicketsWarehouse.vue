@@ -37,13 +37,22 @@
 
         q-tr(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
-            div(v-if="props.row.status.id === 8").q-pa-md
+            div.column(v-if="props.row.status.id === 2").q-pa-md
+              div.text-body1.text-wrap
+                | Примите или отклоните заявку
+            div.column(v-if="props.row.status.id === 8").q-pa-md
+              div.text-body1.text-wrap
+                | Договор подписан
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
+              div.text-body1.text-wrap
+                | Работа над заявкой завершена
             q-stepper(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
               flat
               animated
+              v-if="props.row.status.id > 2 && props.row.status.id < 8 && props.row.status.id !== 4"
             )
               q-step(
                 :title="$t('user.tickets.warehouse.steps.first')"
