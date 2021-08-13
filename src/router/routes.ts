@@ -430,7 +430,7 @@ const routes: RouteConfig[] = [
         name: "services-trees",
         components: {
           default: (): Promise<any> => import("src/pages/services/ServiceTrees.vue"),
-          asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesTrees.vue")
         },
         meta: {
           asideServices: true,

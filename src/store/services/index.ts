@@ -75,8 +75,9 @@ const actions: ActionTree<GeoState, TRootState> = {
     commit(SET_GEODATA, preparedData);
   },
 
-  async [GET_TREES_GEO] ({ commit }) {
-    const { data } = await this.service.services.trees.getTrees();
+  async [GET_TREES_GEO] ({ commit }, coordinates) {
+    const payload = coordinates ? coordinates : null;
+    const { data } = await this.service.services.trees.getTrees(payload);
     const { type, features } = data;
 
     const preparedData = {
