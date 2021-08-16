@@ -38,7 +38,7 @@ const routes: RouteConfig[] = [
         path: "intro",
         name: "design-intro",
         components: {
-          default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+          default: (): Promise<any> => import("pages/design-code/DesignIntro.vue")
         },
         meta: {
           toolbar: true,
