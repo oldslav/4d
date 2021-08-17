@@ -106,6 +106,9 @@
     "street": "Улица",
     "createdAt": "Создано",
     "updatedAt": "Обновлено",
+    "documents": "Документы",
+    "photos": "Фотографии",
+    "info": "Информация",
     "quantity": {
       "area": "Площадь, кв.м",
       "rooms": "Комнаты",
@@ -126,6 +129,7 @@
     "telegram": "Телеграм",
     "role": "Роль",
     "created": "Дата формирования",
+    "noData": "Нет данных",
     "permissions": {
       "title": "Права",
       "ROLE_QGIS": "Сотрудник по ГИС",
@@ -142,6 +146,11 @@
       "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
       "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce.title",
       "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    },
+    "components": {
+      "dragDrop": {
+        "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      }
     }
   },
   "user": {
@@ -453,6 +462,7 @@
     }
   },
   "action": {
+    "showOnMap": "Показать на карте",
     "applicationMake": "Оформить",
     "block": "Заблокировать",
     "unblock": "Разблокировать",
@@ -462,6 +472,7 @@
     "details": "Подробнее",
     "register": "Зарегистрироваться",
     "back": "Назад",
+    "edit": "Редактировать",
     "save": "Сохранить",
     "clear": "Сбросить",
     "close": "Закрыть",
@@ -488,7 +499,27 @@
     }
   },
   "entity": {
-    "estate": "Объекты недвижимости",
+    "estate": {
+      "title": "Объекты недвижимости",
+      "details": {
+        "id": "ID",
+        "number": "Номер дома",
+        "infrastructureType": "Тип инфраструктуры",
+        "category": "Категория",
+        "name": "Название",
+        "constructYear": "Год постройки",
+        "residentsCount": "Количество жителей",
+        "builder": "Застройщик",
+        "street": "Улица",
+        "area": "Площадь объекта",
+        "parkingCount": "Количество парковочных мест",
+        "floors": "Количество этажей",
+        "managingCompany": "Управляющая компания",
+        "status": "Этап строительства",
+        "organizationCount": "Количество организаций",
+        "link": "Ссылка на сайт"
+      }
+    },
     "transport": "Транспортная инфраструктура",
     "landscape": "Благоустрйство города",
     "lighting": "Освещение города",
@@ -695,8 +726,8 @@
           "category": "Категория",
           "cover": "Добавьте обложку проекта",
           "markdownDescription": "Добавьте описание проекта",
-          "media": "Загрузите фотографии и видео, наиболее полно описывающие ваш проект.",
-          "mediaMaxSize": "Максимальный размер файла: 2 Мб",
+          "media": "Добавьте фото",
+          "mediaMaxCount": "Не более 5 фото",
           "loadedMedia": "Загруженные фотографии"
         }
       },

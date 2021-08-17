@@ -1,11 +1,13 @@
 <template lang="pug">
-  q-file.dragdrop-frame(
+  q-file.dragdrop-frame.q-pa-sm(
     borderless
     :value="value"
     :max-files="maxFiles"
     :max-file-size="maxSize"
     @input="onInput"
   )
+    .dragdrop-label.q-pa-md
+      | {{ $t("common.components.dragDrop.info") }}
 </template>
 
 <script>
@@ -40,6 +42,12 @@
 
 <style lang="stylus" scoped>
 .dragdrop-frame
-  border: 0.5px dashed #0E8AFD
+  border: 2.5px dashed #0E8AFD
   height: 10rem
+  .dragdrop-label
+    position: absolute
+    width: 100%
+
+::v-deep .q-field__native
+  display: none
 </style>
