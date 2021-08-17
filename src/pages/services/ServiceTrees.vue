@@ -1,9 +1,8 @@
 <template lang="pug">
   div
     BaseMap(
-      :data="geoJson"
       @change="onMapClick"
-      @on-map-move="onMapMove"
+      @onViewerReady="onViewerReady"
     )
     router-view
 </template>
@@ -18,7 +17,7 @@
     name: "ServiceTrees",
     components: { BaseMap },
     async created () {
-      // await this.GET_TREES_GEO();
+      await this.GET_TREES_GEO();
     },
     computed: {
       ...mapState("services", {
@@ -42,44 +41,116 @@
         }
       },
 
-      onMapMove (vcViewer) {
-        const coordinates = this.getLeftTopRightDownCoordinates(vcViewer);
-        // this.GET_TREES_GEO(coordinates);
-      },
+      onViewerReady (vcViewer) {
+        vcViewer.viewer.scene.mode = Cesium.SceneMode.SCENE2D;
 
-      getLeftTopRightDownCoordinates (vcViewer) {
-        debugger;
-        const Cesium = vcViewer.Cesium;
-        const viewer = vcViewer.viewer;
-        const ellipsoid = vcViewer.viewer.scene.globe.ellipsoid;
-        let c2 = new Cesium.Cartesian2(0, 0);
-        let leftTop = viewer.camera.pickEllipsoid(c2, ellipsoid);
-        c2 = new Cesium.Cartesian2(viewer.canvas.width, viewer.canvas.height);
-        let rightDown = viewer.camera.pickEllipsoid(c2, ellipsoid);
-        console.log(leftTop, rightDown);
+        const options = {
+          camera: vcViewer.viewer.scene.camera,
+          canvas: vcViewer.viewer.scene.canvas
+        };
 
-        if (leftTop != null && rightDown != null) {
-          leftTop = ellipsoid.cartesianToCartographic(leftTop);
-          rightDown = ellipsoid.cartesianToCartographic(rightDown);
-          console.log(leftTop.longitude, rightDown.latitude, rightDown.longitude, leftTop.latitude);
-          return {
-            bbox: {
-              leftBottom: {
-                x: rightDown.latitude,
-                y: rightDown.longitude
-              },
-              rightUpper: {
-                x: leftTop.latitude,
-                y: leftTop.longitude
-              }
-            }
-          };
-        } else {
-          //The sky is visible in 3D
-          console.log("sky");
-          return null;
-        }
+        const dsPromise = vcViewer.dataSources.add(
+          vcViewer.Cesium.GeoJsonDataSource.load(
+            this.geoJson,
+            options
+          )
+        );
+
+        dsPromise.then(function (dataSource) {
+          dataSource.clustering.enabled = true;
+          dataSource.clustering.pixelRange = 100;
+          dataSource.clustering.minimumClusterSize = 5;
+        });
       }
+
+      // onMapMove (vcViewer) {
+      //   const coordinates = this.getLeftTopRightDownCoordinates(vcViewer);
+      //   this.GET_TREES_GEO(coordinates);
+      //   const options = {
+      //     camera: vcViewer.viewer.scene.camera,
+      //     canvas: vcViewer.viewer.scene.canvas
+      //   };
+      //   const dsPromise = vcViewer.dataSources.add(
+      //     vcViewer.Cesium.GeoJsonDataSource.load(
+      //       this.geoJson,
+      //       options
+      //     )
+      //   );
+      //   dsPromise.then(function (dataSource) {
+      //     dataSource.clustering.enabled = true;
+      //     dataSource.clustering.pixelRange = 100;
+      //     dataSource.clustering.minimumClusterSize = 5;
+      //   });
+      // }
+
+      // getLeftTopRightDownCoordinates (vcViewer) {
+      //   const Cesium = vcViewer.Cesium;
+      //   const viewer = vcViewer.viewer;
+      //   const canvas = viewer.scene.canvas;
+      //   const ellipsoid = vcViewer.viewer.scene.globe.ellipsoid;
+      //   let c2 = new Cesium.Cartesian2(0, canvas.clientHeight);
+      //   let leftBottom = viewer.camera.pickEllipsoid(c2, ellipsoid);
+      //   c2 = new Cesium.Cartesian2(canvas.clientWidth, 0);
+      //   let rightUpper = viewer.camera.pickEllipsoid(c2, ellipsoid);
+      //   console.log(leftBottom, rightUpper);
+      //
+      //   viewer.entities.add({
+      //     name: "leftBottom",
+      //     position: leftBottom,
+      //     point: {
+      //       pixelSize: 5,
+      //       color: Cesium.Color.RED
+      //     },
+      //     label: {
+      //       text: "leftBottom",
+      //       font : "14pt monospace"
+      //     }
+      //   });
+      //   viewer.entities.add({
+      //     name: "rightUpper",
+      //     position: rightUpper,
+      //     point: {
+      //       pixelSize: 5,
+      //       color: Cesium.Color.WHITE
+      //     },
+      //     label: {
+      //       text: "rightUpper",
+      //       font : "14pt monospace"
+      //     }
+      //   });
+      //
+      //   if (leftBottom != null && rightUpper != null) {
+      //     return {
+      //       bbox: {
+      //         leftBottom: {
+      //           x: leftBottom.x,
+      //           y: leftBottom.y
+      //         },
+      //         rightUpper: {
+      //           x: rightUpper.x,
+      //           y: rightUpper.y
+      //         }
+      //       }
+      //     };
+      // leftTop = ellipsoid.cartesianToCartographic(leftTop);
+      // rightDown = ellipsoid.cartesianToCartographic(rightDown);
+      // console.log(leftTop.longitude, rightDown.latitude, rightDown.longitude, leftTop.latitude);
+      // return {
+      //   bbox: {
+      //     leftBottom: {
+      //       x: rightDown.latitude,
+      //       y: rightDown.longitude
+      //     },
+      //     rightUpper: {
+      //       x: leftTop.latitude,
+      //       y: leftTop.longitude
+      //     }
+      //   }
+      // };
+      //   } else {
+      //     return null;
+      //   }
+      // }
     }
   };
 </script>

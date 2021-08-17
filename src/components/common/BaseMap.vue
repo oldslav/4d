@@ -9,17 +9,6 @@
         @ready="onReadyViewer"
         @moveEnd="onMapMove"
       )
-        vc-collection-primitive-point
-          vc-primitive-point(
-            :position="{lng: 0.8506354517838196,lat: 0.9730865316507832,height: 500.3186645507812}"
-            :color="colorPoint"
-            :pixelSize="100"
-          )
-          vc-primitive-point(
-            :position="{lng: 0.8507519060296136,lat: 0.9730217475167465,height: 500.3186645507812}"
-            :color="colorPoint"
-            :pixelSize="100"
-          )
         vc-layer-imagery
           vc-provider-imagery-openstreetmap(:url="mapUrl")
           vc-datasource-geojson(
@@ -48,17 +37,6 @@
     },
     data () {
       return {
-        position1: {
-          lng: 0.8506354517838196,
-          lat: 0.9730865316507832,
-          height: 1000.3186645507812
-        },
-        position2: {
-          lng: 0.8507519060296136,
-          lat: 0.9730217475167465,
-          height: 1000.3186645507812
-        },
-        colorPoint: {},
         show: true,
         options: {},
         entities: [],
@@ -75,20 +53,30 @@
     },
     methods: {
       onReadyViewer () {
+        const vcViewer = this.$refs.vcViewer;
+        const Cesium = vcViewer.Cesium;
+        const viewer = vcViewer.viewer;
+        this.$emit("onViewerReady", vcViewer);
+
+        // Cesium.geocoder = false;
+
+        viewer.resolutionScale = 0.75;
+        viewer.scene.requestRenderMode = true;
+        viewer.scene.skyBox.show = false;
+
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
-        this.colorPoint = this.$refs.vcViewer.Cesium.Color.fromCssColorString("rgb(255,229,0)");
+        this.colorPoint = Cesium.Color.fromCssColorString("rgb(255,229,0)");
       },
 
-      async onDatasourceReady ({ viewer, cesiumObject }) {
-        await viewer.zoomTo(cesiumObject);
+      onDatasourceReady () {
         this.isLoading = false;
       },
 
       entitySelected (e) {
         this.$emit("change", e);
       },
-      
+
       onMapMove () {
         this.$emit("on-map-move", this.$refs.vcViewer);
       }
