@@ -12,7 +12,8 @@
     :multiple="multiple"
     :option-key="optionKey"
     :option-value="optionValue"
-    )
+    :rules="rules"
+  )
     template(v-slot:prepend)
       slot(name="prepend")
     template(v-slot:append)
@@ -66,6 +67,10 @@
       dense: {
         type: Boolean,
         default: false
+      },
+      rules: {
+        type: [Array, null],
+        default: () => []
       }
     },
     data () {
