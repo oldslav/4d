@@ -1,5 +1,7 @@
-<template>
-  <NewIdeaModal v-if="pointCoords" v-model="pointCoords"></NewIdeaModal>
+<template lang="pug">
+  div
+    q-btn(label="asdad" color="primary")
+    NewIdeaModal(v-if="pointCoords" v-model="pointCoords")
 </template>
 
 <script>
