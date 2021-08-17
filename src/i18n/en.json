@@ -106,6 +106,9 @@
     "street": "Street",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
+    "documents": "Documents",
+    "photos": "Photos",
+    "info": "Info",
     "quantity": {
       "area": "Area, sq.m",
       "rooms": "Rooms",
@@ -126,6 +129,7 @@
     "telegramAlias": "Telegram",
     "role": "Role",
     "created": "Created at",
+    "noData": "No data",
     "permissions": {
       "title": "Permissions",
       "ROLE_QGIS": "GIS employee",
@@ -453,6 +457,7 @@
     }
   },
   "action": {
+    "showOnMap": "Show on map",
     "applicationMake": "Make an application",
     "block": "Block",
     "unblock": "Unblock",
@@ -461,6 +466,7 @@
     "rent": "Rent",
     "details": "Details",
     "register": "Register",
+    "edit": "Edit",
     "back": "Back",
     "save": "Save",
     "clear": "Clear",
@@ -488,7 +494,27 @@
     }
   },
   "entity": {
-    "estate": "Estate Object",
+    "estate": {
+      "title": "Estate Object",
+      "details": {
+        "id": "ID",
+        "number": "House number",
+        "infrastructureType": "Infrastructure type",
+        "category": "Category",
+        "name": "Name",
+        "constructYear": "Year of construction",
+        "residentsCount": "Amount of residents",
+        "builder": "Property developer",
+        "street": "Street",
+        "area": "Area of the object",
+        "parkingCount": "Amount of parking places",
+        "floors": "Amount of floors",
+        "managingCompany": "Managing company",
+        "status": "Construction stage",
+        "organizationCount": "Amount of organizations",
+        "link": "Link to website"
+      }
+    },
     "transport": "Transport Infrastructure",
     "landscape": "Urban Landscaping",
     "lighting": "Urban Lighting",

@@ -12,10 +12,23 @@
   .q-btn__wrapper
     @extend .border-width
 
-.q-field--outlined
-  .q-field__inner
-    .q-field__control
-      @extend .border-width
+.q-uploader
+  &--transparent
+    background: transparent
+
+  &__header
+    background: transparent
+
+    &::before
+      background: transparent
+
+.q-field
+  &__prepend
+    display: none
+  .q-field--outlined
+    .q-field__inner
+      .q-field__control
+        @extend .border-width
 
 .q-btn--flat
   max-height: 40px
@@ -23,6 +36,9 @@
   .q-btn__wrapper
     padding: 0 16px
 
+.height
+  &__2
+    height: 2rem
 
 .text
   &-title
@@ -70,7 +86,6 @@
 
 .text-status-green
   color $secondary
-
 
 .modal-container
   min-width: 40vw !important

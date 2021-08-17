@@ -37,7 +37,7 @@
       items () {
         return [
           {
-            label: this.$t("entity.estate"),
+            label: this.$t("entity.estate.title"),
             action: { name: "services-estate" },
             icon: "o_article",
             show: this.isUserGIS

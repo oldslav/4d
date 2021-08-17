@@ -384,7 +384,19 @@ const routes: RouteConfig[] = [
         },
         meta: {
           toolbar: true
-        }
+        },
+        children: [
+          {
+            path: ":id",
+            name: "services-estate-details",
+            components: {
+              default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+            },
+            meta: {
+              toolbar: true
+            }
+          }
+        ]
       },
       {
         path: "transport",
