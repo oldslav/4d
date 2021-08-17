@@ -190,6 +190,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/crowdfunding/${ id }`, payload);
   }
 
+  public publishTicketCrowdfunding (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/crowdfunding/${ id }/publish`);
+  }
+
   public addTicketCrowdfundingCover (id: number, file: unknown): AxiosPromise<TicketsResponse> {
     return this.api.post(`/api/v1/services/crowdfunding/${ id }/cover`, file);
   }

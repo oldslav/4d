@@ -146,6 +146,11 @@
       "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
       "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce.title",
       "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    },
+    "components": {
+      "dragDrop": {
+        "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      }
     }
   },
   "user": {
@@ -721,8 +726,8 @@
           "category": "Категория",
           "cover": "Добавьте обложку проекта",
           "markdownDescription": "Добавьте описание проекта",
-          "media": "Загрузите фотографии и видео, наиболее полно описывающие ваш проект.",
-          "mediaMaxSize": "Максимальный размер файла: 2 Мб",
+          "media": "Добавьте фото",
+          "mediaMaxCount": "Не более 5 фото",
           "loadedMedia": "Загруженные фотографии"
         }
       },

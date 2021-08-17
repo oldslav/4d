@@ -30,12 +30,14 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [CREATE_USER_TICKET_CROWDFUNDING] ({ dispatch }, payload) {
-    const { cover, media, ...result } = payload;
+    const { media, ...result } = payload;
     const params = { clean: true };
     const { data: { id } } = await this.service.user.tickets.createTicketCrowdfunding(params);
-    await this.service.user.tickets.updateTicketCrowdfunding(id, result);
-    if (cover) await dispatch(ADD_USER_TICKET_CROWDFUNDING_COVER, { id, cover });
-    if (media && media.length > 0) await dispatch(ADD_USER_TICKET_CROWDFUNDING_FILES, { id, media });
+    if (id) {
+      await this.service.user.tickets.updateTicketCrowdfunding(id, result);
+      if (media && media.length > 0) await dispatch(ADD_USER_TICKET_CROWDFUNDING_FILES, { id, media });
+      await this.service.user.tickets.publishTicketCrowdfunding(id);
+    }
   },
 
   async [ADD_USER_TICKET_CROWDFUNDING_COVER] (_, { id, cover }) {
