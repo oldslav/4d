@@ -79,7 +79,7 @@
       sections () {
         return [
           {
-            title: this.$t("entity.estate"),
+            title: this.$t("entity.estate.title"),
             image: require("@/assets/svg/building.svg"),
             name: ""
           },
@@ -206,7 +206,6 @@
     }
 
     &__inno {
-      // background-color $illustration-light
       position relative
     }
 

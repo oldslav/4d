@@ -13,6 +13,7 @@
     :option-key="optionKey"
     :option-value="optionValue"
     :rules="rules"
+    :stack-label="stackLabel"
   )
     template(v-slot:prepend)
       slot(name="prepend")
@@ -27,6 +28,10 @@
       value: {
         type: [String, Number, Array, Object, null],
         default: null
+      },
+      stackLabel: {
+        type: Boolean,
+        default: false
       },
       label: {
         type: String,

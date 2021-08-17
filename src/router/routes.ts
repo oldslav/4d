@@ -38,7 +38,7 @@ const routes: RouteConfig[] = [
         path: "intro",
         name: "design-intro",
         components: {
-          default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+          default: (): Promise<any> => import("pages/design-code/DesignIntro.vue")
         },
         meta: {
           toolbar: true,
@@ -384,7 +384,19 @@ const routes: RouteConfig[] = [
         },
         meta: {
           toolbar: true
-        }
+        },
+        children: [
+          {
+            path: ":id",
+            name: "services-estate-details",
+            components: {
+              default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+            },
+            meta: {
+              toolbar: true
+            }
+          }
+        ]
       },
       {
         path: "transport",

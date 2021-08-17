@@ -18,6 +18,7 @@
     :reactive-rules="reactiveRules"
     :mask="mask"
     :unmasked-value="unmaskedValue"
+    :stack-label="stackLabel"
   )
     template(v-if="prepend" v-slot:prepend)
       slot(name="prepend")
@@ -32,6 +33,10 @@
       prepend: {
         type: Boolean,
         default: null
+      },
+      stackLabel: {
+        type: Boolean,
+        default: false
       },
       reactiveRules: {
         type: Boolean,
@@ -62,7 +67,7 @@
         default: null
       },
       value: {
-        type: String,
+        type: [String, Number],
         default: null
       },
       maxlength: {
