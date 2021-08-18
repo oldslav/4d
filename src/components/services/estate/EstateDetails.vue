@@ -135,7 +135,7 @@
           <BaseInput v-model.number="form.residentsCount" type="number" :label="$t('entity.estate.details.residentsCount')"></BaseInput>
           <BaseInput v-model.number="form.parkingCount" type="number" :label="$t('entity.estate.details.parkingCount')"></BaseInput>
           <BaseSelect v-model="form.infrastructureType" :options="infrastructureTypes" :label="$t('entity.estate.details.infrastructureType')"></BaseSelect>
-          <BaseSelect v-model="form.category" :options="categories" :label="$t('entity.estate.details.category')"></BaseSelect>
+          <BaseSelect v-model="form.categoryId" :options="categories" :label="$t('entity.estate.details.category')"></BaseSelect>
           <BaseSelect v-model="form.statusId" :options="statuses" :label="$t('entity.estate.details.status')"></BaseSelect>
           <BaseSelect v-model="form.builderId" :options="companies" :label="$t('entity.estate.details.builder')"></BaseSelect>
           <BaseSelect v-model="form.managementCompanyId" :options="companies" :label="$t('entity.estate.details.managingCompany')"></BaseSelect>
@@ -377,9 +377,9 @@
           },
           {
             label: this.$t("entity.estate.details.managingCompany"),
-            value: this.formatEmptyString(this.current.company),
+            value: this.formatEmptyString(this.current.managementCompany.name),
             options: this.companies,
-            related: this.current.company
+            related: this.current.managementCompany.name
           },
           {
             label: this.$t("entity.estate.details.street"),
