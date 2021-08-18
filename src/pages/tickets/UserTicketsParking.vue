@@ -18,7 +18,7 @@
             @click="toServiceParking"
             :label="$t('action.toMap')"
           )
-        TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
+        TicketDetailsModal(:id.sync="currentId" v-model="isModalVisible" v-if="currentId")
       template(v-slot:body="props")
         q-tr(:props="props" @click="expandRow(props)")
           q-td(key="parkingAddress" :props="props" )
@@ -40,7 +40,7 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup @click="openDetails(props.row)")
+                  q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
@@ -117,7 +117,7 @@
       return {
         isModalVisible: false,
         expanded: [],
-        currentRow: null,
+        currentId: null,
         columns: [
           {
             name: "parkingAddress",
@@ -206,8 +206,8 @@
         await this.GET_USER_TICKETS_PARKING();
       },
 
-      openDetails (data) {
-        this.currentRow = data;
+      openDetails (id) {
+        this.currentId = id;
         this.isModalVisible = true;
       },
 
