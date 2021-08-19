@@ -98,6 +98,10 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/parking/employee/tickets", { params });
   }
 
+  public getParkingTicketById (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/parking/user/tickets/${ id }`);
+  }
+
   public createTicketParking (params: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/parking/user/tickets", params as AxiosRequestConfig);
   }
