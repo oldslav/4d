@@ -20,8 +20,9 @@
     "core-js": "^3.6.5",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
+    "moment-duration-format": "^2.3.2",
     "quasar": "^1.15.21",
-    "vue-cesium": "^2.2.3",
+    "vue-cesium": "^2.2.6",
     "vue-i18n": "^8.0.0",
     "vue-slick-carousel": "^1.0.6",
     "vuex": "^3.6.2"

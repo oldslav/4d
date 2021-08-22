@@ -1,22 +1,24 @@
 <template lang="pug">
-  div(
+  div.image-carousel(
     :class="{'image-carousel_clickable': fullscreen, 'image-carousel_dark': $q.dark.isActive, 'image-carousel_white': !$q.dark.isActive}"
   )
-    vue-slick-carousel.image-carousel(v-bind="getSettings")
-      div.image-carousel__slide(v-for="(image, index) in value" :key="image" @click="onClickSlide(index)")
-        div.image-carousel__slide_content
-          q-icon.image-carousel__slide_icon(v-if="fullscreen" name="visibility")
-          q-img(:src="image" :ratio="1")
+    q-resize-observer(@resize="onResize")
+    div.image-carousel__container(:style="{ width: `${ width }px` }")
+        vue-slick-carousel(v-bind="getSettings")
+          div.image-carousel__slide(v-for="(image, index) in value" :key="image" @click="onClickSlide(index)")
+            div.image-carousel__slide_content
+              q-icon.image-carousel__slide_icon(v-if="fullscreen" name="visibility")
+              q-img(:src="image" :ratio="1")
 
-    image-gallery(
-      :value="value"
-      :visible.sync="visibleFullScreen"
-      :current.sync="fullScreenImage"
-    )
+        image-gallery(
+          :value="value"
+          :visible.sync="visibleFullScreen"
+          :current.sync="fullScreenImage"
+        )
 </template>
 <script>
-  import ImageGallery from "./ImageGallery";
   import VueSlickCarousel from "vue-slick-carousel";
+  import ImageGallery from "./ImageGallery";
   import "vue-slick-carousel/dist/vue-slick-carousel.css";
 
   export default {
@@ -26,11 +28,15 @@
       fullscreen: { type: Boolean, default: true },
       slidesToShow: { type: Number, default: 3 }
     },
+    mounted () {
+      this.width = this.$el.clientWidth;
+    },
     data () {
       return {
         slide: 1,
         visibleFullScreen: false,
-        fullScreenImage: null
+        fullScreenImage: null,
+        width: 0
       };
     },
     computed: {
@@ -51,6 +57,10 @@
       onClickSlide (index) {
         this.fullScreenImage = index;
         this.visibleFullScreen = true;
+      },
+
+      onResize (size) {
+        this.widt = size.width;
       }
     }
   };
@@ -58,8 +68,9 @@
 <style lang="stylus">
 @import "../../css/_colors.styl";
 
-.image-carousel
+.image-carousel__container
   margin 0 -2px 0 -2px
+  box-sizing: border-box
 
 .image-carousel__slide
   position relative
