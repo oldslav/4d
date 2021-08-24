@@ -41,18 +41,52 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 1").q-pa-md
               div.text-body1.text-wrap
                 | Для подачи заявки продолжите заполнение формы.
             div(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
-                | Пожалуйста, дождитесь решения по вашей заявке.
+                | Пожалуйста, дождитесь решения по вашей заявке.<br>
                 | Фонд развития города Иннополис
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
+            div(v-if="props.row.status.id === 13").q-pa-md
+              .row
+                .col-6.text-body1
+                  .full-width
+                .col-6.text-body1.text-wrap
+                  | Срок действия по вашей заявке истек.<br>
+                  | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
+                  div.q-col-gutter-sm.q-mt-md
+                    .text-primary-light
+                      | Адрес
+                    div
+                      | г. Иннополис, ул. Спортивная, 112
+                    .text-primary-light
+                      | Время работы
+                    .flex.items-center.justify-between
+                      div
+                        | понедельник - четверг
+                      div
+                        | 9:00 - 18:00
+                    .flex.items-center.justify-between
+                      div
+                        | пятница
+                      div
+                        | 9:00 - 17:00
+                    .text-primary-light
+                      | Телефон
+                    .flex.items-center.justify-between
+                      div
+                        | +7 (937) 622-93-84
+                    .text-primary-light
+                      | Телеграм
+                    .flex.items-center.justify-between
+                      div
+                        | @Parking_Innopolis
             q-stepper(
               ref="stepper"
               :value="props.row.status.id"
@@ -71,11 +105,11 @@
                     | Вы можете ознакомиться с образцом договора.
                     DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
                   .col-6.text-wrap
-                    | Поздравляем, ваша заявка одобрена!
-                    | <br>Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
-                    | <br>Перед оплатой ознакомьтесь с публичной офертой и примите ее.
-                    | <br>Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
-                    | <br>Фонд развития города Иннополис.
+                    | Поздравляем, ваша заявка одобрена!<br>
+                    | Для начала оформления договора на хранение шин вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.<br>
+                    | Перед оплатой ознакомьтесь с публичной офертой и примите ее.<br>
+                    | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.<br>
+                    | Фонд развития города Иннополис
                     div.text-right
                       q-btn(
                         color="primary"
@@ -251,3 +285,10 @@
     }
   };
 </script>
+
+<style lang="stylus">
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>
