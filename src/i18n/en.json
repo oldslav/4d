@@ -864,7 +864,14 @@
     "tickets": {
       "title": "Tickets",
       "apartments": "Apartment rent",
-      "ideas": "Ideas and suggestions",
+      "ideas": {
+        "title": "Ideas and suggestions",
+        "action": {
+          "toVote": "Submit to the vote",
+          "forConsideration": "For consideration",
+          "finish": "Finish project"
+        }
+      },
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
       "vacancy": "Городские вакансии",

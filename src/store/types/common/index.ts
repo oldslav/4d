@@ -15,14 +15,21 @@ interface DocType {
 }
 
 export interface GeoState {
-  geoJson: GeoJsonCollection | null
+  geoJson: GeoData | null
   pickedFeatureId: GeoJsonFeature | null
   pointCoords: any | null
+  isDraw: any | null
+  cesiumInstance: any | null
+}
+
+export interface GeoData {
+  type: string,
+  data: GeoJsonCollection | Array<any>
 }
 
 export interface GeoJsonCollection {
   type: string,
-  features: GeoJsonFeature
+  features: Array<GeoJsonFeature>
 }
 
 export interface GeoJsonFeature {

@@ -13,11 +13,9 @@
     @extend .border-width
 
 .q-uploader
-  &--transparent
-    background: transparent
-
   &__header
     background: transparent
+    color: $light
 
     &::before
       background: transparent
@@ -94,7 +92,6 @@
     max-width: 1600px !important
 
   &__dense
-    min-width: 400px !important
     max-width: 400px !important
     max-height: 600px !important
 
@@ -127,6 +124,10 @@
 
 .body
   &--light
+    .q-uploader
+      &__header
+        color: $dark
+
     .bg-white
       background: $illustration-white !important
 
@@ -162,3 +163,6 @@
 
     .q-layout
       background: initial
+
+.cesium-widget-credits
+  display:none !important;
