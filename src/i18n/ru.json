@@ -728,7 +728,11 @@
           "markdownDescription": "Добавьте описание проекта",
           "media": "Добавьте фото",
           "mediaMaxCount": "Не более 5 фото",
-          "loadedMedia": "Загруженные фотографии"
+          "loadedMedia": "Загруженные фотографии",
+          "type": "Тип заявки",
+          "descriptionLabel": "Описание проекта",
+          "projectMayor": "Проект мэрии",
+          "projectCitizen": "Проект жителя"
         }
       },
       "employmentCenter": "Центр занятости",
