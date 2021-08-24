@@ -80,7 +80,7 @@
                         | Введите данные договора.
                       FormContract(@submit="sendContractInfo($event, props.row.id)")
 
-    TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
+    TicketDetailsModal(:id.sync="activeId" v-model="showDetailsModal" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
@@ -118,7 +118,7 @@
     },
     data () {
       return {
-        activeRow: null,
+        activeId: null,
         approvedId: null,
         showDetailsModal: false,
         rejectionReason: "",
@@ -278,7 +278,7 @@
       },
 
       showDetails (row) {
-        this.activeRow = row;
+        this.activeId = row.id;
         this.showDetailsModal = true;
       },
 

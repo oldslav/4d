@@ -29,12 +29,18 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
     q-inner-loading(v-else showing)
+    TicketCrowdfundingDetailsModal(
+      v-if="currentRow"
+      :info="currentRow"
+      v-model="isDetailsModalVisible"
+    )
 </template>
 
 <script>
   import moment from "moment";
   import { mapActions, mapState } from "vuex";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
+  import TicketCrowdfundingDetailsModal from "components/user/tickets/crowdfunding/TicketCrowdfundingDetailsModal";
   import BaseTable from "@/components/common/BaseTable";
   import {
     GET_EMPLOYEE_TICKETS_CROWDFUNDING,
@@ -44,13 +50,13 @@
 
   export default {
     name: "EmployeeTicketsCrowdfunding",
-    components: { ApartmentTicketStatus, BaseTable },
+    components: { ApartmentTicketStatus, TicketCrowdfundingDetailsModal, BaseTable },
     async created () {
       await this.getEmployeeTickets();
     },
     data () {
       return {
-        isModalVisible: false,
+        isDetailsModalVisible: false,
         currentRow: null,
         columns: [
           {
@@ -167,9 +173,9 @@
           });
       },
 
-      openDetails (data) {
-        this.currentRow = data;
-        this.isModalVisible = true;
+      openDetails (row) {
+        this.currentRow = row;
+        this.isDetailsModalVisible = true;
       },
 
       cancelTicket (id) {
