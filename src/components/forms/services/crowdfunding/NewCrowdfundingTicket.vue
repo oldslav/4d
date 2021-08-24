@@ -62,6 +62,8 @@
       | {{ $t("entity.services.crowdfunding.form.media") }}
     .sub-header.text-small.q-mb-md
       | {{ $t("entity.services.crowdfunding.form.mediaMaxCount") }}
+    .hint.text-caption.q-mb-md
+      | Формат jpg, jpeg, png, pdf
     BaseDragDrop.q-mb-md(
       :value="media"
       max-files="5"
@@ -75,6 +77,11 @@
         :key="index"
         :src="preview"
       )
+        q-icon.full-width.row.justify-end.cursor-pointer(
+          name="close"
+          @click="removeImage(index)"
+        )
+
 
     .row
       q-btn.col-12(color="primary" :label="$t('action.submit')" type="submit")
@@ -199,6 +206,10 @@
           .finally(() => {
             this.toggleModal(false);
           });
+      },
+      removeImage (index) {
+        this.media.splice(index, 1);
+        this.mediaPreviews.splice(index, 1);
       }
     }
   };
@@ -207,4 +218,7 @@
 <style lang="stylus" scoped>
 .sub-header
   color: #0E8AFD
+  margin-bottom: 4px
+.hint
+  color: rgba(0,0,0,0.54)
 </style>
