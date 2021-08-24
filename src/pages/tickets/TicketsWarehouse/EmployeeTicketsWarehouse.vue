@@ -35,11 +35,15 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Примите или отклоните заявку
+            div.column(v-if="props.row.status.id === 6").q-pa-md
+              div.text-right.text-body1.text-wrap
+                | Для подписание договора направьте заявителю приглашение.<br>
+                | Вы можете изменить шаблон сообщения по вашему желанию.
             div.column(v-if="props.row.status.id === 8").q-pa-md
               div.text-body1.text-wrap
                 | Договор подписан
@@ -59,7 +63,7 @@
                 :done="props.row.status.id > 4"
                 :name="3"
               )
-                div.text-body1.text-wrap
+                div.text-body1.text-wrap.text-right
                   | Для продолжения оформления документов дождитесь оплаты.
               q-step(
                 :title="$t('user.tickets.warehouse.steps.second')"
@@ -289,3 +293,10 @@
     }
   };
 </script>
+
+<style lang="stylus">
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>
