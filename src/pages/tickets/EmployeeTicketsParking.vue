@@ -36,7 +36,7 @@
                       | {{ $t("user.tickets.actions.details") }}
 
 
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             q-stepper(
               ref="stepper"
@@ -56,8 +56,12 @@
                 :name="7"
               )
             div(v-if="props.row.status.id === 3").q-pa-md
-              div.text-body1.text-wrap
+              div.text-right.text-body1.text-wrap
                 | Для продолжения оформления документов дождитесь оплаты.
+            div(v-if="props.row.status.id === 6").q-pa-md
+              div.text-right.text-body1.text-wrap
+                | Для подписание договора направьте заявителю приглашение.<br>
+                | Вы можете изменить шаблон сообщения по вашему желанию.
             div(v-if="props.row.status.id === 7").q-pa-md
               .row
                 .col-6.offset-6
@@ -68,7 +72,7 @@
                       | Введите данные договора.
                     FormContract(@submit="sendContractInfo($event, props.row.id)")
 
-    TicketDetailsModal(v-model="showDetailsModal" :info="activeRow" @reject="onTicketReject" @approve="onTicketApprove")
+    TicketDetailsModal(:id.sync="activeId" v-model="showDetailsModal" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
 
 <script>
@@ -106,7 +110,7 @@
     },
     data () {
       return {
-        activeRow: null,
+        activeId: null,
         approvedId: null,
         showDetailsModal: false,
         rejectionReason: "",
@@ -266,7 +270,7 @@
       },
 
       showDetails (row) {
-        this.activeRow = row;
+        this.activeId = row.id;
         this.showDetailsModal = true;
       },
 
@@ -288,3 +292,10 @@
     }
   };
 </script>
+
+<style lang="stylus">
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>

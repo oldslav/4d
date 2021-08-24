@@ -33,7 +33,7 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
@@ -252,3 +252,10 @@
     }
   };
 </script>
+
+<style lang="stylus" scoped>
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>
