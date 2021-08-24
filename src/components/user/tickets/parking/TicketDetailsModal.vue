@@ -48,17 +48,22 @@
         .text-medium.q-mb-sm
           | Тип аренды
         .row.q-col-gutter-sm
-          template(v-if="getCurrentTicket.price")
-            .col-12.col-md-10
-              q-input(readonly :value="getCurrentTicket.price.name" borderless)
-            .col-12.col-md-2.row.justify-end
-              q-input.text-primary(readonly :value="ticketPrice" borderless)
-          template(v-else)
-            .col-12.col-md-10
-              q-input(readonly :value="getCurrentTicket.parkingPlace.type.description" borderless)
-            .col-12.col-md-2.row.justify-end
-              q-input.text-primary(readonly :value="ticketPrice" borderless)
+          .col-12.col-md-9(v-if="getCurrentTicket.isGuestVisit")
+            q-input(readonly :value="$t('entity.services.parking.rentTypes.guest.title')" borderless)
+          .col-12.col-md-9(v-else-if="getCurrentTicket.parkingPlace.type.id === 2")
+            q-input(readonly :value="$t('entity.services.parking.rentTypes.social.title')" borderless)
+          .col-12.col-md-9(v-else)
+            q-input(readonly :value="getCurrentTicket.price.name" borderless)
+          .col-12.col-md-3.row.justify-end
+            q-input.text-primary(readonly :value="ticketPrice" borderless)
       q-separator
+      q-card-section(v-if="getCurrentTicket.parkingPlace.type.id === 2")
+        .text-small.q-mb-sm
+          | Категория граждан, имеющих право на льготы
+        .row.q-col-gutter-sm
+            .col-12.col-md-10.text-medium
+              | {{ getCurrentTicket.personCategory.description }}
+      q-separator(v-if="getCurrentTicket.parkingPlace.type.id === 2")
       q-card-section(v-if="contactsPresent")
         .text-medium.q-mb-sm
           | {{ $t("entity.contacts.title") }}
@@ -113,6 +118,9 @@
       ticketPrice () {
         if (this.getCurrentTicket && this.getCurrentTicket.parkingPlace.type.id === 2) {
           return this.$t("entity.services.parking.rentTypes.social.price.title");
+        }
+        if (this.getCurrentTicket && this.getCurrentTicket.isGuestVisit) {
+          return this.$t("entity.services.parking.rentTypes.guest.price.title");
         }
         return this.getCurrentTicket.price && `${ this.getCurrentTicket.price.price }, руб.`;
       }
