@@ -64,7 +64,7 @@
             label: this.$t("entity.tourism"),
             action: { name: "services-tourism" },
             icon: "o_photo_camera",
-            show: this.isUserGIS
+            show: true // this.isUserGIS
           },
           {
             label: this.$t("entity.planning"),

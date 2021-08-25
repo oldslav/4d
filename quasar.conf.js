@@ -31,9 +31,9 @@ module.exports = configure(function (ctx) {
       "cookies",
       "axios",
       "api",
+      "i18n",
       "filters",
       { path: "server-init", client: false },
-      "i18n",
       "notify-defaults",
       "cesium"
     ],
@@ -130,6 +130,10 @@ module.exports = configure(function (ctx) {
         // proxy all requests starting with /api to jsonplaceholder
         "^/(api|oauth)": {
           target: "https://4d{{ENVIRONMENT}}.innopolis.university",
+          changeOrigin: true
+        },
+        "/uploads": {
+          target: "https://4d-dev.innopolis.university",
           changeOrigin: true
         },
         "/uploads": {
