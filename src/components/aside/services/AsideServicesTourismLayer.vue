@@ -29,7 +29,7 @@
     div.q-px-md.q-py-md.bg-white(v-show="canDisplayAddRoute")
       q-btn.full-width(
         @click="onClickAddRoute"
-        label="Предложить свой маршрут"
+        :label="$t('entity.services.tourism.labels.offerRoute')"
         color="primary"
         unelevated
         outline

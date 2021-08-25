@@ -11,7 +11,7 @@
 
       q-card-section.row.items-center
         .text-medium
-          | Предложить маршрут
+          | {{ $t('entity.services.tourism.offerForm.title') }}
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
 
@@ -27,14 +27,14 @@
 
       q-card-actions(align="right")
         q-btn(
-          flat
-          label="Отмена"
-          v-close-popup
+          :label="$t('action.cancel')"
           color="primary"
+          flat
+          v-close-popup
           unelevated
         )
         q-btn.q-ml-md(
-          label="Отправить"
+          :label="$t('action.send')"
           :disabled="!isValidForm"
           @click="onSubmitForm"
           color="primary"
@@ -85,9 +85,9 @@
         try {
           await this.offerRoute(this.route);
           this.close();
-          this.$q.notify({ type: "positive", message: "Данные о маршруте успешно отправлены сотруднику мэрии" });
+          this.$q.notify({ type: "positive", message: this.$t("entity.services.tourism.offerForm.offerSuccess") });
         } catch (e) {
-          this.$q.notify({ type: "negative", message: "При отпрвке данных произошла ошибка, пожалуйста повторите позже" });
+          this.$q.notify({ type: "negative", message: this.$t("entity.services.tourism.offerForm.offerError") });
         }
       }
     }

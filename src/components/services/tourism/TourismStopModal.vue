@@ -16,11 +16,11 @@
 
       q-card-section(v-if="entity")
         div(v-show="entity.properties.description")
-          div.text-caption.text-grey-8 Описание
+          div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.description') }}
           div.text-body2.rich-text.break-spaces {{ entity.properties.description }}
 
         div.q-mt-md(v-show="entity.properties.images.length > 0")
-          div.text-caption.text-grey-8 Фотографии
+          div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.photos') }}
           image-slider(:value="entity.properties.images" :slides-to-show="5")
 </template>
 

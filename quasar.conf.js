@@ -31,9 +31,9 @@ module.exports = configure(function (ctx) {
       "cookies",
       "axios",
       "api",
+      "i18n",
       "filters",
       { path: "server-init", client: false },
-      "i18n",
       "notify-defaults",
       "cesium"
     ],
@@ -114,10 +114,8 @@ module.exports = configure(function (ctx) {
         });
       },
       env: {
-        //SERVER_API_HOST: "https://4d.innocityhall.ru",
-        //BROWSER_API_HOST: "https://4d.innocityhall.ru"
-        SERVER_API_HOST: "{{ENVIRONMENT}}",
-        BROWSER_API_HOST: "{{ENVIRONMENT}}"
+        SERVER_API_HOST: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru"
+        BROWSER_API_HOST: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru"
       }
     },
 
@@ -129,11 +127,11 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "{{ENVIRONMENT}}",
+          target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         },
         "/oauth": {
-          target: "{{ENVIRONMENT}}",
+          target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         }
       }

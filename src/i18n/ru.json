@@ -150,6 +150,10 @@
     "components": {
       "dragDrop": {
         "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      },
+      "imageDragDrop": {
+        "addPhoto": "Добавьте фото",
+        "maxFiles": "Не более {maxFiles} фото"
       }
     }
   },
@@ -783,6 +787,31 @@
           "textPlaceholder": "Расскажите о себе(не более 1000 символов)",
           "resumeLinkRequired": "Необходимо указать ссылку к резюме",
           "resumeLinkInvalid": "Некорректная ссылка"
+        }
+      },
+      "tourism": {
+        "labels": {
+          "km": "км",
+          "description": "Описание",
+          "photos": "Фотографии",
+          "workTime": "Часы работы",
+          "link": "Ссылка на сайт",
+          "distance": "Расстояние",
+          "duration": "Время в пути",
+          "routeType": "Тип маршрута",
+          "routesFor": "Маршруты до",
+          "downloadRoute": "Скачать маршрут",
+          "routeFileFormat": "Выберите нужный формат файла",
+          "offerRoute": "Предложить свой маршрут"
+        },
+        "offerForm": {
+          "title": "Предложить маршрут",
+          "offerSuccess": "Данные о маршруте успешно отправлены сотруднику мэрии",
+          "offerError": "Данные о маршруте успешно отправлены сотруднику мэрии",
+          "descriptionLabel": "Добавьте описание",
+          "routeDescription": "Опишите свой маршрут",
+          "route": "Трек маршрута",
+          "routeFileFormat": "Формат gpx, tcp"
         }
       }
     },
