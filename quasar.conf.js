@@ -114,8 +114,8 @@ module.exports = configure(function () {
         });
       },
       env: {
-        SERVER_API_HOST: "https://4d{{ENVIRONMENT}}.innopolis.ru",
-        BROWSER_API_HOST: "https://4d{{ENVIRONMENT}}.innopolis.ru"
+        SERVER_API_HOST: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru"
+        BROWSER_API_HOST: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru"
       }
     },
 
@@ -127,11 +127,11 @@ module.exports = configure(function () {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "https://4d{{ENVIRONMENT}}.innopolis.ru",
+          target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         },
         "/oauth": {
-          target: "https://4d{{ENVIRONMENT}}.innopolis.ru",
+          target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         }
       }
