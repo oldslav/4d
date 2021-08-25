@@ -17,6 +17,7 @@ interface DocType {
 export interface GeoState {
   geoJson: GeoData | null
   pickedFeatureId: GeoJsonFeature | null
+  clustering: boolean
   pointCoords: any | null
   isDraw: any | null
   cesiumInstance: any | null

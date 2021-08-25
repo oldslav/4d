@@ -8,13 +8,15 @@ import {
   FETCH_TOURISM_ENTITY,
   OFFER_TOURISM_ROUTE,
   SET_ACTIVE_TOURISM_FEATURE,
-  REMOVE_ACTIVE_TOURISM_FEATURE
+  REMOVE_ACTIVE_TOURISM_FEATURE,
+  PUT_LAYER_GEOJSON
 } from "src/store/constants/action-constants";
 import {
   SET_GEODATA,
   SET_TOURISM_MENU,
   SET_LAYER_GEOJSON,
-  SET_TOURISM_ENTITY
+  SET_TOURISM_ENTITY,
+  SET_TOURISM_CURRENT_LAYER
 } from "src/store/constants/mutation-constants";
 
 import { IOfferRouteParams, IServicesTourismState, TourismGeoJSONEntities } from "../../types/tourism";
@@ -38,7 +40,7 @@ const mutations: MutationTree<IServicesTourismState> = {
   [SET_TOURISM_ENTITY] (state, entity) {
     state.entity = entity;
   },
-  setCurrentGeoJsonLayer (state, currentLayer) {
+  [SET_TOURISM_CURRENT_LAYER] (state, currentLayer) {
     state.currentGeoJSONLayer = currentLayer;
   }
 };
@@ -46,7 +48,8 @@ const mutations: MutationTree<IServicesTourismState> = {
 // Private methods
 const findFeature = (geoJson: any, id: number) => {
   const data = geoJson || {};
-  return (data.features || []).find((x: { id:number }) => x.id === id);
+  // eslint-disable-next-line eqeqeq
+  return (data.features || []).find((x: { id:number }) => x.id == id);
 };
 
 const eachFeatures = (geoJson: any, cb: (e: any) => void) => {
@@ -110,11 +113,6 @@ const actions: ActionTree<IServicesTourismState, TRootState> = {
       commit(SET_LAYER_GEOJSON, { path, geoJson });
     }
 
-    if (getters.getCurrentGeoJsonLayer !== path) {
-      commit(`services/${ SET_GEODATA }`, getters.getLayersGeoJSON[path], { root: true });
-      commit("setCurrentGeoJsonLayer", path);
-    }
-
     return getters.getLayersGeoJSON[path];
   },
 
@@ -128,32 +126,6 @@ const actions: ActionTree<IServicesTourismState, TRootState> = {
     ).call(this.service.services.tourism, layerId, id);
 
     commit(SET_TOURISM_ENTITY, data);
-  },
-
-  [SET_ACTIVE_TOURISM_FEATURE] ({ commit, getters }, { layer, id }) {
-    const geoJson = cloneDeep(getters.getLayersGeoJSON[layer]);
-    const feature = findFeature(geoJson, id);
-
-    if (feature.properties.type === TourismGeoJSONEntities.place) {
-      setActivePlace(geoJson, id);
-    } else {
-      setActiveEntity(geoJson, id);
-    }
-
-    commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
-  },
-
-  [REMOVE_ACTIVE_TOURISM_FEATURE] ({ commit, getters }, { id, layer }) {
-    const geoJson = cloneDeep(getters.getLayersGeoJSON[layer]);
-    const feature = findFeature(geoJson, id);
-
-    if (feature.properties.type === TourismGeoJSONEntities.place) {
-      removeActivePlace(geoJson);
-    } else {
-      removeActiveEntity(geoJson, id);
-    }
-
-    commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
   },
 
   async [OFFER_TOURISM_ROUTE] (ctx, payload: IOfferRouteParams) {
@@ -176,6 +148,41 @@ const actions: ActionTree<IServicesTourismState, TRootState> = {
     }
 
     return route;
+  },
+
+  [PUT_LAYER_GEOJSON] ({ commit, getters }, path) {
+    if (getters.getCurrentGeoJsonLayer !== path) {
+      const geoJSON = getters.getLayersGeoJSON[path];
+
+      commit(`services/${ SET_GEODATA }`, geoJSON ? { type: "geoJson", data: geoJSON } : null, { root: true });
+      commit(SET_TOURISM_CURRENT_LAYER, path);
+    }
+  },
+
+  [SET_ACTIVE_TOURISM_FEATURE] ({ commit, getters }, { layer, id }) {
+    const geoJson = cloneDeep(getters.getLayersGeoJSON[layer]);
+    const feature = findFeature(geoJson, id);
+
+    if (feature.properties.type === TourismGeoJSONEntities.place) {
+      setActivePlace(geoJson, id);
+    } else {
+      setActiveEntity(geoJson, id);
+    }
+
+    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
+  },
+
+  [REMOVE_ACTIVE_TOURISM_FEATURE] ({ commit, getters }, { id, layer }) {
+    const geoJson = cloneDeep(getters.getLayersGeoJSON[layer]);
+    const feature = findFeature(geoJson, id);
+
+    if (feature.properties.type === TourismGeoJSONEntities.place) {
+      removeActivePlace(geoJson);
+    } else {
+      removeActiveEntity(geoJson, id);
+    }
+
+    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
   }
 };
 

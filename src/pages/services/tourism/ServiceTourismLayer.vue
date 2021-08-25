@@ -5,7 +5,7 @@
 <script>
   import { mapGetters } from "vuex";
   import { TourismGeoJSONEntities } from "../../../store/types/tourism";
-  import { FETCH_LAYER_GEOJSON } from "../../../store/constants/action-constants";
+  import { FETCH_LAYER_GEOJSON, PUT_LAYER_GEOJSON } from "../../../store/constants/action-constants";
   import { SET_GEODATA } from "../../../store/constants/mutation-constants";
   import { preloadGeoJSONImages } from "../../../cesium/utils/preload-images";
 
@@ -23,6 +23,7 @@
       }
 
       const geoJSON = await store.dispatch(`services/tourism/${ FETCH_LAYER_GEOJSON }`, layer.path);
+      await store.dispatch(`services/tourism/${ PUT_LAYER_GEOJSON }`, layer.path);
 
       const features = geoJSON.features.filter(x => x.properties.type !== TourismGeoJSONEntities.stop);
 
@@ -32,10 +33,6 @@
           params: { category: categoryId, layer: layer.id, id: geoJSON.features[0].id }
         });
       }
-    },
-    created () {
-      const geoJson = this.getLayerGeoJSON;
-      this.$store.commit(`services/${ SET_GEODATA }`, geoJson);
     },
     mounted () {
       preloadGeoJSONImages(this.getLayerGeoJSON);

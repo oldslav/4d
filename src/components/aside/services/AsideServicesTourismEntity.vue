@@ -37,9 +37,9 @@
               div.text-caption.text-grey-8 Расстояние
               div.text-body2.rich-text.break-spaces {{ getEntity.length | distance }}
 
-            div.col-md-6(v-if="getEntity.duration")
+            div.col-md-6(v-if="getEntity.time")
               div.text-caption.text-grey-8 Время в пути
-              div.text-body2.rich-text.break-spaces {{ getEntity.duration }}
+              div.text-body2.rich-text.break-spaces {{ getEntity.time | duration }}
 
           div.row.q-mt-md(v-if="canDisplayDownloadRoute")
             div.col-md-6
@@ -57,7 +57,9 @@
 
               div.col-md-6.flex.justify-end
                 div.text-body2.rich-text.break-spaces.q-mb-sm(v-for="route in category.routes")
-                  router-link.link(:to="{ name: 'services-tourism-layer', params: { layer: route.id, category: category.id } }")
+                  router-link.link(
+                    :to="{ name: 'services-tourism-entity', params: { layer: route.layerId, id: route.id, category: route.subSection } }"
+                  )
                     | {{ route.name }}
                     q-icon(name="arrow_forward_ios")
 
@@ -133,6 +135,14 @@
         }
       },
       getRoutes (){
+        const subSections = this.getServiceMenu.subSections;
+        const subSectionsByLayers = subSections.reduce((res, subSection) => {
+          for (const layer of subSection.layers) {
+            res[layer.id] = subSection.id;
+          }
+          return res;
+        }, {});
+
         const groups = (this.getEntity.routes || []).reduce((res, route) => {
           const category = route.category;
 
@@ -140,7 +150,7 @@
             res[category.id] = { ...category, routes: [] };
           }
 
-          res[category.id].routes.push(route);
+          res[category.id].routes.push({ ...route, subSection: subSectionsByLayers[route.layerId] });
           return res;
         }, {});
 

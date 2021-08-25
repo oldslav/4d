@@ -54,6 +54,7 @@
 
     computed: {
       ...mapGetters("services/tourism", ["getServiceMenu", "getLayersGeoJSON"]),
+      ...mapGetters(["isAuthenticated"]),
       getPreviewRoute () {
         const category = this.getCategory;
 
@@ -89,7 +90,7 @@
       },
 
       canDisplayAddRoute (){
-        return this.getLayer.path.includes("route");
+        return this.getLayer.path.includes("route") && this.isAuthenticated;
       }
     },
     methods: {

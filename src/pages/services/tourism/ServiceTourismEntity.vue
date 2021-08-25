@@ -8,7 +8,8 @@
     FETCH_LAYER_GEOJSON,
     FETCH_TOURISM_ENTITY,
     REMOVE_ACTIVE_TOURISM_FEATURE,
-    SET_ACTIVE_TOURISM_FEATURE
+    SET_ACTIVE_TOURISM_FEATURE,
+    PUT_LAYER_GEOJSON
   } from "../../../store/constants/action-constants";
   import { SET_GEODATA } from "../../../store/constants/mutation-constants";
 
@@ -20,19 +21,20 @@
       const category = store.getters["services/tourism/getServiceMenu"].subSections.find(x => x.id === categoryId);
       const layer = category.layers.find(x => x.id === layerId);
 
-      const onFetchData = () => store.dispatch(
-        `services/tourism/${ SET_ACTIVE_TOURISM_FEATURE }`,
-        { layer: layer.path, id: currentRoute.params.id }
-      );
-
       await Promise.all([
-        store.dispatch(`services/tourism/${ FETCH_LAYER_GEOJSON }`, layer.path).then(onFetchData),
+        store.dispatch(`services/tourism/${ FETCH_LAYER_GEOJSON }`, layer.path),
         store.dispatch(`services/tourism/${ FETCH_TOURISM_ENTITY }`, {
           path: layer.path,
           id: currentRoute.params.id,
           layerId: layerId
         })
       ]);
+
+      await store.dispatch(`services/tourism/${ PUT_LAYER_GEOJSON }`, layer.path);
+      await store.dispatch(
+        `services/tourism/${ SET_ACTIVE_TOURISM_FEATURE }`,
+        { layer: layer.path, id: currentRoute.params.id }
+      );
     },
     beforeRouteLeave (to, from, next) {
       this.removeActiveFeature({ layer: this.getLayer.path, id: this.$route.params.id });

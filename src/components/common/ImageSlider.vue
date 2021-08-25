@@ -3,18 +3,19 @@
     :class="{'image-carousel_clickable': fullscreen, 'image-carousel_dark': $q.dark.isActive, 'image-carousel_white': !$q.dark.isActive}"
   )
     q-resize-observer(@resize="onResize")
-    div.image-carousel__container(:style="{ width: `${ width }px` }")
-        vue-slick-carousel(v-bind="getSettings")
-          div.image-carousel__slide(v-for="(image, index) in value" :key="image" @click="onClickSlide(index)")
-            div.image-carousel__slide_content
-              q-icon.image-carousel__slide_icon(v-if="fullscreen" name="visibility")
-              q-img(:src="image" :ratio="1")
+    div(:style="{ width: `${ width }px` }")
+      div.image-carousel__container
+          vue-slick-carousel(v-bind="getSettings")
+            div.image-carousel__slide(v-for="(image, index) in value" :key="image" @click="onClickSlide(index)")
+              div.image-carousel__slide_content
+                q-icon.image-carousel__slide_icon(v-if="fullscreen" name="visibility")
+                q-img(:src="image" :ratio="1")
 
-        image-gallery(
-          :value="value"
-          :visible.sync="visibleFullScreen"
-          :current.sync="fullScreenImage"
-        )
+          image-gallery(
+            :value="value"
+            :visible.sync="visibleFullScreen"
+            :current.sync="fullScreenImage"
+          )
 </template>
 <script>
   import VueSlickCarousel from "vue-slick-carousel";
@@ -69,7 +70,6 @@
 @import "../../css/_colors.styl";
 
 .image-carousel__container
-  margin 0 -2px 0 -2px
   box-sizing: border-box
 
 .image-carousel__slide
