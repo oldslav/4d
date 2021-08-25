@@ -13,8 +13,8 @@
      :to="{ name: 'services-tourism-layer', params: { layer: layer.id } }"
      clickable
     )
-      //q-item-section.list-item-avatar(avatar)
-      //  q-icon(:name="item.icon")
+      q-item-section.list-item-avatar(v-if="item.icon" avatar)
+        q-icon(:name="item.icon")
       q-item-section
         | {{ layer | i18nName }}
 </template>

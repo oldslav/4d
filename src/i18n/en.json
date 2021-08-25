@@ -150,6 +150,10 @@
     "components": {
       "dragDrop": {
         "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      },
+      "imageDragDrop": {
+        "addPhoto": "Add photo",
+        "maxFiles": "No more than {maxFiles} photos"
       }
     }
   },
@@ -775,6 +779,31 @@
           "textPlaceholder": "Tell us about yourself",
           "resumeLinkRequired": "You must provide a link to your resume",
           "resumeLinkInvalid": "Некорректная ссылка"
+        }
+      },
+      "tourism": {
+        "labels": {
+          "km": "km",
+          "description": "Description",
+          "photos": "Photos",
+          "workTime": "Working hours",
+          "link": "Link to the site",
+          "distance": "Distance",
+          "duration": "Travel time",
+          "routeType": "Route type",
+          "routesFor": "Routes to",
+          "downloadRoute": "Download route",
+          "routeFileFormat": "Select the desired file format",
+          "offerRoute": "Suggest your route"
+        },
+        "offerForm": {
+          "title": "Suggest a route",
+          "offerSuccess": "The route data was successfully sent to the mayor's office employee",
+          "offerError": "The route data was successfully sent to the mayor's office employee",
+          "descriptionLabel": "Add a description",
+          "routeDescription": "Describe your route",
+          "route": "Track route",
+          "routeFileFormat": "Format gpx, tcp"
         }
       }
     },

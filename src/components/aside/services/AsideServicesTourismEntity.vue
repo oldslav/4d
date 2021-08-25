@@ -17,39 +17,39 @@
             image-slider(:value="getImages" :slides-to-show="4")
 
           div(v-show="getEntity.description")
-            div.text-caption.text-grey-8 Описание
+            div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.description') }}
             div.text-body2.rich-text.break-spaces {{ getEntity.description }}
 
           q-separator.q-mt-lg.q-mb-lg(v-if="getEntity.workTime || getEntity.link")
 
           div.row.q-mt-md(v-if="getEntity.workTime || getEntity.link")
             div.col-md-6(v-if="getEntity.workTime")
-              div.text-caption.text-grey-8 Часы работы
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.workTime') }}
               div.text-body2.rich-text.break-spaces {{ getEntity.workTime }}
 
             div.col-md-6(v-if="visibleLink")
-              div.text-caption.text-grey-8 Ссылка на сайт
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.link') }}
               div.text-body2.rich-text.break-spaces
                 a(:href="getEntity.link" target="_blank").text-blue {{ visibleLink }}
 
           div.row.q-mt-md(v-if="getEntity.length || getEntity.time")
             div.col-md-6(v-if="getEntity.length")
-              div.text-caption.text-grey-8 Расстояние
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.distance') }}
               div.text-body2.rich-text.break-spaces {{ getEntity.length | distance }}
 
             div.col-md-6(v-if="getEntity.time")
-              div.text-caption.text-grey-8 Время в пути
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.duration') }}
               div.text-body2.rich-text.break-spaces {{ getEntity.time | duration }}
 
           div.row.q-mt-md(v-if="canDisplayDownloadRoute")
             div.col-md-6
-              div.text-caption.text-grey-8 Тип маршрута
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.routeType') }}
               div.text-body2.rich-text.break-spaces {{ getEntity.category.name }}
 
           q-separator.q-mt-lg.q-mb-lg
 
           div(v-if="getRoutes.length > 0")
-            div.text-caption.text-grey-8.q-mb-md Маршруты до {{ getEntity.name }}
+            div.text-caption.text-grey-8.q-mb-md {{ $t('entity.services.tourism.labels.routesFor') }} {{ getEntity.name }}
 
             div.row.q-mb-lg(v-for="category in getRoutes")
               div.col-md-6
@@ -67,7 +67,7 @@
     div.q-px-md.q-py-md.bg-white(v-show="canDisplayDownloadRoute")
       q-btn.full-width(
         @click="onClickDownloadRoute"
-        label="Скачать маршрут"
+        :label="$t('entity.services.tourism.labels.downloadRoute')"
         color="primary"
         unelevated
         outline
@@ -93,7 +93,7 @@
         const fixed = km.toFixed(1);
 
         const returnValue = km === parseInt(fixed, 10) ? km : fixed.replace(".",",");
-        return `${ returnValue } км`;
+        return `${ returnValue } ${ this.$t("entity.services.tourism.labels.km") }`;
       },
       duration (value){
         return moment.duration(value, "minutes").humanize(false);
@@ -160,8 +160,8 @@
     methods:{
       onClickDownloadRoute (){
         this.$q.dialog({
-          title: "Скачать маршрут",
-          message: "Выберите нужный формат файла",
+          title: this.$t("entity.services.tourism.labels.downloadRoute"),
+          message: this.$t("entity.services.tourism.labels.routeFileFormat"),
           options: {
             type: "radio",
             model: this.getEntity.gpx,
