@@ -4,6 +4,10 @@ import { Store } from "vuex";
 import { TRootState } from "../store/types/root";
 import routes from "./routes";
 
+declare global {
+  interface Window { dataLayer: Array<any>, ym: any; }
+}
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation
@@ -32,6 +36,18 @@ export default route<Store<TRootState>>(function ({ store, Vue }) {
       }
 
       next();
+    });
+
+    Router.afterEach((to) => {
+      if (typeof window.ym !== "undefined") {
+        window.ym(84292183, "hit", to.fullPath);
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "Pageview",
+        url: to.fullPath
+      });
     });
   }
   return Router;
