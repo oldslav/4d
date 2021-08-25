@@ -3,6 +3,10 @@
     ref="input"
     v-model="computedValue"
     color="primary"
+    :dense="dense"
+    :autogrow="autogrow"
+    :counter="counter"
+    :maxlength="type === 'textarea' && maxlength || undefined"
     :filled="filled"
     :type="type"
     :label="label"
@@ -14,6 +18,7 @@
     :reactive-rules="reactiveRules"
     :mask="mask"
     :unmasked-value="unmaskedValue"
+    :stack-label="stackLabel"
   )
     template(v-if="prepend" v-slot:prepend)
       slot(name="prepend")
@@ -29,6 +34,10 @@
         type: Boolean,
         default: null
       },
+      stackLabel: {
+        type: Boolean,
+        default: false
+      },
       reactiveRules: {
         type: Boolean,
         default: false
@@ -36,6 +45,14 @@
       append: {
         type: Boolean,
         default: null
+      },
+      autogrow: {
+        type: Boolean,
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
       },
       filled: {
         type: Boolean,
@@ -50,8 +67,12 @@
         default: null
       },
       value: {
-        type: String,
+        type: [String, Number],
         default: null
+      },
+      maxlength: {
+        type: Number,
+        default: 30
       },
       clearable: {
         type: Boolean,
@@ -78,6 +99,10 @@
         default: ""
       },
       unmaskedValue: {
+        type: Boolean,
+        default: false
+      },
+      counter: {
         type: Boolean,
         default: false
       }

@@ -70,7 +70,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
   },
   async [UPDATE_VEHICLE_DOCUMENTS] ({ dispatch, state, commit }, { documents, id }) {
     const { deletedIds } = state;
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents }, { root: true });
     await Promise.all(deletedIds.map((id) => dispatch(DELETE_VEHICLE_DOCUMENT, id)));
     commit(CLEAR_DELETED_IDS);
     await Promise.all(files.map((p: any) => dispatch(CREATE_VEHICLE_DOCUMENT, { payload: p, id })));
@@ -79,8 +79,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
     const result: any = [];
     await Promise.all(vehicles.map(async (v: any) => {
       const documents: any = {
-        sts: [],
-        pts: []
+        sts: []
       };
       const { id, model, brand, type, number, images } = v;
       const files = await dispatch("loadFiles", images, { root: true });

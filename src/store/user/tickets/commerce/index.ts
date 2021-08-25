@@ -49,8 +49,10 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   async [GET_EMPLOYEE_COMMERCE_TICKETS] ({ commit, state }) {
     const { filters, pagination: { limit, offset } } = state;
+
+    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }); // no draft
     const { data } = await this.service.user.tickets.getEmployeeTicketsCommerce({
-      filters,
+      filters: f,
       limit,
       offset: offset - 1
     });
@@ -74,7 +76,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [CREATE_COMMERCE_TICKET] ({ dispatch }, { placeId, payload }) {
     const { documents, ...rest } = payload;
     const { data: { id } } = await this.service.user.tickets.createCommerceTicket(placeId, rest);
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
     await Promise.all(files.map((f: any) => this.service.user.tickets.uploadCommerceTicketFile(id, f)));
     await dispatch(REQUEST_APPROVAL_COMMERCE, id);
   },

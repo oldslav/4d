@@ -38,7 +38,7 @@
           .col
             q-input(readonly :label="$t('entity.contacts.phone')" :value="getCurrentTicket.contacts.phones[0]" borderless v-if="getCurrentTicket.contacts.phones.length")
             q-input(readonly :label="$t('entity.contacts.telegram')" :value="getCurrentTicket.contacts.telegramAlias" borderless v-if="getCurrentTicket.contacts.telegramAlias")
-      q-card-actions(align="right" v-if="isEmployee")
+      q-card-actions(align="right" v-if="isEmployee && getCurrentTicket.status.id === 2")
         q-btn(v-close-popup flat color="red" :label="$t('action.reject')" @click="onReject()")
         q-btn(v-close-popup color="primary" :label="$t('action.accept')" @click="onApprove()").q-px-md
 </template>

@@ -5,7 +5,7 @@
     q-input(v-model="model.legalAddress" :rules="required" :label="$t('entity.companyDocuments.legalAddress')")
     q-input(v-model="model.realAddress" :rules="required" :label="$t('entity.companyDocuments.realAddress')")
     q-input(v-model="model.okpo" :rules="okpo" :label="$t('entity.companyDocuments.okpo')")
-    FilePicker(v-model="model.documents.inn" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.inn')")
+    FilePicker(v-model="model.documents.inn_jur" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.inn')")
     FilePicker(v-model="model.documents.ogrn" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.ogrn')")
     FilePicker(v-model="model.documents.egrjul" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.egrjul')")
     FilePicker(v-model="model.documents.partner_card" @remove="onRemoveFile" :rules="requiredDocument" :label="this.$t('entity.files.partner_card')")
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import { isEqual } from "lodash";
+  import { isEqual, cloneDeep } from "lodash";
   import { mapActions, mapGetters } from "vuex";
   import FilePicker from "components/common/FilePicker";
   import FormPhones from "components/common/form/FormPhones";
@@ -35,7 +35,7 @@
     realAddress: null,
     documents: {
       partner_card: [],
-      inn: [],
+      inn_jur: [],
       ogrn: [],
       egrjul: []
     },
@@ -84,7 +84,7 @@
       ...mapActions("user/company", [UPDATE_COMPANY_CARD]),
       assignModel () {
         this.deletedIds = [];
-        this.model = Object.assign(defaultModel(), JSON.parse(JSON.stringify(this.getCompanyCard)));
+        this.model = Object.assign(defaultModel(), cloneDeep(this.getCompanyCard));
       },
       onRemoveFile (id) {
         this.deletedIds.push(id);

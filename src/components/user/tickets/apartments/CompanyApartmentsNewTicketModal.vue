@@ -22,7 +22,7 @@
         )
           q-input(v-model="companyName" :label="$t('user.companyName')")
           q-input(v-model="companyAddress" :label="$t('common.address')")
-          MyDocumentsForm(is-local v-model="companyDocuments").q-mt-md
+          MyDocumentsForm(is-local v-model="companyDocuments" all-required).q-mt-md
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
         q-step(
@@ -56,6 +56,7 @@
 <script>
   import { mapActions } from "vuex";
   import { CREATE_LEGAL_TICKET_LIVING } from "@/store/constants/action-constants";
+  import { isDocumentPresent } from "@/util/validators";
   import BaseModal from "components/common/BaseModal";
   import FormName from "components/common/form/FormName";
   import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
@@ -100,12 +101,12 @@
     },
     computed: {
       stepTwoDone () {
-        return !!this.name.first && !!this.jobPosition && Object.values(this.userDocuments).every((d) => this.documentPresent(d));
+        return !!this.name.first && !!this.jobPosition && Object.values(this.userDocuments).every(isDocumentPresent);
       },
       stepOneDone () {
         return !!this.companyName
           && !!this.companyAddress
-          && Object.values(this.companyDocuments).every((d) => this.documentPresent(d));
+          && Object.values(this.companyDocuments).every(isDocumentPresent);
       },
       stepThreeDone () {
         return !!this.rooms.length && !!this.contacts.phones[0];
@@ -116,9 +117,6 @@
     },
     methods: {
       ...mapActions("user/tickets/living", [CREATE_LEGAL_TICKET_LIVING]),
-      documentPresent (val) {
-        return !!val && val.length > 0;
-      },
       toggleModal (val) {
         this.$emit("input", val);
         Object.assign(this.$data, this.$options.data.apply(this));

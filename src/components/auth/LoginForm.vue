@@ -1,9 +1,9 @@
 <template lang="pug">
   div
     h3.text-title
-      | {{ $t('common.login.title') }}
+      | {{ $t("common.login.title") }}
     h3.text-subtitle
-      | {{ $t('common.login.subtitle') }}
+      | {{ $t("common.login.subtitle") }}
     q-form(@submit="onSubmit").q-gutter-y-md
       BaseInput(v-model="form.username" :label="$t('entity.email')")
       BaseInput(v-model="form.password" :label="$t('entity.password')" :type="isPasswordVisible ? 'text' : 'password'" append)
@@ -54,12 +54,12 @@
 
           this.$emit("submit");
         } catch (e) {
-          if (e.response.status === 401) {
-            this.$q.notify({
-              type: "negative",
-              message: "Неправильно введён логин или пароль"
-            });
-          }
+          // if (e.response.status === 401) {
+          //   this.$q.notify({
+          //     type: "negative",
+          //     message: "Неправильно введён логин или пароль"
+          //   });
+          // }
         }
       }
     }

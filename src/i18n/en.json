@@ -103,6 +103,12 @@
     "notice": "Message",
     "reason": "Reason",
     "rentPrice": "Rent price, rubles",
+    "street": "Street",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "documents": "Documents",
+    "photos": "Photos",
+    "info": "Info",
     "quantity": {
       "area": "Area, sq.m",
       "rooms": "Rooms",
@@ -115,6 +121,7 @@
     "type": "Type",
     "status": "Status",
     "id": "ID",
+    "nameOf": "Name",
     "name": "Name",
     "fullname": "Full name",
     "email": "Email",
@@ -122,6 +129,7 @@
     "telegramAlias": "Telegram",
     "role": "Role",
     "created": "Created at",
+    "noData": "No data",
     "permissions": {
       "title": "Permissions",
       "ROLE_QGIS": "GIS employee",
@@ -138,6 +146,11 @@
       "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
       "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce.title",
       "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    },
+    "components": {
+      "dragDrop": {
+        "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      }
     }
   },
   "user": {
@@ -149,6 +162,7 @@
       "actions": {
         "create": "Create new ticket",
         "details": "Show ticket details",
+        "edit": "edit",
         "cancel": "Cancel ticket",
         "next": "Далее"
       },
@@ -179,7 +193,7 @@
       "warehouse": {
         "steps": {
           "first": "Оплата",
-          "second": "Подписание договора и получение ключа"
+          "second": "Подписание договора"
         }
       },
       "vacancies": {
@@ -417,6 +431,7 @@
       "monthlyPrice": "Payment per month",
       "depositPrice": "Deposit payment",
       "totalPrice": "Total amount",
+      "cardPrice": "Card price",
       "dateContractConcluded": "Дата заключения",
       "dateContractExpire": "Дата окончания",
       "columns": {
@@ -447,6 +462,7 @@
     }
   },
   "action": {
+    "showOnMap": "Show on map",
     "applicationMake": "Make an application",
     "block": "Block",
     "unblock": "Unblock",
@@ -455,6 +471,7 @@
     "rent": "Rent",
     "details": "Details",
     "register": "Register",
+    "edit": "Edit",
     "back": "Back",
     "save": "Save",
     "clear": "Clear",
@@ -482,6 +499,36 @@
     }
   },
   "entity": {
+    "estate": {
+      "title": "Estate Object",
+      "details": {
+        "id": "ID",
+        "number": "House number",
+        "infrastructureType": "Infrastructure type",
+        "category": "Category",
+        "name": "Name",
+        "constructYear": "Year of construction",
+        "residentsCount": "Amount of residents",
+        "builder": "Property developer",
+        "street": "Street",
+        "area": "Area of the object",
+        "parkingCount": "Amount of parking places",
+        "floors": "Amount of floors",
+        "managingCompany": "Managing company",
+        "status": "Construction stage",
+        "organizationCount": "Amount of organizations",
+        "link": "Link to website"
+      }
+    },
+    "transport": "Transport Infrastructure",
+    "landscape": "Urban Landscaping",
+    "lighting": "Urban Lighting",
+    "tourism": "Tourism Infrastructure",
+    "ideas": "Ideas and Propositions",
+    "planning": "Urban Planning",
+    "engineering": "Engineering and Municipal Infrastructure",
+    "environment": "Environment Conditions",
+    "safety": "The Safety of the City",
     "socialTypes": {
       "title": "Категория граждан, имеющих право на льготы",
       "largeFamily": "Large family",
@@ -522,7 +569,7 @@
         "chooseApartmentSuccess": "Квартира выбрана"
       },
       "commerce": {
-        "title":"Commercial real estate",
+        "title": "Commercial real estate",
         "premisesNumber": "Premises № {number}",
         "ceilingHeight": "Высота потолка, м",
         "premisesCount": "Количество помещений",
@@ -572,7 +619,7 @@
             "title": "Guest visit",
             "description": "",
             "price": {
-              "title": "100 rubles per day",
+              "title": "70 rubles per day",
               "description": ""
             }
           },
@@ -675,8 +722,8 @@
           "category": "Категория",
           "cover": "Добавьте обложку проекта",
           "markdownDescription": "Добавьте описание проекта",
-          "media": "Загрузите фотографии и видео, наиболее полно описывающие ваш проект. Максимальный размер файла: 2 Мб",
-          "mediaMaxSize": "Максимальный размер файла: 2 Мб",
+          "media": "Добавьте фото",
+          "mediaMaxCount": "Не более 5 фото",
           "loadedMedia": "Загруженные фотографии"
         }
       },
@@ -726,7 +773,8 @@
           "resumeLink": "Resume link",
           "textHint": "Add cover letter text",
           "textPlaceholder": "Tell us about yourself",
-          "resumeLinkRequired": "You must provide a link to your resume"
+          "resumeLinkRequired": "You must provide a link to your resume",
+          "resumeLinkInvalid": "Некорректная ссылка"
         }
       }
     },
@@ -799,16 +847,16 @@
       "passport": "Passport scan",
       "snils": "SNILS scan",
       "inn": "INN scan",
-      "inn_jur": "Company INN",
+      "inn_jur": "@:entity.files.inn",
       "job": "Employment certificate",
       "birth": "Birth certificate scan",
       "marriage": "Marriage certificate scan",
       "children_registration": "Residence permit scan",
-      "sts": "Vehicle registration certificate scan",
+      "sts": "Vehicle registration certificate or vehicle passport scan",
       "pts": "Vehicle passport scan",
       "consent_processing_personal_data": "Consent to the processing of personal data",
       "job_petition": "Application from the employer",
-      "social": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
+      "social_confirm": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
       "ogrn": "Скан-копия ОГРН",
       "egrjul": "Скан-копия выписки из ЕГРЮЛ",
       "partner_card": "Скан-копия карты партнера"
@@ -816,7 +864,14 @@
     "tickets": {
       "title": "Tickets",
       "apartments": "Apartment rent",
-      "ideas": "Ideas and suggestions",
+      "ideas": {
+        "title": "Ideas and suggestions",
+        "action": {
+          "toVote": "Submit to the vote",
+          "forConsideration": "For consideration",
+          "finish": "Finish project"
+        }
+      },
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
       "vacancy": "Городские вакансии",
@@ -854,17 +909,7 @@
         "events": "major events are held annually"
       },
       "sections": {
-        "title": "Sections",
-        "estate": "Estate Object",
-        "transport": "Transport Infrastructure",
-        "landscape": "Urban Landscaping",
-        "lighting": "Urban Lighting",
-        "tourism": "Tourism Infrastructure",
-        "ideas": "Ideas and Propositions",
-        "planning": "Urban Planning",
-        "engineering": "Engineering and Municipal Infrastructure",
-        "environment": "Environment Conditions",
-        "safety": "The Safety of the City"
+        "title": "Sections"
       },
       "service": {
         "title": "Services for residents and guests of the city",

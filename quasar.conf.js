@@ -11,7 +11,7 @@ const { configure } = require("quasar/wrappers");
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
-module.exports = configure(function () {
+module.exports = configure(function (ctx) {
   return {
     sourceMap: true,
     // https://quasar.dev/quasar-cli/supporting-ts

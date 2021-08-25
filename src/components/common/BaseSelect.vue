@@ -1,8 +1,8 @@
 <template lang="pug">
   q-select(
-    :value="value"
-    @input="onInput"
+    v-model="computedValue"
     color="primary"
+    :dense="dense"
     :options="options"
     :label="label"
     :clearable="clearable"
@@ -10,7 +10,11 @@
     :readonly="readonly"
     :disable="disable"
     :multiple="multiple"
-    )
+    :option-key="optionKey"
+    :option-value="optionValue"
+    :rules="rules"
+    :stack-label="stackLabel"
+  )
     template(v-slot:prepend)
       slot(name="prepend")
     template(v-slot:append)
@@ -25,9 +29,21 @@
         type: [String, Number, Array, Object, null],
         default: null
       },
+      stackLabel: {
+        type: Boolean,
+        default: false
+      },
       label: {
         type: String,
         default: null
+      },
+      optionKey: {
+        type: String,
+        default: "label"
+      },
+      optionValue: {
+        type: String,
+        default: "value"
       },
       options: {
         type: Array,
@@ -35,23 +51,31 @@
       },
       clearable: {
         type: Boolean,
-        default: null
+        default: false
       },
       outlined: {
         type: Boolean,
-        default: null
+        default: false
       },
       readonly: {
         type: Boolean,
-        default: null
+        default: false
       },
       disable: {
         type: Boolean,
-        default: null
+        default: false
       },
       multiple: {
         type: Boolean,
-        default: null
+        default: false
+      },
+      dense: {
+        type: Boolean,
+        default: false
+      },
+      rules: {
+        type: [Array, null],
+        default: () => []
       }
     },
     data () {
@@ -59,10 +83,24 @@
         innerValue: null
       };
     },
-    methods: {
-      onInput (value) {
-        this.innerValue = value;
-        this.$emit("input", value);
+    computed: {
+      computedValue: {
+        get () {
+          if (this.innerValue) {
+            return this.innerValue;
+          } else {
+            return this.value;
+          }
+        },
+
+        set (value) {
+          this.innerValue = value;
+          if (value) {
+            this.$emit("input", value[this.optionValue]);
+          } else {
+            this.$emit("input", value);
+          }
+        }
       }
     }
   };

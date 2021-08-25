@@ -15,7 +15,7 @@
           v-model="resumeFilesModel"
           @input="onChangeResumeFiles"
           accept=".pdf, .doc, .docx"
-          :max-files="1"
+          :max-files="5"
           :label="$t('entity.services.vacancies.respondForm.resumeFile')"
           :description="$t('entity.services.vacancies.respondForm.resumeFileFormat')"
         )
@@ -26,7 +26,6 @@
           :label="$t('entity.services.vacancies.respondForm.resumeLink')"
           :rules="[validateURL]"
           ref="resumeLink"
-          lazy-rules
         )
 
       div.q-mt-md
@@ -35,6 +34,7 @@
           v-model="model.text"
           :rules="[requiredString]"
           :label="$t('entity.services.vacancies.respondForm.textPlaceholder')"
+          maxlength="1000"
           type="textarea"
           lazy-rules
           outlined
@@ -48,7 +48,7 @@
 
   const defaults = () => ({
     name: {},
-    resumeFile: null,
+    resumeFiles: [],
     resumeLink: "",
     text: ""
   });
@@ -98,22 +98,25 @@
       },
 
       validateResume (){
-        return this.model.resumeLink !== "" || this.model.resumeFile;
+        return this.model.resumeLink !== "" || this.model.resumeFiles.length;
       },
 
       validateURL (value){
         try {
           // eslint-disable-next-line no-new
           new URL(value);
-        } catch (_) {
-          return this.model.resumeFile || this.$t("entity.services.vacancies.respondForm.resumeLinkRequired");
+        } catch (e) {
+          if (value === "") {
+            return;
+          }
+          return this.$t("entity.services.vacancies.respondForm.resumeLinkInvalid");
         }
       },
 
       onChangeResumeFiles (){
-        this.model.resumeFile = this.resumeFilesModel[0] || null;
+        this.model.resumeFiles = this.resumeFilesModel;
 
-        if (this.model.resumeFile) {
+        if (this.model.resumeFiles.length) {
           this.$refs.resumeLink.resetValidation();
         }
       }

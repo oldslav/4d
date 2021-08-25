@@ -9,7 +9,7 @@
             | {{$t("entity.about.model.title")}}
           .about__caption-large
             | {{$t("entity.about.model.caption")}}
-    .about__inno.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
+    .about__inno.bg-blue.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
       img.about__inno-image(src="@/assets/svg/noon.svg")
       .col-12.col-md-6.flex.items-center.justify-center.z-fab
         div
@@ -79,52 +79,52 @@
       sections () {
         return [
           {
-            title: this.$t("entity.about.sections.estate"),
+            title: this.$t("entity.estate.title"),
             image: require("@/assets/svg/building.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.transport"),
+            title: this.$t("entity.transport"),
             image: require("@/assets/svg/two-wheels.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.landscape"),
+            title: this.$t("entity.landscape"),
             image: require("@/assets/svg/benches.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.lighting"),
+            title: this.$t("entity.lighting"),
             image: require("@/assets/svg/lights.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.tourism"),
+            title: this.$t("entity.tourism"),
             image: require("@/assets/svg/hike.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.ideas"),
+            title: this.$t("entity.ideas"),
             image: require("@/assets/svg/lady-tag.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.planning"),
+            title: this.$t("entity.planning"),
             image: require("@/assets/svg/big-phone.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.engineering"),
+            title: this.$t("entity.engineering"),
             image: require("@/assets/svg/chart.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.environment"),
+            title: this.$t("entity.environment"),
             image: require("@/assets/svg/bushes.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.about.sections.safety"),
+            title: this.$t("entity.safety"),
             image: require("@/assets/svg/city-lock.svg"),
             name: ""
           }
@@ -206,7 +206,6 @@
     }
 
     &__inno {
-      background-color $illustration-light
       position relative
     }
 

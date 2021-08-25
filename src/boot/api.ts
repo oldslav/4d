@@ -19,6 +19,9 @@ import { UsersService } from "src/api/users";
 import { IdeasService } from "src/api/services/ideas";
 import { CommerceService } from "src/api/services/commerce";
 import { VerificationRequestService } from "src/api/user/verification-request";
+import { EstateService } from "src/api/services/estate";
+import DesignService from "src/api/design";
+import { TourismService } from "src/api/services/tourism";
 
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,12 +31,15 @@ declare module "vuex/types/index" {
       auth: AuthService,
       dictionaries: DictionariesService,
       references: ReferencesService,
+      design: DesignService,
       services: {
         apartments: ApartmentsService,
         parking: ParkingService,
         vacancy: VacancyService,
         commerce: CommerceService,
-        ideas: IdeasService
+        ideas: IdeasService,
+        estate: EstateService,
+        tourism: TourismService,
       },
       user: {
         bills: BillsService,
@@ -61,12 +67,15 @@ export default boot(({ app }) => {
     common: new Service(axios),
     dictionaries: new DictionariesService(axios),
     references: new ReferencesService(axios),
+    design: new DesignService(axios),
     services: {
       apartments: new ApartmentsService(axios),
       parking: new ParkingService(axios),
       vacancy: new VacancyService(axios),
       commerce: new CommerceService(axios),
-      ideas: new IdeasService(axios)
+      ideas: new IdeasService(axios),
+      estate: new EstateService(axios),
+      tourism: new TourismService(axios)
     },
     user: {
       bills: new BillsService(axios),

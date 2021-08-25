@@ -20,6 +20,46 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/design",
+    name: "design",
+    redirect: {
+      name: "design-intro"
+    },
+    components: {
+      default: (): Promise<any> => import("pages/design-code/DesignCode.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/design-code/AsideDesignCode.vue")
+    },
+    meta: {
+      toolbar: true,
+      asideLeft: true
+    },
+    children: [
+      {
+        path: "intro",
+        name: "design-intro",
+        components: {
+          default: (): Promise<any> => import("pages/design-code/DesignIntro.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true
+        }
+      },
+      {
+        path: "section/:id",
+        name: "design-section",
+        components: {
+          default: (): Promise<any> => import("pages/design-code/DesignSection.vue"),
+          asideSection: (): Promise<any> => import("components/aside/design-code/AsideDesignSection.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideSection: true
+        }
+      }
+    ]
+  },
+  {
     path: "/playground",
     name: "playground",
     redirect: {
@@ -305,13 +345,6 @@ const routes: RouteConfig[] = [
     }
   },
   {
-    path: "/design",
-    name: "design",
-    components: {
-      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
-    }
-  },
-  {
     path: "/map",
     name: "map",
     components: {
@@ -326,6 +359,7 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/maps/MapApartments.vue")
         },
         meta: {
+          map: true,
           toolbar: true
         }
       }
@@ -343,12 +377,161 @@ const routes: RouteConfig[] = [
     },
     children: [
       {
+        path: "estate",
+        name: "services-estate",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        },
+        children: [
+          {
+            path: ":id",
+            name: "services-estate-details",
+            components: {
+              default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+            },
+            meta: {
+              toolbar: true
+            }
+          }
+        ]
+      },
+      {
+        path: "transport",
+        name: "services-transport",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "landscape",
+        name: "services-landscape",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "lighting",
+        name: "services-lighting",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
+        path: "tourism",
+        name: "services-tourism",
+        components: {
+          default: (): Promise<any> => import("../pages/services/tourism/ServiceTourism.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesTourism.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideServices: true
+        },
+        children: [
+          {
+            path: ":category",
+            name: "services-tourism-category",
+            components: {
+              default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismCategory.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/services/AsideServicesTourismCategory.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideServices: true
+            }
+          },
+          {
+            path: ":category/:layer",
+            name: "services-tourism-layer",
+            components: {
+              default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismLayer.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/services/AsideServicesTourismLayer.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideServices: true
+            }
+          },
+          {
+            path: ":category/:layer/:id",
+            name: "services-tourism-entity",
+            components: {
+              default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismEntity.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/services/AsideServicesTourismEntity.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideServices: true
+            }
+          }
+          //   //
+          //   children: [
+          //     {
+          //       path: ":layer",
+          //       name: "services-tourism-layer",
+          //       components: {
+          //         default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismLayer.vue"),
+          //         asideTourismLayer: (): Promise<any> => import("components/aside/services/AsideServicesTourismLayer.vue")
+          //       },
+          //       meta: {
+          //         map: true,
+          //         toolbar: true,
+          //         asideServices: true
+          //       },
+          //       children: [
+          //         {
+          //           path: ":id",
+          //           name: "services-tourism-entity",
+          //           components: {
+          //             default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismEntity.vue"),
+          //             asideTourismEntity: (): Promise<any> => import("components/aside/services/AsideServicesTourismEntity.vue")
+          //           },
+          //           meta: {
+          //             map: true,
+          //             toolbar: true,
+          //             asideServices: true
+          //           }
+          //         }
+          //       ]
+          //     }
+          //   ]
+          // }
+        ]
+      },
+      {
+        path: "planning",
+        name: "services-planning",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+        },
+        meta: {
+          toolbar: true
+        }
+      },
+      {
         path: "apartments",
         name: "services-apartments",
         components: {
           default: (): Promise<any> => import("pages/services/ServiceApartments.vue")
         },
         meta: {
+          map: true,
           toolbar: true
         }
       },
@@ -359,7 +542,9 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/services/ServiceCommerce.vue")
         },
         meta: {
-          toolbar: true
+          map: true,
+          toolbar: true,
+          creatorPoint: true
         }
       },
       {
@@ -370,6 +555,7 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesParking.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }
@@ -390,9 +576,10 @@ const routes: RouteConfig[] = [
         path: "ideas",
         name: "services-ideas",
         components: {
-          default: (): Promise<any> => import("pages/Services.vue")
+          default: (): Promise<any> => import("pages/services/ServiceIdeas.vue")
         },
         meta: {
+          map: true,
           toolbar: true
         }
       },
@@ -404,6 +591,7 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesCrowdfunding.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }

@@ -3,6 +3,7 @@
     :value="value"
     position="standard"
     @input="toggleModal"
+    :loading="isLoading"
   )
     q-card.full-width
       q-stepper(
@@ -20,12 +21,7 @@
           :name="1"
         )
           FormName(v-model="name")
-          //FilePicker(:max-files="5" v-model="passport" :label="$t('entity.files.passportCopy')").q-mt-sm
-          //FilePicker(v-model="snils" :label="$t('entity.files.snilsCopy')").q-mt-sm
-          //FilePicker(v-model="inn" :label="$t('entity.files.innCopy')").q-mt-sm
-          //FilePicker(v-model="job" :label="$t('entity.files.workCertificate')").q-mt-sm
-          //FilePicker(v-model="job_petition" :label="$t('entity.files.job_petition')").q-mt-sm
-          MyDocumentsForm(v-model="documents" isLocal)
+          MyDocumentsForm(v-model="documents" isLocal all-required)
 
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -65,6 +61,7 @@
     GET_USER_DOCUMENTS,
     GET_USER_TICKET
   } from "@/store/constants/action-constants";
+  import { isDocumentPresent } from "@/util/validators";
   import TicketNeighbors from "components/user/tickets/TicketNeighbors";
   import BaseInput from "../../../common/BaseInput";
   import BaseModal from "../../../common/BaseModal";
@@ -141,16 +138,11 @@
       },
 
       isValid () {
-        return this.isUserInfo && this.isAdditionalInfo;
+        return this.isUserInfo && this.isAdditionalInfo && !this.ticketId;
       },
 
       isUserInfo () {
-        return !!this.name.first
-          && !!this.documents.passport
-          && !!this.documents.snils
-          && !!this.documents.inn
-          && !!this.documents.job
-          && !!this.documents.job_petition;
+        return !!this.name.first && Object.values(this.documents).every(isDocumentPresent);
       },
 
       isFamilyInfo () {

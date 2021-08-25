@@ -38,7 +38,7 @@
     computed:{
       ...mapGetters("services/vacancy", ["getVacancyReferences"]),
       getProfIndustry (){
-        const options = this.getVacancyReferences[VacancyReferencesEnum.profIndustry].map(
+        const options = this.getVacancyReferences[VacancyReferencesEnum.publishedProfIndustry].map(
           x => ({ id: x.id, label: x.description, icon: `img:${ ICONS_HOST }${ x.icon }` })
         );
 

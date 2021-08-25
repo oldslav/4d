@@ -33,7 +33,7 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
@@ -50,7 +50,7 @@
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
-    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
+    ApartmentsTicketDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
@@ -65,13 +65,13 @@
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
   import BaseTable from "components/common/BaseTable";
-  import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import ApartmentsTicketDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import ApartmentTicketEmployeeFlow from "components/user/tickets/apartments/ApartmentTicketEmployeeFlow";
 
   export default {
     name: "UserTicketsApartmentsEmployee",
     components: {
-      ApartmentsEmployeeDetailsModal,
+      ApartmentsTicketDetailsModal,
       BaseTable,
       ApartmentTicketStatus,
       ApproveTicketModal,
@@ -252,3 +252,10 @@
     }
   };
 </script>
+
+<style lang="stylus" scoped>
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>

@@ -12,8 +12,8 @@
     )
       template(#body="props")
         q-tr(:props="props" @click="expandRow(props)")
-          q-td(key="fullname" :props="props")
-            | {{ props.row.name.full }}
+          q-td(key="companyName" :props="props")
+            | {{ props.row.companyName }}
           q-td(key="address" :props="props")
             | {{ props.row.commerce.address.street }} {{ props.row.commerce.address.house }}
           q-td(key="premisesNumber" :props="props")
@@ -89,9 +89,9 @@
         expanded: [],
         columns: [
           {
-            name: "fullname",
+            name: "companyName",
             required: true,
-            label: this.$t("common.fullname"),
+            label: this.$t("user.companyName"),
             align: "left"
           },
           {
