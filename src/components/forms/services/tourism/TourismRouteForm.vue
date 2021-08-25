@@ -1,11 +1,11 @@
 <template lang="pug">
   q-form(ref="form" @submit="onSubmitForm")
     div.q-mt-md
-      div.text-caption.text-grey-8 Добавьте описание
+      div.text-caption.text-grey-8 {{ $t('entity.services.tourism.offerForm.descriptionLabel') }}
       q-input(
         v-model="model.description"
         :rules="[requiredString]"
-        label="Опишите свой маршрут"
+        :label="$t('entity.services.tourism.offerForm.routeDescription')"
         maxlength="150"
         type="textarea"
         lazy-rules
@@ -16,16 +16,13 @@
       file-picker(
         v-model="routes"
         :max-files="1"
+        :label="$t('entity.services.tourism.offerForm.route')"
+        :description="$t('entity.services.tourism.offerForm.routeFileFormat')"
         accept=".gpx, .tcp"
-        label="Трек маршрута"
-        description="Формат gpx, tcp"
       )
 
     div.q-mt-md
-      BaseImageDragDrop(
-        v-model="model.images"
-        :max-files="5"
-      )
+      BaseImageDragDrop(v-model="model.images" :max-files="5")
 </template>
 <script>
   import { isEqual } from "lodash";

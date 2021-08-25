@@ -1,7 +1,7 @@
 <template lang="pug">
   div.base-image-grag-drop
-    div.text-body2.text-grey-8 Добавьте фото
-    div.text-caption.text-primary Не более 5 фото
+    div.text-body2.text-grey-8 {{ $t('common.components.imageDragDrop.addPhoto') }}
+    div.text-caption.text-primary {{ $t('common.components.imageDragDrop.maxFiles', { maxFiles }) }}
       BaseDragDrop.base-image-grag-drop_dd.cursor-pointer(
         :value="files"
         :max-files="maxFiles"
@@ -11,7 +11,7 @@
         @input="onChangeFiles"
       )
         div(v-show="!files.length").base-image-grag-drop__text.flex.text-primary.q-px-lg.text-body2.items-center.justify-center.text-center
-          | Перенесите файлы в выделенную область для загрузки или нажмите
+          | {{ $t('common.components.dragDrop.info') }}
           div.base-image-grag-drop__icon.text-primary
             q-icon.cursor-pointer(name="o_file_upload")
 
