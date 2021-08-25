@@ -11,12 +11,11 @@
         vc-layer-imagery
           vc-provider-imagery-openstreetmap(:url="mapUrl")
           vc-datasource-geojson(
-            v-if="data && data.type === 'geoJson'"
-            @ready="onDatasourceReady"
-            :show="show"
             ref="ds"
-            :data="data.data"
+            :data="fakeData"
+            :show="show"
             :entities="entities"
+            @ready="onDatasourceReady"
           )
         vc-handler-draw-point(
           v-show="isDraw"
@@ -35,9 +34,13 @@
 </template>
 
 <script>
+  import { get } from "lodash";
   import { mapMutations, mapState } from "vuex";
   import { toDegrees } from "../../util/map";
+  import render from "../../cesium/render";
   import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
+
+  const FAKE_GEOJSON_DATA = { "type": "FeatureCollection", "features": [] };
 
   export default {
     name: "BaseMap",
@@ -53,14 +56,16 @@
         options: {},
         entities: [],
         geoJson: null,
-        cesiumInstance: null
+        cesiumInstance: null,
+        fakeData: FAKE_GEOJSON_DATA
       };
     },
     computed: {
       ...mapState("services", {
         pointCoords: state => state.pointCoords,
         isDraw: state => state.isDraw,
-        pickedFeatureId: state => state.pickedFeatureId
+        pickedFeatureId: state => state.pickedFeatureId,
+        clustering: state => state.clustering
       }),
 
       mapUrl () {
@@ -103,13 +108,16 @@
           maximumHeight: 5000
         });
 
+        cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
+        cesiumInstance.viewer.scene.fxaa = false;
+        cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
+
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
 
-        this.$root.map = {
-          componentInstance: this,
-          cesiumInstance
-        };
+        this.$root.map = { componentInstance: this, cesiumInstance };
+
+        this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
       },
 
       activeEvt (_) {
@@ -131,15 +139,41 @@
       },
 
       onDatasourceReady (vcViewer) {
+        const { datasource } = this.$refs.ds;
         this.isLoading = false;
+
+        datasource.clustering.pixelRange = 100;
+        datasource.clustering.minimumClusterSize = 5;
+
+        this.$watch("clustering", this.onUpdateClustering, { immediate: true });
+        this.$watch("data", this.onUpdateData, { immediate: true });
         this.$emit("onDatasourceReady", vcViewer);
-        this.$refs.ds.datasource.clustering.enabled = true;
-        this.$refs.ds.datasource.clustering.pixelRange = 100;
-        this.$refs.ds.datasource.clustering.minimumClusterSize = 5;
+      },
+
+      onUpdateClustering (val) {
+        const { datasource } = this.$refs.ds;
+        datasource.clustering.enabled = !!val;
       },
 
       entitySelected (e) {
         this.$emit("change", e);
+      },
+
+      onUpdateData () {
+        const { datasource, cesiumObject, viewer } = this.$refs.ds;
+        const dataType = get(this.data, "type", null);
+        const data = dataType === "geoJson" ? this.data.data : FAKE_GEOJSON_DATA;
+
+        datasource.load(data).then((ds) => {
+          render(ds.entities.values);
+          viewer.zoomTo(cesiumObject);
+        });
+      },
+
+      onChangePickedFeatureId (val){
+        if (val === null) {
+          this.$refs.vcViewer.viewer.selectedEntity = null;
+        }
       }
     },
     watch: {

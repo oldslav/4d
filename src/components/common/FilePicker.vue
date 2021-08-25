@@ -2,12 +2,12 @@
   q-file(
     :value="value"
     :rules="rules"
+    :multiple="multiple"
     no-error-icon
     dense
     :label="label"
     bottom-slots
     borderless
-    multiple
     append
     ref="field"
     :readonly="readonly"
@@ -62,6 +62,10 @@
       description: {
         type: String,
         default: "Формат jpg, jpeg, png, pdf"
+      },
+      multiple: {
+        type: Boolean,
+        default: true
       },
       maxFileSize: {
         type: [Number, String],

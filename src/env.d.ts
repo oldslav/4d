@@ -7,3 +7,7 @@ declare namespace NodeJS {
     BROWSER_API_HOST: string;
   }
 }
+
+declare interface Window {
+  Cesium?: any
+}

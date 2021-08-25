@@ -7,7 +7,7 @@ import {
   GET_PARKING_GEO
 } from "src/store/constants/action-constants";
 import {
-  SET_CESIUM,
+  SET_CESIUM, SET_CLUSTERING,
   SET_DRAW_TYPE,
   SET_EMPTY,
   SET_FEATURE_ID,
@@ -22,6 +22,7 @@ import vacancy from "src/store/services/vacancy";
 import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
+import tourism from "src/store/services/tourism";
 
 const initialState = (): GeoState => {
   return {
@@ -29,7 +30,8 @@ const initialState = (): GeoState => {
     pickedFeatureId: null,
     pointCoords: null,
     isDraw: null,
-    cesiumInstance: null
+    cesiumInstance: null,
+    clustering: true
   };
 };
 
@@ -42,7 +44,8 @@ const mutations: MutationTree<GeoState> = {
   [SET_FEATURE_ID]: (state, payload) => state.pickedFeatureId = payload,
   [SET_POINT_COORDS]: (state, payload) => state.pointCoords = payload,
   [SET_DRAW_TYPE]: (state, payload) => state.isDraw = payload,
-  [SET_CESIUM]: (state, payload) => state.cesiumInstance = payload
+  [SET_CESIUM]: (state, payload) => state.cesiumInstance = payload,
+  [SET_CLUSTERING]: (state, payload) => state.clustering = payload
 };
 
 const actions: ActionTree<GeoState, TRootState> = {
@@ -203,7 +206,8 @@ const services: Module<GeoState, TRootState> = {
     vacancy,
     ideas,
     commerce,
-    estate
+    estate,
+    tourism
   }
 };
 
