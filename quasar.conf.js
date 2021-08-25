@@ -116,8 +116,8 @@ module.exports = configure(function (ctx) {
       env: {
         //SERVER_API_HOST: "https://4d.innocityhall.ru",
         //BROWSER_API_HOST: "https://4d.innocityhall.ru"
-        SERVER_API_HOST: "https://4d{{ENVIRONMENT}}.innocityhall.ru",
-        BROWSER_API_HOST: "https://4d{{ENVIRONMENT}}.innocityhall.ru"
+        SERVER_API_HOST: "{{ENVIRONMENT}}",
+        BROWSER_API_HOST: "{{ENVIRONMENT}}"
       }
     },
 
@@ -129,11 +129,11 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "https://4d{{ENVIRONMENT}}.innocityhall.ru",
+          target: "{{ENVIRONMENT}}",
           changeOrigin: true
         },
         "/oauth": {
-          target: "https://4d{{ENVIRONMENT}}.innocityhall.ru",
+          target: "{{ENVIRONMENT}}",
           changeOrigin: true
         }
       }
