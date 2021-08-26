@@ -17,7 +17,7 @@
             | {{ $t("entity.tickets.contract.endDate") }}
           .text-body1
             | {{ contract.endDate | formatDate }}
-    .col-6
+    .col-6(v-if="!isEmployee && !isUserLegal")
       .text-body1.text-wrap
         | {{ $t("entity.tickets.contract.message") }}
       .text-right.q-mt-md
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   import BaseDownloader from "components/common/BaseDownloader";
   import { DOWNLOAD_FILE } from "@/store/constants/action-constants";
 
@@ -41,6 +41,9 @@
         type: String,
         default: ""
       }
+    },
+    computed: {
+      ...mapGetters(["isEmployee", "isUserLegal"])
     },
     methods: {
       ...mapActions([DOWNLOAD_FILE]),

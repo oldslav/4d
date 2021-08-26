@@ -8,7 +8,7 @@
     q-card.full-width(v-if="getCurrentTicket")
       q-card-section.row.items-center.q-pb-none
         .text-medium
-          | {{$t("entity.tickets.commerce.ticketTitle")}}
+          | Заявка на хранение
         q-space
         q-btn(icon="close" flat round dense v-close-popup)
       q-card-section
