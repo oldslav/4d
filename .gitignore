@@ -2,6 +2,7 @@
 .thumbs.db
 node_modules
 package-lock.json
+Dockerfile
 
 # Quasar core related directories
 .quasar

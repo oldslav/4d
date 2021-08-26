@@ -131,7 +131,7 @@ module.exports = configure(function (ctx) {
           changeOrigin: true
         },
         "/oauth": {
-          target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
+          target: ctx.dev ? "https://4d-dev.innopolis.university" : "https://4d.innocityhall.ru",
           changeOrigin: true
         }
       }

@@ -85,10 +85,11 @@
             swipeable
             thumbnails>
             <q-carousel-slide
+              :key="i"
               v-for="({ imagePath }, i) in current.images"
+              :img-src="getImage(imagePath)"
               :name="i"
               class="cursor-pointer"
-              :img-src="getImage(imagePath)"
               @click="fullscreen = !fullscreen">
             </q-carousel-slide>
             <template v-slot:control>
