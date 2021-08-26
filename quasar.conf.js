@@ -117,7 +117,7 @@ module.exports = configure(function (ctx) {
         //SERVER_API_HOST: "https://4d.innocityhall.ru",
         //BROWSER_API_HOST: "https://4d.innocityhall.ru"
         SERVER_API_HOST: "{{ENVIRONMENT}}",
-        BROWSER_API_HOST: "{{ENVIRONMENT}}"
+        //BROWSER_API_HOST: "{{ENVIRONMENT}}"
       }
     },
 
@@ -132,10 +132,10 @@ module.exports = configure(function (ctx) {
           target: '{{ENVIRONMENT}}',
           changeOrigin: true
         },
-        //"/oauth": {
-        //  target: '{{ENVIRONMENT}}',
-        //  changeOrigin: true
-        //}
+        "/oauth": {
+          target: '{{ENVIRONMENT}}',
+          changeOrigin: true
+        }
       }
     },
 
