@@ -51,7 +51,7 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 1").q-pa-md
               div.text-body1.text-wrap
@@ -77,6 +77,40 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
+            div(v-if="props.row.status.id === 13").q-pa-md
+              .row
+                .col-6.text-body1
+                  .full-width
+                .col-6.text-body1.text-wrap
+                  | Срок действия по вашей заявке истек.<br>
+                  | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
+                  div.q-col-gutter-sm.q-mt-md
+                    .text-primary-light
+                      | Адрес
+                    div
+                      | г. Иннополис, ул. Спортивная, 112
+                    .text-primary-light
+                      | Время работы
+                    .flex.items-center.justify-between
+                      div
+                        | понедельник - четверг
+                      div
+                        | 9:00 - 18:00
+                    .flex.items-center.justify-between
+                      div
+                        | пятница
+                      div
+                        | 9:00 - 17:00
+                    .text-primary-light
+                      | Телефон
+                    .flex.items-center.justify-between
+                      div
+                        | +7 (937) 588-01-40
+                    .text-primary-light
+                      | Телеграм
+                    .flex.items-center.justify-between
+                      div
+                        | @innoRentHome 
     ApartmentsTicketDetailsModal(v-model="isDetailsVisible" v-if="currentId" :id.sync="currentId")
 </template>
 
@@ -271,3 +305,10 @@
     }
   };
 </script>
+
+<style lang="stylus">
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>

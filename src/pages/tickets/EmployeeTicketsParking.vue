@@ -14,7 +14,7 @@
         q-tr(:props="props"  @click="expandRow(props)")
           q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
-          q-td(key="parkingAddress" :props="props")
+          q-td(key="parkingAddress" :props="props") 
             | {{props.row.parkingPlace.address}}
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
@@ -36,37 +36,49 @@
                       | {{ $t("user.tickets.actions.details") }}
 
 
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
+            div.column(v-if="props.row.status.id === 2").q-pa-md
+              div.text-body1.text-wrap
+                | Примите или отклоните заявку
+            div.column(v-if="props.row.status.id === 6").q-pa-md
+              div.text-right.text-body1.text-wrap
+                | Для подписание договора направьте заявителю приглашение.<br>
+                | Вы можете изменить шаблон сообщения по вашему желанию.
+            div.column(v-if="props.row.status.id === 8").q-pa-md
+              div.text-body1.text-wrap
+                | Договор подписан
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
+              div.text-body1.text-wrap
+                | Работа над заявкой завершена
             q-stepper(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
               flat
               animated
+              v-if="props.row.status.id > 2 && props.row.status.id < 8 && props.row.status.id !== 4"
             )
               q-step(
                 :title="$t('user.tickets.parking.steps.first')"
                 :done="props.row.status.id > 4"
                 :name="3"
               )
+                div.text-right.text-body1.text-wrap
+                  | Для продолжения оформления документов дождитесь оплаты.
               q-step(
                 :title="$t('user.tickets.parking.steps.second')"
                 :done="props.row.status.id > 7"
                 :name="7"
               )
-            div(v-if="props.row.status.id === 3").q-pa-md
-              div.text-body1.text-wrap
-                | Для продолжения оформления документов дождитесь оплаты.
-            div(v-if="props.row.status.id === 7").q-pa-md
-              .row
-                .col-6.offset-6
-                  .text-body1.q-col-gutter-md
-                    div
-                      | Договор подписан.
-                    div
-                      | Введите данные договора.
-                    FormContract(@submit="sendContractInfo($event, props.row.id)")
+                .row
+                  .col-6.offset-6
+                    .text-body1.q-col-gutter-md
+                      div
+                        | Договор подписан.
+                      div
+                        | Введите данные договора.
+                      FormContract(@submit="sendContractInfo($event, props.row.id)")
 
     TicketDetailsModal(:id.sync="activeId" v-model="showDetailsModal" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
@@ -288,3 +300,10 @@
     }
   };
 </script>
+
+<style lang="stylus" scoped>
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>

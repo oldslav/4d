@@ -37,14 +37,30 @@
           </div>
           <q-separator class="q-my-md"></q-separator>
           <q-list v-if="current.documents.length">
-            <q-item :key="i" v-for="(file, i) in current.documents" dense class="is-paddingless" clickable>
-              <q-item-section class="col" avatar @click="fileDownload(file.imagePath)">
-                {{ file }}
-              </q-item-section>
-              <q-item-section side class="is-paddingless">
-                <q-btn flat color="primary" icon="o_delete" @click="documentDelete(file.id)"></q-btn>
-              </q-item-section>
-            </q-item>
+            <q-expansion-item
+              :key="key"
+              v-for="(value, key) in computedDocuments">
+              <template #header>
+                <q-item dense class="col is-paddingless">
+                  <q-item-section side>
+                    <q-img :src="documentsExtensions[key]" width="24px"></q-img>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-capitalize">
+                      {{ key + ` (${ value.length })` }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+              <q-item :key="i" v-for="(file, i) in value" dense clickable>
+                <q-item-section class="col ellipsis" avatar @click="fileDownload(file.imagePath)">
+                  {{ file.fileName }}
+                </q-item-section>
+                <q-item-section side class="is-paddingless">
+                  <q-btn flat color="primary" icon="o_delete" @click="documentDelete(file.id)"></q-btn>
+                </q-item-section>
+              </q-item>
+            </q-expansion-item>
           </q-list>
           <h6 v-else class="text-center">
             {{ $t("common.noData") }}
@@ -69,10 +85,11 @@
             swipeable
             thumbnails>
             <q-carousel-slide
+              :key="i"
               v-for="({ imagePath }, i) in current.images"
+              :img-src="getImage(imagePath)"
               :name="i"
               class="cursor-pointer"
-              :img-src="getImage(imagePath)"
               @click="fullscreen = !fullscreen">
             </q-carousel-slide>
             <template v-slot:control>
@@ -110,7 +127,7 @@
         <q-uploader
           :url="imageUploadUrl"
           label="Перетяните или выберите изображения"
-          field-name="file"
+          field-name="files"
           multiple
           batch
           :headers="uploadImageHeaders"
@@ -150,12 +167,12 @@
       <q-card class="q-pa-md modal-container__dense">
         <q-uploader
           :url="documentsUploadUrl"
-          class="full-width q-uploader--transparent"
-          accept=".pdf,.docs,.xls"
+          class="full-width"
+          accept=".pdf,.docx,.doc,.xls,.xlsx"
           multiple
           batch
           :headers="uploadImageHeaders"
-          field-name="file"
+          field-name="files"
           @uploaded="documentUploaded">
           <template v-slot:header="scope">
             <div class="row justify-between">
@@ -203,6 +220,9 @@
   import BaseSelect from "../../common/BaseSelect";
   import estate from "../../../store/services/estate";
   import MyDocumentsForm from "../../forms/documents/MyDocumentsForm";
+  import doc from "src/assets/svg/icons/docs/doc.svg";
+  import pdf from "src/assets/svg/icons/docs/pdf.svg";
+  import xls from "src/assets/svg/icons/docs/xls.svg";
 
   export default {
     name: "EstateDetails",
@@ -295,6 +315,23 @@
         }))
       }),
 
+      documentsExtensions () {
+        return {
+          pdf: pdf,
+          doc: doc,
+          docx: doc,
+          xls: xls,
+          xlsx: xls
+        };
+      },
+
+      computedDocuments () {
+        return this.current.documents.reduce((acc, item) => {
+          acc[item.extension] ? acc[item.extension].push(item) : acc[item.extension] = [item];
+          return acc;
+        }, {});
+      },
+
       uploadImageHeaders () {
         return [
           {
@@ -377,9 +414,9 @@
           },
           {
             label: this.$t("entity.estate.details.managingCompany"),
-            value: this.formatEmptyString(this.current.managementCompany.name),
+            value: this.formatEmptyString(this.current.managementCompany && this.current.managementCompany.name),
             options: this.companies,
-            related: this.current.managementCompany.name
+            related: this.current.managementCompany && this.current.managementCompany.name
           },
           {
             label: this.$t("entity.estate.details.street"),
