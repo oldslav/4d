@@ -44,9 +44,10 @@
               div.text-right.text-body1.text-wrap
                 | Для подписание договора направьте заявителю приглашение.<br>
                 | Вы можете изменить шаблон сообщения по вашему желанию.
-            div.column(v-if="props.row.status.id === 8").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -100,6 +101,7 @@
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
   import FormContract from "components/common/form/FormContract";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "EmployeeTicketsWarehouse",
@@ -110,7 +112,8 @@
       BaseTable,
       BaseInput,
       BaseDatepicker,
-      ApartmentTicketStatus
+      ApartmentTicketStatus,
+      ValidContractState
     },
     async created () {
       await this.getEmployeeTickets();
