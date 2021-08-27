@@ -35,7 +35,7 @@
           div.row.q-mt-md(v-if="getEntity.length || getEntity.time")
             div.col-md-6(v-if="getEntity.length")
               div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.distance') }}
-              div.text-body2.rich-text.break-spaces {{ getEntity.length | distance }}
+              div.text-body2.rich-text.break-spaces {{ getRouteDistance }}
 
             div.col-md-6(v-if="getEntity.time")
               div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.duration') }}
@@ -84,17 +84,6 @@
     name: "AsideServicesTourismEntity",
     components: { ImageSlider },
     filters: {
-      distance: function (value) {
-        if (value < 1000) {
-          return `${ value } м`;
-        }
-
-        const km = value / 1000;
-        const fixed = km.toFixed(1);
-
-        const returnValue = km === parseInt(fixed, 10) ? km : fixed.replace(".",",");
-        return `${ returnValue } ${ this.$t("entity.services.tourism.labels.km") }`;
-      },
       duration (value){
         return moment.duration(value, "minutes").humanize(false);
       }
@@ -124,9 +113,11 @@
       getImages (){
         return this.getEntity.images.map(x => x.imagePath);
       },
+
       canDisplayDownloadRoute (){
         return this.getEntity.tcx || this.getEntity.gpx;
       },
+
       visibleLink (){
         try {
           return url.parse(this.getEntity.link).host;
@@ -134,6 +125,7 @@
           return "";
         }
       },
+
       getRoutes (){
         const subSections = this.getServiceMenu.subSections;
         const subSectionsByLayers = subSections.reduce((res, subSection) => {
@@ -155,6 +147,20 @@
         }, {});
 
         return Object.values(groups);
+      },
+
+      getRouteDistance (){
+        const value = this.getEntity.length;
+
+        if (value < 1000) {
+          return `${ value } м`;
+        }
+
+        const km = value / 1000;
+        const fixed = km.toFixed(1);
+
+        const returnValue = km === parseInt(fixed, 10) ? km : fixed.replace(".",",");
+        return `${ returnValue } ${ this.$t("entity.services.tourism.labels.km") }`;
       }
     },
     methods:{
