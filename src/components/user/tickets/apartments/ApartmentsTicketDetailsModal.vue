@@ -23,7 +23,7 @@
             q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
 
       q-card-section
-        .q-mb-lg(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
+        .q-mb-sm(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
           .text-small.text-primary-light
             | {{ $t(`entity.files.${type}`) }}
           DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j")
@@ -34,12 +34,22 @@
           | {{ $t("entity.neighbors.data") }}
         div(v-for="(neighbor, index) in getCurrentTicket.neighbors")
           .row.q-col-gutter-sm
-            .col-12.col-md-4
+            .col-12.col-md-4(v-if="!!neighbor.name.last")
               q-input(readonly :label="$t('user.lastName')" :value="neighbor.name.last" borderless)
             .col-12.col-md-4
               q-input(readonly :label="$t('user.firstName')" :value="neighbor.name.first" borderless)
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.patronymic')" :value="neighbor.name.patronymic" v-if="!!neighbor.name.patronymic" borderless)
+            .col-12.col-md-4(v-if="!!neighbor.name.patronymic")
+              q-input(readonly :label="$t('user.patronymic')" :value="neighbor.name.patronymic" borderless)
+            .col-12(v-if="Object.keys(neighbor.documents).length > 0")
+              q-expansion-item(dense)
+                template(#header)
+                  .flex.full-width.q-pl-none.items-center
+                    | {{ $t("common.documents") }}
+                .q-pt-sm
+                  .q-mb-sm(v-for="(type, i) in Object.keys(neighbor.documents)" :key="i")
+                    .text-small.text-primary-light
+                      | {{ $t(`entity.files.${type}`) }}
+                    DownloaderInput(v-for="(file, j) in neighbor.documents[type]" :value="file" :key="j")
       q-separator(v-if="getCurrentTicket.neighbors.length > 0")
 
       q-card-section
@@ -115,3 +125,11 @@
     }
   };
 </script>
+
+<style lang="stylus">
+  .q-expansion-item {
+    .q-item {
+      padding-left 0 !important
+    }
+  }
+</style>
