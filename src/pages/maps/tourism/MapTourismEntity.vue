@@ -3,48 +3,43 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
-  import { TourismGeoJSONEntities } from "../../../store/types/tourism";
-  import { FETCH_LAYER_GEOJSON, PUT_LAYER_GEOJSON } from "../../../store/constants/action-constants";
+  import { mapActions, mapGetters } from "vuex";
+  import {
+    FETCH_LAYER_GEOJSON,
+    FETCH_TOURISM_ENTITY,
+    REMOVE_ACTIVE_TOURISM_FEATURE,
+    SET_ACTIVE_TOURISM_FEATURE,
+    PUT_LAYER_GEOJSON
+  } from "../../../store/constants/action-constants";
   import { SET_GEODATA } from "../../../store/constants/mutation-constants";
-  import { preloadGeoJSONImages } from "../../../cesium/utils/preload-images";
 
   export default {
-    name: "ServiceTourismLayer",
-    async preFetch ({ store, redirect, currentRoute }) {
+    name: "MapTourismEntity",
+    async preFetch ({ store, currentRoute }) {
       const categoryId = parseInt(currentRoute.params.category, 10);
       const layerId = parseInt(currentRoute.params.layer, 10);
-
       const category = store.getters["services/tourism/getServiceMenu"].subSections.find(x => x.id === categoryId);
       const layer = category.layers.find(x => x.id === layerId);
 
-      if (!layer) {
-        return redirect("/404");
-      }
+      await Promise.all([
+        store.dispatch(`services/tourism/${ FETCH_LAYER_GEOJSON }`, layer.path),
+        store.dispatch(`services/tourism/${ FETCH_TOURISM_ENTITY }`, {
+          path: layer.path,
+          id: currentRoute.params.id,
+          layerId: layerId
+        })
+      ]);
 
-      const geoJSON = await store.dispatch(`services/tourism/${ FETCH_LAYER_GEOJSON }`, layer.path);
       await store.dispatch(`services/tourism/${ PUT_LAYER_GEOJSON }`, layer.path);
-
-      const features = geoJSON.features.filter(x => x.properties.type !== TourismGeoJSONEntities.stop);
-
-      if (features.length === 1 && currentRoute.name === "services-tourism-layer") {
-        return redirect({
-          name: "services-tourism-entity",
-          params: { category: categoryId, layer: layer.id, id: geoJSON.features[0].id }
-        });
-      }
-    },
-    mounted () {
-      preloadGeoJSONImages(this.getLayerGeoJSON);
+      await store.dispatch(
+        `services/tourism/${ SET_ACTIVE_TOURISM_FEATURE }`,
+        { layer: layer.path, id: currentRoute.params.id }
+      );
     },
     beforeRouteLeave (to, from, next) {
-      const fromParams = from.params;
-      const toParams = to.params;
+      this.removeActiveFeature({ layer: this.getLayer.path, id: this.$route.params.id });
 
-      if (
-        to.name !== "services-tourism-entity" ||
-        (fromParams.category !== toParams.category || fromParams.layer !== toParams.layer)
-      ) {
+      if (to.name === "map-tourism-category" || to.name === "map-tourism") {
         this.$store.commit(`services/${ SET_GEODATA }`, null);
       }
 
@@ -63,6 +58,11 @@
       getLayerGeoJSON () {
         return this.getLayersGeoJSON[this.getLayer.path];
       }
+    },
+    methods: {
+      ...mapActions("services/tourism", {
+        removeActiveFeature: REMOVE_ACTIVE_TOURISM_FEATURE
+      })
     }
   };
 </script>

@@ -46,9 +46,9 @@
       "chooseProfile": "Choose user profile",
       "consent": {
         "byHitting": "By clicking the \"Register\" button, I accept the terms and conditions ",
-        "userConsent": "User agreement ",
-        "allow": "and I give my consent to ",
-        "dataProcessing": "processing of personal data "
+        "userConsent": "User agreement",
+        "allow": " and I give my consent to ",
+        "dataProcessing": "processing of personal data"
       },
       "messages": {
         "registered": "User registered",
