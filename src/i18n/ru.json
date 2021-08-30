@@ -802,7 +802,9 @@
           "routesFor": "Маршруты до",
           "downloadRoute": "Скачать маршрут",
           "routeFileFormat": "Выберите нужный формат файла",
-          "offerRoute": "Предложить свой маршрут"
+          "offerRoute": "Предложить свой маршрут",
+          "routeMinutesDuration": "{minutes}мин.",
+          "routeDuration": "{hours}ч. {minutes}мин."
         },
         "offerForm": {
           "title": "Предложить маршрут",
@@ -811,7 +813,7 @@
           "descriptionLabel": "Добавьте описание",
           "routeDescription": "Опишите свой маршрут",
           "route": "Трек маршрута",
-          "routeFileFormat": "Формат gpx, tcp"
+          "routeFileFormat": "Формат gpx, tcx"
         }
       }
     },
