@@ -13,7 +13,7 @@ interface IImageOptions extends IStubImageOptions{
   src: string;
 }
 
-export const renderPlacePoint = ({ color, label }: IPlacePointOptions) => {
+export const renderPlacePoint = ({ color, label }: IPlacePointOptions): string => {
   const source = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none">
     <circle fill="${ color }" r="10" cy="10" cx="10"/>
     <text
@@ -34,7 +34,7 @@ export const renderPlacePoint = ({ color, label }: IPlacePointOptions) => {
   return "data:image/svg+xml;base64," + btoa(result);
 };
 
-export const renderPlaceStubImage = ({ radius }: IStubImageOptions) => {
+export const renderPlaceStubImage = ({ radius }: IStubImageOptions): HTMLCanvasElement => {
   const canvas = document.createElement("canvas");
   const context = canvas!.getContext("2d")!;
 
@@ -98,4 +98,4 @@ export const renderCachedPlaceImage = (() => {
   };
 })();
 
-export const isCacheContain = (src: string) => src in PLACE_IMAGES_CACHE;
+export const isCacheContain = (src: string): boolean => src in PLACE_IMAGES_CACHE;

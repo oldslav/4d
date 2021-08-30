@@ -24,7 +24,7 @@ const setEntityImage = (entity: any, image: string | HTMLCanvasElement) => {
 };
 
 
-export const renderExtendedPlace = (entity: any, { radius, label, image }: IExtendedPlaceOptions) => {
+export const renderExtendedPlace = (entity: any, { radius, label, image }: IExtendedPlaceOptions): void => {
   entity.billboard.size = 1;
   entity.billboard.width = radius * 2;
   entity.billboard.height = radius * 2;
@@ -56,7 +56,7 @@ export const renderExtendedPlace = (entity: any, { radius, label, image }: IExte
   }
 };
 
-export const renderPlace = (entity: any, { label, background }: IPlaceOptions) => {
+export const renderPlace = (entity: any, { label, background }: IPlaceOptions): void => {
   entity.billboard.size = 1;
   entity.billboard.width = 20;
   entity.billboard.height = 20;
@@ -70,7 +70,7 @@ export const renderPlace = (entity: any, { label, background }: IPlaceOptions) =
 
 export default {
   name: "place",
-  render (entity: any) {
+  render (entity: any): void {
     const extended = entity.properties.$extended && entity.properties.$extended.getValue();
     const background = entity.properties.$background && entity.properties.$background.getValue();
     const order = entity.properties.order.getValue();

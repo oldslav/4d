@@ -15,28 +15,6 @@ export class VerificationRequestService extends Service {
   }
 
   public getVerificationRequestsReferences (): Promise<any> {
-    return Promise.resolve({
-      data: {
-        "requestStatuses": [
-          {
-            "id": 2,
-            "name": "on_approval",
-            "description": "На утверждении"
-          },
-          {
-            "id": 4,
-            "name": "rejected",
-            "description": "Отклонена"
-          },
-          {
-            "id": 10,
-            "name": "approved",
-            "description": "Утверждена"
-          }
-        ]
-      }
-    });
-
-    // return this.api.get("/api/v1/profile/company/request/references");
+    return this.api.get("/api/v1/profile/company/request/references");
   }
 }

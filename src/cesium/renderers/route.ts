@@ -2,7 +2,7 @@ import { updateEntity } from "src/cesium/utils/update-entity";
 
 export default {
   name: "route",
-  render (entity: any) {
+  render (entity: any): void {
     const visible = entity.properties.$visible && entity.properties.$visible.getValue();
     const isExtended = entity.properties.$extended ? entity.properties.$extended.getValue() : null;
     const fill = entity.properties.fill ? entity.properties.fill.getValue() : null;
