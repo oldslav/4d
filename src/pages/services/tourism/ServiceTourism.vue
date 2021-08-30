@@ -12,7 +12,7 @@
   import TourismStopModal from "../../../components/services/tourism/TourismStopModal";
   import { FETCH_TOURISM_MENU, PUT_LAYER_GEOJSON } from "../../../store/constants/action-constants";
   import { TourismGeoJSONEntities } from "../../../store/types/tourism";
-  import { SET_CLUSTERING, SET_FEATURE_ID } from "../../../store/constants/mutation-constants";
+  import { SET_CLUSTERING, SET_FEATURE_ID, SET_GEODATA } from "../../../store/constants/mutation-constants";
 
   export default {
     name: "ServiceTourism",
@@ -20,6 +20,7 @@
     async preFetch ({ store }) {
       await store.dispatch(`services/tourism/${ FETCH_TOURISM_MENU }`);
       store.commit(`services/${ SET_CLUSTERING }`, false);
+      store.commit(`services/${ SET_GEODATA }`, null);
     },
     mounted () {
       this.$watch("getPickedFeatureId", this.onChangeTargetEntity);

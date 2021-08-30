@@ -794,7 +794,9 @@
           "routesFor": "Routes to",
           "downloadRoute": "Download route",
           "routeFileFormat": "Select the desired file format",
-          "offerRoute": "Suggest your route"
+          "offerRoute": "Suggest your route",
+          "routeMinutesDuration": "{minutes}min.",
+          "routeDuration": "{hours}hr. {minutes}min."
         },
         "offerForm": {
           "title": "Suggest a route",
@@ -803,7 +805,7 @@
           "descriptionLabel": "Add a description",
           "routeDescription": "Describe your route",
           "route": "Track route",
-          "routeFileFormat": "Format gpx, tcp"
+          "routeFileFormat": "Format gpx, tcx"
         }
       }
     },

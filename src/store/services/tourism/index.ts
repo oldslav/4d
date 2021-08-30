@@ -62,8 +62,9 @@ const setActiveEntity = (geoJson: any, id: string) => {
     // eslint-disable-next-line eqeqeq
     if (entity.id == id) {
       entity.properties.$extended = true;
+      // eslint-disable-next-line eqeqeq
     } else if (entity.properties.type === TourismGeoJSONEntities.stop && entity.properties.routeId == id) {
-      entity.properties.$extended = true;
+      entity.properties.$visible = true;
     } else {
       entity.properties.$visible = false;
     }
@@ -75,8 +76,8 @@ const removeActiveEntity = (geoJson: any, id: string) => {
     // eslint-disable-next-line eqeqeq
     if (entity.id == id) {
       entity.properties.$extended = false;
-    } else if (entity.properties.type === TourismGeoJSONEntities.stop && entity.properties.routeId == id) {
-      entity.properties.$extended = false;
+    } else if (entity.properties.type === TourismGeoJSONEntities.stop) {
+      entity.properties.$visible = false;
     } else {
       entity.properties.$visible = true;
     }
