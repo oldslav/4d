@@ -9,6 +9,9 @@
     :readonly="readonly"
     @input="onInput"
   )
+    template(slot="before")
+      slot(name="before")
+
     template(slot="default")
       slot(name="default")
         .dragdrop-label.q-pa-md
