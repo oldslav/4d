@@ -32,13 +32,13 @@ export const renderExtendedPlace = (entity: any, { radius, label, image }: IExte
   if (label) {
     entity.label = {
       text: label,
-      font: "14px Helvetica",
+      font: "14px sans-serif",
       style: window.Cesium.LabelStyle.FILL,
       fillColor: new window.Cesium.Color.fromCssColorString("#333333"),
       scale: 1,
-      verticalOrigin: window.Cesium.VerticalOrigin.BOTTOM,
+      verticalOrigin: window.Cesium.VerticalOrigin.CENTER,
       horizontalOrigin: window.Cesium.HorizontalOrigin.LEFT,
-      pixelOffset: new window.Cesium.Cartesian2(30, -36)
+      pixelOffset: new window.Cesium.Cartesian2(30, -46)
     };
   } else {
     entity.label = null;

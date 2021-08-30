@@ -85,7 +85,7 @@
             if ("order" in a.properties) {
               return a.properties.order - b.properties.order;
             }
-            return 0;
+            return a.id - b.id;
           });
       },
 

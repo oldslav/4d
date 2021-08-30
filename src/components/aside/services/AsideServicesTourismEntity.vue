@@ -39,7 +39,7 @@
 
             div.col-md-6(v-if="getEntity.time")
               div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.duration') }}
-              div.text-body2.rich-text.break-spaces {{ getEntity.time | duration }}
+              div.text-body2.rich-text.break-spaces {{ getRouteDuration }}
 
           div.row.q-mt-md(v-if="canDisplayDownloadRoute")
             div.col-md-6
@@ -76,18 +76,12 @@
 <script>
   import { mapGetters } from "vuex";
   import url from "url";
-  import moment from "moment";
   import ImageSlider from "../../common/ImageSlider";
   import { TourismGeoJSONEntities } from "../../../store/types/tourism";
 
   export default {
     name: "AsideServicesTourismEntity",
     components: { ImageSlider },
-    filters: {
-      duration (value){
-        return moment.duration(value, "minutes").humanize(false);
-      }
-    },
     computed: {
       ...mapGetters("services/tourism", ["getEntity", "getServiceMenu", "getLayersGeoJSON"]),
       getPreviewRoute () {
@@ -161,6 +155,21 @@
 
         const returnValue = km === parseInt(fixed, 10) ? km : fixed.replace(".",",");
         return `${ returnValue } ${ this.$t("entity.services.tourism.labels.km") }`;
+      },
+
+      getRouteDuration (){
+        const minutes = this.getEntity.time;
+
+        if (minutes < 90) {
+          return this.$t("entity.services.tourism.labels.routeMinutesDuration", { minutes });
+        }
+
+        const hours = Math.floor(minutes / 60);
+
+        return this.$t("entity.services.tourism.labels.routeDuration", {
+          hours,
+          minutes: minutes - hours * 60
+        });
       }
     },
     methods:{
