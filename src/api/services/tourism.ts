@@ -28,7 +28,7 @@ export class TourismService extends Service {
     return this.api.get("/api/v1/map/section/5");
   }
 
-  public async getGeoJSONByPath (path: string) {
+  public async getGeoJSONByPath (path: string): Promise<any> {
     const { data } = await this.api.get(path);
     return data;
   }
@@ -41,11 +41,11 @@ export class TourismService extends Service {
     return this.api.get(`/api/v1/map/tourism/routes/${ layerId }/${ id }`);
   }
 
-  public offerRoute (description: string) {
+  public offerRoute (description: string): AxiosPromise<any> {
     return this.api.post("/api/v1/map/tourism/routes/offer", description);
   }
 
-  public uploadRouteFile (routeId: number, file: File, isImage: boolean) {
+  public uploadRouteFile (routeId: number, file: File, isImage: boolean): AxiosPromise<any> {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("isImage", String(isImage));

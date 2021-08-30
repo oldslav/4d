@@ -61,12 +61,6 @@
             show: this.isUserGIS
           },
           {
-            label: this.$t("entity.tourism"),
-            action: { name: "services-tourism" },
-            icon: "o_photo_camera",
-            show: true // this.isUserGIS
-          },
-          {
             label: this.$t("entity.planning"),
             action: { name: "services-planning" },
             icon: "o_explore",

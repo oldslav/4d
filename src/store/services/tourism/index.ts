@@ -9,7 +9,8 @@ import {
   OFFER_TOURISM_ROUTE,
   SET_ACTIVE_TOURISM_FEATURE,
   REMOVE_ACTIVE_TOURISM_FEATURE,
-  PUT_LAYER_GEOJSON
+  PUT_LAYER_GEOJSON,
+  SET_TOURISM_ENTITY_VISIBILITY
 } from "src/store/constants/action-constants";
 import {
   SET_GEODATA,
@@ -57,13 +58,19 @@ const eachFeatures = (geoJson: any, cb: (e: any) => void) => {
   return (data.features || []).forEach(cb);
 };
 
-const setActiveEntity = (geoJson: any, id: string) => {
+const setActiveEntity = (geoJson: any, id: string, extended = false) => {
   eachFeatures(geoJson, (entity: any) => {
     // eslint-disable-next-line eqeqeq
     if (entity.id == id) {
       entity.properties.$extended = true;
+      entity.properties.$$visible = entity.properties.$visible;
+      entity.properties.$visible = true;
+    } else if (
+      entity.properties.type === TourismGeoJSONEntities.stop &&
       // eslint-disable-next-line eqeqeq
-    } else if (entity.properties.type === TourismGeoJSONEntities.stop && entity.properties.routeId == id) {
+      entity.properties.routeId == id &&
+      extended
+    ) {
       entity.properties.$visible = true;
     } else {
       entity.properties.$visible = false;
@@ -79,7 +86,17 @@ const removeActiveEntity = (geoJson: any, id: string) => {
     } else if (entity.properties.type === TourismGeoJSONEntities.stop) {
       entity.properties.$visible = false;
     } else {
+      entity.properties.$visible = entity.properties.$$visible;
       entity.properties.$visible = true;
+    }
+  });
+};
+
+const setEntityVisibility = (geoJson: any, id: string, visibility: boolean) => {
+  eachFeatures(geoJson, (entity: any) => {
+    // eslint-disable-next-line eqeqeq
+    if (entity.id == id) {
+      entity.properties.$visible = visibility;
     }
   });
 };
@@ -89,6 +106,7 @@ const setActivePlace = (geoJson: any, id: string) => {
     // eslint-disable-next-line eqeqeq
     const isTarget = entity.id == id;
     entity.properties.$extended = isTarget;
+    entity.properties.$visible = true;
     entity.properties.$foreground = !isTarget;
   });
 };
@@ -151,12 +169,9 @@ const actions: ActionTree<IServicesTourismState, TRootState> = {
   },
 
   [PUT_LAYER_GEOJSON] ({ commit, getters }, path) {
-    if (getters.getCurrentGeoJsonLayer !== path) {
       const geoJSON = getters.getLayersGeoJSON[path];
-
       commit(`services/${ SET_GEODATA }`, geoJSON ? { type: "geoJson", data: geoJSON } : null, { root: true });
       commit(SET_TOURISM_CURRENT_LAYER, path);
-    }
   },
 
   [SET_ACTIVE_TOURISM_FEATURE] ({ commit, getters }, { layer, id }) {
@@ -182,6 +197,15 @@ const actions: ActionTree<IServicesTourismState, TRootState> = {
       removeActiveEntity(geoJson, id);
     }
 
+    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
+  },
+
+  [SET_TOURISM_ENTITY_VISIBILITY] ({ commit, getters }, { id, layer, visibility }) {
+    const geoJson = cloneDeep(getters.getLayersGeoJSON[layer]);
+
+    setEntityVisibility(geoJson, id, !!visibility);
+
+    commit(SET_LAYER_GEOJSON, { path: layer, geoJson });
     commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
   }
 };

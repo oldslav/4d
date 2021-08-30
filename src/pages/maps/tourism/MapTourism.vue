@@ -15,7 +15,7 @@
   import { SET_CLUSTERING, SET_FEATURE_ID, SET_GEODATA } from "../../../store/constants/mutation-constants";
 
   export default {
-    name: "ServiceTourism",
+    name: "MapTourism",
     components: { TourismStopModal },
     async preFetch ({ store }) {
       await store.dispatch(`services/tourism/${ FETCH_TOURISM_MENU }`);
@@ -44,7 +44,7 @@
       onChangeTargetEntity (id) {
         if (id && this.pickedFeature.properties.type !== TourismGeoJSONEntities.stop) {
           const { category, layer } = this.$route.params;
-          this.$router.push({ name: "services-tourism-entity", params: { category: category, layer: layer, id } });
+          this.$router.push({ name: "map-tourism-entity", params: { category: category, layer: layer, id } });
         } else if (id && this.pickedFeature.properties.type === TourismGeoJSONEntities.stop) {
           this.stopEntity = this.pickedFeature;
           this.visibleStopModal = true;

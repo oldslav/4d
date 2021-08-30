@@ -58,7 +58,7 @@
               div.col-md-6.flex.justify-end
                 div.text-body2.rich-text.break-spaces.q-mb-sm(v-for="route in category.routes")
                   router-link.link(
-                    :to="{ name: 'services-tourism-entity', params: { layer: route.layerId, id: route.id, category: route.subSection } }"
+                    :to="{ name: 'map-tourism-entity', params: { layer: route.layerId, id: route.id, category: route.subSection } }"
                   )
                     | {{ route.name }}
                     q-icon(name="arrow_forward_ios")
@@ -80,7 +80,7 @@
   import { TourismGeoJSONEntities } from "../../../store/types/tourism";
 
   export default {
-    name: "AsideServicesTourismEntity",
+    name: "AsideMapsTourismEntity",
     components: { ImageSlider },
     computed: {
       ...mapGetters("services/tourism", ["getEntity", "getServiceMenu", "getLayersGeoJSON"]),
@@ -94,14 +94,14 @@
         const { layers } = category;
 
         if (features.length > 1) {
-          return { name: "services-tourism-layer", params: { category: categoryId, layer: layerId } };
+          return { name: "map-tourism-layer", params: { category: categoryId, layer: layerId } };
         }
 
         if (layers.length === 1) {
-          return { name: "services-tourism" };
+          return { name: "map-tourism" };
         }
 
-        return { name: "services-tourism-category", params: { category: categoryId } };
+        return { name: "map-tourism-category", params: { category: categoryId } };
       },
 
       getImages (){

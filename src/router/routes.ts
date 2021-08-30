@@ -362,6 +362,60 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true
         }
+      },
+      {
+        path: "tourism",
+        name: "map-tourism",
+        components: {
+          default: (): Promise<any> => import("../pages/maps/tourism/MapTourism.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/AsideMapsTourism.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true
+        },
+        children: [
+          {
+            path: ":category",
+            name: "map-tourism-category",
+            components: {
+              default: (): Promise<any> => import("pages/maps/tourism/MapTourismCategory.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismCategory.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          },
+          {
+            path: ":category/:layer",
+            name: "map-tourism-layer",
+            components: {
+              default: (): Promise<any> => import("pages/maps/tourism/MapTourismLayer.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismLayer.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          },
+          {
+            path: ":category/:layer/:id",
+            name: "map-tourism-entity",
+            components: {
+              default: (): Promise<any> => import("pages/maps/tourism/MapTourismEntity.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismEntity.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          }
+        ]
       }
     ]
   },
@@ -427,92 +481,6 @@ const routes: RouteConfig[] = [
         meta: {
           toolbar: true
         }
-      },
-      {
-        path: "tourism",
-        name: "services-tourism",
-        components: {
-          default: (): Promise<any> => import("../pages/services/tourism/ServiceTourism.vue"),
-          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesTourism.vue")
-        },
-        meta: {
-          map: true,
-          toolbar: true,
-          asideServices: true
-        },
-        children: [
-          {
-            path: ":category",
-            name: "services-tourism-category",
-            components: {
-              default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismCategory.vue"),
-              asideTourism: (): Promise<any> => import("components/aside/services/AsideServicesTourismCategory.vue")
-            },
-            meta: {
-              map: true,
-              toolbar: true,
-              asideServices: true
-            }
-          },
-          {
-            path: ":category/:layer",
-            name: "services-tourism-layer",
-            components: {
-              default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismLayer.vue"),
-              asideTourism: (): Promise<any> => import("components/aside/services/AsideServicesTourismLayer.vue")
-            },
-            meta: {
-              map: true,
-              toolbar: true,
-              asideServices: true
-            }
-          },
-          {
-            path: ":category/:layer/:id",
-            name: "services-tourism-entity",
-            components: {
-              default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismEntity.vue"),
-              asideTourism: (): Promise<any> => import("components/aside/services/AsideServicesTourismEntity.vue")
-            },
-            meta: {
-              map: true,
-              toolbar: true,
-              asideServices: true
-            }
-          }
-          //   //
-          //   children: [
-          //     {
-          //       path: ":layer",
-          //       name: "services-tourism-layer",
-          //       components: {
-          //         default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismLayer.vue"),
-          //         asideTourismLayer: (): Promise<any> => import("components/aside/services/AsideServicesTourismLayer.vue")
-          //       },
-          //       meta: {
-          //         map: true,
-          //         toolbar: true,
-          //         asideServices: true
-          //       },
-          //       children: [
-          //         {
-          //           path: ":id",
-          //           name: "services-tourism-entity",
-          //           components: {
-          //             default: (): Promise<any> => import("../pages/services/tourism/ServiceTourismEntity.vue"),
-          //             asideTourismEntity: (): Promise<any> => import("components/aside/services/AsideServicesTourismEntity.vue")
-          //           },
-          //           meta: {
-          //             map: true,
-          //             toolbar: true,
-          //             asideServices: true
-          //           }
-          //         }
-          //       ]
-          //     }
-          //   ]
-          // }
-        ]
       },
       {
         path: "planning",

@@ -3,7 +3,7 @@ import { updateEntity } from "src/cesium/utils/update-entity";
 
 export default {
   name: "stop",
-  render (entity: any) {
+  render (entity: any): void {
     const visible = entity.properties.$visible && entity.properties.$visible.getValue();
     const images = entity.properties.images ? entity.properties.images.getValue() : [];
     const [image] = images;
