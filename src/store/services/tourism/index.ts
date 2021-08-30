@@ -62,6 +62,7 @@ const setActiveEntity = (geoJson: any, id: string) => {
     // eslint-disable-next-line eqeqeq
     if (entity.id == id) {
       entity.properties.$extended = true;
+      // eslint-disable-next-line eqeqeq
     } else if (entity.properties.type === TourismGeoJSONEntities.stop && entity.properties.routeId == id) {
       entity.properties.$visible = true;
     } else {
