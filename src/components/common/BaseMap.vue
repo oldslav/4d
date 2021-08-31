@@ -101,6 +101,7 @@
         this.SET_CESIUM({ Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode });
 
         this.cesiumInstance = cesiumInstance;
+        this.$root.map = { componentInstance: this, cesiumInstance };
 
         const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
 
@@ -114,19 +115,13 @@
 
         cesiumInstance.viewer.scene.requestRenderMode = true;
         cesiumInstance.viewer.scene.skyBox.show = false;
-
         cesiumInstance.viewer.scene.fxaa = false;
         cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
 
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
 
-        this.colorPoint = Cesium.Color.fromCssColorString("rgb(255,229,0)");
-
         this.$emit("onViewerReady", vcViewer);
-
-        this.$root.map = { componentInstance: this, cesiumInstance };
-
         this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
       },
 

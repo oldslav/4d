@@ -141,14 +141,22 @@ const actions: ActionTree<GeoState, TRootState> = {
     commit(SET_GEODATA, preparedData);
   },
 
-  async [GET_TREES_GEO] ({ commit }, coordinates) {
+  async [GET_TREES_GEO] ({ state, commit }, coordinates) {
     const payload = coordinates ? coordinates : null;
     const { data } = await this.service.services.trees.getTrees(payload);
-    const { type, features } = data;
+    const { features } = data;
 
     const preparedData = {
-      type,
-      features
+      data: features.map((item: any) => ({
+        show: true,
+        position: state.cesiumInstance.Cartesian3.fromDegrees(item.geometry.coordinates[0], item.geometry.coordinates[1], 0),
+        color: "#84D197",
+        pixelSize: 4,
+        scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
+        heightReference : state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
+        ...item
+      })),
+      type: "pointPrimitive"
     };
 
     commit(SET_GEODATA, preparedData);
