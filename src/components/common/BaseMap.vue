@@ -144,7 +144,11 @@
       },
 
       onDatasourceReady (vcViewer) {
+        const { datasource } = this.$refs.ds;
         this.isLoading = false;
+
+        datasource.clustering.pixelRange = 100;
+        datasource.clustering.minimumClusterSize = 5;
 
         this.$watch("clustering", this.onUpdateClustering, { immediate: true });
         this.$watch("data", this.onUpdateData, { immediate: true });
@@ -154,8 +158,6 @@
       onUpdateClustering (val) {
         const { datasource } = this.$refs.ds;
         datasource.clustering.enabled = !!val;
-        datasource.clustering.pixelRange = 100;
-        datasource.clustering.minimumClusterSize = 5;
       },
 
       entitySelected (e) {
