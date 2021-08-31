@@ -3,7 +3,7 @@ import { TRootState } from "src/store/types/root";
 import {
   GET_APARTMENTS_GEO,
   GET_COMMERCE_GEO,
-  GET_IDEAS_GEO,
+  GET_IDEAS_GEO, GET_LIGHT_GEO,
   GET_PARKING_GEO,
   GET_TREES_GEO
 } from "src/store/constants/action-constants";
@@ -22,6 +22,7 @@ import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
 import trees from "src/store/services/trees";
+import light from "src/store/services/light";
 import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
@@ -160,6 +161,27 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
 
     commit(SET_GEODATA, preparedData);
+  },
+
+  async [GET_LIGHT_GEO] ({ state, commit }, coordinates) {
+    const payload = coordinates ? coordinates : null;
+    const { data } = await this.service.services.light.getLightGeo(payload);
+    const { features } = data;
+
+    const preparedData = {
+      data: features.map((item: any) => ({
+        show: true,
+        position: state.cesiumInstance.Cartesian3.fromDegrees(item.geometry.coordinates[0], item.geometry.coordinates[1], 0),
+        color: "#84D197",
+        pixelSize: 4,
+        scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
+        heightReference : state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
+        ...item
+      })),
+      type: "pointPrimitive"
+    };
+
+    commit(SET_GEODATA, preparedData);
   }
 };
 
@@ -197,7 +219,8 @@ const services: Module<GeoState, TRootState> = {
     commerce,
     estate,
     tourism,
-    trees
+    trees,
+    light
   }
 };
 
