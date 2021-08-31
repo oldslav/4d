@@ -31,9 +31,9 @@ module.exports = configure(function (ctx) {
       "cookies",
       "axios",
       "api",
+      "i18n",
       "filters",
       { path: "server-init", client: false },
-      "i18n",
       "notify-defaults",
       "cesium"
     ],
@@ -125,13 +125,13 @@ module.exports = configure(function (ctx) {
       port: 8080,
       open: true, // opens browser window automatically,
       proxy: {
-        //proxy all requests starting with /api to jsonplaceholder
+        // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: '{{ENVIRONMENT}}',
+          target: "{{ENVIRONMENT}}",
           changeOrigin: true
         },
         "/oauth": {
-          target: '{{ENVIRONMENT}}',
+          target: "{{ENVIRONMENT}}",
           changeOrigin: true
         }
       }
