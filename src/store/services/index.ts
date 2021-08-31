@@ -95,45 +95,10 @@ const actions: ActionTree<GeoState, TRootState> = {
   },
 
   async [GET_IDEAS_GEO] ({ state, commit }) {
-    const { data } = await this.service.services.ideas.getIdeasGeo();
-    // const { type, features } = data;
-
-    // const preparedData = {
-    //   type,
-    //   features
-    // };
-
-    // const preparedData = {
-    //   type: "FeatureCollection",
-    //   features: data.items.map(({ geometry, title, description, author, type, status, id }: any) => ({
-    //     type: "Feature",
-    //     geometry: {
-    //       coordinates: [
-    //         geometry.x,
-    //         geometry.y
-    //       ],
-    //       type: "Point"
-    //     },
-    //     id,
-    //     properties: {
-    //       title,
-    //       description,
-    //       author,
-    //       type,
-    //       status,
-    //       color: (() => {
-    //         switch (type.id) {
-    //           case 1:
-    //             return "#000000";
-    //           case 2:
-    //             return "#A2B31C";
-    //           default:
-    //             return "#AAAAAA";
-    //         }
-    //       })()
-    //     }
-    //   }))
-    // };
+    const { data } = await this.service.services.ideas.getIdeas({
+      limit: 1000,
+      offset: 0
+    });
 
     type Colors = {
       [key in string | number]: any;

@@ -3,7 +3,7 @@ import { AxiosPromise } from "axios";
 
 export class IdeasService extends Service {
   public getIdeasGeo (): AxiosPromise<any> {
-    return this.api.get("api/v1/services/crowdsourcing");
+    return this.api.get("api/v1/services/crowdsourcing/all");
   }
 
   public getIdeas (params: unknown): AxiosPromise<any> {
@@ -16,6 +16,10 @@ export class IdeasService extends Service {
 
   public createIdea (payload: unknown): AxiosPromise<any> {
     return this.api.post("api/v1/services/crowdsourcing", payload);
+  }
+
+  public uploadFileIdea (id: number, files: Record<string, any>): AxiosPromise<any> {
+    return this.api.post(`api/v1/services/crowdsourcing/${ id }/file`, files);
   }
 
   public likeIdea (id: number): AxiosPromise<any> {

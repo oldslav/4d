@@ -23,9 +23,11 @@ const actions: ActionTree<IServiceParkingState, TRootState> = {
   async [GET_PARKING_PLACES] ({ commit, rootState }) {
     const { data } = await this.service.services.parking.getParkingPlaces(rootState.services.pickedFeatureId as number);
 
-    const freePlaces = data.items.filter((item: any) => item.status.id === 1);
+    // const freePlaces = data.items.filter((item: any) => item.status.id === 1);
+    const freePlaces = data.items;
 
-    commit(SET_PARKING_PLACES, freePlaces.map((place: any) => place.id));
+    // commit(SET_PARKING_PLACES, freePlaces.map((place: any) => place.id));
+    commit(SET_PARKING_PLACES, freePlaces);
   }
 };
 
