@@ -12,83 +12,83 @@
         q-tab(name="bikes" :label="$t('entity.services.warehouse.tabs.bicycles')")
       div.q-px-md.q-pt-md
         .text-caption.text-primary-light
-          | Адрес
+          | {{$t("common.address")}}
         q-item.q-px-none.q-mb-md.items-start
           q-item-section
             q-item-label
-              | ул. Спортивная, 130, паркинг
+              | {{ warehouseAddress }}
         .text-caption.text-primary-light
-          | {{ $t('entity.services.warehouse.workTime.title') }}
+          | {{ $t("entity.services.warehouse.workTime.title") }}
         q-item.q-px-none.items-start
           q-item-section
             q-item-label
-              | {{ $t('entity.services.warehouse.workTime.season.label') }}
+              | {{ $t("entity.services.warehouse.workTime.season.label") }}
           q-item-section.text-right
             q-item-label.text-primary
-              | {{ $t('entity.services.warehouse.workTime.season.schedule') }}
+              | {{ $t("entity.services.warehouse.workTime.season.schedule") }}
             q-item-label(caption)
-              | {{ $t('entity.services.warehouse.workTime.season.caption') }}
+              | {{ $t("entity.services.warehouse.workTime.season.caption") }}
         q-item.q-px-none.items-start
           q-item-section
             q-item-label
-              | {{ $t('entity.services.warehouse.workTime.noSeason.label') }}
+              | {{ $t("entity.services.warehouse.workTime.noSeason.label") }}
           q-item-section.text-right
             q-item-label.text-primary
-              | {{ $t('entity.services.warehouse.workTime.noSeason.schedule') }}
+              | {{ $t("entity.services.warehouse.workTime.noSeason.schedule") }}
             q-item-label(caption)
-              | {{ $t('entity.services.warehouse.workTime.noSeason.caption') }}
+              | {{ $t("entity.services.warehouse.workTime.noSeason.caption") }}
       q-tab-panels(v-model="currentTab")
         q-tab-panel(name="tires")
           .text-caption.text-primary-light
-            | {{ $t('entity.services.warehouse.storagePrice.title') }}
+            | {{ $t("entity.services.warehouse.storagePrice.title") }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | {{ $t('entity.services.warehouse.storagePrice.tires.short.label') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.short.label") }}
             q-item-section.text-right
               q-item-label.text-primary
-                | {{ $t('entity.services.warehouse.storagePrice.tires.short.price') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.short.price") }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | {{ $t('entity.services.warehouse.storagePrice.tires.mid.label') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.mid.label") }}
             q-item-section.text-right
               q-item-label.text-primary
-                | {{ $t('entity.services.warehouse.storagePrice.tires.mid.price') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.mid.price") }}
               q-item-label(caption)
-                | {{ $t('entity.services.warehouse.storagePrice.tires.mid.caption') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.mid.caption") }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
-                | {{ $t('entity.services.warehouse.storagePrice.tires.long.label') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.long.label") }}
             q-item-section.text-right
               q-item-label.text-primary
-                | {{ $t('entity.services.warehouse.storagePrice.tires.long.price') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.long.price") }}
               q-item-label(caption)
-                | {{ $t('entity.services.warehouse.storagePrice.tires.long.caption') }}
+                | {{ $t("entity.services.warehouse.storagePrice.tires.long.caption") }}
           .text-caption.text-primary-light
-            | {{ $t('entity.services.warehouse.storageTypes.title') }}
+            | {{ $t("entity.services.warehouse.storageTypes.title") }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
-                | {{ $t('entity.services.warehouse.storageTypes.rack') }}
+                | {{ $t("entity.services.warehouse.storageTypes.rack") }}
         q-tab-panel(name="bikes")
           .text-caption.text-primary-light
-            | {{ $t('entity.services.warehouse.storagePrice.title') }}
+            | {{ $t("entity.services.warehouse.storagePrice.title") }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | {{ $t('entity.services.warehouse.storagePrice.bikes.child.label') }}
+                | {{ $t("entity.services.warehouse.storagePrice.bikes.child.label") }}
             q-item-section.text-right
               q-item-label.text-primary
-                | {{ $t('entity.services.warehouse.storagePrice.bikes.child.price') }}
+                | {{ $t("entity.services.warehouse.storagePrice.bikes.child.price") }}
           q-item.q-px-none.items-start
             q-item-section
               q-item-label
-                | {{ $t('entity.services.warehouse.storagePrice.bikes.adult.label') }}
+                | {{ $t("entity.services.warehouse.storagePrice.bikes.adult.label") }}
             q-item-section.text-right
               q-item-label.text-primary
-                | {{ $t('entity.services.warehouse.storagePrice.bikes.adult.price') }}
+                | {{ $t("entity.services.warehouse.storagePrice.bikes.adult.price") }}
           q-item.q-px-none.items-start.q-mb-md
             q-item-section
               q-item-label
@@ -102,13 +102,15 @@
             q-item-section
               q-item-label
                 | {{ $t('entity.services.warehouse.storageTypes.bikePark') }}
-    q-space(v-if="false")
-    div.text-center(v-if="false")
-      q-btn.full-width(color="primary" label="Оформить заявку" :style="{maxWidth: '90%'}" @click="onCreate()")
+    q-space(v-if="true")
+    div.text-center(v-if="true")
+      q-btn.full-width(color="primary" label="Оформить заявку" :style="{maxWidth: '90%'}" @click="onCreate()" :disable="!pickedFeature")
 </template>
 
 <script>
+  import { mapGetters, mapMutations } from "vuex";
   import BaseTabs from "components/common/BaseTabs";
+  import { SET_CREATE_TICKET } from "@/store/constants/mutation-constants";
 
   export default {
     name: "AsideServicesWarehouse",
@@ -118,14 +120,22 @@
         currentTab: "tires"
       };
     },
+    computed: {
+      ...mapGetters("services", ["pickedFeature"]),
+      warehouseAddress () {
+        return this.pickedFeature ? `ул. ${ this.pickedFeature.properties.name }` : this.$t("action.select.building");
+      }
+    },
     methods: {
+      ...mapMutations("services/warehouse", [SET_CREATE_TICKET]),
       onCreate () {
         return this.currentTab === "tires" ? this.tiresTicket() : this.bikeTicket();
       },
-      // как событие отправлять?
       tiresTicket () {
+        this.SET_CREATE_TICKET("tires");
       },
       bikeTicket () {
+        this.SET_CREATE_TICKET("bike");
       }
     }
   };

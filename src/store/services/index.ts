@@ -5,7 +5,7 @@ import {
   GET_COMMERCE_GEO,
   GET_IDEAS_GEO, GET_LIGHT_GEO,
   GET_PARKING_GEO,
-  GET_TREES_GEO
+  GET_TREES_GEO, GET_WAREHOUSE_GEO
 } from "src/store/constants/action-constants";
 import {
   SET_CLUSTERING,
@@ -27,6 +27,7 @@ import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
 import tourism from "src/store/services/tourism";
+import warehouse from "src/store/services/warehouse";
 
 const initialState = (): GeoState => {
   return {
@@ -119,7 +120,7 @@ const actions: ActionTree<GeoState, TRootState> = {
         position: state.cesiumInstance.Cartesian3.fromDegrees(item.geometry.x, item.geometry.y, 0),
         color: colors[item.type.id],
         scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
-        heightReference : state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
+        heightReference: state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
         ...item
       })),
       type: "pointPrimitive"
@@ -130,6 +131,20 @@ const actions: ActionTree<GeoState, TRootState> = {
 
   async [GET_COMMERCE_GEO] ({ commit }) {
     const { data: { type, features } } = await this.service.services.commerce.getCommerce();
+
+    const preparedData = {
+      data: {
+        type,
+        features
+      },
+      type: "geoJson"
+    };
+
+    commit(SET_GEODATA, preparedData);
+  },
+
+  async [GET_WAREHOUSE_GEO] ({ commit }) {
+    const { data: { type, features } } = await this.service.services.warehouse.getWarehouse();
 
     const preparedData = {
       data: {
@@ -220,7 +235,8 @@ const services: Module<GeoState, TRootState> = {
     estate,
     tourism,
     trees,
-    light
+    light,
+    warehouse
   }
 };
 

@@ -1,15 +1,15 @@
 <template lang="pug">
-  q-page.q-pa-lg.bg-white
+  div
     ModalFail(v-model="failVisible")
     ModalSuccess(v-model="successVisible")
-    .row.q-gutter-lg.justify-center
-      q-btn(color="primary" label="Шины" @click="showTiresModal()")
-      q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
-    NewTiresTicket(v-model="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
-    NewBikeTicket(v-model="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
+    NewTiresTicket(v-model="tiresVisible" v-if="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
+    NewBikeTicket(v-model="bikeVisible" v-if="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
 </template>
 
 <script>
+  import { mapMutations, mapGetters } from "vuex";
+  import { GET_WAREHOUSE_GEO } from "@/store/constants/action-constants";
+  import { SET_CREATE_TICKET, SET_FEATURE_ID } from "@/store/constants/mutation-constants";
   import ModalFail from "components/services/ModalFail";
   import ModalSuccess from "components/services/ModalSuccess";
   import NewTiresTicket from "components/services/warehouse/NewTiresTicket";
@@ -19,22 +19,38 @@
   export default {
     name: "ServiceWarehouse",
     components: { BaseMap, NewTiresTicket, NewBikeTicket, ModalFail, ModalSuccess },
+    preFetch ({ store }) {
+      store.commit(`services/${ SET_FEATURE_ID }`, null);
+      return store.dispatch(`services/${ GET_WAREHOUSE_GEO }`);
+    },
     data () {
       return {
-        tiresVisible: false,
-        bikeVisible: false,
         successVisible: false,
         failVisible: false,
         parkingData: null
       };
     },
+    computed: {
+      ...mapGetters("services/warehouse", ["getCreateTicket"]),
+      tiresVisible: {
+        get () {
+          return this.getCreateTicket === "tires";
+        },
+        set () {
+          this.SET_CREATE_TICKET(null);
+        }
+      },
+      bikeVisible: {
+        get () {
+          return this.getCreateTicket === "bike";
+        },
+        set () {
+          this.SET_CREATE_TICKET(null);
+        }
+      }
+    },
     methods: {
-      showTiresModal () {
-        this.tiresVisible = true;
-      },
-      showBikeModal () {
-        this.bikeVisible = true;
-      },
+      ...mapMutations("services/warehouse", [SET_CREATE_TICKET]),
       showSuccessPopup () {
         this.successVisible = true;
       },
@@ -44,7 +60,3 @@
     }
   };
 </script>
-
-<style lang="stylus">
-
-</style>
