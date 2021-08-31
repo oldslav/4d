@@ -31,9 +31,9 @@ module.exports = configure(function (ctx) {
       "cookies",
       "axios",
       "api",
+      "i18n",
       "filters",
       { path: "server-init", client: false },
-      "i18n",
       "notify-defaults",
       "cesium"
     ],

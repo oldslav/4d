@@ -416,6 +416,17 @@ const routes: RouteConfig[] = [
             }
           }
         ]
+      },
+      {
+        path: "trees",
+        name: "map-trees",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceTrees.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true
+        }
       }
     ]
   },
@@ -473,12 +484,14 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: "lighting",
-        name: "services-lighting",
+        path: "light",
+        name: "services-light",
         components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+          default: (): Promise<any> => import("pages/services/ServiceLight.vue")
         },
         meta: {
+          map: true,
+          asideServices: true,
           toolbar: true
         }
       },
@@ -593,10 +606,11 @@ const routes: RouteConfig[] = [
         path: "trees",
         name: "services-trees",
         components: {
-          default: (): Promise<any> => import("src/pages/services/ServiceTrees.vue"),
+          default: (): Promise<any> => import("pages/services/ServiceTrees.vue"),
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesTrees.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }

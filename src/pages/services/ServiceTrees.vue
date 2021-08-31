@@ -1,27 +1,26 @@
 <template lang="pug">
-  div
-    BaseMap(
-      @change="onMapClick"
-      @onViewerReady="onViewerReady"
-    )
-    router-view
 </template>
 
 <script>
   import { mapMutations, mapActions, mapState } from "vuex";
-  import BaseMap from "../../components/common/BaseMap";
   import { GET_TREES_GEO, GET_TREE } from "../../store/constants/action-constants";
-  import { SET_FEATURE_ID, SET_TREE } from "../../store/constants/mutation-constants";
+  import { SET_CLUSTERING, SET_FEATURE_ID, SET_TREE } from "../../store/constants/mutation-constants";
 
   export default {
     name: "ServiceTrees",
-    components: { BaseMap },
+    // async preFetch ({ store }) {
+    //   await store.dispatch(`services/${ GET_TREES_GEO }`);
+    //   store.commit(`services/${ SET_CLUSTERING }`, true);
+    // },
     async created () {
       await this.GET_TREES_GEO();
+      this.SET_CLUSTERING(true);
     },
     computed: {
       ...mapState("services", {
-        geoJson: state => state.geoJson
+        cesiumInstance: state => state.cesiumInstance,
+        geoJson: state => state.geoJson,
+        pickedFeatureId: state => state.pickedFeatureId
       })
     },
     methods: {
@@ -34,63 +33,23 @@
       ]),
 
       ...mapMutations("services", [
-        SET_FEATURE_ID
+        SET_FEATURE_ID,
+        SET_CLUSTERING
       ]),
 
       ...mapMutations("services/trees", [
         SET_TREE
       ]),
 
-      onMapClick (e) {
-        if (e && e._properties._fill._value !== "#FF6565") {
-          this.GET_TREE(e.id);
-        } else {
-          this.SET_TREE(null);
-        }
-      },
-
-      onViewerReady (vcViewer) {
+      onViewerReady (vcViewer = this.componentInstance.$refs.vcViewer) {
         vcViewer.viewer.scene.mode = Cesium.SceneMode.SCENE2D;
-
-        const options = {
-          camera: vcViewer.viewer.scene.camera,
-          canvas: vcViewer.viewer.scene.canvas
-        };
-
-        const dsPromise = vcViewer.dataSources.add(
-          vcViewer.Cesium.GeoJsonDataSource.load(
-            this.geoJson,
-            options
-          )
-        );
-
-        dsPromise.then(function (dataSource) {
-          dataSource.clustering.enabled = true;
-          dataSource.clustering.pixelRange = 100;
-          dataSource.clustering.minimumClusterSize = 5;
-        });
       }
-
+      //
       // onMapMove (vcViewer) {
       //   const coordinates = this.getLeftTopRightDownCoordinates(vcViewer);
       //   this.GET_TREES_GEO(coordinates);
-      //   const options = {
-      //     camera: vcViewer.viewer.scene.camera,
-      //     canvas: vcViewer.viewer.scene.canvas
-      //   };
-      //   const dsPromise = vcViewer.dataSources.add(
-      //     vcViewer.Cesium.GeoJsonDataSource.load(
-      //       this.geoJson,
-      //       options
-      //     )
-      //   );
-      //   dsPromise.then(function (dataSource) {
-      //     dataSource.clustering.enabled = true;
-      //     dataSource.clustering.pixelRange = 100;
-      //     dataSource.clustering.minimumClusterSize = 5;
-      //   });
-      // }
-
+      // },
+      //
       // getLeftTopRightDownCoordinates (vcViewer) {
       //   const Cesium = vcViewer.Cesium;
       //   const viewer = vcViewer.viewer;
@@ -100,7 +59,6 @@
       //   let leftBottom = viewer.camera.pickEllipsoid(c2, ellipsoid);
       //   c2 = new Cesium.Cartesian2(canvas.clientWidth, 0);
       //   let rightUpper = viewer.camera.pickEllipsoid(c2, ellipsoid);
-      //   console.log(leftBottom, rightUpper);
       //
       //   viewer.entities.add({
       //     name: "leftBottom",
@@ -159,6 +117,25 @@
       //     return null;
       //   }
       // }
+    },
+    watch: {
+      cesiumInstance: {
+        immediate: true,
+        handler (value) {
+          if (value) {
+            this.componentInstance = this.$root.map.componentInstance;
+            this.onViewerReady();
+          }
+        }
+      },
+
+      pickedFeatureId (v) {
+        if (v) {
+          this.GET_TREE(v);
+        } else {
+          this.SET_TREE(null);
+        }
+      }
     }
   };
 </script>

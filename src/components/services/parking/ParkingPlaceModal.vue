@@ -75,7 +75,7 @@
           if (data[i].status.name === "free") {
             if (this.$refs.map) {
               this.$refs.map.$el.querySelector("#Place" + data[i].number).addEventListener("click", () => {
-                this.onParkingPlaceChange(data[i].number);
+                this.onParkingPlaceChange(data[i].id);
               });
             }
             this.setColor(data[i].number, "#C1E4CA");
