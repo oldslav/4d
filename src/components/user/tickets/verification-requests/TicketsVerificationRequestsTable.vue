@@ -10,10 +10,10 @@
     template(v-slot:body="props")
       q-tr(:props="props")
         q-td(key="companyName" :props="props")
-          | {{ props.row.name }}
+          div.break-word.break-spaces {{ props.row.name }}
 
         q-td(key="legalAddress" :props="props")
-          | {{ props.row.legalAddress }}
+          div.break-word.break-spaces {{ props.row.legalAddress }}
 
         q-td(key="created" :props="props")
           | {{ props.row.created | formatDate }}
@@ -48,7 +48,7 @@
               q-list
                 q-item(@click="onClickShowRequestDetails(props.row.id)" clickable v-close-popup)
                   q-item-section(no-wrap)
-                    | Посмотреть детали заявки
+                    | {{ $t('user.tickets.verifyRequests.table.details') }}
 </template>
 <script>
   import BaseTable from "../../../common/BaseTable";
@@ -74,28 +74,28 @@
           {
             name: "companyName",
             required: false,
-            label: "Название компани",
+            label: this.$t("user.tickets.verifyRequests.table.companyName"),
             align: "left",
             sortable: false
           },
           {
             name: "legalAddress",
             required: false,
-            label: "Фактический адрес ",
+            label: this.$t("user.tickets.verifyRequests.table.legalAddress"),
             align: "left",
             sortable: false
           },
           {
             name: "created",
             required: false,
-            label: "Дата заявки",
+            label: this.$t("user.tickets.verifyRequests.table.created"),
             align: "left",
             sortable: false
           },
           {
             name: "status",
             required: false,
-            label: "Статус",
+            label: this.$t("user.tickets.verifyRequests.table.status"),
             align: "left",
             sortable: false
           },

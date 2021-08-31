@@ -11,7 +11,7 @@ const { configure } = require("quasar/wrappers");
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
-module.exports = configure(function () {
+module.exports = configure(function (ctx) {
   return {
     sourceMap: true,
     // https://quasar.dev/quasar-cli/supporting-ts
@@ -114,8 +114,10 @@ module.exports = configure(function () {
         });
       },
       env: {
-        SERVER_API_HOST: "https://4d-dev.innopolis.university",
-        BROWSER_API_HOST: "https://4d-dev.innopolis.university"
+        //SERVER_API_HOST: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru"
+        //BROWSER_API_HOST: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru"
+        SERVER_API_HOST: "{{ENVIRONMENT}}",
+        BROWSER_API_HOST: "{{ENVIRONMENT}}"
       }
     },
 
@@ -127,11 +129,13 @@ module.exports = configure(function () {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "https://iuul.innopolis.university",
+          target: "{{ENVIRONMENT}}",
+          //target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         },
         "/oauth": {
-          target: "https://iuul.innopolis.university",
+          target: "{{ENVIRONMENT}}",
+          //target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         }
       }

@@ -38,6 +38,10 @@ export class TicketsService extends Service {
     return this.api.post("/api/v1/services/apartments/user/tickets", params);
   }
 
+  public updateTicketLiving (ticketId: number, params: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/user/tickets/${ ticketId }`, params);
+  }
+
   public createLegalTicketLiving (payload: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/apartments/company/tickets", payload);
   }
@@ -92,6 +96,10 @@ export class TicketsService extends Service {
 
   public getEmployeeTicketsParking (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/parking/employee/tickets", { params });
+  }
+
+  public getParkingTicketById (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/parking/user/tickets/${ id }`);
   }
 
   public createTicketParking (params: unknown): AxiosPromise<any> {
@@ -186,6 +194,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/crowdfunding/${ id }`, payload);
   }
 
+  public publishTicketCrowdfunding (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/crowdfunding/${ id }/publish`);
+  }
+
   public addTicketCrowdfundingCover (id: number, file: unknown): AxiosPromise<TicketsResponse> {
     return this.api.post(`/api/v1/services/crowdfunding/${ id }/cover`, file);
   }
@@ -212,5 +224,62 @@ export class TicketsService extends Service {
 
   public deleteTicketCrowdfunding (id: number): AxiosPromise<TicketsResponse> {
     return this.api.delete(`/api/v1/services/crowdfunding/${ id }`);
+  }
+
+  // COMMERCE
+  public getCompanyTicketsCommerce (params?: unknown): AxiosPromise<TicketResponse> {
+    return this.api.get("/api/v1/services/commerce/company/tickets", { params });
+  }
+
+  public getCompanyCommerceTicketById (ticketId: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/commerce/company/tickets/${ ticketId }`);
+  }
+
+  public getEmployeeTicketsCommerce (params?: unknown): AxiosPromise<TicketResponse> {
+    return this.api.get("/api/v1/services/commerce/employee/tickets", { params });
+  }
+
+  public getEmployeeCommerceTicketById (ticketId: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/commerce/employee/tickets/${ ticketId }`);
+  }
+
+  public createCommerceTicket (placeId: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/commerce/places/${ placeId }/company/tickets`, payload);
+  }
+
+  public updateCommerceTicket (ticketId: number, payload: unknown): AxiosPromise<TicketResponse> {
+    return this.api.put(`/api/v1/services/commerce/company/tickets/${ ticketId }`, payload);
+  }
+
+  public cancelCommerceTicket (ticketId: number): AxiosPromise<TicketResponse> {
+    return this.api.put(`/api/v1/services/commerce/company/tickets/${ ticketId }/cancel`);
+  }
+
+  public deleteCommerceTicket (ticketId: number): AxiosPromise<TicketResponse> {
+    return this.api.delete(`/api/v1/services/commerce/company/tickets/${ ticketId }`);
+  }
+
+  public uploadCommerceTicketFile (ticketId: number, file: unknown): AxiosPromise<TicketResponse> {
+    return this.api.post(`/api/v1/services/commerce/company/tickets/${ ticketId }/file`, file);
+  }
+
+  public deleteCommerceTicketFile (fileId: number): AxiosPromise<TicketResponse> {
+    return this.api.delete(`/api/v1/services/commerce/company/tickets/file/${ fileId }`);
+  }
+
+  public requestCommerceTicketApproval (ticketId: number): AxiosPromise<TicketResponse> {
+    return this.api.put(`/api/v1/services/commerce/company/tickets/${ ticketId }/send_on_approval`);
+  }
+
+  public approveCommerceTicket (ticketId: number): AxiosPromise<TicketResponse> {
+    return this.api.put(`/api/v1/services/commerce/employee/tickets/${ ticketId }/approve`);
+  }
+
+  public rejectCommerceTicket (ticketId: number, reason: string): AxiosPromise<TicketResponse> {
+    return this.api.put(`/api/v1/services/commerce/employee/tickets/${ ticketId }/reject`, reason);
+  }
+
+  public sendContractInfoCommerce (ticketId: number): AxiosPromise<TicketResponse> {
+    return this.api.put(`/api/v1/services/commerce/employee/tickets/${ ticketId }/sign_contract_success`);
   }
 }

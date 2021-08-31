@@ -18,7 +18,7 @@
             @click="toServiceParking"
             :label="$t('action.toMap')"
           )
-        TicketDetailsModal(v-if="currentRow" v-model="isModalVisible" :info="currentRow")
+        TicketDetailsModal(:id.sync="currentId" v-model="isModalVisible" v-if="currentId")
       template(v-slot:body="props")
         q-tr(:props="props" @click="expandRow(props)")
           q-td(key="parkingAddress" :props="props" )
@@ -26,7 +26,7 @@
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
           q-td(key="type" :props="props")
-            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
+            | {{parkingType(props.row)}}
           q-td(key="price" :props="props")
             | {{ props.row.price ? props.row.price.price : "0" }}
           q-td(key="created" :props="props")
@@ -40,11 +40,11 @@
                   q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="cancelTicket(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup @click="openDetails(props.row)")
+                  q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             q-stepper(
               ref="stepper"
@@ -52,6 +52,7 @@
               color="primary"
               flat
               animated
+              v-if="props.row.status.id >= 3 && props.row.status.id < 8"
             )
               q-step(
                 title="Оплата"
@@ -65,26 +66,154 @@
               )
             div(v-if="props.row.status.id < 3").q-pa-md
               div.text-body1.text-wrap
-                | Пожалуйста, дождитесь решения по вашей заявке.
+                | Пожалуйста, дождитесь решения по вашей заявке.<br>
                 | Фонд развития города Иннополис
-            div(v-if="props.row.status.id === 3").q-pa-md
+            div(v-if="props.row.status.id === 3 && props.row.isGuestVisit").q-pa-md
+              .row
+                .col-6
+                  .full-width
+                .col-6
+                  div.text-body1.text-wrap
+                    | Поздравляем, ваша заявка одобрена!<br>
+                    | Для вас  сформирована задолженность в размере обеспечительного платежа.<br>
+                    | Перед оплатой задолженности ознакомьтесь с публичной офертой и примите ее.<br>
+                    | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.<br>
+                    | Фонд развития города Иннополис
+                  div.text-right
+                    q-btn(
+                      :loading="isPaymentLinkLoading"
+                      color="primary"
+                      label="Перейти к оплате"
+                      @click="goToPayment(props.row.id)"
+                    )
+            div(v-else-if="props.row.status.id === 3 && props.row.personCategory && props.row.personCategory.isSocial").q-pa-md
+              .row
+                .col-6
+                  .full-width
+                .col-6
+                  div.text-body1.text-wrap
+                    | Поздравляем, ваша заявка одобрена!
+                    |  Фонд развития города Иннополис приступил к подготовке договора к подписанию.
+                    |  После того, как договор будет готов, вам придет приглашение на подписание. Статус заявки обновится автоматически.
+                    |  Фонд развития города Иннополис
+            div(v-else-if="props.row.status.id === 3").q-pa-md
+              .row
+                .col-6
+                  | Вы можете ознакомиться с образцом договора.
+                  DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
+                .col-6
+                  div.text-body1.text-wrap
+                    | Поздравляем, ваша заявка одобрена!<br>
+                    | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.<br>
+                    | Перед оплатой ознакомьтесь с публичной офертой и примите ее.<br>
+                    | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.<br>
+                    | Фонд развития города Иннополис
+                  div.text-right
+                    q-btn(
+                      :loading="isPaymentLinkLoading"
+                      color="primary"
+                      label="Перейти к оплате"
+                      @click="goToPayment(props.row.id)"
+                    )
+            div(v-if="props.row.status.id === 7 && props.row.isGuestVisit").q-pa-md
+              .row
+                .col-6
+                  .full-width
+                .col-6.text-body1.text-wrap
+                  | Вам необходимо подойти в “Фонд развития города Иннополис” для получения ключей.
+                  div.q-col-gutter-sm.q-mt-md
+                    .text-primary-light
+                      | Адрес
+                    div
+                      | г. Иннополис, ул. Спортивная, 112
+                    .text-primary-light
+                      | Время работы
+                    .flex.items-center.justify-between
+                      div
+                        | понедельник - четверг
+                      div
+                        | 9:00 - 18:00
+                    .flex.items-center.justify-between
+                      div
+                        | пятница
+                      div
+                        | 9:00 - 17:00
+                    div
+                      | Если вы хотите отменить заявку, свяжитесь с сотрудниками “Фонда развития города Иннополис”.<br>
+                      | В рабочее время по телефону +7 (937) 622-93-84 или в телеграмме @Parking_Innopolis.<br>
+                      | В выходные и праздничные дни по телефону +7 (939) 731-17-55<br>
+                      | Фонд развития города Иннополис
+            div(v-else-if="props.row.status.id === 7").q-pa-md
+              .row
+                .col-6.text-body1
+                  | Вы можете ознакомиться с образцом договора.
+                  DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
+                .col-6.text-body1.text-wrap
+                  | Ваш договор готов к подписанию!<br>
+                  | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора.
+                  div.q-col-gutter-sm.q-mt-md
+                    .text-primary-light
+                      | Адрес
+                    div
+                      | г. Иннополис, ул. Спортивная, 112
+                    .text-primary-light
+                      | Время работы
+                    .flex.items-center.justify-between
+                      div
+                        | понедельник - четверг
+                      div
+                        | 9:00 - 18:00
+                    .flex.items-center.justify-between
+                      div
+                        | пятница
+                      div
+                        | 9:00 - 17:00
+                    div
+                      | Если вы хотите отменить заявку, свяжитесь с сотрудниками “Фонда развития города Иннополис”.<br>
+                      | В рабочее время по телефону +7 (937) 622-93-84 или в телеграмме @Parking_Innopolis.<br>
+                      | В выходные и праздничные дни по телефону +7 (939) 731-17-55<br>
+                      | Фонд развития города Иннополис
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
+            div(v-if="props.row.status.id === 13").q-pa-md
+              .row
+                .col-6.text-body1
+                  .full-width
+                .col-6.text-body1.text-wrap
+                  | Срок действия по вашей заявке истек.<br>
+                  | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
+                  div.q-col-gutter-sm.q-mt-md
+                    .text-primary-light
+                      | Адрес
+                    div
+                      | г. Иннополис, ул. Спортивная, 112
+                    .text-primary-light
+                      | Время работы
+                    .flex.items-center.justify-between
+                      div
+                        | понедельник - четверг
+                      div
+                        | 9:00 - 18:00
+                    .flex.items-center.justify-between
+                      div
+                        | пятница
+                      div
+                        | 9:00 - 17:00
+                    .text-primary-light
+                      | Телефон
+                    .flex.items-center.justify-between
+                      div
+                        | +7 (937) 622-93-84
+                    .text-primary-light
+                      | Телеграм
+                    .flex.items-center.justify-between
+                      div
+                        | @Parking_Innopolis
+            div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
-                | Поздравляем, ваша заявка одобрена!
-                | Для начала оформления договора на аренду парковочного места вам нужно внести оплату. В случае, если вы захотите отменить заявку, оплата вернется вам в полном размере.
-                | Перед оплатой ознакомьтесь с публичной офертой и примите ее.
-                | Обращаем ваше внимание, что согласно публичной оферте действие договора начинается в момент оплаты.
-                | Фонд развития города Иннополис.
-              div.text-right
-                q-btn(
-                  :loading="isPaymentLinkLoading"
-                  color="primary"
-                  label="Перейти к оплате"
-                  @click="goToPayment(props.row.id)"
-                )
-            div(v-if="props.row.status.id === 7").q-pa-md
-              div.text-body1.text-wrap
-                | Ваш договор готов к подписанию!
-                | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+                | Работа над заявкой завершена
 </template>
 
 <script>
@@ -100,10 +229,12 @@
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import BaseTable from "../../components/common/BaseTable";
   import TicketDetailsModal from "components/user/tickets/parking/TicketDetailsModal";
+  import ValidContractState from "components/user/tickets/ValidContractState";
+  import DownloadTemplate from "components/user/tickets/DownloadTemplate";
 
   export default {
     name: "UserTicketsParking",
-    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal },
+    components: { ApartmentTicketStatus, BaseTable, TicketDetailsModal, ValidContractState, DownloadTemplate },
     async created () {
       await this.getUserTickets();
     },
@@ -111,7 +242,7 @@
       return {
         isModalVisible: false,
         expanded: [],
-        currentRow: null,
+        currentId: null,
         columns: [
           {
             name: "parkingAddress",
@@ -173,6 +304,10 @@
 
       isPaymentLinkLoading () {
         return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKET_PARKING_PAYMENT_LINK }`];
+      },
+      
+      templatePath () {
+        return this.isUserLegal ? "/uploads/templates/parking_contract_jur_template.pdf" : "/uploads/templates/parking_contract_template.pdf";
       }
     },
     methods: {
@@ -181,6 +316,13 @@
         deleteUserTicket: DELETE_USER_TICKET_PARKING,
         GET_USER_TICKET_PARKING_PAYMENT_LINK
       }),
+
+      parkingType (row) {
+        if (row.isGuestVisit) {
+          return this.$t("entity.services.parking.ticketType.guest");
+        }
+        return this.$t(`entity.services.parking.ticketType.${ row.parkingPlace.type.name }`);
+      },
 
       async getUserTickets (props) {
         if (props) {
@@ -193,8 +335,8 @@
         await this.GET_USER_TICKETS_PARKING();
       },
 
-      openDetails (data) {
-        this.currentRow = data;
+      openDetails (id) {
+        this.currentId = id;
         this.isModalVisible = true;
       },
 
@@ -224,5 +366,8 @@
 </script>
 
 <style lang="stylus" scoped>
-
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
 </style>

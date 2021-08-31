@@ -10,8 +10,11 @@
     transition-show="fade"
     transition-hide="fade"
     @input="toggleModal"
+    @hide="$emit('hide')"
   )
     slot
+    div(v-if="loading")
+      q-inner-loading(:showing="loading")
 </template>
 
 <script>
@@ -39,6 +42,10 @@
         default: "right"
       },
       maximized: {
+        type: Boolean,
+        default: false
+      },
+      loading: {
         type: Boolean,
         default: false
       }

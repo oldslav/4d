@@ -21,7 +21,7 @@
             name="expand_more"
             style="font-size: 18px"
           )
-          | {{ props.row.name.full }}
+          div.break-word.break-spaces {{ props.row.name.full }}
 
         q-td(key="respondDate" :props="props")
           | {{ props.row.created | formatDate }}
@@ -56,7 +56,7 @@
               q-list
                 q-item(@click="onClickDetails(props.row.id)" clickable v-close-popup)
                   q-item-section(no-wrap)
-                    | Детали отклика
+                    | {{ $t('user.tickets.responds.details') }}
 
       q-tr(v-show="props.expand && activeExpandStatuses.includes(props.row.status.id)")
         q-td.no-padding(colspan="100%" no-hover)
@@ -100,21 +100,21 @@
           {
             name: "fullName",
             required: false,
-            label: "Ф.И.О. кандидата",
+            label: this.$t("user.tickets.responds.table.fullName"),
             align: "left",
             sortable: false
           },
           {
             name: "respondDate",
             required: false,
-            label: "Дата отклика",
+            label: this.$t("user.tickets.responds.respondDate"),
             align: "left",
             sortable: false
           },
           {
             name: "status",
             required: false,
-            label: "Статус",
+            label: this.$t("user.tickets.responds.table.status"),
             align: "left",
             sortable: false
           },

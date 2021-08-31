@@ -73,25 +73,23 @@ const mutations: MutationTree<ICompanyState> = {
 };
 
 const actions: ActionTree<ICompanyState, TRootState> = {
-  [GET_COMPANY] ({ commit, dispatch }) {
-    return this.service.user.company.getCompany()
-      .then(({ data }) => {
-        const { id, verifyRequest, bankDetails, companyCard, companyProfile } = data;
-        commit(SET_COMPANY_ID, id);
-        commit(SET_COMPANY_VERIFY_REQUEST, verifyRequest);
-        commit(SET_COMPANY_BANK, bankDetails);
-        commit(SET_COMPANY_PROFILE, companyProfile);
-        const { images, ...cardPayload } = companyCard;
-        const documents: any = {
-          partner_card: [],
-          inn: [],
-          ogrn: [],
-          egrjul: []
-        };
-        const files = dispatch("loadFiles", images, { root: true });
-        Object.assign(documents, files);
-        commit(SET_COMPANY_CARD, { ...cardPayload, documents });
-      });
+  async [GET_COMPANY] ({ commit, dispatch }) {
+    const { data } = await this.service.user.company.getCompany();
+    const { id, verifyRequest, bankDetails, companyCard, companyProfile } = data;
+    commit(SET_COMPANY_ID, id);
+    commit(SET_COMPANY_VERIFY_REQUEST, verifyRequest);
+    commit(SET_COMPANY_BANK, bankDetails);
+    commit(SET_COMPANY_PROFILE, companyProfile);
+    const { images, ...cardPayload } = companyCard;
+    const documents: any = {
+      partner_card: [],
+      inn: [],
+      ogrn: [],
+      egrjul: []
+    };
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
+    commit(SET_COMPANY_CARD, { ...cardPayload, documents });
   },
   [UPDATE_COMPANY_PROFILE] ({ dispatch }, payload) {
     return this.service.user.company.updateCompanyProfile(payload)
@@ -112,7 +110,7 @@ const actions: ActionTree<ICompanyState, TRootState> = {
   async [UPDATE_COMPANY_CARD] ({ dispatch }, { card, deletedIds }) {
     const { documents, ...payload } = card;
     await this.service.user.company.updateCompanyCard(payload);
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents }, { root: true });
     await Promise.all(deletedIds.map((id: number) => this.service.user.company.deleteCardFile(id)));
     await Promise.all(files.map((f: any) => this.service.user.company.uploadCardFile(f)));
     dispatch(GET_COMPANY);
@@ -146,7 +144,7 @@ const getters: GetterTree<ICompanyState, TRootState> = {
   getCompanyBankDetails (state) {
     return state.bankDetails;
   },
-  isServicesAvailable (state, getters){
+  isServicesAvailable (state, getters) {
     return getters.isVerify;
   }
 };

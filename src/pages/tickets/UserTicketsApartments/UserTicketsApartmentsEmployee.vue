@@ -15,7 +15,8 @@
           q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
           q-td(key="address" :props="props")
-            | {{ $t("user.messages.apartmentNotSelected") }}
+            span(v-if="props.row.apartment") {{ props.row.apartment.address  }}
+            span(v-else).text-grey {{ $t("user.messages.apartmentNotSelected") }}
           q-td(key="price" :props="props")
             | {{ props.row.apartment ? props.row.apartment.price : "0" }}
           q-td(key="created" :props="props")
@@ -23,8 +24,8 @@
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
-            q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click="onReject(props.row.id)")
-            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click="onApprove(props.row.id)")
+            q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click.stop="onReject(props.row.id)")
+            q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click.stop="onApprove(props.row.id)")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
@@ -32,7 +33,7 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
@@ -42,14 +43,15 @@
               :value="props.row.status"
               @contract="sendContractInfo($event, props.row.id)"
             )
-            div.column(v-if="props.row.status.id === 8").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
     ApproveTicketModal(v-model="showApprove" @approve="approveTicket")
-    ApartmentsEmployeeDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
+    ApartmentsTicketDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onReject" @approve="onApprove")
 </template>
 
 <script>
@@ -64,17 +66,19 @@
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
   import ApproveTicketModal from "components/user/tickets/apartments/ApproveTicketModal";
   import BaseTable from "components/common/BaseTable";
-  import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsEmployeeDetailsModal";
+  import ApartmentsTicketDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import ApartmentTicketEmployeeFlow from "components/user/tickets/apartments/ApartmentTicketEmployeeFlow";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "UserTicketsApartmentsEmployee",
     components: {
-      ApartmentsEmployeeDetailsModal,
+      ApartmentsTicketDetailsModal,
       BaseTable,
       ApartmentTicketStatus,
       ApproveTicketModal,
-      ApartmentTicketEmployeeFlow
+      ApartmentTicketEmployeeFlow,
+      ValidContractState
     },
     async created () {
       await this.getEmployeeTickets();
@@ -251,3 +255,10 @@
     }
   };
 </script>
+
+<style lang="stylus" scoped>
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>

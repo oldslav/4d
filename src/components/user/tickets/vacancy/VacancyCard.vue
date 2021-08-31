@@ -2,34 +2,49 @@
   q-card
     q-card-section
       .row.q-col-gutter-sm.items-center
-        div.text-h6.col-grow {{ value.position }}
+        div.text-h6.col.break-word {{ value.position }}
 
-        div(v-if="!readonly")
-
+        div.col-auto.q-pl-sm(v-if="!readonly")
           div(v-if="!visibleForm")
             q-btn(
               @click="onClickEdit"
-              label="Редактировать"
+              :label="$t('user.tickets.vacancies.edit')"
               color="primary"
               size="12px"
               outline
             )
 
           div(v-if="visibleForm")
-            q-btn.q-mr-lg(
+            q-btn.q-mr-lg.xs-hide(
               @click="onClickCancelChange"
-              label="Отмена"
+              :label="$t('action.cancel')"
               outline
               flat
               color="primary"
             )
+            q-btn.q-mr-lg.xs-show.sm-hide.md-hide.lg-hide(
+              @click="onClickCancelChange"
+              icon="close"
+              outline
+              round
+              color="primary"
+            )
 
-            q-btn(
+            q-btn.xs-hide(
               @click="onSubmitForm"
               :disable="!isValidForm"
-              label="Сохранить"
+              :label="$t('action.save')"
               color="primary"
               size="12px"
+              unelevated
+            )
+            q-btn.xs-show.sm-hide.md-hide.lg-hide(
+              @click="onSubmitForm"
+              :disable="!isValidForm"
+              color="primary"
+              icon="done"
+              outline
+              round
             )
 
     q-separator

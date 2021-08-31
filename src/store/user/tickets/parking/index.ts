@@ -1,7 +1,7 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKETS, SET_USER_TICKET, UPDATE_PAGINATION } from "src/store/constants/mutation-constants";
 import {
   ADD_USER_TICKET_FILE_PARKING,
   CREATE_USER_TICKET_PARKING,
@@ -12,7 +12,8 @@ import {
   APPROVE_TICKET_PARKING,
   GET_USER_TICKET_PARKING_PAYMENT_LINK,
   ADD_PARKING_FILES,
-  SEND_CONTRACT_INFO_PARKING
+  SEND_CONTRACT_INFO_PARKING,
+  GET_USER_TICKET
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -22,12 +23,16 @@ const state = (): IUserTicketsState => ({
     offset: 1,
     sort: null
   },
-  data: null
+  data: null,
+  current: null
 });
 
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_USER_TICKETS] (state, payload) {
     state.data = payload;
+  },
+  [SET_USER_TICKET] (state, payload) {
+    state.current = payload;
   },
   [UPDATE_PAGINATION] (state, pagination) {
     state.pagination = { ...state.pagination, ...pagination };
@@ -62,6 +67,17 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
+  async [GET_USER_TICKET] ({ commit, dispatch }, id) {
+    const { data } = await this.service.user.tickets.getParkingTicketById(id);
+    const { images, ...ticket } = data;
+    const documents: any = {
+      passport: []
+    };
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
+    commit(SET_USER_TICKET, { ...ticket, documents });
+  },
+
   [REJECT_TICKET_PARKING] (_, { id, reason }) {
     return this.service.user.tickets.rejectTicketParking(id, reason);
   },
@@ -89,7 +105,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [ADD_PARKING_FILES] ({ dispatch }, { id, documents }) {
-    const files = await dispatch("bundleFiles", documents, { root: true });
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
     await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_PARKING, { id, payload: f })));
   },
 
@@ -106,6 +122,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 };
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
+  getCurrentTicket: (state) => state.current,
   tableData (state) {
     return state.data;
   },

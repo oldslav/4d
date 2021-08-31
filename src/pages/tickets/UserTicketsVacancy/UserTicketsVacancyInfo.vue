@@ -1,7 +1,8 @@
 <template lang="pug">
-  div
+  div.full-width
     vacancy-card(
       v-model="getVacancy"
+      :readonly="isReadonly"
       :editor-mode.sync="isEnableEditorMode"
       @submit="onSubmitVacancy"
     )
@@ -20,18 +21,20 @@
       };
     },
     computed: {
+      ...mapGetters([ "getAccount" ]),
       ...mapGetters("user/tickets/vacancy", [
         "getVacancy"
-      ])
+      ]),
+      isReadonly (){
+        return this.getVacancy.author.id !== this.getAccount.id;
+      }
     },
     methods: {
-      ...mapActions("services/vacancy", {
-        updateVacancy: UPDATE_VACANCY
-      }),
+      ...mapActions("services/vacancy", { updateVacancy: UPDATE_VACANCY }),
       async onSubmitVacancy (update) {
         const notifyEnd = this.$q.notify({
           type: "ongoing",
-          message: "Обновляем вакансию"
+          message: this.$t("user.tickets.vacancies.forms.update.progress")
         });
 
         try {
@@ -40,12 +43,15 @@
             update
           });
           this.isEnableEditorMode = false;
-          notifyEnd({ type: "positive", message: "Вакансия успешно обновлена" });
+          notifyEnd({
+            type: "positive",
+            message: this.$t("user.tickets.vacancies.forms.update.success")
+          });
           this.$store.commit(`user/tickets/vacancy/${ SET_USER_VACANCY }`, updatedVacancy);
         } catch (e) {
           notifyEnd({
             type: "negative",
-            message: "При обновлении вакансии произошла ошибка, пожалуйста попробуйте позже"
+            message: this.$t("user.tickets.vacancies.forms.update.error")
           });
         }
       }

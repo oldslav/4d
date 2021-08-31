@@ -66,12 +66,12 @@
     },
     neighborTypeId: id,
     documents: {
-      inn: [],
-      snils: [],
       passport: [],
-      marriage: [],
-      birth: [],
-      children_registration: [],
+      ...id === 5 && { marriage: [] },
+      ...id === 5 && { inn: [] },
+      ...id === 5 && { snils: [] },
+      ...id === 4 && { children_registration: [] },
+      ...id === 4 && { birth: [] },
       consent_processing_personal_data: []
     }
   });

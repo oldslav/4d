@@ -28,7 +28,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["isUserNature", "isUserLegal", "isEmployee"]),
+      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS", "isEmployee"]),
 
       meta () {
         return this.$route.meta;
@@ -36,6 +36,36 @@
 
       items () {
         return [
+          {
+            label: this.$t("entity.estate.title"),
+            action: { name: "services-estate" },
+            icon: "o_article",
+            show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.transport"),
+            action: { name: "services-transport" },
+            icon: "o_directions_bus",
+            show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.landscape"),
+            action: { name: "services-landscape" },
+            icon: "o_park",
+            show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.lighting"),
+            action: { name: "services-lighting" },
+            icon: "o_lightbulb",
+            show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.planning"),
+            action: { name: "services-planning" },
+            icon: "o_explore",
+            show: this.isUserGIS
+          },
           {
             label: this.$t("entity.services.living.title"),
             action: {
@@ -45,12 +75,12 @@
             show: this.$route.query.requestId && this.isUserNature || this.isUserLegal
           },
           {
-            label: this.$t("entity.services.commerce"),
+            label: this.$t("entity.services.commerce.title"),
             action: {
               name: "services-commerce"
             },
             icon: "o_text_snippet",
-            show: this.isUserNature
+            show: this.isUserLegal
           },
           {
             label: this.$t("entity.services.parking.title"),

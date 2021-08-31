@@ -5,6 +5,7 @@ export enum VacancyReferencesEnum {
   employmentType = "employment_type",
   experience = "experience",
   profIndustry = "prof_industry",
+  publishedProfIndustry = "prof_industry_vacancies_is_published",
   respondStatus = "respond_status",
   vacancyStatus = "vacancy_status",
   workSchedule = "work_schedule",

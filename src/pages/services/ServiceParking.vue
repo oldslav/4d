@@ -10,8 +10,10 @@
       @selected="onParkingChange"
     )
     ParkingPlaceModal(
+      v-if="isParkingPlaceModal"
       v-model="isParkingPlaceModal"
       :parkingPlaces="parkingPlaces"
+      :buildingId="buildingId"
       @update="onParkingPlaceChange"
     )
     template(v-if="parkingPlaceId")
@@ -42,8 +44,7 @@
   import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import {
     GET_PARKING_GEO,
-    GET_PARKING_BUILDINGS,
-    GET_PARKING_PLACES, GET_USER_DOCUMENTS, GET_REFERENCES
+    GET_PARKING_BUILDINGS, GET_USER_DOCUMENTS, GET_REFERENCES
   } from "@/store/constants/action-constants";
   import { SET_FEATURE_ID, SET_PARKING_PLACE } from "@/store/constants/mutation-constants";
   import BaseSelect from "../../components/common/BaseSelect";
@@ -57,7 +58,16 @@
 
   export default {
     name: "ServiceParking",
-    components: { ParkingHoverModal, NewSocialParkingTicket, NewGuestParkingTicket, ParkingPlaceModal, NewParkingTicket, BaseSelect, ModalFail, ModalSuccess },
+    components: {
+      ParkingHoverModal,
+      NewSocialParkingTicket,
+      NewGuestParkingTicket,
+      ParkingPlaceModal,
+      NewParkingTicket,
+      BaseSelect,
+      ModalFail,
+      ModalSuccess
+    },
     async created () {
       await Promise.all([this.GET_PARKING_GEO(), this.GET_USER_DOCUMENTS(), this.GET_REFERENCES()]);
     },
@@ -121,8 +131,7 @@
       ]),
 
       ...mapActions("services/parking", [
-        GET_PARKING_BUILDINGS,
-        GET_PARKING_PLACES
+        GET_PARKING_BUILDINGS
       ]),
 
       ...mapActions("user/documents", [GET_USER_DOCUMENTS]),
@@ -148,7 +157,6 @@
 
       onTicketChange (value) {
         if (value) {
-          this.buildingId = null;
           this.parkingPlaceId = null;
           this.isParkingPlaceModal = false;
           this.isNewTicketModal = false;
@@ -163,13 +171,6 @@
 
       showFailPopup () {
         this.isTicketFail = true;
-      }
-    },
-    watch: {
-      async buildingId (value) {
-        if (value) {
-          await this.GET_PARKING_PLACES();
-        }
       }
     }
   };

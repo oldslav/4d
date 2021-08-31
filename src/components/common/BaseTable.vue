@@ -9,8 +9,10 @@
     :columns="columns"
     :row-key="rowKey"
     :pagination="pagination"
+    :filter="filter"
     :expanded.sync="expanded"
     :card-container-class="cardContainerClass"
+    :rows-per-page-options="rowsPerPageOptions"
     @request="getData"
     @update:pagination="$emit('update:pagination', $event)"
   )
@@ -56,6 +58,10 @@
         type: Object,
         default: () => {}
       },
+      filter: {
+        type: Object,
+        default: () => {}
+      },
       columns: {
         type: Array,
         default: () => []
@@ -67,6 +73,10 @@
       isLoading: {
         type: Boolean,
         default: false
+      },
+      rowsPerPageOptions: {
+        type: Array,
+        default: () => [5, 10, 25, 50]
       },
       virtualScroll: {
         type: Boolean,
