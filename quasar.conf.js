@@ -31,9 +31,9 @@ module.exports = configure(function (ctx) {
       "cookies",
       "axios",
       "api",
-      "i18n",
       "filters",
       { path: "server-init", client: false },
+      "i18n",
       "notify-defaults",
       "cesium"
     ],
@@ -114,8 +114,6 @@ module.exports = configure(function (ctx) {
         });
       },
       env: {
-        //SERVER_API_HOST: "https://4d-dev.innopolis.university",
-        //BROWSER_API_HOST: "https://4d-dev.innopolis.university"
         SERVER_API_HOST: "{{ENVIRONMENT}}",
         BROWSER_API_HOST: "{{ENVIRONMENT}}"
       }
@@ -126,6 +124,17 @@ module.exports = configure(function (ctx) {
       https: false,
       port: 8080,
       open: true, // opens browser window automatically,
+      proxy: {
+        //proxy all requests starting with /api to jsonplaceholder
+        "/api": {
+          target: '{{ENVIRONMENT}}',
+          changeOrigin: true
+        },
+        "/oauth": {
+          target: '{{ENVIRONMENT}}',
+          changeOrigin: true
+        }
+      }
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
