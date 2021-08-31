@@ -536,6 +536,7 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesWarehouse.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }
