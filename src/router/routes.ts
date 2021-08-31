@@ -592,10 +592,11 @@ const routes: RouteConfig[] = [
         path: "trees",
         name: "services-trees",
         components: {
-          default: (): Promise<any> => import("src/pages/services/ServiceTrees.vue"),
+          default: (): Promise<any> => import("pages/services/ServiceTrees.vue"),
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesTrees.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }
