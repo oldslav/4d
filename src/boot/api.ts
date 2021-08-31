@@ -8,6 +8,7 @@ import ReferencesService from "src/api/references";
 import { ApartmentsService } from "src/api/services/apartments";
 import { ParkingService } from "src/api/services/parking";
 import { VacancyService } from "src/api/services/vacancy";
+import { TreesService } from "src/api/services/trees";
 import { BillsService } from "src/api/user/bills";
 import { UserCompanyService } from "src/api/user/company";
 import { UserDocumentsService } from "src/api/user/documents";
@@ -36,8 +37,9 @@ declare module "vuex/types/index" {
         apartments: ApartmentsService,
         parking: ParkingService,
         vacancy: VacancyService,
-        commerce: CommerceService,
         ideas: IdeasService,
+        trees: TreesService
+        commerce: CommerceService,
         estate: EstateService,
         tourism: TourismService,
       },
@@ -72,8 +74,9 @@ export default boot(({ app }) => {
       apartments: new ApartmentsService(axios),
       parking: new ParkingService(axios),
       vacancy: new VacancyService(axios),
-      commerce: new CommerceService(axios),
       ideas: new IdeasService(axios),
+      trees: new TreesService(axios),
+      commerce: new CommerceService(axios),
       estate: new EstateService(axios),
       tourism: new TourismService(axios)
     },

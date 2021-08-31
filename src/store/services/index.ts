@@ -4,13 +4,15 @@ import {
   GET_APARTMENTS_GEO,
   GET_COMMERCE_GEO,
   GET_IDEAS_GEO,
-  GET_PARKING_GEO
+  GET_PARKING_GEO,
+  GET_TREES_GEO
 } from "src/store/constants/action-constants";
 import {
-  SET_CESIUM, SET_CLUSTERING,
+  SET_CLUSTERING,
   SET_DRAW_TYPE,
   SET_EMPTY,
   SET_FEATURE_ID,
+  SET_CESIUM,
   SET_GEODATA,
   SET_POINT_COORDS,
   SET_USER
@@ -19,6 +21,7 @@ import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
+import trees from "src/store/services/trees";
 import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
@@ -136,6 +139,19 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
 
     commit(SET_GEODATA, preparedData);
+  },
+
+  async [GET_TREES_GEO] ({ commit }, coordinates) {
+    const payload = coordinates ? coordinates : null;
+    const { data } = await this.service.services.trees.getTrees(payload);
+    const { type, features } = data;
+
+    const preparedData = {
+      type,
+      features
+    };
+
+    commit(SET_GEODATA, preparedData);
   }
 };
 
@@ -172,7 +188,8 @@ const services: Module<GeoState, TRootState> = {
     ideas,
     commerce,
     estate,
-    tourism
+    tourism,
+    trees
   }
 };
 

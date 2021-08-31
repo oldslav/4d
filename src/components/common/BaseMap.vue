@@ -96,6 +96,7 @@
       },
 
       onReadyViewer (cesiumInstance) {
+        const vcViewer = this.$refs.vcViewer;
         const { Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode } = cesiumInstance.Cesium;
         this.SET_CESIUM({ Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode });
 
@@ -111,11 +112,18 @@
           maximumHeight: 5000
         });
 
+        viewer.scene.requestRenderMode = true;
+        viewer.scene.skyBox.show = false;
+
         cesiumInstance.viewer.scene.fxaa = false;
         cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
 
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
+
+        this.colorPoint = Cesium.Color.fromCssColorString("rgb(255,229,0)");
+
+        this.$emit("onViewerReady", vcViewer);
 
         this.$root.map = { componentInstance: this, cesiumInstance };
 
@@ -196,6 +204,10 @@
             break;
         }
       }
+
+      // onMapMove () {
+      //   this.$emit("on-map-move", this.$refs.vcViewer);
+      // }
     }
   };
 </script>
