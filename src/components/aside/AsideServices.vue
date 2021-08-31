@@ -28,7 +28,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS"]),
+      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS", "isEmployee"]),
 
       meta () {
         return this.$route.meta;
@@ -121,6 +121,14 @@
             },
             icon: "o_article",
             show: this.isUserNature
+          },
+          {
+            label: this.$t("entity.services.trees.title"),
+            action: {
+              name: "services-trees"
+            },
+            icon: "o_article",
+            show: this.isEmployee
           }
         ];
       }

@@ -733,7 +733,16 @@
       },
       "employmentCenter": "Employment center",
       "light": "Light",
-      "tress": "Tress",
+      "trees":  {
+        "title": "Trees",
+        "aside": {
+          "status": "Состояние",
+          "comment": "Комментарий",
+          "statusChangedDate": "Статус изменен",
+          "statusChangedBy": "Изменил статус",
+          "changeStatus": "Редактировать статус"
+        }
+      },
       "vacancies": {
         "title": "City vacancies",
         "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
