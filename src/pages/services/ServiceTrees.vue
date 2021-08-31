@@ -10,8 +10,8 @@
 <script>
   import { mapMutations, mapActions, mapState } from "vuex";
   import BaseMap from "../../components/common/BaseMap";
-  import { GET_TREES_GEO } from "../../store/constants/action-constants";
-  import { SET_FEATURE_ID } from "../../store/constants/mutation-constants";
+  import { GET_TREES_GEO, GET_TREE } from "../../store/constants/action-constants";
+  import { SET_FEATURE_ID, SET_TREE } from "../../store/constants/mutation-constants";
 
   export default {
     name: "ServiceTrees",
@@ -29,15 +29,23 @@
         GET_TREES_GEO
       ]),
 
+      ...mapActions("services/trees", [
+        GET_TREE
+      ]),
+
       ...mapMutations("services", [
         SET_FEATURE_ID
       ]),
 
+      ...mapMutations("services/trees", [
+        SET_TREE
+      ]),
+
       onMapClick (e) {
         if (e && e._properties._fill._value !== "#FF6565") {
-          this.SET_FEATURE_ID(e.id);
+          this.GET_TREE(e.id);
         } else {
-          this.SET_FEATURE_ID(null);
+          this.SET_TREE(null);
         }
       },
 

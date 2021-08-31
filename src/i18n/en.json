@@ -473,7 +473,14 @@
       "employmentCenter": "Employment center",
       "light": "Light",
       "trees":  {
-        "title": "Trees"
+        "title": "Trees",
+        "aside": {
+          "status": "Состояние",
+          "comment": "Комментарий",
+          "statusChangedDate": "Статус изменен",
+          "statusChangedBy": "Изменил статус",
+          "changeStatus": "Редактировать статус"
+        }
       },
       "vacancies": {
         "title": "City vacancies",

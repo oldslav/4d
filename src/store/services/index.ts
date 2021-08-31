@@ -6,6 +6,7 @@ import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
 import apartments from "src/store/services/apartments";
 import vacancy from "src/store/services/vacancy";
+import trees from "src/store/services/trees";
 
 const initialState = (): GeoState => {
   return {
@@ -106,7 +107,8 @@ const services: Module<GeoState, TRootState> = {
   modules: {
     parking,
     apartments,
-    vacancy
+    vacancy,
+    trees
   }
 };
 

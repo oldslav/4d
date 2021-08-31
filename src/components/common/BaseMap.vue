@@ -7,7 +7,6 @@
         :selection-indicator="false"
         @selectedEntityChanged="entitySelected"
         @ready="onReadyViewer"
-        @moveEnd="onMapMove"
       )
         vc-layer-imagery
           vc-provider-imagery-openstreetmap(:url="mapUrl")
@@ -56,7 +55,6 @@
         const vcViewer = this.$refs.vcViewer;
         const Cesium = vcViewer.Cesium;
         const viewer = vcViewer.viewer;
-        this.$emit("onViewerReady", vcViewer);
 
         // Cesium.geocoder = false;
 
@@ -67,6 +65,8 @@
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
         this.colorPoint = Cesium.Color.fromCssColorString("rgb(255,229,0)");
+
+        this.$emit("onViewerReady", vcViewer);
       },
 
       onDatasourceReady () {
@@ -75,11 +75,11 @@
 
       entitySelected (e) {
         this.$emit("change", e);
-      },
-
-      onMapMove () {
-        this.$emit("on-map-move", this.$refs.vcViewer);
       }
+
+      // onMapMove () {
+      //   this.$emit("on-map-move", this.$refs.vcViewer);
+      // }
     }
   };
 </script>
