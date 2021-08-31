@@ -111,7 +111,6 @@
           maximumHeight: 5000
         });
 
-        cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
         cesiumInstance.viewer.scene.fxaa = false;
         cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
 

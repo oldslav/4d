@@ -10,6 +10,23 @@
       :pagination="tablePagination"
       :expanded.sync="expanded"
     )
+      template(v-slot:top)
+        .row.full-width.justify-between(v-if="references")
+          .row.q-gutter-sm.col
+            BaseSelect(
+              v-model="statusId"
+              :options="references.crowdSourcingStatuses"
+              label="Статус"
+              optionKey="id"
+              optionValue="description"
+            ).col-12.col-sm-6.col-md-3
+            BaseSelect(
+              v-model="typeId"
+              :options="references.crowdSourcingTypes"
+              label="Тип"
+              optionKey="id"
+              optionValue="description"
+            ).col-12.col-sm-6.col-md-3
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="nameOf" :props="props")
@@ -19,18 +36,18 @@
           q-td(key="date" :props="props")
             | {{ props.row.created | formatDate }}
           q-td(key="status" :props="props")
-            | {{ props.row.status.description }}
+            | {{ currentStatus(props.row.status) }}
             //base-status(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id >= 3" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("action.reject") }}
                   q-item(v-if="props.row.status.id === 1" clickable v-close-popup @click="changeStatus(props.row.id, 2)")
                     q-item-section(no-wrap).text-positive
-                      | {{ $t("entity.tickets.ideas.action.forConsideration") }}
+                      | {{ $t("action.accept") }}
                   q-item(v-if="props.row.status.id === 3" clickable v-close-popup @click="changeStatus(props.row.id, 4)")
                     q-item-section(no-wrap).text-positive
                       | {{ $t("entity.tickets.ideas.action.finish") }}
@@ -56,11 +73,12 @@
   import BaseModal from "../../../components/common/BaseModal";
   import IdeaDetailsCard from "../../../components/services/ideas/IdeaDetailsCard";
   import { mapFields } from "../../../plugins/mapFields";
-  import { UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import { UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import BaseSelect from "../../../components/common/BaseSelect";
 
   export default {
     name: "UserTicketsIdeasEmployee",
-    components: { BaseTable, BaseStatus, BaseModal, IdeaDetailsCard },
+    components: { BaseSelect, BaseTable, BaseStatus, BaseModal, IdeaDetailsCard },
     async created () {
       if (!this.references) {
         this.GET_REFERENCES();
@@ -75,6 +93,7 @@
     },
     computed: {
       ...mapState("services/ideas", {
+        filters: state => state.filters,
         references: state => state.references
       }),
 
@@ -87,6 +106,12 @@
         fields: ["limit", "offset"],
         base: "pagination",
         mutation: UPDATE_PAGINATION
+      }),
+
+      ...mapFields("services/ideas", {
+        fields: ["statusId", "typeId", "authorId"],
+        base: "filters",
+        mutation: UPDATE_FILTERS
       }),
 
       isDetailsModal: {
@@ -144,6 +169,16 @@
         GET_REFERENCES
       ]),
 
+      currentStatus (status) {
+        if (status.id === 1) {
+          return "Новая";
+        } else if (status.id === 2 || status.id === 3) {
+          return "В работе";
+        } else {
+          return status.description;
+        }
+      },
+
       openDetails (id) {
         this.currentId = id;
       },
@@ -194,6 +229,14 @@
               message: "При отмене заявки произошла ошибка"
             });
           });
+      }
+    },
+    watch: {
+      filters: {
+        deep: true,
+        async handler () {
+          await this.getUserTickets();
+        }
       }
     }
   };

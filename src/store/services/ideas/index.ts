@@ -2,7 +2,7 @@ import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import {
   SET_CURRENT,
   SET_DATA,
-  SET_EMPTY, SET_REFERENCES,
+  SET_EMPTY, SET_REFERENCES, UPDATE_FILTERS,
   UPDATE_PAGINATION
 } from "src/store/constants/mutation-constants";
 import { TRootState } from "src/store/types/root";
@@ -13,14 +13,15 @@ import {
   GET_CURRENT,
   GET_DATA, GET_REFERENCES,
   UPDATE_LIKE,
-  UPDATE_STATUS, UPDATE_VOTE
+  UPDATE_STATUS, UPDATE_VOTE, UPLOAD_IMAGES
 } from "src/store/constants/action-constants";
 
 const initialState = (): IUserTicketsState => {
   return {
     filters: {
       statusId: null,
-      typeId: null
+      typeId: null,
+      authorId: null
     },
     pagination: {
       limit: 10,
@@ -41,6 +42,9 @@ const mutations: MutationTree<IUserTicketsState> = {
   [SET_REFERENCES]: (state, payload) => state.references = payload,
   [UPDATE_PAGINATION] (state, pagination) {
     state.pagination = { ...state.pagination, ...pagination };
+  },
+  [UPDATE_FILTERS] (state, filters) {
+    state.filters = { ...state.filters, ...filters };
   }
 };
 
@@ -56,14 +60,31 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(UPDATE_PAGINATION, { rowsNumber: data.count });
   },
 
+  async [GET_DATA] ({ state, commit }) {
+    const { data } = await this.service.services.ideas.getIdeas({
+      ...state.filters,
+      limit: state.pagination.limit,
+      offset: state.pagination.offset - 1
+    });
+
+    commit(SET_DATA, data);
+    commit(UPDATE_PAGINATION, { rowsNumber: data.count });
+  },
+
   async [CREATE_IDEA] (_, payload) {
-    await this.service.services.ideas.createIdea(payload);
+    const { data } = await this.service.services.ideas.createIdea(payload);
+
+    return data;
   },
 
   async [GET_CURRENT] ({ commit }, id) {
     const { data } = await this.service.services.ideas.getIdea(id);
 
     commit(SET_CURRENT, data);
+  },
+
+  async [UPLOAD_IMAGES] (_, { id, payload }) {
+    await this.service.services.ideas.uploadFileIdea(id, payload);
   },
 
   async [UPDATE_LIKE] (_, id) {

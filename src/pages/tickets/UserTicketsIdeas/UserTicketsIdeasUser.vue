@@ -11,21 +11,29 @@
       :expanded.sync="expanded"
     )
       template(v-slot:top)
-        .row.q-gutter-sm.full-width.justify-end(v-if="references")
-          BaseSelect(
-            v-model="statusId"
-            :options="references.crowdSourcingStatuses"
-            label="Статус"
-            optionKey="id"
-            optionValue="description"
-            ).col-12.col-sm-6.col-md-3
-          BaseSelect(
-            v-model="typeId"
-            :options="references.crowdSourcingTypes"
-            label="Тип"
-            optionKey="id"
-            optionValue="description"
-            ).col-12.col-sm-6.col-md-3
+        .row.full-width.justify-between(v-if="references")
+          .row.q-gutter-sm.col
+            //BaseSelect(
+            //  v-model="statusId"
+            //  :options="references.crowdSourcingStatuses"
+            //  label="Статус"
+            //  optionKey="id"
+            //  optionValue="description"
+            //).col-12.col-sm-6.col-md-3
+            //BaseSelect(
+            //  v-model="typeId"
+            //  :options="references.crowdSourcingTypes"
+            //  label="Тип"
+            //  optionKey="id"
+            //  optionValue="description"
+            //).col-12.col-sm-6.col-md-3
+          q-btn(
+            icon="add"
+            outline
+            color="primary"
+            @click="toIdeas"
+            :label="$t('user.tickets.actions.create')"
+          )
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="nameOf" :props="props")
@@ -63,7 +71,7 @@
   import BaseModal from "../../../components/common/BaseModal";
   import IdeaDetailsCard from "../../../components/services/ideas/IdeaDetailsCard";
   import { mapFields } from "../../../plugins/mapFields";
-  import { UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import { UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
   import BaseSelect from "../../../components/common/BaseSelect";
 
   export default {
@@ -73,6 +81,7 @@
       if (!this.references) {
         this.GET_REFERENCES();
       }
+      this.authorId = this.userId;
       await this.getUserTickets();
     },
     data () {
@@ -82,6 +91,10 @@
       };
     },
     computed: {
+      ...mapState({
+        userId: state => state.account.account.id
+      }),
+
       ...mapState("services/ideas", {
         references: state => state.references
       }),
@@ -98,9 +111,9 @@
       }),
 
       ...mapFields("services/ideas", {
-        fields: ["statusId", "typeId"],
-        base: "pagination",
-        mutation: UPDATE_PAGINATION
+        fields: ["statusId", "typeId", "authorId"],
+        base: "filters",
+        mutation: UPDATE_FILTERS
       }),
 
       isDetailsModal: {
@@ -156,6 +169,10 @@
         DELETE_ITEM,
         GET_REFERENCES
       ]),
+
+      toIdeas () {
+        this.$router.push({ name: "services-ideas" });
+      },
 
       openDetails (id) {
         this.currentId = id;
