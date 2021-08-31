@@ -20,6 +20,7 @@
     },
     data () {
       return {
+        warehouseId: null,
         step: 1,
         name: {
           first: "",
@@ -41,6 +42,7 @@
     },
     computed: {
       ...mapGetters("user/documents", ["getDocuments"]),
+      ...mapGetters("services", ["getPickedFeatureId"]),
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ CREATE_USER_TICKET_WAREHOUSE }`];
       },
@@ -71,7 +73,7 @@
       },
       onSubmit () {
         const { name, documents, serviceOption, contacts } = this;
-        return this.CREATE_USER_TICKET_WAREHOUSE({ warehouse: null, name, documents, contacts, serviceOption })
+        return this.CREATE_USER_TICKET_WAREHOUSE({ warehouseId: this.getPickedFeatureId, name, documents, contacts, serviceOption })
           .then(() => {
             this.$emit("success");
           })

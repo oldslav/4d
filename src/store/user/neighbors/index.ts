@@ -66,18 +66,8 @@ const actions: ActionTree<INeighborsState, TRootState> = {
   async [STORE_USER_NEIGHBORS] ({ commit, dispatch }, neighbors) {
     const result: any = [];
     await Promise.all(neighbors.map(async (n: any) => {
-      const documents: any = {
-        inn: [],
-        snils: [],
-        passport: [],
-        marriage: [],
-        birth: [],
-        children_registration: [],
-        consent_processing_personal_data: []
-      };
       const { id, name, images, neighborType } = n;
-      const files = await dispatch("loadFiles", images, { root: true });
-      Object.assign(documents, files);
+      const documents = await dispatch("loadFiles", images, { root: true });
       result.push({ id, name, documents, neighborType });
     }));
     commit(SET_ITEMS, result);
