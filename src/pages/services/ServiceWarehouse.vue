@@ -2,9 +2,6 @@
   div
     ModalFail(v-model="failVisible")
     ModalSuccess(v-model="successVisible")
-    .row.q-gutter-lg.justify-center(v-show="false")
-      q-btn(color="primary" label="Шины" @click="showTiresModal()")
-      q-btn(color="primary" label="Велосипед" @click="showBikeModal()")
     NewTiresTicket(v-model="tiresVisible" v-if="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
     NewBikeTicket(v-model="bikeVisible" v-if="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
 </template>
