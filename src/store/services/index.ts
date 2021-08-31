@@ -2,11 +2,17 @@ import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import {
   GET_APARTMENTS_GEO,
-  GET_COMMERCE_GEO, GET_IDEAS_GEO, GET_PARKING_GEO, GET_TREES_GEO } from "src/store/constants/action-constants";
-import { SET_CLUSTERING,
+  GET_COMMERCE_GEO,
+  GET_IDEAS_GEO,
+  GET_PARKING_GEO,
+  GET_TREES_GEO
+} from "src/store/constants/action-constants";
+import {
+  SET_CLUSTERING,
   SET_DRAW_TYPE,
   SET_EMPTY,
   SET_FEATURE_ID,
+  SET_CESIUM,
   SET_GEODATA,
   SET_POINT_COORDS,
   SET_USER
