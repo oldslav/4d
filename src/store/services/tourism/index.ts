@@ -1,3 +1,4 @@
+import Vue from "vue";
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { cloneDeep } from "lodash";
 
@@ -64,16 +65,16 @@ const setActiveEntity = (geoJson: any, id: string, extended = false) => {
     if (entity.id == id) {
       entity.properties.$extended = true;
       entity.properties.$$visible = entity.properties.$visible;
-      entity.properties.$visible = true;
+      Vue.set(entity.properties,"$visible", true);
     } else if (
       entity.properties.type === TourismGeoJSONEntities.stop &&
       // eslint-disable-next-line eqeqeq
       entity.properties.routeId == id &&
       extended
     ) {
-      entity.properties.$visible = true;
+      Vue.set(entity.properties,"$visible", true);
     } else {
-      entity.properties.$visible = false;
+      Vue.set(entity.properties,"$visible", false);
     }
   });
 };
@@ -84,10 +85,9 @@ const removeActiveEntity = (geoJson: any, id: string) => {
     if (entity.id == id) {
       entity.properties.$extended = false;
     } else if (entity.properties.type === TourismGeoJSONEntities.stop) {
-      entity.properties.$visible = false;
+      Vue.set(entity.properties,"$visible", false);
     } else {
-      entity.properties.$visible = entity.properties.$$visible;
-      entity.properties.$visible = true;
+      Vue.set(entity.properties,"$visible", entity.properties.$$visible);
     }
   });
 };
@@ -96,7 +96,7 @@ const setEntityVisibility = (geoJson: any, id: string, visibility: boolean) => {
   eachFeatures(geoJson, (entity: any) => {
     // eslint-disable-next-line eqeqeq
     if (entity.id == id) {
-      entity.properties.$visible = visibility;
+      Vue.set(entity.properties,"$visible", visibility);
     }
   });
 };
