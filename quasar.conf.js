@@ -126,17 +126,17 @@ module.exports = configure(function (ctx) {
       https: false,
       port: 8080,
       open: true, // opens browser window automatically,
-      proxy: {
+      //proxy: {
         // proxy all requests starting with /api to jsonplaceholder
-        "/api": {
-          target: '{{ENVIRONMENT}}',
-          changeOrigin: true
-        },
-        "/oauth": {
-          target: '{{ENVIRONMENT}}',
-          changeOrigin: true
-        }
-      }
+        //"/api": {
+          //target: '{{ENVIRONMENT}}',
+          //changeOrigin: true
+        //},
+        //"/oauth": {
+          //target: '{{ENVIRONMENT}}',
+          //changeOrigin: true
+        //}
+      //}
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
