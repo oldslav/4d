@@ -17,39 +17,39 @@
             image-slider(:value="getImages" :slides-to-show="4")
 
           div(v-show="getEntity.description")
-            div.text-caption.text-grey-8 Описание
+            div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.description') }}
             div.text-body2.rich-text.break-spaces {{ getEntity.description }}
 
           q-separator.q-mt-lg.q-mb-lg(v-if="getEntity.workTime || getEntity.link")
 
           div.row.q-mt-md(v-if="getEntity.workTime || getEntity.link")
             div.col-md-6(v-if="getEntity.workTime")
-              div.text-caption.text-grey-8 Часы работы
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.workTime') }}
               div.text-body2.rich-text.break-spaces {{ getEntity.workTime }}
 
             div.col-md-6(v-if="visibleLink")
-              div.text-caption.text-grey-8 Ссылка на сайт
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.link') }}
               div.text-body2.rich-text.break-spaces
                 a(:href="getEntity.link" target="_blank").text-blue {{ visibleLink }}
 
           div.row.q-mt-md(v-if="getEntity.length || getEntity.time")
             div.col-md-6(v-if="getEntity.length")
-              div.text-caption.text-grey-8 Расстояние
-              div.text-body2.rich-text.break-spaces {{ getEntity.length | distance }}
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.distance') }}
+              div.text-body2.rich-text.break-spaces {{ getRouteDistance }}
 
             div.col-md-6(v-if="getEntity.time")
-              div.text-caption.text-grey-8 Время в пути
-              div.text-body2.rich-text.break-spaces {{ getEntity.time | duration }}
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.duration') }}
+              div.text-body2.rich-text.break-spaces {{ getRouteDuration }}
 
           div.row.q-mt-md(v-if="canDisplayDownloadRoute")
             div.col-md-6
-              div.text-caption.text-grey-8 Тип маршрута
+              div.text-caption.text-grey-8 {{ $t('entity.services.tourism.labels.routeType') }}
               div.text-body2.rich-text.break-spaces {{ getEntity.category.name }}
 
           q-separator.q-mt-lg.q-mb-lg
 
           div(v-if="getRoutes.length > 0")
-            div.text-caption.text-grey-8.q-mb-md Маршруты до {{ getEntity.name }}
+            div.text-caption.text-grey-8.q-mb-md {{ $t('entity.services.tourism.labels.routesFor') }} {{ getEntity.name }}
 
             div.row.q-mb-lg(v-for="category in getRoutes")
               div.col-md-6
@@ -58,7 +58,7 @@
               div.col-md-6.flex.justify-end
                 div.text-body2.rich-text.break-spaces.q-mb-sm(v-for="route in category.routes")
                   router-link.link(
-                    :to="{ name: 'services-tourism-entity', params: { layer: route.layerId, id: route.id, category: route.subSection } }"
+                    :to="{ name: 'map-tourism-entity', params: { layer: route.layerId, id: route.id, category: route.subSection } }"
                   )
                     | {{ route.name }}
                     q-icon(name="arrow_forward_ios")
@@ -67,7 +67,7 @@
     div.q-px-md.q-py-md.bg-white(v-show="canDisplayDownloadRoute")
       q-btn.full-width(
         @click="onClickDownloadRoute"
-        label="Скачать маршрут"
+        :label="$t('entity.services.tourism.labels.downloadRoute')"
         color="primary"
         unelevated
         outline
@@ -76,29 +76,12 @@
 <script>
   import { mapGetters } from "vuex";
   import url from "url";
-  import moment from "moment";
   import ImageSlider from "../../common/ImageSlider";
   import { TourismGeoJSONEntities } from "../../../store/types/tourism";
 
   export default {
-    name: "AsideServicesTourismEntity",
+    name: "AsideMapsTourismEntity",
     components: { ImageSlider },
-    filters: {
-      distance: function (value) {
-        if (value < 1000) {
-          return `${ value } м`;
-        }
-
-        const km = value / 1000;
-        const fixed = km.toFixed(1);
-
-        const returnValue = km === parseInt(fixed, 10) ? km : fixed.replace(".",",");
-        return `${ returnValue } км`;
-      },
-      duration (value){
-        return moment.duration(value, "minutes").humanize(false);
-      }
-    },
     computed: {
       ...mapGetters("services/tourism", ["getEntity", "getServiceMenu", "getLayersGeoJSON"]),
       getPreviewRoute () {
@@ -111,22 +94,24 @@
         const { layers } = category;
 
         if (features.length > 1) {
-          return { name: "services-tourism-layer", params: { category: categoryId, layer: layerId } };
+          return { name: "map-tourism-layer", params: { category: categoryId, layer: layerId } };
         }
 
         if (layers.length === 1) {
-          return { name: "services-tourism" };
+          return { name: "map-tourism" };
         }
 
-        return { name: "services-tourism-category", params: { category: categoryId } };
+        return { name: "map-tourism-category", params: { category: categoryId } };
       },
 
       getImages (){
         return this.getEntity.images.map(x => x.imagePath);
       },
+
       canDisplayDownloadRoute (){
         return this.getEntity.tcx || this.getEntity.gpx;
       },
+
       visibleLink (){
         try {
           return url.parse(this.getEntity.link).host;
@@ -134,6 +119,7 @@
           return "";
         }
       },
+
       getRoutes (){
         const subSections = this.getServiceMenu.subSections;
         const subSectionsByLayers = subSections.reduce((res, subSection) => {
@@ -155,13 +141,42 @@
         }, {});
 
         return Object.values(groups);
+      },
+
+      getRouteDistance (){
+        const value = this.getEntity.length;
+
+        if (value < 1000) {
+          return `${ value } м`;
+        }
+
+        const km = value / 1000;
+        const fixed = km.toFixed(1);
+
+        const returnValue = km === parseInt(fixed, 10) ? km : fixed.replace(".",",");
+        return `${ returnValue } ${ this.$t("entity.services.tourism.labels.km") }`;
+      },
+
+      getRouteDuration (){
+        const minutes = this.getEntity.time;
+
+        if (minutes < 90) {
+          return this.$t("entity.services.tourism.labels.routeMinutesDuration", { minutes });
+        }
+
+        const hours = Math.floor(minutes / 60);
+
+        return this.$t("entity.services.tourism.labels.routeDuration", {
+          hours,
+          minutes: minutes - hours * 60
+        });
       }
     },
     methods:{
       onClickDownloadRoute (){
         this.$q.dialog({
-          title: "Скачать маршрут",
-          message: "Выберите нужный формат файла",
+          title: this.$t("entity.services.tourism.labels.downloadRoute"),
+          message: this.$t("entity.services.tourism.labels.routeFileFormat"),
           options: {
             type: "radio",
             model: this.getEntity.gpx,

@@ -12,7 +12,7 @@
         q-item.q-py-md.text-subtitle(
           v-for="(object, index) in getLayerObjects"
          :key="object.id"
-         :to="{ name: 'services-tourism-entity', params: { id: object.id } }"
+         :to="{ name: 'map-tourism-entity', params: { id: object.id } }"
          clickable
         )
           q-item-section.list-item-avatar(avatar)
@@ -26,10 +26,20 @@
           q-item-section
             | {{ object.properties.name }}
 
+          q-item-section(v-if="canDisplayAddRoute" side center)
+            q-btn(
+              @click.stop.prevent="toggleRouteVisibility(object.id, object.properties.$visible)"
+              :icon="object.properties.$visible === false ? 'visibility_off' : 'visibility'"
+              size="12px"
+              flat
+              dense
+              round
+            )
+
     div.q-px-md.q-py-md.bg-white(v-show="canDisplayAddRoute")
       q-btn.full-width(
         @click="onClickAddRoute"
-        label="Предложить свой маршрут"
+        :label="$t('entity.services.tourism.labels.offerRoute')"
         color="primary"
         unelevated
         outline
@@ -37,13 +47,14 @@
     NewTourismRouteModal(v-model="visibleAddModal")
 </template>
 <script>
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
+  import { SET_TOURISM_ENTITY_VISIBILITY } from "../../../store/constants/action-constants";
   import { TourismGeoJSONEntities } from "../../../store/types/tourism";
   import ImageSlider from "../../common/ImageSlider";
   import NewTourismRouteModal from "../../services/tourism/NewTourismRouteModal";
 
   export default {
-    name: "AsideServicesTourismLayer",
+    name: "AsideMapsTourismLayer",
     components: { ImageSlider, NewTourismRouteModal },
     data (){
       return {
@@ -59,10 +70,10 @@
         const category = this.getCategory;
 
         if (category.layers.length === 1) {
-          return { name: "services-tourism" };
+          return { name: "map-tourism" };
         }
 
-        return { name: "services-tourism-category", params: { category: category.id } };
+        return { name: "map-tourism-category", params: { category: category.id } };
       },
 
       getCategory (){
@@ -85,8 +96,12 @@
             if ("order" in a.properties) {
               return a.properties.order - b.properties.order;
             }
-            return 0;
+            return a.id - b.id;
           });
+      },
+
+      canDisplayVisibleSwitcher (){
+        return this.getLayer.path.includes("route");
       },
 
       canDisplayAddRoute (){
@@ -94,8 +109,19 @@
       }
     },
     methods: {
+      ...mapActions("services/tourism", {
+        setEntityVisibility: SET_TOURISM_ENTITY_VISIBILITY
+      }),
       onClickAddRoute (){
         this.visibleAddModal = true;
+      },
+
+      toggleRouteVisibility (id, currentVisibility){
+        this.setEntityVisibility({
+          visibility: currentVisibility === false,
+          id,
+          layer: this.getLayer.path
+        });
       }
     }
   };

@@ -10,21 +10,21 @@
     q-item.q-py-md.text-subtitle(
       v-for="(layer, index) in getCategoryMenu.layers"
      :key="layer.id"
-     :to="{ name: 'services-tourism-layer', params: { layer: layer.id } }"
+     :to="{ name: 'map-tourism-layer', params: { layer: layer.id } }"
      clickable
     )
-      //q-item-section.list-item-avatar(avatar)
-      //  q-icon(:name="item.icon")
+      q-item-section.list-item-avatar(v-if="item.icon" avatar)
+        q-icon(:name="item.icon")
       q-item-section
         | {{ layer | i18nName }}
 </template>
 
 <script>
   import { mapGetters } from "vuex";
-  import AsideRouterView from "./AsideRouterView";
+  import AsideRouterView from "../services/AsideRouterView";
 
   export default {
-    name: "AsideServicesTourismCategory",
+    name: "AsideMapsTourismCategory",
     components: { AsideRouterView },
     computed: {
       ...mapGetters("services", ["getPickedFeatureId"]),

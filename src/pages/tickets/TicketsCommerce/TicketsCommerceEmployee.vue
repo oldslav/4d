@@ -48,9 +48,10 @@
                 | Подпишите договор аренды с арендатором.
               div.text-right
                 q-btn(color="primary" label="Договор подписан" :loading="signingContract" @click="onContractSigned(props.row.id)")
-            div.column(v-if="props.row.status.id === 8").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -75,10 +76,11 @@
   import BaseTable from "components/common/BaseTable";
   import CommerceTicketDetailsModal from "components/user/tickets/commerce/CommerceTicketDetailsModal";
   import CommerceTicketStatus from "components/user/tickets/commerce/CommerceTicketStatus";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "TicketsCommerceEmployee",
-    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable },
+    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable, ValidContractState },
     async created () {
       await this.getEmployeeTickets();
     },

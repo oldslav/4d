@@ -129,12 +129,12 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: '{{ENVIRONMENT}}',
+          target: "{{ENVIRONMENT}}",
           //target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         },
         "/oauth": {
-          target: '{{ENVIRONMENT}}',
+          target: "{{ENVIRONMENT}}",
           //target: ctx.dev ? "http://4d-dev.innopolis.university" : "4d.innocityhall.ru",
           changeOrigin: true
         }

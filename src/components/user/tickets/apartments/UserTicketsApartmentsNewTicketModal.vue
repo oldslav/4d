@@ -28,7 +28,7 @@
         q-step(
           title="Семья"
           :done="step > 2"
-          :error="!isFamilyInfo && step > 2"
+          :error="!familyDone && step > 2"
           :name="2"
         )
           TicketNeighbors(v-model="neighbors")
@@ -138,7 +138,7 @@
       },
 
       isValid () {
-        return this.isUserInfo && this.isAdditionalInfo && !this.ticketId;
+        return this.isUserInfo && this.isAdditionalInfo && this.familyDone && !this.ticketId;
       },
 
       isUserInfo () {
@@ -146,7 +146,13 @@
       },
 
       isFamilyInfo () {
-        return !!this.neighbors;
+        return this.neighbors.length > 0;
+      },
+
+      familyDone () {
+        return this.isFamilyInfo ? this.neighbors.map(neighbor => {
+          return neighbor.name.first && Object.values(neighbor.documents).every(isDocumentPresent);
+        }).every(val => val) : true;
       },
 
       isAdditionalInfo () {

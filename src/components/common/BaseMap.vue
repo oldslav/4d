@@ -31,19 +31,22 @@
           @click="pointClicked"
           @clickout="pointClickedOut"
         )
+    MapLegalAgreement.z-fab.absolute-bottom-right.text-right(:style="{maxWidth: '50%'}")
 </template>
 
 <script>
+  import render from "../../cesium/render";
   import { get } from "lodash";
   import { mapMutations, mapState } from "vuex";
   import { toDegrees } from "../../util/map";
-  import render from "../../cesium/render";
   import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
+  import MapLegalAgreement from "components/common/MapLegalAgreement";
 
   const FAKE_GEOJSON_DATA = { "type": "FeatureCollection", "features": [] };
 
   export default {
     name: "BaseMap",
+    components: { MapLegalAgreement },
     props: {
       data: {
         type: Object,
@@ -170,7 +173,7 @@
         });
       },
 
-      onChangePickedFeatureId (val){
+      onChangePickedFeatureId (val) {
         if (val === null) {
           this.$refs.vcViewer.viewer.selectedEntity = null;
         }
@@ -199,20 +202,20 @@
 </script>
 
 <style lang="stylus" scoped>
-.cesiumWrapper
-  #cesiumContainer
-    display: block;
-    position: absolute;
-    top: 50px;
-    left: 400px;
-    border: none;
-    width: calc(100% - 400px);
-    height: calc(100% - 50px);
-
-    @media (max-width: $breakpoint-sm-min)
-      top: 0;
-      bottom: 50px;
-      left: 0;
-      width: 100%;
+  .cesiumWrapper
+    #cesiumContainer
+      display: block;
+      position: absolute;
+      top: 50px;
+      left: 400px;
+      border: none;
+      width: calc(100% - 400px);
       height: calc(100% - 50px);
+
+      @media (max-width: $breakpoint-sm-min)
+        top: 0;
+        bottom: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 50px);
 </style>

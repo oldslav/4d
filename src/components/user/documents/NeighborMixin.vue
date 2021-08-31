@@ -2,6 +2,7 @@
   import { mapActions } from "vuex";
   import { isEqual, cloneDeep } from "lodash";
   import { CREATE_USER_NEIGHBOR, UPDATE_USER_NEIGHBOR } from "@/store/constants/action-constants";
+  import { isDocumentPresent } from "@/util/validators";
 
   export default {
     props: {
@@ -32,6 +33,11 @@
       };
     },
     computed: {
+      documentRequired () {
+        return [
+          isDocumentPresent
+        ];
+      },
       nameRules () {
         return [
           val => !!val,

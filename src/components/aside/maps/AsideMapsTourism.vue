@@ -11,7 +11,7 @@
       q-item.q-py-md.text-subtitle(
         v-for="(item, index) in getServiceMenu.subSections"
         :key="item.id"
-        :to="{ name: 'services-tourism-category', params: { category: item.id } }"
+        :to="{ name: 'map-tourism-category', params: { category: item.id } }"
         clickable
       )
         q-item-section.list-item-avatar(avatar)
@@ -22,10 +22,10 @@
 
 <script>
   import { mapGetters } from "vuex";
-  import AsideRouterView from "./AsideRouterView";
+  import AsideRouterView from "../services/AsideRouterView";
 
   export default {
-    name: "AsideServicesTourism",
+    name: "AsideMapsTourism",
     components: { AsideRouterView },
     data (){
       return {

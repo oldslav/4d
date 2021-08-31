@@ -24,7 +24,7 @@ const setEntityImage = (entity: any, image: string | HTMLCanvasElement) => {
 };
 
 
-export const renderExtendedPlace = (entity: any, { radius, label, image }: IExtendedPlaceOptions) => {
+export const renderExtendedPlace = (entity: any, { radius, label, image }: IExtendedPlaceOptions): void => {
   entity.billboard.size = 1;
   entity.billboard.width = radius * 2;
   entity.billboard.height = radius * 2;
@@ -32,13 +32,13 @@ export const renderExtendedPlace = (entity: any, { radius, label, image }: IExte
   if (label) {
     entity.label = {
       text: label,
-      font: "14px Helvetica",
+      font: "14px sans-serif",
       style: window.Cesium.LabelStyle.FILL,
       fillColor: new window.Cesium.Color.fromCssColorString("#333333"),
       scale: 1,
-      verticalOrigin: window.Cesium.VerticalOrigin.BOTTOM,
+      verticalOrigin: window.Cesium.VerticalOrigin.CENTER,
       horizontalOrigin: window.Cesium.HorizontalOrigin.LEFT,
-      pixelOffset: new window.Cesium.Cartesian2(30, -36)
+      pixelOffset: new window.Cesium.Cartesian2(30, -46)
     };
   } else {
     entity.label = null;
@@ -56,7 +56,7 @@ export const renderExtendedPlace = (entity: any, { radius, label, image }: IExte
   }
 };
 
-export const renderPlace = (entity: any, { label, background }: IPlaceOptions) => {
+export const renderPlace = (entity: any, { label, background }: IPlaceOptions): void => {
   entity.billboard.size = 1;
   entity.billboard.width = 20;
   entity.billboard.height = 20;
@@ -70,7 +70,7 @@ export const renderPlace = (entity: any, { label, background }: IPlaceOptions) =
 
 export default {
   name: "place",
-  render (entity: any) {
+  render (entity: any): void {
     const extended = entity.properties.$extended && entity.properties.$extended.getValue();
     const background = entity.properties.$background && entity.properties.$background.getValue();
     const order = entity.properties.order.getValue();
