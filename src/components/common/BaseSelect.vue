@@ -11,7 +11,8 @@
     :disable="disable"
     :multiple="multiple"
     :option-key="optionKey"
-    :option-value="optionValue"
+    :option-value="optionKey"
+    :option-label="optionValue"
     :rules="rules"
     :stack-label="stackLabel"
   )
@@ -96,7 +97,7 @@
         set (value) {
           this.innerValue = value;
           if (value) {
-            this.$emit("input", value[this.optionValue]);
+            this.$emit("input", value[this.optionKey]);
           } else {
             this.$emit("input", value);
           }

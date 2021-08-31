@@ -28,25 +28,26 @@
         )
       q-card-section
         q-uploader(
+          ref="imagesUploader"
           :url="imageUploadUrl"
           label="Перетяните изображения в поле"
-          field-name="file"
+          field-name="files"
           multiple
           batch
-          disable
+          hide-upload-btn
           :headers="uploadImageHeaders"
           @uploading="isLoading = true"
           @uploaded="isLoading = false"
         ).full-width
       q-card-actions(align="right")
-        q-btn(@click="createIdea" label="Создать" flat color="primary" v-close-popup :disabled="!isValid")
+        q-btn(@click="createIdea" label="Создать" flat color="primary" :disabled="!isValid")
 </template>
 
 <script>
   import BaseModal from "../../common/BaseModal";
   import BaseInput from "../../common/BaseInput";
-  import { mapActions } from "vuex";
-  import { CREATE_IDEA, GET_IDEAS_GEO } from "../../../store/constants/action-constants";
+  import { mapActions, mapState } from "vuex";
+  import { CREATE_IDEA, GET_CURRENT, GET_IDEAS_GEO, UPLOAD_IMAGES } from "../../../store/constants/action-constants";
 
   export default {
     name: "NewIdeaModal",
@@ -60,6 +61,7 @@
     data () {
       return {
         title: null,
+        images: [],
         description: null,
         rules: [
           val => !!val || this.$t("common.error.validation.required"),
@@ -79,12 +81,16 @@
       };
     },
     computed: {
+      ...mapState("services/ideas", {
+        current: state => state.current
+      }),
+
       isValid () {
         return this.title && this.description;
       },
 
       imageUploadUrl () {
-        return process.env.SERVER_API_HOST + `/api/v1/map/crowdsourcing/${ this.current && this.current.id }/file`;
+        return process.env.SERVER_API_HOST + `/api/v1/services/crowdsourcing/${ this.current && this.current.id }/file`;
       },
 
       uploadImageHeaders () {
@@ -114,7 +120,9 @@
       ]),
 
       ...mapActions("services/ideas", [
-        CREATE_IDEA
+        CREATE_IDEA,
+        UPLOAD_IMAGES,
+        GET_CURRENT
       ]),
 
       closeModal (value) {
@@ -122,12 +130,14 @@
       },
 
       async createIdea () {
-        await this.CREATE_IDEA({
+        const { id } = await this.CREATE_IDEA({
           title: this.title,
           description: this.description,
           geometry: this.$store.state.services.pointCoords,
           typeId: this.typeId
         });
+        await this.GET_CURRENT(id);
+        await this.$refs.imagesUploader.upload();
         await this.GET_IDEAS_GEO();
         this.$emit("created");
       }

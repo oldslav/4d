@@ -4,8 +4,8 @@
       h6.q-my-auto {{ current.title }}
         span.float-right
       q-separator.q-my-sm
-    q-card-section.bg-primary.q-py-lg
-      | Photos tut
+    div(v-if="current.images.length").q-px-sm
+      ImageSlider(:value="current.images.map(v => v.imagePath)" :slides-to-show="4")
     q-card-section.row
       div.column.col-6
         span.text-grey-6 Заявитель
@@ -36,9 +36,9 @@
             q-btn(icon="o_thumb_down" color="red-11" flat label="Не нравится идея" padding="xs" @click="vote(2)")
             q-btn(icon="sentiment_neutral" flat label="Затрудняюсь с ответом" padding="xs" @click="vote(3)")
     q-card-actions.row
-      q-btn(v-if="current.currentUserLike" color="pink-12" icon="favorite" flat :label="current.likesCount" @click="likeIdea" dense padding="xs")
-      q-btn(v-else icon="favorite_border" flat :label="current.likesCount" @click="likeIdea" dense padding="xs")
-      q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs")
+      q-btn(v-if="current.currentUserLike" color="pink-12" icon="favorite" flat :label="current.likes.amount" @click="likeIdea" dense padding="xs")
+      q-btn(v-else icon="favorite_border" flat :label="current.likes.amount " @click="likeIdea" dense padding="xs")
+      q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs" disable)
     q-inner-loading(:showing="isLoading")
 </template>
 
@@ -46,10 +46,11 @@
   import BaseStatus from "../../common/BaseStatus";
   import { mapActions, mapState } from "vuex";
   import { GET_CURRENT, GET_REFERENCES, UPDATE_LIKE, UPDATE_VOTE } from "../../../store/constants/action-constants";
+  import ImageSlider from "../../common/ImageSlider";
 
   export default {
     name: "IdeaDetailsCard",
-    components: { BaseStatus },
+    components: { ImageSlider, BaseStatus },
     props: {
       id: {
         type: Number,
