@@ -34,6 +34,7 @@ module.exports = configure(function (ctx) {
       "i18n",
       "filters",
       { path: "server-init", client: false },
+      "i18n",
       "notify-defaults",
       "cesium"
     ],
