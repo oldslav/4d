@@ -7,7 +7,7 @@ export class UsersService extends Service {
   }
 
   public registerEmployee (params: Record<string, any>): AxiosPromise<any> {
-    return this.api.post("api/v1/profile/create", { ...params });
+    return this.api.post("api/v1/profile/create", params);
   }
 
   public blockUser (id: number): AxiosPromise<any> {

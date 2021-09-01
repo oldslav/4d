@@ -5,28 +5,43 @@
     @input="toggleModal"
   )
     q-card.q-pa-md.modal-container__wide
-      q-form(@submit="onSubmit()")
+      q-form(@submit="onSubmit")
         q-card-section
           q-input(v-model.trim="user.email" :label="$t('common.email')" :rules="validateEmail" lazy-rules dense)
           q-input(v-model.trim="user.firstName" :label="$t('user.firstName')" :rules="requiredRule" lazy-rules dense)
           q-input(v-model.trim="user.password" :label="$t('user.password')" :rules="validatePassword" lazy-rules dense)
-          q-option-group(
-            v-model="user.roles"
-            :options="employeeRoles"
-            type="checkbox"
-            dense
-          )
+        q-card-section
+          q-field(:value="roles" :rules="rolesPicked" borderless)
+            template(#control)
+              .col-12
+                q-option-group(
+                  v-model="pickedPermission"
+                  :options="permissions"
+                  type="radio"
+                  inline
+                  dense
+                )
+              .col-12(v-if="isEmployeePicked").q-mt-md
+                q-option-group(
+                  v-model="pickedRoles"
+                  :options="employeeRoles"
+                  type="checkbox"
+                  dense
+                )
         q-card-actions
           q-btn(
             outline
             type="submit"
             color="primary"
+            :loading="isLoading"
             :label="$t('action.registerUser')"
           ).full-width
 </template>
 
 <script>
+  import { mapActions } from "vuex";
   import BaseModal from "components/common/BaseModal";
+  import { REGISTER_EMPLOYEE } from "@/store/constants/action-constants";
 
   export default {
     name: "NewUserModal",
@@ -40,22 +55,6 @@
       employeeRoles: {
         type: Array,
         default: () => []
-      },
-      adminRoles: {
-        type: Array,
-        default: () => []
-      },
-      userRoles: {
-        type: Array,
-        default: () => []
-      },
-      gisRoles: {
-        type: Array,
-        default: () => []
-      },
-      legalRoles: {
-        type: Array,
-        default: () => []
       }
     },
     data () {
@@ -63,12 +62,44 @@
         user: {
           email: null,
           firstName: null,
-          password: null,
-          roles: []
-        }
+          password: null
+        },
+        pickedPermission: "ROLE_ADMIN",
+        pickedRoles: [],
+        permissions: [
+          {
+            label: this.$t("common.permissions.ROLE_ADMIN"),
+            value: "ROLE_ADMIN"
+          },
+          {
+            label: this.$t("common.permissions.ROLE_QGIS"),
+            value: "ROLE_QGIS"
+          },
+          {
+            label: this.$t("common.permissions.ROLE_EMPLOYEE"),
+            value: "ROLE_EMPLOYEE"
+          }
+        ]
       };
     },
     computed: {
+      isLoading () {
+        return this.$store.state.wait[`users/${ REGISTER_EMPLOYEE }`];
+      },
+      rolesPicked () {
+        return [
+          val => val.length > 0
+        ];
+      },
+      isEmployeePicked () {
+        return this.pickedPermission === "ROLE_EMPLOYEE";
+      },
+      roles () {
+        if (this.pickedPermission && this.pickedPermission !== "ROLE_EMPLOYEE") {
+          return [this.pickedPermission];
+        }
+        return this.pickedRoles;
+      },
       requiredRule () {
         return [val => !!val || this.$t("common.error.validation.required")];
       },
@@ -88,8 +119,16 @@
       }
     },
     methods: {
-      onSubmit () {
-        this.$emit("register", this.user);
+      ...mapActions("users", [REGISTER_EMPLOYEE]),
+      async onSubmit () {
+        try {
+          const { user, roles } = this;
+          await this.REGISTER_EMPLOYEE({ ...user, roles });
+          this.$emit("success");
+        } catch (e) {
+          this.$emit("fail");
+        }
+        this.toggleModal(false);
       },
       toggleModal (value) {
         this.$emit("input", value);

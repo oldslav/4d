@@ -33,7 +33,7 @@
             | {{ userRole(props) }}
           q-td(key="role" :props="props" auto-width)
             q-btn(color="primary" :label="$t('common.permissions.title')" flat)
-              q-menu(fit @before-show="assignRoles(props.row.roles)" @hide="assignRoles([])")
+              q-menu(fit @before-show="assignRoles(props.row.roles)" @before-hide="assignRoles([])")
                 q-card
                   q-card-section
                     q-option-group(
@@ -74,6 +74,7 @@
                     q-btn(
                       color="primary"
                       :label="$t('action.save')"
+                      v-close-popup
                       @click="setRoles(props.row.id)"
                     )
           q-td(key="menu" :props="props" auto-width)
@@ -87,12 +88,9 @@
                 span {{ $t("action.block") }}
     NewUserModal(
       v-model="isNewUserModal"
-      @register="registerEmployee"
+      @success="registerSuccess()"
+      @fail="registerFail()"
       :employee-roles="employeeRoles"
-      :admin-roles="adminRoles"
-      :user-roles="userRoles"
-      :gis-roles="gisRoles"
-      :legal-roles="legalRoles"
     )
 </template>
 
@@ -303,20 +301,19 @@
         this.isNewUserModal = true;
       },
 
-      async registerEmployee (employee) {
-        try {
-          await this.REGISTER_EMPLOYEE(employee);
-          this.$q.notify({
-            type: "positive",
-            message: this.$t("common.register.messages.success")
-          });
-        } catch (e) {
-          this.$q.notify({
-            type: "negative",
-            message: this.$t("common.register.messages.fail")
-          });
-        }
-        await this.GET_DATA();
+      registerSuccess () {
+        this.$q.notify({
+          type: "positive",
+          message: this.$t("common.register.messages.success")
+        });
+        return this.getUsers();
+      },
+
+      registerFail () {
+        this.$q.notify({
+          type: "negative",
+          message: this.$t("common.register.messages.fail")
+        });
       },
 
       async getUsers (props) {
