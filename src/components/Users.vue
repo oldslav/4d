@@ -18,7 +18,7 @@
             :label="$t('action.registerUser')"
           )
       template(v-slot:body="props")
-        q-tr(:props="props")
+        q-tr(:props="props" @click="log(props.row)")
           q-td(key="id" :props="props")
             | {{ props.row.id }}
           q-td(key="name" :props="props")
@@ -33,40 +33,40 @@
             | {{ userRole(props) }}
           q-td(key="role" :props="props" auto-width)
             q-btn(color="primary" :label="$t('common.permissions.title')" flat)
-              q-menu(fit)
+              q-menu(fit @before-show="assignRoles(props.row.roles)" @hide="assignRoles([])")
                 q-card
                   q-card-section
                     q-option-group(
                       v-if="isLegal(props)"
-                      v-model="props.row.roles"
+                      v-model="roles"
                       disable
                       :options="legalRoles"
                       type="checkbox"
                     )
                     q-option-group(
                       v-else-if="isUser(props)"
-                      v-model="props.row.roles"
+                      v-model="roles"
                       disable
                       :options="userRoles"
                       type="checkbox"
                     )
                     q-option-group(
                       v-else-if="isAdmin(props)"
-                      v-model="props.row.roles"
+                      v-model="roles"
                       disable
                       :options="adminRoles"
                       type="checkbox"
                     )
                     q-option-group(
                       v-else-if="isGIS(props)"
-                      v-model="props.row.roles"
+                      v-model="roles"
                       disable
                       :options="gisRoles"
                       type="checkbox"
                     )
                     q-option-group(
                       v-else
-                      v-model="props.row.roles"
+                      v-model="roles"
                       :options="employeeRoles"
                       type="checkbox"
                     )
@@ -74,7 +74,7 @@
                     q-btn(
                       color="primary"
                       :label="$t('action.save')"
-                      @click="setRoles(props.row.id, props.row.roles)"
+                      @click="setRoles(props.row.id)"
                     )
           q-td(key="menu" :props="props" auto-width)
             q-btn(v-if="props.row.locked" flat @click="toggleBlock(props.row)" color="primary")
@@ -134,6 +134,7 @@
     },
     data () {
       return {
+        roles: [],
         newUser: {
           email: null,
           firstName: null,
@@ -278,6 +279,10 @@
         REGISTER_EMPLOYEE
       ]),
 
+      assignRoles (roles) {
+        this.roles = roles;
+      },
+
       isAdmin (user) {
         return this.userPermissions(user).includes("ROLE_ADMIN");
       },
@@ -353,17 +358,20 @@
         if (user.locked) {
           try {
             await this.ACCOUNT_UNBLOCK(user.id);
-          } catch (e) {}
+          } catch (e) {
+          }
         } else {
           try {
             await this.ACCOUNT_BLOCK(user.id);
-          } catch (e) {}
+          } catch (e) {
+          }
         }
         await this.GET_DATA();
       },
 
-      async setRoles (id, roles) {
-        await this.ACCOUNT_SET_ROLES({ id, roles });
+      async setRoles (id) {
+        await this.ACCOUNT_SET_ROLES({ id, roles: this.roles });
+        await this.getUsers();
       }
     }
   };

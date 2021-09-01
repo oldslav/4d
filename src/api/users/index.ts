@@ -19,8 +19,6 @@ export class UsersService extends Service {
   }
 
   public changeUserRoles (id: number, roles: Array<string>): AxiosPromise<any> {
-    return this.api.put(`api/v1/profile/${ id }/change_role`, {
-      ...roles
-    });
+    return this.api.put(`api/v1/profile/${ id }/change_role`, roles);
   }
 }
