@@ -14,11 +14,11 @@
           q-btn(
             outline
             color="primary"
-            @click="toggleNewUserModal"
+            @click="showNewUserModal()"
             :label="$t('action.registerUser')"
           )
       template(v-slot:body="props")
-        q-tr(:props="props" @click="log(props.row)")
+        q-tr(:props="props")
           q-td(key="id" :props="props")
             | {{ props.row.id }}
           q-td(key="name" :props="props")
@@ -85,62 +85,40 @@
               span
                 q-icon(name="block" left)
                 span {{ $t("action.block") }}
-    BaseModal(
-      :value="isNewUserModal"
-      position="standard"
-      @input="toggleNewUserModal"
+    NewUserModal(
+      v-model="isNewUserModal"
+      @register="registerEmployee"
+      :employee-roles="employeeRoles"
+      :admin-roles="adminRoles"
+      :user-roles="userRoles"
+      :gis-roles="gisRoles"
+      :legal-roles="legalRoles"
     )
-      q-card.q-pa-md.modal-container__wide
-        q-card-section
-          q-input(v-model.trim="newUser.email" :label="$t('common.email')" :rules="validateEmail" lazy-rules dense)
-          q-input(v-model.trim="newUser.firstName" :label="$t('user.firstName')" :rules="requiredRule" lazy-rules dense)
-          q-input(v-model.trim="newUser.password" :label="$t('user.password')" :rules="validatePassword" lazy-rules dense)
-          q-option-group(
-            v-model="newUser.roles"
-            :options="employeeRoles"
-            type="checkbox"
-            dense
-          )
-        q-card-actions
-          q-btn(
-            outline
-            color="primary"
-            @click="registerEmployee"
-            :label="$t('action.registerUser')"
-          ).full-width
 </template>
 
 <script>
-  import BaseModal from "./common/BaseModal";
-  import BaseTable from "./common/BaseTable";
   import { mapActions, mapGetters } from "vuex";
+  import { mapFields } from "@/plugins/mapFields";
   import {
     ACCOUNT_BLOCK,
     ACCOUNT_SET_ROLES,
     ACCOUNT_UNBLOCK,
     GET_DATA,
     REGISTER_EMPLOYEE
-  } from "../store/constants/action-constants";
-  import { mapFields } from "../plugins/mapFields";
-  import { UPDATE_PAGINATION } from "../store/constants/mutation-constants";
-  import InputsMixin from "./auth/InputsMixin";
+  } from "@/store/constants/action-constants";
+  import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import BaseTable from "../common/BaseTable";
+  import NewUserModal from "components/admin/NewUserModal";
 
   export default {
     name: "Users",
-    mixins: [InputsMixin],
-    components: { BaseTable, BaseModal },
+    components: { NewUserModal, BaseTable },
     async created () {
       await this.GET_DATA();
     },
     data () {
       return {
         roles: [],
-        newUser: {
-          email: null,
-          firstName: null,
-          password: null,
-          roles: []
-        },
         isNewUserModal: false,
         legalRoles: [
           {
@@ -321,19 +299,17 @@
         }
       },
 
-      toggleNewUserModal () {
-        this.isNewUserModal = !this.isNewUserModal;
+      showNewUserModal () {
+        this.isNewUserModal = true;
       },
 
-      async registerEmployee () {
+      async registerEmployee (employee) {
         try {
-          await this.REGISTER_EMPLOYEE(this.newUser);
+          await this.REGISTER_EMPLOYEE(employee);
           this.$q.notify({
             type: "positive",
             message: this.$t("common.register.messages.success")
           });
-          this.isNewUserModal = false;
-          Object.assign(this.newUser, this.$options.data.call(this).newUser);
         } catch (e) {
           this.$q.notify({
             type: "negative",
