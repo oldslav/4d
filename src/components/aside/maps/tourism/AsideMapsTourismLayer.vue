@@ -48,10 +48,10 @@
 </template>
 <script>
   import { mapGetters, mapActions } from "vuex";
-  import { SET_TOURISM_ENTITY_VISIBILITY } from "../../../store/constants/action-constants";
-  import { TourismGeoJSONEntities } from "../../../store/types/tourism";
-  import ImageSlider from "../../common/ImageSlider";
-  import NewTourismRouteModal from "../../services/tourism/NewTourismRouteModal";
+  import { SET_TOURISM_ENTITY_VISIBILITY } from "../../../../store/constants/action-constants";
+  import { TourismGeoJSONEntities } from "../../../../store/types/tourism";
+  import ImageSlider from "../../../common/ImageSlider";
+  import NewTourismRouteModal from "../../../services/tourism/NewTourismRouteModal";
 
   export default {
     name: "AsideMapsTourismLayer",

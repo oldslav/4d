@@ -219,6 +219,9 @@ const getters: GetterTree<GeoState, TRootState> = {
   },
   getPickedFeatureId (state) {
     return state.pickedFeatureId;
+  },
+  getCesium (state){
+    return state.cesiumInstance;
   }
 };
 

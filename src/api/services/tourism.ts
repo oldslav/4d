@@ -1,30 +1,13 @@
 import { AxiosPromise } from "axios";
-import { I18nNameLike } from "src/store/types/common";
 import { Service } from "../common";
-
-interface ITourismMenuLayer extends I18nNameLike {
-  id: number;
-  color: string;
-  path: string;
-}
-
-interface ITourismMenuSubSection extends I18nNameLike {
-  id: number;
-  layers: ITourismMenuLayer[]
-}
-
-export interface ITourismMenuResponse extends I18nNameLike {
-  id: number;
-  icon: string;
-  subSections: ITourismMenuSubSection
-}
+import { IMapMenuResponse } from "src/store/types/maps/common";
 
 export interface ITourismPlace {}
 
 export interface ITourismRoute {}
 
 export class TourismService extends Service {
-  public getMenu (): AxiosPromise<ITourismMenuResponse>{
+  public getMenu (): AxiosPromise<IMapMenuResponse>{
     return this.api.get("/api/v1/map/section/5");
   }
 
