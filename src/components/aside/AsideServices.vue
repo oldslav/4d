@@ -28,7 +28,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS"]),
+      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS", "isEmployee"]),
 
       meta () {
         return this.$route.meta;
@@ -37,7 +37,7 @@
       items () {
         return [
           {
-            label: this.$t("entity.estate"),
+            label: this.$t("entity.estate.title"),
             action: { name: "services-estate" },
             icon: "o_article",
             show: this.isUserGIS
@@ -58,12 +58,6 @@
             label: this.$t("entity.lighting"),
             action: { name: "services-lighting" },
             icon: "o_lightbulb",
-            show: this.isUserGIS
-          },
-          {
-            label: this.$t("entity.tourism"),
-            action: { name: "services-tourism" },
-            icon: "o_photo_camera",
             show: this.isUserGIS
           },
           {
@@ -127,6 +121,14 @@
             },
             icon: "o_article",
             show: this.isUserNature
+          },
+          {
+            label: this.$t("entity.services.trees.title"),
+            action: {
+              name: "services-trees"
+            },
+            icon: "o_article",
+            show: this.isEmployee
           }
         ];
       }

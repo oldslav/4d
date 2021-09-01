@@ -15,14 +15,22 @@ interface DocType {
 }
 
 export interface GeoState {
-  geoJson: GeoJsonCollection | null
+  geoJson: GeoData | null
   pickedFeatureId: GeoJsonFeature | null
+  clustering: boolean
   pointCoords: any | null
+  isDraw: any | null
+  cesiumInstance: any | null
+}
+
+export interface GeoData {
+  type: string,
+  data: GeoJsonCollection | Array<any>
 }
 
 export interface GeoJsonCollection {
   type: string,
-  features: GeoJsonFeature
+  features: Array<GeoJsonFeature>
 }
 
 export interface GeoJsonFeature {
@@ -52,3 +60,14 @@ export interface Document {
   id: number,
   docType: DocType
 }
+
+export type I18nNameLikeProps = "nameRu" | "nameEn"
+
+export enum I18nNamePropertyByLang {
+  ru = "nameRu",
+  "en-us" = "nameEn",
+}
+
+export type I18nNameLike = {
+  [key in I18nNameLikeProps]: string;
+};

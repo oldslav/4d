@@ -32,9 +32,12 @@
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id === 2" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
+                  q-item(clickable v-close-popup :disable="![9, 4, 1].includes(props.row.status.id)" @click="onDelete(props.row.id)")
+                    q-item-section(no-wrap).text-red
+                      | {{ $t("action.delete") }}
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
@@ -48,9 +51,10 @@
                 | Ваш договор готов к подписанию!
               div.text-body1.text-wrap
                 | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
-            div.column(v-if="props.row.status.id === 8").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -60,15 +64,20 @@
 <script>
   import { mapGetters, mapActions } from "vuex";
   import { mapFields } from "@/plugins/mapFields";
-  import { CANCEL_TICKET_COMMERCE, GET_COMPANY_COMMERCE_TICKETS } from "@/store/constants/action-constants";
+  import {
+    CANCEL_TICKET_COMMERCE,
+    DELETE_TICKET_COMMERCE,
+    GET_COMPANY_COMMERCE_TICKETS
+  } from "@/store/constants/action-constants";
   import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import BaseTable from "components/common/BaseTable";
   import CommerceTicketDetailsModal from "components/user/tickets/commerce/CommerceTicketDetailsModal";
   import CommerceTicketStatus from "components/user/tickets/commerce/CommerceTicketStatus";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "TicketsCommerceCompany",
-    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable },
+    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable, ValidContractState },
     async created () {
       await this.getCompanyTickets();
     },
@@ -117,11 +126,11 @@
         mutation: UPDATE_PAGINATION
       }),
       isLoading () {
-        return this.$store.state.wait[`user/tickets/commerce/${ GET_COMPANY_COMMERCE_TICKETS }`];
+        return this.$store.state.wait[`user/tickets/commerce/${ GET_COMPANY_COMMERCE_TICKETS }`] || this.$store.state.wait[`user/tickets/commerce/${ DELETE_TICKET_COMMERCE }`];
       }
     },
     methods: {
-      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKETS, CANCEL_TICKET_COMMERCE]),
+      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKETS, CANCEL_TICKET_COMMERCE, DELETE_TICKET_COMMERCE]),
       async getCompanyTickets (props) {
         if (props) {
           const { pagination: { page, rowsPerPage } } = props;
@@ -167,6 +176,22 @@
             this.$q.notify({
               type: "negative",
               message: "При отмене заявки произошла ошибка"
+            });
+          });
+      },
+      onDelete (id) {
+        return this.DELETE_TICKET_COMMERCE(id)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: "Заявка удалена"
+            });
+            this.GET_COMPANY_COMMERCE_TICKETS();
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: "При удалении заявки произошла ошибка"
             });
           });
       },

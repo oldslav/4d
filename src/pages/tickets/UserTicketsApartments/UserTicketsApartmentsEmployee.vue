@@ -33,7 +33,7 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-        q-tr(v-show="props.expand" :props="props")
+        q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
@@ -43,9 +43,10 @@
               :value="props.row.status"
               @contract="sendContractInfo($event, props.row.id)"
             )
-            div.column(v-if="props.row.status.id === 8").q-pa-md
-              div.text-body1.text-wrap
-                | Договор подписан
+            ValidContractState(
+              :contract="props.row.contract"
+              v-if="props.row.status.id === 8"
+            ).q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -67,6 +68,7 @@
   import BaseTable from "components/common/BaseTable";
   import ApartmentsTicketDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import ApartmentTicketEmployeeFlow from "components/user/tickets/apartments/ApartmentTicketEmployeeFlow";
+  import ValidContractState from "components/user/tickets/ValidContractState";
 
   export default {
     name: "UserTicketsApartmentsEmployee",
@@ -75,7 +77,8 @@
       BaseTable,
       ApartmentTicketStatus,
       ApproveTicketModal,
-      ApartmentTicketEmployeeFlow
+      ApartmentTicketEmployeeFlow,
+      ValidContractState
     },
     async created () {
       await this.getEmployeeTickets();
@@ -252,3 +255,10 @@
     }
   };
 </script>
+
+<style lang="stylus" scoped>
+.step-details
+  background-color: #DEEFFE
+.q-stepper
+  background-color: #DEEFFE
+</style>

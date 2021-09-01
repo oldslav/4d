@@ -305,12 +305,12 @@
       async handleRejectVacancy (vacancyId) {
         const notifyEnd = this.$q.notify({
           type: "ongoing",
-          message: this.$t("user.tickets.vacancies.rejectVacancy.error")
+          message: this.$t("user.tickets.vacancies.rejectVacancy.progress")
         });
 
         try {
           await this.rejectVacancyById(vacancyId);
-          notifyEnd({ type: "positive", message: this.$t("user.tickets.vacancies.rejectVacancy.error") });
+          notifyEnd({ type: "positive", message: this.$t("user.tickets.vacancies.rejectVacancy.success") });
         } catch (e) {
           notifyEnd({
             type: "negative",

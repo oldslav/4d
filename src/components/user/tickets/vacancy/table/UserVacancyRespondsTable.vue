@@ -21,10 +21,10 @@
             name="expand_more"
             style="font-size: 18px"
           )
-          | {{ props.row.vacancy.position }}
+          div.break-word.break-spaces {{ props.row.vacancy.position }}
 
         q-td(key="company" :props="props")
-          | {{  props.row.vacancy.companyName }}
+          div.break-word.break-spaces {{  props.row.vacancy.companyName }}
 
         q-td(key="publishDate" :props="props")
           | {{  props.row.created | formatDate }}

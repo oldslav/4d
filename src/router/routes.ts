@@ -20,6 +20,46 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/design",
+    name: "design",
+    redirect: {
+      name: "design-intro"
+    },
+    components: {
+      default: (): Promise<any> => import("pages/design-code/DesignCode.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/design-code/AsideDesignCode.vue")
+    },
+    meta: {
+      toolbar: true,
+      asideLeft: true
+    },
+    children: [
+      {
+        path: "intro",
+        name: "design-intro",
+        components: {
+          default: (): Promise<any> => import("pages/design-code/DesignIntro.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true
+        }
+      },
+      {
+        path: "section/:id",
+        name: "design-section",
+        components: {
+          default: (): Promise<any> => import("pages/design-code/DesignSection.vue"),
+          asideSection: (): Promise<any> => import("components/aside/design-code/AsideDesignSection.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideSection: true
+        }
+      }
+    ]
+  },
+  {
     path: "/playground",
     name: "playground",
     redirect: {
@@ -305,13 +345,6 @@ const routes: RouteConfig[] = [
     }
   },
   {
-    path: "/design",
-    name: "design",
-    components: {
-      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
-    }
-  },
-  {
     path: "/map",
     name: "map",
     components: {
@@ -324,6 +357,71 @@ const routes: RouteConfig[] = [
         name: "map-apartments",
         components: {
           default: (): Promise<any> => import("pages/maps/MapApartments.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true
+        }
+      },
+      {
+        path: "tourism",
+        name: "map-tourism",
+        components: {
+          default: (): Promise<any> => import("../pages/maps/tourism/MapTourism.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/AsideMapsTourism.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true
+        },
+        children: [
+          {
+            path: ":category",
+            name: "map-tourism-category",
+            components: {
+              default: (): Promise<any> => import("pages/maps/tourism/MapTourismCategory.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismCategory.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          },
+          {
+            path: ":category/:layer",
+            name: "map-tourism-layer",
+            components: {
+              default: (): Promise<any> => import("pages/maps/tourism/MapTourismLayer.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismLayer.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          },
+          {
+            path: ":category/:layer/:id",
+            name: "map-tourism-entity",
+            components: {
+              default: (): Promise<any> => import("pages/maps/tourism/MapTourismEntity.vue"),
+              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismEntity.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          }
+        ]
+      },
+      {
+        path: "trees",
+        name: "map-trees",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceTrees.vue")
         },
         meta: {
           map: true,
@@ -351,7 +449,19 @@ const routes: RouteConfig[] = [
         },
         meta: {
           toolbar: true
-        }
+        },
+        children: [
+          {
+            path: ":id",
+            name: "services-estate-details",
+            components: {
+              default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+            },
+            meta: {
+              toolbar: true
+            }
+          }
+        ]
       },
       {
         path: "transport",
@@ -374,22 +484,14 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        path: "lighting",
-        name: "services-lighting",
+        path: "light",
+        name: "services-light",
         components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+          default: (): Promise<any> => import("pages/services/ServiceLight.vue")
         },
         meta: {
-          toolbar: true
-        }
-      },
-      {
-        path: "tourism",
-        name: "services-tourism",
-        components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
-        },
-        meta: {
+          map: true,
+          asideServices: true,
           toolbar: true
         }
       },
@@ -447,6 +549,7 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesWarehouse.vue")
         },
         meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }
@@ -495,6 +598,19 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesVacancyItem.vue")
         },
         meta: {
+          asideServices: true,
+          toolbar: true
+        }
+      },
+      {
+        path: "trees",
+        name: "services-trees",
+        components: {
+          default: (): Promise<any> => import("pages/services/ServiceTrees.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesTrees.vue")
+        },
+        meta: {
+          map: true,
           asideServices: true,
           toolbar: true
         }

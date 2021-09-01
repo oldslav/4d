@@ -40,6 +40,7 @@ const initialState = (): IServiceVacancyState => {
       [VacancyReferencesEnum.employmentType]: [],
       [VacancyReferencesEnum.experience]: [],
       [VacancyReferencesEnum.profIndustry]: [],
+      [VacancyReferencesEnum.publishedProfIndustry]: [],
       [VacancyReferencesEnum.respondStatus]: [],
       [VacancyReferencesEnum.vacancyStatus]: [],
       [VacancyReferencesEnum.workSchedule]: []

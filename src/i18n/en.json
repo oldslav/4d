@@ -46,9 +46,9 @@
       "chooseProfile": "Choose user profile",
       "consent": {
         "byHitting": "By clicking the \"Register\" button, I accept the terms and conditions ",
-        "userConsent": "User agreement ",
-        "allow": "and I give my consent to ",
-        "dataProcessing": "processing of personal data "
+        "userConsent": "User agreement",
+        "allow": " and I give my consent to ",
+        "dataProcessing": "processing of personal data"
       },
       "messages": {
         "registered": "User registered",
@@ -106,6 +106,9 @@
     "street": "Street",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
+    "documents": "Documents",
+    "photos": "Photos",
+    "info": "Info",
     "quantity": {
       "area": "Area, sq.m",
       "rooms": "Rooms",
@@ -126,6 +129,7 @@
     "telegramAlias": "Telegram",
     "role": "Role",
     "created": "Created at",
+    "noData": "No data",
     "permissions": {
       "title": "Permissions",
       "ROLE_QGIS": "GIS employee",
@@ -142,6 +146,15 @@
       "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.tress",
       "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce.title",
       "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding"
+    },
+    "components": {
+      "dragDrop": {
+        "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      },
+      "imageDragDrop": {
+        "addPhoto": "Add photo",
+        "maxFiles": "No more than {maxFiles} photos"
+      }
     }
   },
   "user": {
@@ -184,7 +197,7 @@
       "warehouse": {
         "steps": {
           "first": "Оплата",
-          "second": "Подписание договора и получение ключа"
+          "second": "Подписание договора"
         }
       },
       "vacancies": {
@@ -422,6 +435,7 @@
       "monthlyPrice": "Payment per month",
       "depositPrice": "Deposit payment",
       "totalPrice": "Total amount",
+      "cardPrice": "Card price",
       "dateContractConcluded": "Дата заключения",
       "dateContractExpire": "Дата окончания",
       "columns": {
@@ -452,6 +466,7 @@
     }
   },
   "action": {
+    "showOnMap": "Show on map",
     "applicationMake": "Make an application",
     "block": "Block",
     "unblock": "Unblock",
@@ -460,6 +475,7 @@
     "rent": "Rent",
     "details": "Details",
     "register": "Register",
+    "edit": "Edit",
     "back": "Back",
     "save": "Save",
     "clear": "Clear",
@@ -487,7 +503,27 @@
     }
   },
   "entity": {
-    "estate": "Estate Object",
+    "estate": {
+      "title": "Estate Object",
+      "details": {
+        "id": "ID",
+        "number": "House number",
+        "infrastructureType": "Infrastructure type",
+        "category": "Category",
+        "name": "Name",
+        "constructYear": "Year of construction",
+        "residentsCount": "Amount of residents",
+        "builder": "Property developer",
+        "street": "Street",
+        "area": "Area of the object",
+        "parkingCount": "Amount of parking places",
+        "floors": "Amount of floors",
+        "managingCompany": "Managing company",
+        "status": "Construction stage",
+        "organizationCount": "Amount of organizations",
+        "link": "Link to website"
+      }
+    },
     "transport": "Transport Infrastructure",
     "landscape": "Urban Landscaping",
     "lighting": "Urban Lighting",
@@ -587,7 +623,7 @@
             "title": "Guest visit",
             "description": "",
             "price": {
-              "title": "100 rubles per day",
+              "title": "70 rubles per day",
               "description": ""
             }
           },
@@ -690,14 +726,23 @@
           "category": "Категория",
           "cover": "Добавьте обложку проекта",
           "markdownDescription": "Добавьте описание проекта",
-          "media": "Загрузите фотографии и видео, наиболее полно описывающие ваш проект. Максимальный размер файла: 2 Мб",
-          "mediaMaxSize": "Максимальный размер файла: 2 Мб",
+          "media": "Добавьте фото",
+          "mediaMaxCount": "Не более 5 фото",
           "loadedMedia": "Загруженные фотографии"
         }
       },
       "employmentCenter": "Employment center",
       "light": "Light",
-      "tress": "Tress",
+      "trees":  {
+        "title": "Trees",
+        "aside": {
+          "status": "Состояние",
+          "comment": "Комментарий",
+          "statusChangedDate": "Статус изменен",
+          "statusChangedBy": "Изменил статус",
+          "changeStatus": "Редактировать статус"
+        }
+      },
       "vacancies": {
         "title": "City vacancies",
         "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
@@ -741,7 +786,35 @@
           "resumeLink": "Resume link",
           "textHint": "Add cover letter text",
           "textPlaceholder": "Tell us about yourself",
-          "resumeLinkRequired": "You must provide a link to your resume"
+          "resumeLinkRequired": "You must provide a link to your resume",
+          "resumeLinkInvalid": "Некорректная ссылка"
+        }
+      },
+      "tourism": {
+        "labels": {
+          "km": "km",
+          "description": "Description",
+          "photos": "Photos",
+          "workTime": "Working hours",
+          "link": "Link to the site",
+          "distance": "Distance",
+          "duration": "Travel time",
+          "routeType": "Route type",
+          "routesFor": "Routes to",
+          "downloadRoute": "Download route",
+          "routeFileFormat": "Select the desired file format",
+          "offerRoute": "Suggest your route",
+          "routeMinutesDuration": "{minutes}min.",
+          "routeDuration": "{hours}hr. {minutes}min."
+        },
+        "offerForm": {
+          "title": "Suggest a route",
+          "offerSuccess": "The route data was successfully sent to the mayor's office employee",
+          "offerError": "The route data was successfully sent to the mayor's office employee",
+          "descriptionLabel": "Add a description",
+          "routeDescription": "Describe your route",
+          "route": "Track route",
+          "routeFileFormat": "Format gpx, tcx"
         }
       }
     },
@@ -814,7 +887,7 @@
       "passport": "Passport scan",
       "snils": "SNILS scan",
       "inn": "INN scan",
-      "inn_jur": "Company INN",
+      "inn_jur": "@:entity.files.inn",
       "job": "Employment certificate",
       "birth": "Birth certificate scan",
       "marriage": "Marriage certificate scan",
@@ -831,7 +904,14 @@
     "tickets": {
       "title": "Tickets",
       "apartments": "Apartment rent",
-      "ideas": "Ideas and suggestions",
+      "ideas": {
+        "title": "Ideas and suggestions",
+        "action": {
+          "toVote": "Submit to the vote",
+          "forConsideration": "For consideration",
+          "finish": "Finish project"
+        }
+      },
       "parking": "Parking rent",
       "crowdfunding": "Crowdfunding",
       "vacancy": "Городские вакансии",

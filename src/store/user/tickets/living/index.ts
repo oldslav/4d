@@ -14,7 +14,7 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING, UPDATE_TICKET
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -57,17 +57,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   async [GET_USER_TICKET] ({ commit, dispatch }, ticketId) {
     const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
-    const { images, ...ticket } = data;
-    const documents: any = {
-      passport: [],
-      snils: [],
-      inn: [],
-      job: [],
-      job_petition: []
-    };
-    const files = await dispatch("loadFiles", images, { root: true });
-    Object.assign(documents, files);
-    commit(SET_USER_TICKET, { ...ticket, documents });
+    const { images, neighbors: ns, ...ticket } = data;
+    const documents = await dispatch("loadFiles", images, { root: true });
+    const neighbors = await Promise.all(ns.map(async (n: any) => {
+      const { images, ...neighbor } = n;
+      const documents = await dispatch("loadFiles", images, { root: true });
+      return { ...neighbor, documents };
+    }));
+    commit(SET_USER_TICKET, { ...ticket, documents, neighbors });
   },
 
   async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {
@@ -109,6 +106,12 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   async [CREATE_USER_TICKET_LIVING] (_, payload) {
     const { data } = await this.service.user.tickets.createTicketLiving(payload);
+
+    return data;
+  },
+
+  async [UPDATE_TICKET] (_, { ticketId, payload }) {
+    const { data } = await this.service.user.tickets.updateTicketLiving(ticketId, payload);
 
     return data;
   },

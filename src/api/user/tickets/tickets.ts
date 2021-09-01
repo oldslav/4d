@@ -38,6 +38,10 @@ export class TicketsService extends Service {
     return this.api.post("/api/v1/services/apartments/user/tickets", params);
   }
 
+  public updateTicketLiving (ticketId: number, params: unknown): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/apartments/user/tickets/${ ticketId }`, params);
+  }
+
   public createLegalTicketLiving (payload: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/apartments/company/tickets", payload);
   }
@@ -92,6 +96,10 @@ export class TicketsService extends Service {
 
   public getEmployeeTicketsParking (params: unknown): AxiosPromise<any> {
     return this.api.get("/api/v1/services/parking/employee/tickets", { params });
+  }
+
+  public getParkingTicketById (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/parking/user/tickets/${ id }`);
   }
 
   public createTicketParking (params: unknown): AxiosPromise<any> {
@@ -184,6 +192,10 @@ export class TicketsService extends Service {
 
   public updateTicketCrowdfunding (id: number, payload: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/crowdfunding/${ id }`, payload);
+  }
+
+  public publishTicketCrowdfunding (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/crowdfunding/${ id }/publish`);
   }
 
   public addTicketCrowdfundingCover (id: number, file: unknown): AxiosPromise<TicketsResponse> {

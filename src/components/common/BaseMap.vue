@@ -7,48 +7,51 @@
         :selection-indicator="false"
         @selectedEntityChanged="entitySelected"
         @ready="onReadyViewer"
-        scene3DOnly
       )
         vc-layer-imagery
           vc-provider-imagery-openstreetmap(:url="mapUrl")
           vc-datasource-geojson(
-            v-if="data"
-            @ready="onDatasourceReady"
-            :show="show"
             ref="ds"
-            :data="data"
+            :data="fakeData"
+            :show="show"
             :entities="entities"
+            @ready="onDatasourceReady"
           )
         vc-handler-draw-point(
-          v-if="isCreatorPoint"
+          v-show="isDraw"
           ref="handlerPoint"
           @activeEvt="activeEvt"
           @drawEvt="drawPoint"
           :pointPixelSize="16"
           :showDrawTip="false"
         )
-      q-btn(
-        v-if="isCreatorPoint"
-        label="Указать местоположение"
-        @click="toggle('handlerPoint')"
-      )
-      q-inner-loading(:showing="isLoading")
+        vc-collection-primitive-point(
+          v-if="data && data.type === 'pointPrimitive'"
+          :points="data.data"
+          @click="pointClicked"
+          @clickout="pointClickedOut"
+        )
+    MapLegalAgreement.z-fab.absolute-bottom-right.text-right(:style="{maxWidth: '50%'}")
 </template>
 
 <script>
-  import { mapState } from "vuex";
+  import render from "../../cesium/render";
+  import { get } from "lodash";
+  import { mapMutations, mapState } from "vuex";
+  import { toDegrees } from "../../util/map";
+  import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
+  import MapLegalAgreement from "components/common/MapLegalAgreement";
+
+  const FAKE_GEOJSON_DATA = { "type": "FeatureCollection", "features": [] };
 
   export default {
     name: "BaseMap",
+    components: { MapLegalAgreement },
     props: {
       data: {
         type: Object,
         default: null
       }
-      // onClick: {
-      //   type: Function,
-      //   default: () => {}
-      // }
     },
     data () {
       return {
@@ -56,32 +59,70 @@
         options: {},
         entities: [],
         geoJson: null,
-        isLoading: false
+        cesiumInstance: null,
+        fakeData: FAKE_GEOJSON_DATA
       };
     },
     computed: {
       ...mapState("services", {
-        pointCoords: state => state.pointCoords
+        pointCoords: state => state.pointCoords,
+        isDraw: state => state.isDraw,
+        pickedFeatureId: state => state.pickedFeatureId,
+        clustering: state => state.clustering
       }),
 
       mapUrl () {
         return this.$q.dark.isActive
           ? "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
           : "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png";
-      },
-
-      isCreatorPoint () {
-        return this.$route.meta.creatorPoint;
       }
     },
     methods: {
+      ...mapMutations("services", [
+        SET_CESIUM,
+        SET_FEATURE_ID
+      ]),
+
+      pointClicked ({ pickedFeature }) {
+        if (pickedFeature.id !== this.pickedFeatureId) {
+          pickedFeature.primitive.pixelSize = pickedFeature.primitive.pixelSize + 5;
+          this.entitySelected(pickedFeature);
+        }
+      },
+
+      pointClickedOut ({ pickedFeature }) {
+        pickedFeature.primitive.pixelSize = pickedFeature.primitive.pixelSize - 5;
+        this.entitySelected(null);
+      },
+
       onReadyViewer (cesiumInstance) {
-        const { viewer } = cesiumInstance;
+        const vcViewer = this.$refs.vcViewer;
+        const { Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode } = cesiumInstance.Cesium;
+        this.SET_CESIUM({ Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode });
+
         this.cesiumInstance = cesiumInstance;
-        viewer.scene.globe.depthTestAgainstTerrain = true;
+        this.$root.map = { componentInstance: this, cesiumInstance };
+
+        const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
+
+        cesiumInstance.viewer.scene.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, innoCoords), 1000),
+          orientation: {
+            pitch: Cesium.Math.toRadians(-55)
+          },
+          maximumHeight: 5000
+        });
+
+        cesiumInstance.viewer.scene.requestRenderMode = true;
+        cesiumInstance.viewer.scene.skyBox.show = false;
+        cesiumInstance.viewer.scene.fxaa = false;
+        cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
 
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
+
+        this.$emit("onViewerReady", vcViewer);
+        this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
       },
 
       activeEvt (_) {
@@ -91,9 +132,10 @@
       drawPoint (result) {
         this.toggle("handlerPoint");
 
+        const [x, y] = toDegrees(this.cesiumInstance.Cesium, result.polyline.positions[0]);
         this.$emit("pointCreated", {
-          x: result.polyline.positions[0].x,
-          y: result.polyline.positions[0].y
+          x,
+          y
         });
       },
 
@@ -101,14 +143,42 @@
         this.$refs[type].drawing = !this.$refs[type].drawing;
       },
 
-      async onDatasourceReady ({ viewer, cesiumObject }) {
-        console.log(cesiumObject);
-        await viewer.zoomTo(cesiumObject);
+      onDatasourceReady (vcViewer) {
+        const { datasource } = this.$refs.ds;
         this.isLoading = false;
+
+        datasource.clustering.pixelRange = 100;
+        datasource.clustering.minimumClusterSize = 5;
+
+        this.$watch("clustering", this.onUpdateClustering, { immediate: true });
+        this.$watch("data", this.onUpdateData, { immediate: true });
+        this.$emit("onDatasourceReady", vcViewer);
+      },
+
+      onUpdateClustering (val) {
+        const { datasource } = this.$refs.ds;
+        datasource.clustering.enabled = !!val;
       },
 
       entitySelected (e) {
         this.$emit("change", e);
+      },
+
+      onUpdateData () {
+        const { datasource, cesiumObject, viewer } = this.$refs.ds;
+        const dataType = get(this.data, "type", null);
+        const data = dataType === "geoJson" ? this.data.data : FAKE_GEOJSON_DATA;
+
+        datasource.load(data).then((ds) => {
+          render(ds.entities.values);
+          viewer.zoomTo(cesiumObject);
+        });
+      },
+
+      onChangePickedFeatureId (val) {
+        if (val === null) {
+          this.$refs.vcViewer.viewer.selectedEntity = null;
+        }
       }
     },
     watch: {
@@ -116,7 +186,23 @@
         if (!val) {
           this.$refs.handlerPoint.clear();
         }
+      },
+
+      isDraw (val) {
+        switch (val) {
+          case "pointPrimitive":
+            this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
+            this.toggle("handlerPoint");
+            break;
+          case null:
+            this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = false;
+            break;
+        }
       }
+
+      // onMapMove () {
+      //   this.$emit("on-map-move", this.$refs.vcViewer);
+      // }
     }
   };
 </script>

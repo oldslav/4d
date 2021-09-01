@@ -14,17 +14,17 @@
           component(:is="activeComponent" v-model="model")
       q-checkbox(v-model="consent" size="sm")
         | {{ $t("common.register.consent.byHitting") }}
-        span
+        span.text-primary.cursor-pointer(@click.stop.prevent="onClickLink(consentLink)")
           | {{ $t("common.register.consent.userConsent") }}
         | {{ $t("common.register.consent.allow") }}
-        span
+        span.text-primary.cursor-pointer(@click.stop.prevent="onClickLink(processingLink)")
           | {{ $t("common.register.consent.dataProcessing") }}
       q-btn.full-width(:label="$t('action.register')" type="submit" :disable="!buttonActive" color="primary")
 </template>
 
 <script>
   import { mapActions } from "vuex";
-  import { ACCOUNT_CREATE } from "@/store/constants/action-constants";
+  import { ACCOUNT_CREATE, DOWNLOAD_FILE } from "@/store/constants/action-constants";
   import IndividualInputs from "components/auth/IndividualInputs";
   import LegalInputs from "components/auth/LegalInputs";
 
@@ -39,6 +39,12 @@
       };
     },
     computed: {
+      consentLink () {
+        return "/uploads/personal_data_policy.pdf";
+      },
+      processingLink () {
+        return "/uploads/personal_data_processing.pdf";
+      },
       buttonActive () {
         return this.consent;
       },
@@ -59,7 +65,11 @@
       }
     },
     methods: {
-      ...mapActions([ACCOUNT_CREATE]),
+      ...mapActions([ACCOUNT_CREATE, DOWNLOAD_FILE]),
+      onClickLink (path) {
+        const url = new URL(`${ process.env.SERVER_API_HOST }${ path }`);
+        window.open(url.toString());
+      },
       onSubmit () {
         this.ACCOUNT_CREATE(this.model)
           .then(() => {

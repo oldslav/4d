@@ -78,7 +78,8 @@
           title: this.$t("entity.services.vacancies.respondForm.respondSuccessTitle"),
           message: this.$t("entity.services.vacancies.respondForm.respondSuccessMessage"),
           ok: {
-            label: this.$t("action.toProfile")
+            label: this.$t("action.toProfile"),
+            unelevated: true
           }
         }).onOk(() => {
           this.$router.push({ name: "user-tickets-vacancy" });

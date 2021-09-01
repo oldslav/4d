@@ -10,6 +10,7 @@
     transition-show="fade"
     transition-hide="fade"
     @input="toggleModal"
+    @hide="$emit('hide')"
   )
     slot
     div(v-if="loading")

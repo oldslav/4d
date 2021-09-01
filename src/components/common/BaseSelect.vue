@@ -11,8 +11,11 @@
     :disable="disable"
     :multiple="multiple"
     :option-key="optionKey"
-    :option-value="optionValue"
-    )
+    :option-value="optionKey"
+    :option-label="optionValue"
+    :rules="rules"
+    :stack-label="stackLabel"
+  )
     template(v-slot:prepend)
       slot(name="prepend")
     template(v-slot:append)
@@ -26,6 +29,10 @@
       value: {
         type: [String, Number, Array, Object, null],
         default: null
+      },
+      stackLabel: {
+        type: Boolean,
+        default: false
       },
       label: {
         type: String,
@@ -66,6 +73,10 @@
       dense: {
         type: Boolean,
         default: false
+      },
+      rules: {
+        type: [Array, null],
+        default: () => []
       }
     },
     data () {
@@ -86,7 +97,7 @@
         set (value) {
           this.innerValue = value;
           if (value) {
-            this.$emit("input", value[this.optionValue]);
+            this.$emit("input", value[this.optionKey]);
           } else {
             this.$emit("input", value);
           }

@@ -13,7 +13,7 @@
         type: Number,
         default: 1,
         required: true,
-        validator: (val) => val >= 1 && val <= 12
+        validator: (val) => val >= 1 && val <= 13
       }
     },
     computed: {
@@ -38,6 +38,13 @@
             color: "red",
             value: 1,
             status: "Отклонена"
+          };
+        }
+        if (this.value === 13) {
+          return {
+            color: "red",
+            value: 1,
+            status: "Договор истёк"
           };
         }
         if (this.value === 9) {

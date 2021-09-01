@@ -9,7 +9,7 @@
             | {{$t("entity.about.model.title")}}
           .about__caption-large
             | {{$t("entity.about.model.caption")}}
-    .about__inno.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
+    .about__inno.bg-blue.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
       img.about__inno-image(src="@/assets/svg/noon.svg")
       .col-12.col-md-6.flex.items-center.justify-center.z-fab
         div
@@ -30,7 +30,7 @@
       h2.about__header.z-fab
         | {{$t("entity.about.sections.title")}}
       .about__cards.z-fab
-        q-card.cursor-pointer.about__card.flex.column.justify-around(v-for="(card, index) in sections" :key="index" @click="goTo(card.name)")
+        q-card.about__card.flex.column.justify-around(v-for="(card, index) in sections" :key="index" @click="goTo(card.name)")
           img.about__card-image.q-px-md(:src="card.image")
           q-card-section
             .about__caption-medium.text-weight-bold
@@ -79,7 +79,7 @@
       sections () {
         return [
           {
-            title: this.$t("entity.estate"),
+            title: this.$t("entity.estate.title"),
             image: require("@/assets/svg/building.svg"),
             name: ""
           },
@@ -206,7 +206,6 @@
     }
 
     &__inno {
-      background-color $illustration-light
       position relative
     }
 

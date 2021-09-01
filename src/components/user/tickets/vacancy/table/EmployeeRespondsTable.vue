@@ -10,10 +10,10 @@
     template(v-slot:body="props")
       q-tr
         q-td(key="name" :props="props")
-          | {{ props.row.name.full }}
+          div.break-word.break-spaces {{ props.row.name.full }}
 
         q-td(key="companyName" :props="props")
-          | {{ props.row.vacancy.companyName }}
+          div.break-word.break-spaces {{ props.row.vacancy.companyName }}
 
         q-td(key="created" :props="props")
           | {{ props.row.created | formatDate }}

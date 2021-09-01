@@ -8,6 +8,7 @@ import ReferencesService from "src/api/references";
 import { ApartmentsService } from "src/api/services/apartments";
 import { ParkingService } from "src/api/services/parking";
 import { VacancyService } from "src/api/services/vacancy";
+import { TreesService } from "src/api/services/trees";
 import { BillsService } from "src/api/user/bills";
 import { UserCompanyService } from "src/api/user/company";
 import { UserDocumentsService } from "src/api/user/documents";
@@ -20,6 +21,10 @@ import { IdeasService } from "src/api/services/ideas";
 import { CommerceService } from "src/api/services/commerce";
 import { VerificationRequestService } from "src/api/user/verification-request";
 import { EstateService } from "src/api/services/estate";
+import DesignService from "src/api/design";
+import { TourismService } from "src/api/services/tourism";
+import { LightService } from "src/api/services/light";
+import { WarehouseService } from "src/api/services/warehouse";
 
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,13 +34,18 @@ declare module "vuex/types/index" {
       auth: AuthService,
       dictionaries: DictionariesService,
       references: ReferencesService,
+      design: DesignService,
       services: {
         apartments: ApartmentsService,
         parking: ParkingService,
         vacancy: VacancyService,
-        commerce: CommerceService,
         ideas: IdeasService,
-        estate: EstateService
+        trees: TreesService
+        light: LightService
+        commerce: CommerceService,
+        estate: EstateService,
+        tourism: TourismService,
+        warehouse: WarehouseService
       },
       user: {
         bills: BillsService,
@@ -63,13 +73,18 @@ export default boot(({ app }) => {
     common: new Service(axios),
     dictionaries: new DictionariesService(axios),
     references: new ReferencesService(axios),
+    design: new DesignService(axios),
     services: {
       apartments: new ApartmentsService(axios),
       parking: new ParkingService(axios),
       vacancy: new VacancyService(axios),
-      commerce: new CommerceService(axios),
       ideas: new IdeasService(axios),
-      estate: new EstateService(axios)
+      trees: new TreesService(axios),
+      light: new LightService(axios),
+      commerce: new CommerceService(axios),
+      estate: new EstateService(axios),
+      tourism: new TourismService(axios),
+      warehouse: new WarehouseService(axios)
     },
     user: {
       bills: new BillsService(axios),

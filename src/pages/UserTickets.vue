@@ -3,7 +3,7 @@
     BaseTabs(is-full-width)
       q-route-tab(:to="{ name: 'user-tickets-apartments' }" name="apartments" :label="$t('entity.tickets.apartments')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-parking' }" name="parking" :label="$t('entity.tickets.parking')")
-      q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-ideas' }" name="ideas" :label="$t('entity.tickets.ideas')")
+      q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-ideas' }" name="ideas" :label="$t('entity.tickets.ideas.title')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-warehouse' }" name="warehouse" :label="$t('entity.tickets.warehouse')")
       q-route-tab(v-if="!isUserNature" :to="{name: 'user-tickets-commerce'}" name="user-tickets-commerce" :label="$t('entity.tickets.commerce.title')")
       q-route-tab(v-if="!isUserLegal" :to="{ name: 'user-tickets-crowdfunding' }" name="crowdfunding" :label="$t('entity.tickets.crowdfunding')")

@@ -12,10 +12,21 @@
   .q-btn__wrapper
     @extend .border-width
 
-.q-field--outlined
-  .q-field__inner
-    .q-field__control
-      @extend .border-width
+.q-uploader
+  &__header
+    background: transparent
+    color: $light
+
+    &::before
+      background: transparent
+
+.q-field
+  &__prepend
+    display: none
+  .q-field--outlined
+    .q-field__inner
+      .q-field__control
+        @extend .border-width
 
 .q-btn--flat
   max-height: 40px
@@ -23,6 +34,9 @@
   .q-btn__wrapper
     padding: 0 16px
 
+.height
+  &__2
+    height: 2rem
 
 .text
   &-title
@@ -71,7 +85,6 @@
 .text-status-green
   color $secondary
 
-
 .modal-container
   min-width: 40vw !important
 
@@ -79,7 +92,6 @@
     max-width: 1600px !important
 
   &__dense
-    min-width: 400px !important
     max-width: 400px !important
     max-height: 600px !important
 
@@ -112,8 +124,15 @@
 
 .body
   &--light
+    .q-uploader
+      &__header
+        color: $dark
+
     .bg-white
       background: $illustration-white !important
+
+    .bg-blue
+      background: $illustration-light !important
 
     .error
       @extend .bg-secondary-light
@@ -132,6 +151,9 @@
     .bg-white
       background: $dark-secondary !important
 
+    .bg-blue
+      background: $dark-theme-dark !important
+
     .q-header, .q-drawer, .q-footer
       background: $dark-secondary
 
@@ -141,3 +163,6 @@
 
     .q-layout
       background: initial
+
+.cesium-widget-credits
+  display:none !important;
