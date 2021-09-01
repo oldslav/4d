@@ -153,7 +153,9 @@ const actions: ActionTree<GeoState, TRootState> = {
       },
       type: "geoJson"
     };
-
+    // Временно по просьбе Саши, пока здание одно
+    const { id } = preparedData.data.features[0];
+    commit(SET_FEATURE_ID, id);
     commit(SET_GEODATA, preparedData);
   },
 
@@ -169,7 +171,7 @@ const actions: ActionTree<GeoState, TRootState> = {
         color: "#84D197",
         pixelSize: 4,
         scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
-        heightReference : state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
+        heightReference: state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
         ...item
       })),
       type: "pointPrimitive"
@@ -190,7 +192,7 @@ const actions: ActionTree<GeoState, TRootState> = {
         color: "#84D197",
         pixelSize: 4,
         scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
-        heightReference : state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
+        heightReference: state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
         ...item
       })),
       type: "pointPrimitive"
