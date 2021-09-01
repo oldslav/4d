@@ -11,6 +11,7 @@
       :key="index"
       clickable
       :to="item.action"
+      class="list-item"
       active-class="list-item-active"
       v-if="item.show"
     )
@@ -87,7 +88,7 @@
             action: {
               name: "services-parking"
             },
-            icon: "o_library_add_check",
+            icon: "o_local_parking",
             show: this.isUserNature
           },
           {
@@ -95,7 +96,7 @@
             action: {
               name: "services-warehouse"
             },
-            icon: "o_article",
+            icon: "pedal_bike",
             show: this.isUserNature
           },
           {
@@ -103,7 +104,7 @@
             action: {
               name: "services-ideas"
             },
-            icon: "o_article",
+            icon: "o_online_prediction",
             show: this.isUserNature
           },
           {
@@ -111,7 +112,7 @@
             action: {
               name: "services-crowdfunding"
             },
-            icon: "o_article",
+            icon: "o_groups",
             show: this.isUserNature
           },
           {
@@ -119,7 +120,7 @@
             action: {
               name: "services-vacancies"
             },
-            icon: "o_article",
+            icon: "work_outline",
             show: this.isUserNature
           },
           {
@@ -127,7 +128,15 @@
             action: {
               name: "services-trees"
             },
-            icon: "o_article",
+            icon: "o_park",
+            show: this.isEmployee
+          },
+          {
+            label: this.$t("entity.lighting"),
+            action: {
+              name: "services-light"
+            },
+            icon: "o_lightbulb",
             show: this.isEmployee
           }
         ];

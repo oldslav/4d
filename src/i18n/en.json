@@ -715,7 +715,7 @@
       },
       "ideas": "Ideas and suggestions",
       "crowdfunding": {
-        "title": "Краудфандинг",
+        "title": "City projects",
         "form": {
           "title": "Название проекта",
           "description": "Добавьте краткое описание проекта",
@@ -913,7 +913,7 @@
         }
       },
       "parking": "Parking rent",
-      "crowdfunding": "Crowdfunding",
+      "crowdfunding": "City projects",
       "vacancy": "Городские вакансии",
       "warehouse": "Warehouse rent",
       "responds": "Responses",
