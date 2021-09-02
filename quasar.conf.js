@@ -115,8 +115,8 @@ module.exports = configure(function (ctx) {
         });
       },
       env: {
-        SERVER_API_HOST: "https://4d-dev.innopolis.university",
-        BROWSER_API_HOST: "https://4d-dev.innopolis.university"
+        SERVER_API_HOST: "{{ENVIRONMENT}}",
+        BROWSER_API_HOST: "{{ENVIRONMENT}}"
       }
     },
 
@@ -128,11 +128,11 @@ module.exports = configure(function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "https://4d-dev.innopolis.university",
+          target: "{{ENVIRONMENT}}",
           changeOrigin: true
         },
         "/oauth": {
-          target: "https://4d-dev.innopolis.university",
+          target: "{{ENVIRONMENT}}",
           changeOrigin: true
         }
       }
