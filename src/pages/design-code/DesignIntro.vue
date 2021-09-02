@@ -161,14 +161,14 @@
     }
 
     &__top {
-      min-height 346px
+      min-height 446px
     }
 
     &__top-image {
       position absolute
       bottom 0
-      right 10%
-      max-width 90%
+      right 5%
+      max-width 70%
     }
 
     &__who-image {
@@ -181,6 +181,12 @@
 
     &__sections-image {
       min-width 90%
+    }
+  }
+
+  @media (max-width: $breakpoint-md-min) {
+    .design-intro__who-image {
+      display none
     }
   }
 </style>
