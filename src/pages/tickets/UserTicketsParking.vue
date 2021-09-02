@@ -182,7 +182,7 @@
                 .col-6.text-body1
                   .full-width
                 .col-6.text-body1.text-wrap
-                  | Срок действия по вашей заявке истек.<br>
+                  | Срок действия договора по вашей заявке истек.<br>
                   | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
                   div.q-col-gutter-sm.q-mt-md
                     .text-primary-light

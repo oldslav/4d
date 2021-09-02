@@ -54,6 +54,13 @@
             status: "Отменена"
           };
         }
+        if (this.value === 13) {
+          return {
+            color: "red",
+            value: 0.75,
+            status: "Договор истек"
+          };
+        }
         if (this.value === 2) {
           return {
             color: "primary",
