@@ -176,6 +176,7 @@
             ValidContractState(
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
+              :termination="contractTermination"
             ).q-pa-lg
             div(v-if="props.row.status.id === 13").q-pa-md
               .row
@@ -305,9 +306,13 @@
       isPaymentLinkLoading () {
         return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKET_PARKING_PAYMENT_LINK }`];
       },
-      
+
       templatePath () {
         return this.isUserLegal ? "/uploads/templates/parking_contract_jur_template.pdf" : "/uploads/templates/parking_contract_template.pdf";
+      },
+
+      contractTermination () {
+        return "/uploads/templates/parking_contract_termination.pdf";
       }
     },
     methods: {
