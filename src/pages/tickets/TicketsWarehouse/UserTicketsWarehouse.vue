@@ -155,6 +155,7 @@
             ValidContractState(
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
+              :termination="contractTermination"
             ).q-pa-lg
     q-inner-loading(v-else showing)
     TicketWarehouseDetailsModal(:id.sync="currentId" v-model="isModalVisible" v-if="currentId")
@@ -235,6 +236,9 @@
       }),
       templatePath () {
         return "/uploads/templates/warehouse_contract_template.pdf";
+      },
+      contractTermination () {
+        return "/uploads/templates/warehouse_contract_termination.pdf";
       },
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKETS_WAREHOUSE }`];
