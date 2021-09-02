@@ -32,7 +32,7 @@
               .col-xs-12.col-md-4.q-pa-sm
                 .row.justify-between
                   .title
-                    | {{ $t("user.bills.monthlyPrice") }}
+                    | {{ $t("user.bills.columns.paymentAmount") }}
                   | {{ props.row.amount.details[0].amount }}
                 .row.justify-between(v-if="!!props.row.amount.details[1]")
                   .title
