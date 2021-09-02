@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import Users from "../../components/Users";
+  import Users from "components/admin/Users";
 
   export default {
     name: "AdminUsers",

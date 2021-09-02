@@ -176,13 +176,14 @@
             ValidContractState(
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
+              :termination="contractTermination"
             ).q-pa-lg
             div(v-if="props.row.status.id === 13").q-pa-md
               .row
                 .col-6.text-body1
                   .full-width
                 .col-6.text-body1.text-wrap
-                  | Срок действия по вашей заявке истек.<br>
+                  | Срок действия договора по вашей заявке истек.<br>
                   | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
                   div.q-col-gutter-sm.q-mt-md
                     .text-primary-light
@@ -305,9 +306,13 @@
       isPaymentLinkLoading () {
         return this.$store.state.wait[`user/tickets/parking/${ GET_USER_TICKET_PARKING_PAYMENT_LINK }`];
       },
-      
+
       templatePath () {
         return this.isUserLegal ? "/uploads/templates/parking_contract_jur_template.pdf" : "/uploads/templates/parking_contract_template.pdf";
+      },
+
+      contractTermination () {
+        return "/uploads/templates/parking_contract_termination.pdf";
       }
     },
     methods: {

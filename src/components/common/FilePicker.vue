@@ -16,6 +16,7 @@
     :max-files="maxFiles"
     :max-file-size="maxSize"
     @input="onInput"
+    @rejected="onReject"
   )
     template(#append)
       q-icon.cursor-pointer(name="o_file_upload" @click="pickFiles")
@@ -93,6 +94,12 @@
       },
       pickFiles (evt) {
         process.browser && this.$refs.field.pickFiles(evt);
+      },
+      onReject () {
+        this.$q.notify({
+          type: "negative",
+          message: "Размер файла больше 2Мб"
+        });
       }
     }
   };
