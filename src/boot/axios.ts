@@ -74,8 +74,9 @@ const requestInterceptor = (store: Store<any>) => {
 
 export default boot(({ app }) => {
   const axiosInstance = axios.create();
+  const store = app.store as Store<TRootState>;
 
-  const authInterceptor = requestInterceptor(app.store as Store<TRootState>);
+  const authInterceptor = requestInterceptor(store);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -86,9 +87,6 @@ export default boot(({ app }) => {
   // @ts-ignore
   axiosInstance.interceptors.response.use(...responseStatusInterceptor);
 
-  app.store!.$axios = axiosInstance;
-
-  if (app.store) {
-    app.store.$local = LocalStorage;
-  }
+  store.$axios = axiosInstance;
+  store.$local = LocalStorage;
 });

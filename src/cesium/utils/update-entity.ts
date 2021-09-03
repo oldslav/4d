@@ -1,5 +1,5 @@
 export const updateEntity = (
-  entity: any,
+  entity: ICesiumEntity,
   cb: (entity: any) => void
 ): void => {
   const collection = entity.entityCollection;

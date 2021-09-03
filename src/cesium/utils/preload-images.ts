@@ -2,13 +2,13 @@ import { get } from "lodash";
 
 const MAX_CONCURRENCY = 5;
 
-export const preloadGeoJSONImages = (geoJson: any): void => {
-  const features = get(geoJson, "features", []);
+export const preloadGeoJSONImages = (geoJson: IGeoJSON): void => {
+  const features = get(geoJson, "features", []) as IGeoJSONFeature[];
   const images: string[] = [];
   let concurrency = 0;
 
   for (const feature of features) {
-    const entityImages = get<string>(feature, "properties.images", "");
+    const entityImages = get(feature, "properties.images", "") as (string | string[]);
     const image = Array.isArray(entityImages) ? entityImages[0] : entityImages;
 
     if (image) {
