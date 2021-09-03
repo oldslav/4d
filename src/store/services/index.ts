@@ -222,6 +222,9 @@ const getters: GetterTree<GeoState, TRootState> = {
   },
   getCesium (state){
     return state.cesiumInstance;
+  },
+  getGeoJson (state){
+    return state.geoJson;
   }
 };
 

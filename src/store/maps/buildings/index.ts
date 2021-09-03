@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { cloneDeep } from "lodash";
+import { cloneDeep, get } from "lodash";
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import {
@@ -47,33 +47,46 @@ const actions: ActionTree<IMapBuildingsState, TRootState> = {
     commit(SET_BUILDINGS_MENU, data);
   },
 
-  async [FETCH_BUILDINGS_SECTION_GEOJSON] ({ getters, commit }, id) {
-    if (getters.getGeoJSON[id]) {
-      return;
+  async [FETCH_BUILDINGS_SECTION_GEOJSON] ({ getters, commit, rootState }, id) {
+    if (!getters.getGeoJSON[id]) {
+      const section = getters.getMenu.subSections.find((x: IMapMenuSection) => x.id === id);
+
+      const awaits = section.layers.map(
+        (layer: IMapMenuLayer) => this.service.services.buildings.getLayerGeoJSON(layer.path)
+      );
+
+      const layers = await Promise.all(awaits);
+
+      const data = {
+        "type": "FeatureCollection",
+        "features": layers.reduce(
+          (res: any[], layer: any, i) => res.concat(
+            layer.features.map((feature: any) => {
+              feature.properties.layer = section.layers[i].id;
+              feature.properties.type = "building";
+              return feature;
+            })
+          ),
+          []
+        )
+      };
+
+      commit(SET_BUILDINGS_GEOJSON, { section: id, data });
     }
 
-    const section = getters.getMenu.subSections.find((x: IMapMenuSection) => x.id === id);
+    const rootGeoJson = cloneDeep(rootState.services.geoJson);
+    const sectionIds = get(rootGeoJson, "sectionIds", []);
 
-    const awaits = section.layers.map(
-      (layer: IMapMenuLayer) => this.service.services.buildings.getLayerGeoJSON(layer.path)
-    );
+    if (!sectionIds.includes(id)) {
+      sectionIds.push(id);
+      const sectionGeoJson = getters.getGeoJSON[id];
+      const rootData = get(rootGeoJson, "data", { "type": "FeatureCollection" });
 
-    const layers = await Promise.all(awaits);
+      rootData.features = rootData.features || [];
+      rootData.features.push(...sectionGeoJson.features);
 
-    const data = {
-      "type": "FeatureCollection",
-      "features": layers.reduce(
-        (res: any[], layer: any, i) => res.concat(
-          layer.features.map((feature: any) => {
-            feature.properties.layer = section.layers[i].id;
-            return feature;
-          })
-        ),
-        []
-      )
-    };
-
-    commit(SET_BUILDINGS_GEOJSON, { section: id, data });
+      commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: rootData, sectionIds }, { root: true });
+    }
   },
 
   async [FETCH_BUILDINGS_BUILDING] ({ getters, commit }, { layerId, id }) {
@@ -84,17 +97,16 @@ const actions: ActionTree<IMapBuildingsState, TRootState> = {
     commit(SET_BUILDINGS_MAP_BUILDING, { ...data, sectionId: getters.getSectionByLayerId(layer.id).id });
   },
 
-  async [SET_BUILDINGS_SECTION_GEOJSON] ({ getters, commit }, id) {
-    const geoJson = getters.getGeoJSON[id];
-
-    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
+  async [SET_BUILDINGS_SECTION_GEOJSON] () {
+    // const geoJson = getters.getGeoJSON[id];
+    // commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
   },
 
-  async [TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER] ({ rootState, commit }, { id, visibility }) {
+  async [TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER] ({ rootState, commit }, { ids, visibility }) {
     const geoJson = cloneDeep(rootState.services.geoJson.data);
 
     for (const feature of geoJson.features) {
-      if (feature.properties.layer === id) {
+      if (ids.includes(feature.properties.layer)) {
         feature.properties.visibility = visibility;
       }
     }
@@ -133,23 +145,23 @@ const getters: GetterTree<IMapBuildingsState, TRootState> = {
   },
 
   getLayerById: (state: IMapBuildingsState) => (id: number) => {
-      const subSections = state.menu ? state.menu.subSections : [];
+    const subSections = state.menu ? state.menu.subSections : [];
 
-      const layers = subSections.reduce(
-        (res, section) => res.concat(section.layers),
-        [] as IMapMenuLayer[]
-      );
+    const layers = subSections.reduce(
+      (res, section) => res.concat(section.layers),
+      [] as IMapMenuLayer[]
+    );
 
-      return layers.find(x => x.id === id);
-    },
+    return layers.find(x => x.id === id);
+  },
 
   getSectionByLayerId: (state: IMapBuildingsState) => (id: number) => {
-      const subSections = state.menu ? state.menu.subSections : [];
+    const subSections = state.menu ? state.menu.subSections : [];
 
-      return subSections.find(
-        subSection => subSection.layers.find(x => x.id === id)
-      );
-    },
+    return subSections.find(
+      subSection => subSection.layers.find(x => x.id === id)
+    );
+  },
 
   getGeoJSON: (state: IMapBuildingsState) => state.geoJSON,
   getBuilding: (state: IMapBuildingsState) => state.building

@@ -106,7 +106,7 @@
     computed: {
       ...mapGetters("maps/buildings", ["getBuilding"]),
       getImages (){
-        return this.getBuilding.images.map(x => x.image);
+        return this.getBuilding.images.map(x => x.imagePath);
       },
 
       getCommerce (){
@@ -119,10 +119,7 @@
       },
 
       backRoute (){
-        return {
-          name: "map-buildings",
-          query: { section: this.getBuilding.sectionId }
-        };
+        return { name: "map-buildings" };
       }
     },
     methods:{
