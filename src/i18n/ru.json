@@ -934,7 +934,25 @@
     },
     "bills": "Счета",
     "main": "Главная",
-    "maps": "Карты",
+    "maps": {
+      "title": "Карты",
+      "buildings": {
+        "title": "Объекты недвижимости",
+        "residentsCount": "Количество жителей",
+        "organizationCount": "Количество организаций",
+        "address": "Адрес",
+        "floors": "Количество этажей",
+        "parkingCount": "Парковочные места",
+        "area": "Площадь объекта, кв.м",
+        "managementCompany": "Управляющая компания",
+        "builder": "Застройщик",
+        "constructYear": "Год постройки",
+        "buildingDescription": "Описание",
+        "buildingCommerce": "Организации в здании",
+        "phone": "Телефон",
+        "link": "Сайт"
+      }
+    },
     "data": "Данные",
     "about": {
       "title": "О проекте",

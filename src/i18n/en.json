@@ -932,7 +932,25 @@
     },
     "bills": "Bills",
     "main": "Main",
-    "maps": "Maps",
+    "maps": {
+      "title": "Maps",
+      "buildings": {
+        "title": "Real estate objects",
+        "residentsCount": "Number of residents",
+        "organizationCount": "Number of organizations",
+        "address": "Address",
+        "floors": "Number of floors",
+        "parkingCount": "Parking spaces",
+        "area": "Object area, sq. m",
+        "managementCompany": "Management Company",
+        "builder": "Builder",
+        "constructYear": "Year of construction",
+        "buildingDescription": "Description",
+        "buildingCommerce": "Organizations",
+        "phone": "Phone",
+        "link": "Site"
+      }
+    },
     "data": "Data",
     "about": {
       "title": "About",

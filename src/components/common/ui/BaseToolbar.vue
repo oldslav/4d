@@ -82,7 +82,7 @@
           },
           {
             name: "map",
-            label: this.$t("entity.maps")
+            label: this.$t("entity.maps.title")
           },
           {
             name: "data",
