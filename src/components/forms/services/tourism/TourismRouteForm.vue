@@ -18,7 +18,7 @@
         :max-files="1"
         :label="$t('entity.services.tourism.offerForm.route')"
         :description="$t('entity.services.tourism.offerForm.routeFileFormat')"
-        accept=".gpx, .tcp"
+        accept=".gpx, .tcx"
       )
 
     div.q-mt-md
@@ -55,7 +55,6 @@
     methods: {
       isValid (){
         return this.model.description !== "" &&
-          this.model.route &&
           this.model.images.length > 0;
       },
       onSubmitForm (){

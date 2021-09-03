@@ -36,14 +36,14 @@
             label: this.$t("entity.tourism"),
             action: { name: "map-tourism" },
             icon: "o_photo_camera",
-            show: true // this.isUserGIS
+            show: true
           },
           {
-            label: this.$t("entity.services.living.title"),
+            label: this.$t("entity.maps.buildings.title"),
             action: {
-              name: "map-apartments"
+              name: "map-buildings"
             },
-            icon: "o_person",
+            icon: "o_domain",
             show: true
           }
         ];

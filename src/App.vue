@@ -2,7 +2,7 @@
   div#q-app
     q-no-ssr
       q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
-    q-layout(view="hHh Lpr lFf")
+    q-layout(ref="layout" view="hHh Lpr lFf")
       template(v-if="isMobile")
         q-drawer(
           v-show="isComponentPassed('asideLeft')"
@@ -53,7 +53,7 @@
         q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideRight")
-        q-page-container(:value="isComponentPassed('default')")
+        q-page-container(:value="isComponentPassed('default')" :style="{ minHeight: `${ this.$q.screen.height }px` }")
           transition(name="fade" mode="out-in")
             router-view
 
@@ -88,7 +88,10 @@
       });
     },
     data () {
-      return { auth: false, isStartedLoading: false };
+      return {
+        auth: false,
+        isStartedLoading: false
+      };
     },
     computed: {
       ...mapGetters(["isAuthenticated"]),

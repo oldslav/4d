@@ -156,9 +156,11 @@ const actions: ActionTree<IServicesTourismState, TRootState> = {
         image => this.service.services.tourism.uploadRouteFile(route.id, image, true)
       );
 
-      awaits.push(
-        this.service.services.tourism.uploadRouteFile(route.id, payload.route, false)
-      );
+      if (payload.route) {
+        awaits.push(
+          this.service.services.tourism.uploadRouteFile(route.id, payload.route, false)
+        );
+      }
 
       await Promise.all(awaits);
     } catch (e) {

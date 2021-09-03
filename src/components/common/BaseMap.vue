@@ -98,7 +98,16 @@
       onReadyViewer (cesiumInstance) {
         const vcViewer = this.$refs.vcViewer;
         const { Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode } = cesiumInstance.Cesium;
-        this.SET_CESIUM({ Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode });
+
+        this.SET_CESIUM({
+          Cartesian3,
+          Cartographic,
+          Color,
+          Math,
+          NearFarScalar,
+          HeightReference,
+          SceneMode
+        });
 
         this.cesiumInstance = cesiumInstance;
         this.$root.map = { componentInstance: this, cesiumInstance };
@@ -122,6 +131,9 @@
         document.getElementById("cesiumContainer").style.height = "";
 
         this.$emit("onViewerReady", vcViewer);
+
+        this.$root.map = { componentInstance: this, cesiumInstance };
+
         this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
       },
 
@@ -152,6 +164,7 @@
 
         this.$watch("clustering", this.onUpdateClustering, { immediate: true });
         this.$watch("data", this.onUpdateData, { immediate: true });
+        this.$watch("pickedFeatureId", this.onChangePickedFeatureId, { immediate: true });
         this.$emit("onDatasourceReady", vcViewer);
       },
 
@@ -176,8 +189,22 @@
       },
 
       onChangePickedFeatureId (val) {
+        const { datasource, viewer } = this.$refs.ds;
+
         if (val === null) {
-          this.$refs.vcViewer.viewer.selectedEntity = null;
+          viewer.selectedEntity = null;
+        } else {
+          const entity = datasource.entities.getById(val);
+          if (entity) {
+            viewer.flyTo(entity,{
+              offset: new Cesium.HeadingPitchRange(
+                viewer.camera.heading,
+                viewer.camera.pitch,
+                800.0
+              )
+            });
+          }
+          viewer.selectedEntity = entity;
         }
       }
     },
