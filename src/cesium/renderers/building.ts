@@ -2,9 +2,9 @@ import { updateEntity } from "src/cesium/utils/update-entity";
 
 export default {
   name: "building",
-  render (entity: any): void {
-    const visibility = entity.properties.visibility ? entity.properties.visibility.getValue() : true;
-    const z = entity.properties.z ? entity.properties.z.getValue() : 1;
+  render (entity: ICesiumEntity): void {
+    const visibility = entity.properties.visibility ? entity.properties.visibility.getValue<boolean>() : true;
+    const z = entity.properties.z ? entity.properties.z.getValue<number>() : 1;
     const fill = entity.properties.fill.getValue();
     const active = entity.properties.active ? entity.properties.active.getValue() : true;
 

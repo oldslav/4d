@@ -17,14 +17,14 @@ interface IExtendedPlaceOptions {
   image: string;
 }
 
-const setEntityImage = (entity: any, image: string | HTMLCanvasElement) => {
+const setEntityImage = (entity: ICesiumEntity, image: string | HTMLCanvasElement) => {
   updateEntity(entity, () => {
     entity.billboard.image = image;
   });
 };
 
 
-export const renderExtendedPlace = (entity: any, { radius, label, image }: IExtendedPlaceOptions): void => {
+export const renderExtendedPlace = (entity: ICesiumEntity, { radius, label, image }: IExtendedPlaceOptions): void => {
   entity.billboard.size = 1;
   entity.billboard.width = radius * 2;
   entity.billboard.height = radius * 2;
@@ -56,7 +56,7 @@ export const renderExtendedPlace = (entity: any, { radius, label, image }: IExte
   }
 };
 
-export const renderPlace = (entity: any, { label, background }: IPlaceOptions): void => {
+export const renderPlace = (entity: ICesiumEntity, { label, background }: IPlaceOptions): void => {
   entity.billboard.size = 1;
   entity.billboard.width = 20;
   entity.billboard.height = 20;
@@ -70,16 +70,16 @@ export const renderPlace = (entity: any, { label, background }: IPlaceOptions): 
 
 export default {
   name: "place",
-  render (entity: any): void {
+  render (entity: ICesiumEntity): void {
     const extended = entity.properties.$extended && entity.properties.$extended.getValue();
-    const background = entity.properties.$background && entity.properties.$background.getValue();
-    const order = entity.properties.order.getValue();
+    const background = entity.properties.$background && entity.properties.$background.getValue<string>();
+    const order = entity.properties.order.getValue<number>();
 
     if (extended) {
-      const image = entity.properties.images.getValue();
+      const image = entity.properties.images.getValue<string>();
       renderExtendedPlace(entity,{ radius: 28, label: entity.properties.name.getValue(), image });
     } else {
-      renderPlace(entity, { label: order + 1, background });
+      renderPlace(entity, { label: String(order + 1), background });
     }
   }
 };
