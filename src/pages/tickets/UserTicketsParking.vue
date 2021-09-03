@@ -46,7 +46,7 @@
 
         q-tr.step-details(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
-            q-stepper(
+            q-stepper.step-details(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
@@ -367,7 +367,5 @@
 
 <style lang="stylus" scoped>
 .step-details
-  background-color: #DEEFFE
-.q-stepper
   background-color: #DEEFFE
 </style>

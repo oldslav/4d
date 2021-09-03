@@ -87,7 +87,7 @@
                     .flex.items-center.justify-between
                       div
                         | @Parking_Innopolis
-            q-stepper(
+            q-stepper.step-details(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
@@ -288,7 +288,5 @@
 
 <style lang="stylus">
 .step-details
-  background-color: #DEEFFE
-.q-stepper
   background-color: #DEEFFE
 </style>

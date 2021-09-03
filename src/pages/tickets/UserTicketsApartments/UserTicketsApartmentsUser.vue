@@ -309,6 +309,4 @@
 <style lang="stylus">
 .step-details
   background-color: #DEEFFE
-.q-stepper
-  background-color: #DEEFFE
 </style>
