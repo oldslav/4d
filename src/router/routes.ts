@@ -353,22 +353,39 @@ const routes: RouteConfig[] = [
     },
     children: [
       {
-        path: "apartments",
-        name: "map-apartments",
+        path: "buildings",
+        name: "map-buildings",
         components: {
-          default: (): Promise<any> => import("pages/maps/MapApartments.vue")
+          default: (): Promise<any> => import("pages/maps/buildings/MapBuildings.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/buildings/AsideMapsBuildings.vue")
         },
         meta: {
           map: true,
-          toolbar: true
-        }
+          toolbar: true,
+          asideMaps: true
+        },
+        children: [
+          {
+            path: ":layer/:id",
+            name: "map-buildings-item",
+            components: {
+              default: (): Promise<any> => import("pages/maps/buildings/MapBuildingsItem.vue"),
+              asideBuildings: (): Promise<any> => import("components/aside/maps/buildings/AsideMapsBuildingsItem.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true
+            }
+          }
+        ]
       },
       {
         path: "tourism",
         name: "map-tourism",
         components: {
           default: (): Promise<any> => import("../pages/maps/tourism/MapTourism.vue"),
-          asideMaps: (): Promise<any> => import("components/aside/maps/AsideMapsTourism.vue")
+          asideMaps: (): Promise<any> => import("components/aside/maps/tourism/AsideMapsTourism.vue")
         },
         meta: {
           map: true,
@@ -381,7 +398,7 @@ const routes: RouteConfig[] = [
             name: "map-tourism-category",
             components: {
               default: (): Promise<any> => import("pages/maps/tourism/MapTourismCategory.vue"),
-              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismCategory.vue")
+              asideTourism: (): Promise<any> => import("components/aside/maps/tourism/AsideMapsTourismCategory.vue")
             },
             meta: {
               map: true,
@@ -394,7 +411,7 @@ const routes: RouteConfig[] = [
             name: "map-tourism-layer",
             components: {
               default: (): Promise<any> => import("pages/maps/tourism/MapTourismLayer.vue"),
-              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismLayer.vue")
+              asideTourism: (): Promise<any> => import("components/aside/maps/tourism/AsideMapsTourismLayer.vue")
             },
             meta: {
               map: true,
@@ -407,7 +424,7 @@ const routes: RouteConfig[] = [
             name: "map-tourism-entity",
             components: {
               default: (): Promise<any> => import("pages/maps/tourism/MapTourismEntity.vue"),
-              asideTourism: (): Promise<any> => import("components/aside/maps/AsideMapsTourismEntity.vue")
+              asideTourism: (): Promise<any> => import("components/aside/maps/tourism/AsideMapsTourismEntity.vue")
             },
             meta: {
               map: true,

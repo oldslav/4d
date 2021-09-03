@@ -1,9 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import { ITourismMenuResponse, ITourismPlace, ITourismRoute } from "src/api/services/tourism";
+import { ITourismPlace, ITourismRoute } from "src/api/services/tourism";
+import { IMapMenuResponse } from "src/store/types/maps/common";
 
 export interface IServicesTourismState {
-  serviceMenu: ITourismMenuResponse | null,
+  serviceMenu: IMapMenuResponse | null,
   entity: null | ITourismPlace | ITourismRoute,
   currentGeoJSONLayer: null | string,
   layersGeoJSON: {
