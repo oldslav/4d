@@ -11,3 +11,58 @@ declare namespace NodeJS {
 declare interface Window {
   Cesium?: any
 }
+
+declare interface IGeoJSONFeature {
+  properties:{
+    images?: string[] | string
+  }
+}
+
+declare interface IGeoJSON {
+  features: IGeoJSONFeature[]
+}
+
+declare interface ICesiumEntityMaterial {
+  color: any
+}
+
+declare type ICesiumEntityProperties = Record<string, { getValue: <T>() => T }>
+
+declare interface ICesiumEntityLabel {
+  text: string;
+  font: string;
+  style: any;
+  fillColor: any;
+  scale: number,
+  verticalOrigin: any;
+  horizontalOrigin: any;
+  pixelOffset: any;
+}
+
+declare interface ICesiumEntity {
+  properties: ICesiumEntityProperties;
+  show: boolean;
+  polygon: {
+    show: boolean;
+    outline: boolean;
+    extrudedHeight: number;
+    material: ICesiumEntityMaterial;
+  },
+  polyline: {
+    clampToGround: boolean;
+    material: ICesiumEntityMaterial;
+    zIndex: number;
+    width: number;
+  },
+  billboard: {
+    size: number;
+    width: number;
+    height: number;
+    image: string | HTMLCanvasElement
+  }
+  label: ICesiumEntityLabel | null
+  entityCollection: {
+    remove: (ICesiumEntity) => void
+    add: (ICesiumEntity) => void
+  }
+}

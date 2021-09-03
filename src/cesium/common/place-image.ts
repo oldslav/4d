@@ -36,7 +36,7 @@ export const renderPlacePoint = ({ color, label }: IPlacePointOptions): string =
 
 export const renderPlaceStubImage = ({ radius }: IStubImageOptions): HTMLCanvasElement => {
   const canvas = document.createElement("canvas");
-  const context = canvas!.getContext("2d")!;
+  const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
   canvas.width = radius * 2;
   canvas.height = radius * 2;
@@ -73,10 +73,10 @@ export const renderPlaceImage = ({ radius, src }: IImageOptions): Promise<HTMLCa
 
   return new Promise((resolve) => {
     const canvas = renderPlaceStubImage({ radius });
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
     image.onload = () => {
-      context!.drawImage(image, 3, 3, imageSide, imageSide);
+      context.drawImage(image, 3, 3, imageSide, imageSide);
       resolve(canvas);
     };
 
