@@ -8,7 +8,8 @@ const routes: RouteConfig[] = [
       default: (): Promise<any> => import("pages/Presentation.vue")
     },
     meta: {
-      toolbar: true
+      toolbar: true,
+      prod: true
     }
   },
   {
@@ -16,7 +17,8 @@ const routes: RouteConfig[] = [
     name: "about",
     component: (): Promise<any> => import("pages/About.vue"),
     meta: {
-      toolbar: true
+      toolbar: true,
+      prod: true
     }
   },
   {
@@ -31,7 +33,8 @@ const routes: RouteConfig[] = [
     },
     meta: {
       toolbar: true,
-      asideLeft: true
+      asideLeft: true,
+      prod: true
     },
     children: [
       {
@@ -54,7 +57,8 @@ const routes: RouteConfig[] = [
         },
         meta: {
           toolbar: true,
-          asideSection: true
+          asideSection: true,
+          prod: true
         }
       }
     ]
@@ -112,7 +116,8 @@ const routes: RouteConfig[] = [
           asideLeft: (): Promise<any> => import("@/components/aside/AsideProfile.vue")
         },
         meta: {
-          toolbar: true
+          toolbar: true,
+          prod: true
         },
         children: [
           {
@@ -125,7 +130,8 @@ const routes: RouteConfig[] = [
             meta: {
               asideLeft: true,
               toolbar: true,
-              showChangeEmailModal: true
+              showChangeEmailModal: true,
+              prod: true
             }
           },
           {
@@ -139,7 +145,8 @@ const routes: RouteConfig[] = [
               asideLeft: true,
               toolbar: true,
               modal: true,
-              showChangePasswordModal: true
+              showChangePasswordModal: true,
+              prod: true
             }
           }
         ]
@@ -151,7 +158,8 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/documents/ProfileDocuments.vue")
         },
         meta: {
-          toolbar: true
+          toolbar: true,
+          prod: true
         }
       },
       {
@@ -161,7 +169,8 @@ const routes: RouteConfig[] = [
           default: (): Promise<any> => import("pages/UserTickets.vue")
         },
         meta: {
-          toolbar: true
+          toolbar: true,
+          prod: true
         },
         children: [
           {
@@ -195,7 +204,8 @@ const routes: RouteConfig[] = [
             meta: {
               toolbar: true,
               asideLeft: true,
-              content: true
+              content: true,
+              prod: true
             }
           },
           {
@@ -214,7 +224,8 @@ const routes: RouteConfig[] = [
             meta: {
               toolbar: true,
               asideLeft: true,
-              content: true
+              content: true,
+              prod: true
             }
           },
           {
@@ -274,7 +285,12 @@ const routes: RouteConfig[] = [
         components: {
           default: (): Promise<any> => import("pages/tickets/UserTicketsVacancy/UserVacancyPage.vue")
         },
-        meta: { toolbar: true, asideLeft: true, content: true },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          content: true,
+          prod: true
+        },
         children: [
           {
             path: ":id",
@@ -285,7 +301,8 @@ const routes: RouteConfig[] = [
             meta: {
               toolbar: true,
               asideLeft: true,
-              content: true
+              content: true,
+              prod: true
             }
           },
           {
@@ -297,7 +314,8 @@ const routes: RouteConfig[] = [
             meta: {
               toolbar: true,
               asideLeft: true,
-              content: true
+              content: true,
+              prod: true
             }
           }
         ]
@@ -307,7 +325,8 @@ const routes: RouteConfig[] = [
         name: "user-company",
         component: (): Promise<any> => import("pages/UserCompanyProfile.vue"),
         meta: {
-          toolbar: true
+          toolbar: true,
+          prod: true
         }
       },
       {
@@ -315,6 +334,9 @@ const routes: RouteConfig[] = [
         name: "user-bills",
         redirect: {
           name: "user-bills-apartments"
+        },
+        meta: {
+          prod: true
         },
         component: (): Promise<any> => import("pages/UserBills.vue"),
         children: [
@@ -342,6 +364,9 @@ const routes: RouteConfig[] = [
     name: "data",
     components: {
       default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+    },
+    meta: {
+      prod: true
     }
   },
   {
@@ -350,6 +375,9 @@ const routes: RouteConfig[] = [
     components: {
       default: (): Promise<any> => import("pages/maps/MapsService.vue"),
       asideLeft: (): Promise<any> => import("components/aside/AsideMaps.vue")
+    },
+    meta: {
+      prod: true
     },
     children: [
       {
@@ -455,7 +483,8 @@ const routes: RouteConfig[] = [
       asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
     },
     meta: {
-      toolbar: true
+      toolbar: true,
+      prod: true
     },
     children: [
       {
@@ -555,7 +584,8 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           asideServices: true,
-          toolbar: true
+          toolbar: true,
+          prod: true
         }
       },
       {
@@ -568,7 +598,8 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           asideServices: true,
-          toolbar: true
+          toolbar: true,
+          prod: true
         }
       },
       {
@@ -604,7 +635,8 @@ const routes: RouteConfig[] = [
         },
         meta: {
           asideServices: true,
-          toolbar: true
+          toolbar: true,
+          prod: true
         }
       },
       {
@@ -616,7 +648,8 @@ const routes: RouteConfig[] = [
         },
         meta: {
           asideServices: true,
-          toolbar: true
+          toolbar: true,
+          prod: true
         }
       },
       {
@@ -650,6 +683,9 @@ const routes: RouteConfig[] = [
     name: "users",
     components: {
       default: (): Promise<any> => import("pages/users/AdminUsers.vue")
+    },
+    meta: {
+      prod: true
     }
   },
   // Always leave this as last one,
@@ -659,6 +695,9 @@ const routes: RouteConfig[] = [
     name: "error-page",
     components: {
       default: (): Promise<any> => import("pages/Error404.vue")
+    },
+    meta: {
+      prod: true
     }
   }
 ];

@@ -31,7 +31,10 @@ export default route<Store<TRootState>>(function ({ store, Vue }) {
     Router.beforeEach((to, from, next) => {
       const isAuthenticated = store.getters.isAuthenticated;
 
-      if (to.name && to.name !== "main" && !to.name.startsWith("profile") && !isAuthenticated) {
+      if (
+        to.name && to.name !== "main" && !to.name.startsWith("profile") && !isAuthenticated ||
+        process.env.NODE_ENV === "production" && !to.meta.prod
+      ) {
         return next({ name: "main" });
       }
 
