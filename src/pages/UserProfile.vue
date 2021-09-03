@@ -104,10 +104,11 @@
                 :label="$t('user.profile.mainForm.phone')"
                 :rules="validatePhone"
               )
-              q-input(
+              q-input.telegram-input(
                 v-model="telegramAlias"
                 :label="$t('user.profile.mainForm.telegramAlias')"
                 :rules="validateTelegram"
+                prefix="@"
               )
           .col(v-else)
             h5.q-my-lg
@@ -119,10 +120,11 @@
               :label="$t('user.profile.mainForm.phone')"
               :rules="validatePhone"
             )
-            q-input(
+            q-input.telegram-input(
               v-model="telegramAlias"
               :label="$t('user.profile.mainForm.telegramAlias')"
               :rules="validateTelegram"
+              prefix="@"
             )
         .save-btn.flex.items-center.justify-end.q-mt-lg
           q-btn(
@@ -373,4 +375,7 @@
       display: none
     .avatar-uploadable__image
       object-fit: cover
+  .telegram-input
+    ::v-deep .q-field__prefix
+      padding-right: 0
 </style>
