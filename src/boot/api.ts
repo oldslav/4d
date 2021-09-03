@@ -25,7 +25,7 @@ import DesignService from "src/api/design";
 import { TourismService } from "src/api/services/tourism";
 import { LightService } from "src/api/services/light";
 import { WarehouseService } from "src/api/services/warehouse";
-import {BuildingsService} from "src/api/services/buildings";
+import { BuildingsService } from "src/api/services/buildings";
 
 declare module "vuex/types/index" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
