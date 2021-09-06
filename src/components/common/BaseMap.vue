@@ -99,6 +99,9 @@
         const vcViewer = this.$refs.vcViewer;
         const { Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode } = cesiumInstance.Cesium;
 
+        this.cesiumInstance = cesiumInstance;
+        this.$root.map = { componentInstance: this, cesiumInstance };
+
         this.SET_CESIUM({
           Cartesian3,
           Cartographic,
@@ -108,9 +111,6 @@
           HeightReference,
           SceneMode
         });
-
-        this.cesiumInstance = cesiumInstance;
-        this.$root.map = { componentInstance: this, cesiumInstance };
 
         const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
 
@@ -131,9 +131,6 @@
         document.getElementById("cesiumContainer").style.height = "";
 
         this.$emit("onViewerReady", vcViewer);
-
-        this.$root.map = { componentInstance: this, cesiumInstance };
-
         this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
       },
 
@@ -230,6 +227,10 @@
       // onMapMove () {
       //   this.$emit("on-map-move", this.$refs.vcViewer);
       // }
+    },
+    destroyed () {
+      this.SET_CESIUM(null);
+      this.$root.map = null;
     }
   };
 </script>

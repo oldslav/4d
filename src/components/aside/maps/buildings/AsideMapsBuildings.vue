@@ -11,15 +11,23 @@
       q-expansion-item(
         v-for="section in getMenu.subSections"
         :key="section.id"
-        :label="section | i18nName"
         :header-style="{ 'fontSize': '16px' }"
-        :value="visibleSection === section.id"
-        group="layers"
         @show="onShowSection(section.id)"
-        @hide="onHideSection(section.id)"
         switch-toggle-side
         expand-separator
       )
+        div.row.items-center.full-width(slot="header")
+          div.col {{ section | i18nName }}
+          div.col-auto(v-if="(section.id in getGeoJSON)")
+            q-btn(
+              @click.stop.prevent="toggleSectionVisibility(section.id)"
+              size="12px"
+              :icon="!sectionsVisibility[section.id] ? 'visibility_off' : 'visibility'"
+              flat
+              dense
+              round
+            )
+
         q-inner-loading(:showing="!(section.id in getGeoJSON)")
           q-spinner(size="36px" color="primary")
 
@@ -53,38 +61,48 @@
     SET_BUILDINGS_SECTION_GEOJSON,
     TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER
   } from "../../../../store/constants/action-constants";
-  import { SET_GEODATA } from "../../../../store/constants/mutation-constants";
   import AsideRouterView from "../../services/AsideRouterView";
 
   export default {
     name: "AsideMapsBuildings",
     components: { AsideRouterView },
-    async preFetch ({ store, currentRoute, redirect }){
-      const sectionId = currentRoute.query.section ? parseInt(currentRoute.query.section, 10) : null;
-
-      if (!sectionId) {
-        return;
-      }
-
-      const section = store.getters["maps/buildings/getMenu"].subSections.find(x => x.id === sectionId);
-
-      if (!section) {
-        return redirect("/404");
-      }
-
-      await store.dispatch(`maps/buildings/${ FETCH_BUILDINGS_SECTION_GEOJSON }`, section.id);
-      await store.dispatch(`maps/buildings/${ SET_BUILDINGS_SECTION_GEOJSON }`, section.id);
-    },
+    // async preFetch ({ store, currentRoute, redirect }){
+    //   const sectionId = currentRoute.query.section ? parseInt(currentRoute.query.section, 10) : null;
+    //
+    //   if (!sectionId) {
+    //     return;
+    //   }
+    //
+    //   const section = store.getters["maps/buildings/getMenu"].subSections.find(x => x.id === sectionId);
+    //
+    //   if (!section) {
+    //     return redirect("/404");
+    //   }
+    // },
     data (){
-      const { section } = this.$route.query;
-
       return {
-        visibleSection: section ? parseInt(section, 10) : null,
         disabledLayers: {}
       };
     },
     computed: {
-      ...mapGetters("maps/buildings", ["getMenu", "getGeoJSON"])
+      ...mapGetters("maps/buildings", ["getMenu", "getGeoJSON"]),
+      layersBySection (){
+        return this.getMenu.subSections.reduce((res, subSection) => {
+          res[subSection.id] = subSection.layers.map(x => x.id);
+          return res;
+        }, {});
+      },
+
+      sectionsVisibility (){
+        const { disabledLayers, layersBySection } = this;
+        const ids = Object.keys(layersBySection);
+
+        return ids.reduce((res, id) => {
+          const layersIds = layersBySection[id];
+          res[id] = !layersIds.every(x => disabledLayers[x]);
+          return res;
+        }, {});
+      }
     },
     methods: {
       ...mapActions("maps/buildings", {
@@ -93,24 +111,12 @@
         toggleVisibilityByLayer: TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER
       }),
       onShowSection (sectionId){
-        this.disabledLayers = {};
-        this.visibleSection = sectionId;
-
-        const route = Object.assign({}, this.$route,{ query: { section: sectionId } });
-
-        this.$router.replace(route).catch(() => {
-          // Do nothing
-        });
+        this.loadSectionGeoJSON(sectionId);
       },
 
       loadSectionGeoJSON (sectionId){
         if (sectionId) {
-          this.visibleSection = parseInt(sectionId, 10);
-          this.fetchSectionGeoJSON(sectionId).then(() => {
-            if (sectionId === this.visibleSection) {
-              this.setSectionGeoJSON(sectionId);
-            }
-          });
+          this.fetchSectionGeoJSON(sectionId);
         }
       },
 
@@ -118,21 +124,17 @@
         const visibility = !this.disabledLayers[layerId];
 
         this.$set(this.disabledLayers, layerId, visibility);
-        this.toggleVisibilityByLayer({ id: layerId, visibility: !visibility });
+        this.toggleVisibilityByLayer({ ids: [ layerId ], visibility: !visibility });
       },
 
-      onHideSection (id){
-        if (id === this.visibleSection) {
-          this.$store.commit(`services/${ SET_GEODATA }`, null);
-          const route = Object.assign({}, this.$route,{ query: { } });
-          this.$router.replace(route).catch(() => {
-            // Do nothing
-          });
-        }
+      toggleSectionVisibility (sectionId){
+        const visibility = !this.sectionsVisibility[sectionId];
+        const layerIds = this.layersBySection[sectionId];
+
+        layerIds.map(layerId => this.$set(this.disabledLayers, layerId, !visibility));
+
+        this.toggleVisibilityByLayer({ ids: layerIds, visibility });
       }
-    },
-    watch: {
-      "$route.query.section": "loadSectionGeoJSON"
     }
   };
 </script>
