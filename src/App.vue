@@ -86,6 +86,7 @@
         this.$router.afterEach(this.onRouteChangedDone.bind(this));
         this.mounted = true;
       });
+      console.log(process.env.NODE_ENV);
     },
     data () {
       return {
