@@ -11,6 +11,7 @@ const { configure } = require("quasar/wrappers");
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
+const NODE_ENV = process.env.NODE_ENV || "development";
 const API_HOST = process.env.API_HOST || "https://4d-dev.innopolis.university";
 
 module.exports = configure(function () {
@@ -118,7 +119,8 @@ module.exports = configure(function () {
       },
       env: {
         SERVER_API_HOST: API_HOST,
-        BROWSER_API_HOST: API_HOST
+        BROWSER_API_HOST: API_HOST,
+        ENV: NODE_ENV
       }
     },
 
