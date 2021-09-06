@@ -7,4 +7,4 @@ RUN npm install && npm run build
 
 EXPOSE 3000
 
-CMD ["pm2-runtime", "dist/ssr/index.js"]
+CMD ["pm2-runtime", "dist/ssr/index.js", "--env", "production"]
