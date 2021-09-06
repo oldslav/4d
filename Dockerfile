@@ -1,11 +1,9 @@
 FROM node:14.15.2-alpine as builder
 
-ENV NODE_ENV=development
-
 RUN npm install pm2 -g
 WORKDIR /app
 COPY . .
-RUN npm install && npm run build -d
+RUN npm install && npm run buildDev
 
 EXPOSE 3000
 
