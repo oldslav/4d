@@ -11,6 +11,8 @@ const { configure } = require("quasar/wrappers");
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
+const API_HOST = process.env.API_HOST || "https://4d-test.innopolis.university";
+
 module.exports = configure(function () {
   return {
     sourceMap: true,
@@ -115,8 +117,8 @@ module.exports = configure(function () {
         });
       },
       env: {
-        SERVER_API_HOST: "{{ENVIRONMENT}}",
-        BROWSER_API_HOST: "{{ENVIRONMENT}}"
+        SERVER_API_HOST: API_HOST,
+        BROWSER_API_HOST: API_HOST
       }
     },
 
@@ -128,11 +130,11 @@ module.exports = configure(function () {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "{{ENVIRONMENT}}",
+          target: API_HOST,
           changeOrigin: true
         },
         "/oauth": {
-          target: "{{ENVIRONMENT}}",
+          target: API_HOST,
           changeOrigin: true
         }
       }
