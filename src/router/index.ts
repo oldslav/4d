@@ -33,7 +33,7 @@ export default route<Store<TRootState>>(function ({ store, Vue }) {
 
       if (
         to.name && to.name !== "main" && !to.name.startsWith("profile") && !isAuthenticated ||
-        process.env.NODE_ENV === "production" && !to.meta.prod
+        process.env.ENV === "production" && !to.meta.prod
       ) {
         return next({ name: "main" });
       }
