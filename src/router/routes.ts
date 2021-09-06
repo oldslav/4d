@@ -376,9 +376,6 @@ const routes: RouteConfig[] = [
       default: (): Promise<any> => import("pages/maps/MapsService.vue"),
       asideLeft: (): Promise<any> => import("components/aside/AsideMaps.vue")
     },
-    meta: {
-      prod: true
-    },
     children: [
       {
         path: "buildings",
