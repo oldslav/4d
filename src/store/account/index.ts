@@ -116,9 +116,9 @@ const actions: ActionTree<IAccountState, TRootState> = {
 
     try {
       if (!state.accessTokenAwait) {
-       const accessTokenAwait = dispatch(FETCH_ACCESS_TOKEN);
-       commit("setAccessTokenAwait", accessTokenAwait);
-       await accessTokenAwait;
+        const accessTokenAwait = dispatch(FETCH_ACCESS_TOKEN);
+        commit("setAccessTokenAwait", accessTokenAwait);
+        await accessTokenAwait;
         commit("setAccessTokenAwait", null);
       } else {
         await state.accessTokenAwait;
@@ -147,7 +147,7 @@ const actions: ActionTree<IAccountState, TRootState> = {
   }
 };
 
-const getters: GetterTree<IAccountState, TRootState> = {
+const getters: GetterTree<any, TRootState> = {
   isAuthenticated (state: IAccountState) {
     return state.account !== null && state.account.id !== null;
   },
@@ -194,6 +194,34 @@ const getters: GetterTree<IAccountState, TRootState> = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return state.account.roles.some(role => role.name.startsWith("ROLE_ADMIN"));
+  },
+
+  isEmployeeParking (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_PARKING");
+  },
+  isEmployeeLiving (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_LIVING");
+  },
+  isEmployeeIdea (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_IDEA");
+  },
+  isEmployeeWarehouse (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_WAREHOUSE");
+  },
+  isEmployeeEmploymentCenter (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_EMPLOYMENT_CENTER");
+  },
+  isEmployeeLight (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_LIGHT");
+  },
+  isEmployeeTrees (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_TREES");
+  },
+  isEmployeeCommerce (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_COMMERCE");
+  },
+  isEmployeeCrowdfunding (state, getters) {
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_CROWDFUNDING");
   }
 };
 

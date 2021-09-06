@@ -51,7 +51,7 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-            q-stepper(
+            q-stepper.step-details(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
@@ -299,7 +299,5 @@
 
 <style lang="stylus">
 .step-details
-  background-color: #DEEFFE
-.q-stepper
   background-color: #DEEFFE
 </style>

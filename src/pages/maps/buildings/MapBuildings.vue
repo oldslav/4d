@@ -80,9 +80,9 @@
         }
       },
 
-      onChangeCesium (val) {
+      onChangeCesium () {
         if (this.$root.map) {
-          this.bindCesiumEvents(val);
+          this.$nextTick(() => this.bindCesiumEvents());
         }
       },
 
