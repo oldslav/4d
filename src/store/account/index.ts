@@ -153,7 +153,7 @@ const getters: GetterTree<any, TRootState> = {
   },
 
   isDev () {
-    return process.env.NODE_ENV === "development";
+    return process.env.ENV === "development";
   },
 
   getAccount (state: IAccountState) {
