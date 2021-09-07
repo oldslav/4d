@@ -250,7 +250,8 @@ const routes: RouteConfig[] = [
             meta: {
               toolbar: true,
               asideLeft: true,
-              content: true
+              content: true,
+              prod: true
             }
           },
           {
@@ -365,6 +366,9 @@ const routes: RouteConfig[] = [
     name: "data",
     components: {
       default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+    },
+    meta: {
+      prod: true
     }
   },
   {

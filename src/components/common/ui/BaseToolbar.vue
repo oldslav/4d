@@ -68,7 +68,7 @@
       };
     },
     computed: {
-      ...mapGetters(["getAccount", "isUserAdmin", "isAuthenticated"]),
+      ...mapGetters(["getAccount", "isUserAdmin", "isAuthenticated", "isDev"]),
 
       isMobile () {
         return this.$q.platform.is.mobile;
@@ -82,7 +82,8 @@
           },
           {
             name: "map",
-            label: this.$t("entity.maps.title")
+            label: this.$t("entity.maps.title"),
+            hide: !this.isDev
           },
           {
             name: "data",
