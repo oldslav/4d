@@ -55,7 +55,7 @@
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 1").q-pa-md
               div.text-body1.text-wrap
-                | Для подачи заявки продолжите заполнение формы.
+                | Для продолжения оформления отправьте заявку на рассмотрение.
               div.text-right
                 q-btn(color="primary" label="Отправить на рассмотрение" @click="sendOnApproval(props.row.id)")
             div.column(v-if="props.row.status.id === 2").q-pa-md
@@ -82,7 +82,7 @@
                 .col-6.text-body1
                   .full-width
                 .col-6.text-body1.text-wrap
-                  | Срок действия по вашей заявке истек.<br>
+                  | Срок действия договора по вашей заявке истек.<br>
                   | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
                   div.q-col-gutter-sm.q-mt-md
                     .text-primary-light
@@ -308,7 +308,5 @@
 
 <style lang="stylus">
 .step-details
-  background-color: #DEEFFE
-.q-stepper
   background-color: #DEEFFE
 </style>

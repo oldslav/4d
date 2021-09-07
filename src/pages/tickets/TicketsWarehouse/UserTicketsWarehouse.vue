@@ -58,7 +58,7 @@
                 .col-6.text-body1
                   .full-width
                 .col-6.text-body1.text-wrap
-                  | Срок действия по вашей заявке истек.<br>
+                  | Срок действия договора по вашей заявке истек.<br>
                   | Для уточнения информации свяжитесь с ответственным сотрудником фонда.
                   div.q-col-gutter-sm.q-mt-md
                     .text-primary-light
@@ -87,7 +87,7 @@
                     .flex.items-center.justify-between
                       div
                         | @Parking_Innopolis
-            q-stepper(
+            q-stepper.step-details(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
@@ -147,7 +147,7 @@
                         div
                           | 9:00 - 17:00
                       div
-                        | Если вы хотите отменить заявку, свяжитесь с сотрудниками “Фонда развития города Иннополис” по телефону +7xxxxxxxxxxxx или в телеграмме @алиас<br>
+                        | Если вы хотите отменить заявку, свяжитесь с сотрудниками “Фонда развития города Иннополис” по телефону +7 (937) 622-93-84 или в телеграмме @Parking_Innopolis<br>
                         | Фонд развития города Иннополис
                         div.text-body1.text-wrap
                           | Ваш договор готов к подписанию!
@@ -155,6 +155,7 @@
             ValidContractState(
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
+              :termination="contractTermination"
             ).q-pa-lg
     q-inner-loading(v-else showing)
     TicketWarehouseDetailsModal(:id.sync="currentId" v-model="isModalVisible" v-if="currentId")
@@ -236,6 +237,9 @@
       templatePath () {
         return "/uploads/templates/warehouse_contract_template.pdf";
       },
+      contractTermination () {
+        return "/uploads/templates/warehouse_contract_termination.pdf";
+      },
       isLoading () {
         return this.$store.state.wait[`user/tickets/warehouse/${ GET_USER_TICKETS_WAREHOUSE }`];
       }
@@ -288,7 +292,5 @@
 
 <style lang="stylus">
 .step-details
-  background-color: #DEEFFE
-.q-stepper
   background-color: #DEEFFE
 </style>

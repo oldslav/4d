@@ -3,6 +3,7 @@
 node_modules
 package-lock.json
 quasar.conf.js
+Dockerfile
 
 # Quasar core related directories
 .quasar

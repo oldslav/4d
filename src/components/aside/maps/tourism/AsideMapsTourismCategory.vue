@@ -21,7 +21,7 @@
 
 <script>
   import { mapGetters } from "vuex";
-  import AsideRouterView from "../services/AsideRouterView";
+  import AsideRouterView from "../../services/AsideRouterView";
 
   export default {
     name: "AsideMapsTourismCategory",

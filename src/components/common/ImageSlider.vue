@@ -2,7 +2,7 @@
   div.image-carousel(
     :class="{'image-carousel_clickable': fullscreen, 'image-carousel_dark': $q.dark.isActive, 'image-carousel_white': !$q.dark.isActive}"
   )
-    q-resize-observer(@resize="onResize")
+    q-resize-observer(ref="observer" @resize="onResize")
     div(:style="{ width: `${ width }px` }")
       div.image-carousel__container
           vue-slick-carousel(v-bind="getSettings")
@@ -30,7 +30,7 @@
       slidesToShow: { type: Number, default: 3 }
     },
     mounted () {
-      this.width = this.$el.clientWidth;
+      this.width = this.$refs.observer.size.width;
     },
     data () {
       return {
@@ -61,13 +61,16 @@
       },
 
       onResize (size) {
-        this.widt = size.width;
+        this.width = size.width;
       }
     }
   };
 </script>
 <style lang="stylus">
 @import "../../css/_colors.styl";
+
+//.image-carousel
+  //overflow hidden
 
 .image-carousel__container
   box-sizing: border-box

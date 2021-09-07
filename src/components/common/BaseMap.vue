@@ -98,10 +98,19 @@
       onReadyViewer (cesiumInstance) {
         const vcViewer = this.$refs.vcViewer;
         const { Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode } = cesiumInstance.Cesium;
-        this.SET_CESIUM({ Cartesian3, Cartographic, Color, Math, NearFarScalar, HeightReference, SceneMode });
 
         this.cesiumInstance = cesiumInstance;
         this.$root.map = { componentInstance: this, cesiumInstance };
+
+        this.SET_CESIUM({
+          Cartesian3,
+          Cartographic,
+          Color,
+          Math,
+          NearFarScalar,
+          HeightReference,
+          SceneMode
+        });
 
         const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
 
@@ -152,6 +161,7 @@
 
         this.$watch("clustering", this.onUpdateClustering, { immediate: true });
         this.$watch("data", this.onUpdateData, { immediate: true });
+        this.$watch("pickedFeatureId", this.onChangePickedFeatureId, { immediate: true });
         this.$emit("onDatasourceReady", vcViewer);
       },
 
@@ -176,8 +186,22 @@
       },
 
       onChangePickedFeatureId (val) {
+        const { datasource, viewer } = this.$refs.ds;
+
         if (val === null) {
-          this.$refs.vcViewer.viewer.selectedEntity = null;
+          viewer.selectedEntity = null;
+        } else {
+          const entity = datasource.entities.getById(val);
+          if (entity) {
+            viewer.flyTo(entity,{
+              offset: new Cesium.HeadingPitchRange(
+                viewer.camera.heading,
+                viewer.camera.pitch,
+                800.0
+              )
+            });
+          }
+          viewer.selectedEntity = entity;
         }
       }
     },
@@ -203,6 +227,10 @@
       // onMapMove () {
       //   this.$emit("on-map-move", this.$refs.vcViewer);
       // }
+    },
+    destroyed () {
+      this.SET_CESIUM(null);
+      this.$root.map = null;
     }
   };
 </script>

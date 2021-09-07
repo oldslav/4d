@@ -9,6 +9,7 @@
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:fix": "eslint --fix --ext .js,.ts,.vue ./",
     "dev": "quasar dev -m ssr",
+    "buildDev": "quasar dev -m ssr -d",
     "build": "quasar build -m ssr",
     "test": "echo \"No test specified\" && exit 0",
     "start": "node dist/ssr",

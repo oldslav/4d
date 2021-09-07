@@ -76,8 +76,8 @@
 <script>
   import { mapGetters } from "vuex";
   import url from "url";
-  import ImageSlider from "../../common/ImageSlider";
-  import { TourismGeoJSONEntities } from "../../../store/types/tourism";
+  import ImageSlider from "../../../common/ImageSlider";
+  import { TourismGeoJSONEntities } from "../../../../store/types/tourism";
 
   export default {
     name: "AsideMapsTourismEntity",

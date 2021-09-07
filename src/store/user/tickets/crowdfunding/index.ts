@@ -1,7 +1,7 @@
 import { ActionTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
-import { SET_USER_TICKETS, SET_USER_TICKET } from "src/store/constants/mutation-constants";
+import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
   GET_USER_TICKETS_CROWDFUNDING,
   GET_EMPLOYEE_TICKETS_CROWDFUNDING,
@@ -43,7 +43,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [ADD_USER_TICKET_CROWDFUNDING_COVER] (_, { id, cover }) {
     const payload = new FormData();
     payload.append("file", cover);
-    
+
     await this.service.user.tickets.addTicketCrowdfundingCover(id, payload);
   },
 

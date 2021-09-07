@@ -29,7 +29,7 @@
   export default {
     name: "AsideServices",
     computed: {
-      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS", "isEmployee"]),
+      ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS", "isEmployee", "isDev"]),
 
       meta () {
         return this.$route.meta;
@@ -41,31 +41,31 @@
             label: this.$t("entity.estate.title"),
             action: { name: "services-estate" },
             icon: "o_article",
-            show: this.isUserGIS
+            show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.transport"),
             action: { name: "services-transport" },
             icon: "o_directions_bus",
-            show: this.isUserGIS
+            show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.landscape"),
             action: { name: "services-landscape" },
             icon: "o_park",
-            show: this.isUserGIS
+            show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.lighting"),
             action: { name: "services-lighting" },
             icon: "o_lightbulb",
-            show: this.isUserGIS
+            show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.planning"),
             action: { name: "services-planning" },
             icon: "o_explore",
-            show: this.isUserGIS
+            show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.services.living.title"),
@@ -73,7 +73,7 @@
               name: "services-apartments"
             },
             icon: "o_person",
-            show: this.$route.query.requestId && this.isUserNature || this.isUserLegal
+            show: this.isDev && this.$route.query.requestId && this.isUserNature || this.isUserLegal
           },
           {
             label: this.$t("entity.services.commerce.title"),
@@ -81,7 +81,7 @@
               name: "services-commerce"
             },
             icon: "o_text_snippet",
-            show: this.isUserLegal
+            show: this.isDev && this.isUserLegal
           },
           {
             label: this.$t("entity.services.parking.title"),
@@ -105,7 +105,7 @@
               name: "services-ideas"
             },
             icon: "o_online_prediction",
-            show: this.isUserNature
+            show: this.isDev && this.isUserNature
           },
           {
             label: this.$t("entity.services.crowdfunding.title"),
@@ -113,7 +113,7 @@
               name: "services-crowdfunding"
             },
             icon: "o_groups",
-            show: this.isUserNature
+            show: this.isDev && this.isUserNature
           },
           {
             label: this.$t("entity.services.vacancies.title"),
@@ -121,7 +121,7 @@
               name: "services-vacancies"
             },
             icon: "work_outline",
-            show: this.isUserNature
+            show: this.isDev && this.isUserNature
           },
           {
             label: this.$t("entity.services.trees.title"),
@@ -129,7 +129,7 @@
               name: "services-trees"
             },
             icon: "o_park",
-            show: this.isEmployee
+            show: this.isDev && this.isEmployee
           },
           {
             label: this.$t("entity.lighting"),
@@ -137,7 +137,7 @@
               name: "services-light"
             },
             icon: "o_lightbulb",
-            show: this.isEmployee
+            show: this.isDev && this.isEmployee
           }
         ];
       }

@@ -126,7 +126,7 @@
   };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .q-expansion-item {
     .q-item {
       padding-left 0 !important
