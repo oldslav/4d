@@ -35,16 +35,18 @@ const actions: ActionTree<TRootState, TRootState> = {
   bundleFiles ({ rootGetters }, { files, asNew = false }) {
     const result: any = [];
     Object.entries(files).forEach(([key, val]: any) => {
-      val.forEach((file: any) => {
-        const passed = !file.id || asNew;
-        if (passed) {
-          const type = rootGetters["references/getDocTypeByName"](key);
-          const payload = new FormData();
-          payload.append("file", file);
-          payload.append("typeId", type.id);
-          result.push(payload);
-        }
-      });
+      if (!!val && val.length > 0) {
+        val.forEach((file: any) => {
+          const passed = !file.id || asNew;
+          if (passed) {
+            const type = rootGetters["references/getDocTypeByName"](key);
+            const payload = new FormData();
+            payload.append("file", file);
+            payload.append("typeId", type.id);
+            result.push(payload);
+          }
+        });
+      }
     });
     return Promise.resolve(result);
   },

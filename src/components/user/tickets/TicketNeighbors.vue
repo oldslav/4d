@@ -85,6 +85,9 @@
         default: () => []
       }
     },
+    created () {
+      this.model = cloneDeep(this.value);
+    },
     data () {
       return {
         model: [],

@@ -34,12 +34,20 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/services/apartments/employee/tickets", { params });
   }
 
-  public createTicketLiving (params: unknown): AxiosPromise<TicketsResponse> {
+  public createTicketLiving (params: unknown): AxiosPromise<any> {
     return this.api.post("/api/v1/services/apartments/user/tickets", params);
   }
 
   public updateTicketLiving (ticketId: number, params: unknown): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ ticketId }`, params);
+  }
+
+  public deleteNeighborLiving (ticketId: number, id: number): AxiosPromise<any> {
+    return this.api.delete(`/api/v1/services/apartments/user/tickets/${ ticketId }/neighbors/${ id }`);
+  }
+
+  public deleteFileLiving (ticketId: number, id: number): AxiosPromise<any> {
+    return this.api.delete(`/api/v1/services/apartments/user/tickets/${ ticketId }/file/${ id }`);
   }
 
   public createLegalTicketLiving (payload: unknown): AxiosPromise<any> {
@@ -58,8 +66,12 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/apartments/user/tickets/${ ticketId }/neighbors/${ id }/file`, file);
   }
 
-  public deleteTicketLiving (id: number): AxiosPromise<TicketsResponse> {
+  public cancelTicketLiving (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/apartments/user/tickets/${ id }/cancel`);
+  }
+
+  public deleteTicketLiving (id: number): AxiosPromise<any> {
+    return this.api.delete(`/api/v1/services/apartments/user/tickets/${ id }`);
   }
 
   public deleteTicketParking (id: number): AxiosPromise<TicketsResponse> {
