@@ -59,6 +59,8 @@
 
       transition(name="fade" mode="out-in")
         AuthModal(v-model="auth")
+    
+      MailConfirmedModal(v-model="showMailConfirmedModal" @show-auth="showAuthAfterConfirmation")
 </template>
 
 <script>
@@ -66,6 +68,7 @@
   import { mapActions, mapGetters } from "vuex";
   import AsideProfile from "./components/aside/AsideProfile";
   import AuthModal from "./components/auth/AuthModal";
+  import MailConfirmedModal from "./components/auth/MailConfirmedModal";
   import BaseToolbar from "./components/common/ui/BaseToolbar";
   import LoginForm from "./components/forms/auth/LoginForm";
   import { GET_REFERENCES } from "./store/constants/action-constants";
@@ -73,10 +76,13 @@
 
   export default {
     name: "App",
-    components: { AuthModal, LoginForm, AsideProfile, BaseToolbar },
+    components: { AuthModal, LoginForm, AsideProfile, BaseToolbar, MailConfirmedModal },
     created () {
       moment.locale(this.$i18n.locale);
-      this.auth = !this.isAuthenticated;
+      if (!this.isAuthenticated) {
+        this.checkForMailConfirmed();
+      }
+      if (!this.showMailConfirmedModal) this.auth = !this.isAuthenticated;
     },
     mounted () {
       this.$q.dark.set(this.$q.cookies.get("darkMode") === true);
@@ -90,7 +96,8 @@
     data () {
       return {
         auth: false,
-        isStartedLoading: false
+        isStartedLoading: false,
+        showMailConfirmedModal: false
       };
     },
     computed: {
@@ -168,6 +175,17 @@
       onRouteChangedDone () {
         this.$refs.progress.stop();
         this.isStartedLoading = false;
+      },
+
+      checkForMailConfirmed () {
+        if (this.$route.query.mailConfirmed === "true") {
+          this.showMailConfirmedModal = true;
+        }
+      },
+
+      showAuthAfterConfirmation () {
+        this.showMailConfirmedModal = false;
+        this.auth = true;
       }
     }
   };
