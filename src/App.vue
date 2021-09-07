@@ -86,9 +86,6 @@
         this.$router.afterEach(this.onRouteChangedDone.bind(this));
         this.mounted = true;
       });
-      console.log(process.env.ENV);
-      console.log(process.env.SERVER);
-      console.log(process.env.BROWSER);
     },
     data () {
       return {
