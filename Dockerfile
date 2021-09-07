@@ -5,10 +5,10 @@ ARG API_HOST
 ENV NODE_ENV=$NODE_ENV
 ENV API_HOST=$API_HOST
 
-RUN npm install -g pm2 @quasar/cli
+RUN npm install -g pm2
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm install && npm install --only=dev
 RUN npm run build
 
 EXPOSE 3000
