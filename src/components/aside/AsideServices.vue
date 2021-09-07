@@ -121,7 +121,7 @@
               name: "services-vacancies"
             },
             icon: "work_outline",
-            show: this.isDev && this.isUserNature
+            show: this.isUserNature
           },
           {
             label: this.$t("entity.services.trees.title"),
