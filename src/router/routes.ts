@@ -335,7 +335,7 @@ const routes: RouteConfig[] = [
         path: "bills",
         name: "user-bills",
         redirect: {
-          name: "user-bills-apartments"
+          name: "user-bills-parking"
         },
         meta: {
           prod: true
@@ -350,11 +350,17 @@ const routes: RouteConfig[] = [
           {
             path: "parking/:ticket?",
             name: "user-bills-parking",
+            meta: {
+              prod: true
+            },
             component: (): Promise<any> => import("pages/bills/UserBillsParking.vue")
           },
           {
             path: "warehouse/:ticket?",
             name: "user-bills-warehouse",
+            meta: {
+              prod: true
+            },
             component: (): Promise<any> => import("pages/bills/UserBillsWarehouse.vue")
           }
         ]
