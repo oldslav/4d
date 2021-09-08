@@ -34,7 +34,7 @@
         )
           FormName(v-model="name")
           q-input(v-model="jobPosition" :label="$t('common.position')")
-          MyDocumentsForm(is-local v-model="userDocuments")
+          MyDocumentsForm(is-local v-model="userDocuments" all-required)
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -91,6 +91,7 @@
         companyDocuments: {
           inn_jur: null,
           ogrn: null,
+          egrjul: null,
           partner_card: null
         },
         rooms: [],

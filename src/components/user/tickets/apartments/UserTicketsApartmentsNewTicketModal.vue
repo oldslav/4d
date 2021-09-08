@@ -139,16 +139,17 @@
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`] ||
           this.$store.state.wait[`user/documents/${ GET_USER_DOCUMENTS }`] ||
-          this.$store.state.wait[`user/tickets/living/${ REQUEST_APPROVAL_LIVING }`] ||
-          this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`];
+          this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`] ||
+          this.$store.state.wait[`user/tickets/living/${ UPDATE_TICKET }`];
       },
 
       isTicketCreating () {
-        return this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`];
+        return this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`] ||
+          this.$store.state.wait[`user/tickets/living/${ REQUEST_APPROVAL_LIVING }`];
       },
 
       isValid () {
-        return this.isUserInfo && this.isAdditionalInfo && this.familyDone && !this.ticketId;
+        return this.isUserInfo && this.isAdditionalInfo && this.familyDone;
       },
 
       isUserInfo () {
