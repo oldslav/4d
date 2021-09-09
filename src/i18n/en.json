@@ -918,7 +918,7 @@
       },
       "parking": "Parking rent",
       "crowdfunding": "City projects",
-      "vacancy": "Городские вакансии",
+      "vacancy": "City vacancies",
       "warehouse": "Warehouse rent",
       "responds": "Responses",
       "verifyRequests": "Verifying Companies",
@@ -953,6 +953,9 @@
         "buildingCommerce": "Organizations",
         "phone": "Phone",
         "link": "Site"
+      },
+      "security": {
+        "title": "City safety"
       }
     },
     "data": "Data",

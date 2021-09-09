@@ -13,7 +13,7 @@
           div.break-word.break-spaces {{ props.row.name }}
 
         q-td(key="legalAddress" :props="props")
-          div.break-word.break-spaces {{ props.row.legalAddress }}
+          div.break-word.break-spaces {{ props.row.realAddress }}
 
         q-td(key="created" :props="props")
           | {{ props.row.created | formatDate }}

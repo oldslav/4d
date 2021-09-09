@@ -39,6 +39,7 @@
   import { get } from "lodash";
   import { mapMutations, mapState } from "vuex";
   import { toDegrees } from "../../util/map";
+  import { createClusterMarkers } from "../../cesium/utils/cluster-markers";
   import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
   import MapLegalAgreement from "components/common/MapLegalAgreement";
 
@@ -157,12 +158,40 @@
         this.isLoading = false;
 
         datasource.clustering.pixelRange = 100;
-        datasource.clustering.minimumClusterSize = 5;
+        datasource.clustering.minimumClusterSize = 10;
+
+        this.createClustering(datasource);
 
         this.$watch("clustering", this.onUpdateClustering, { immediate: true });
         this.$watch("data", this.onUpdateData, { immediate: true });
         this.$watch("pickedFeatureId", this.onChangePickedFeatureId, { immediate: true });
         this.$emit("onDatasourceReady", vcViewer);
+      },
+
+      async createClustering (dataSource) {
+        const markers = await createClusterMarkers();
+        const sizes = Object.keys(markers)
+          .map(x => parseInt(x, 10))
+          .sort((a, b) => b - a);
+
+        dataSource.clustering.clusterEvent.addEventListener(
+          function (clusteredEntities, cluster) {
+            cluster.label.show = false;
+            cluster.billboard.show = true;
+            cluster.billboard.id = cluster.label.id;
+            cluster.billboard.size = 1;
+
+            for (const size of sizes) {
+              if (clusteredEntities.length >= size) {
+                const marker = markers[size];
+                cluster.billboard.width = marker.width;
+                cluster.billboard.height = marker.height;
+                cluster.billboard.image = marker.render(String(size));
+                break;
+              }
+            }
+          }
+        );
       },
 
       onUpdateClustering (val) {

@@ -13,7 +13,7 @@ declare interface Window {
 }
 
 declare interface IGeoJSONFeature {
-  properties:{
+  properties: {
     images?: string[] | string
   }
 }
@@ -55,12 +55,18 @@ declare interface ICesiumEntity {
     width: number;
   },
   billboard: {
-    size: number;
-    width: number;
-    height: number;
-    image: string | HTMLCanvasElement
-  }
-  label: ICesiumEntityLabel | null
+    size?: number;
+    width?: number;
+    height?: number;
+    image?: string | HTMLCanvasElement
+  } | null,
+  label: ICesiumEntityLabel | null,
+  point: {
+    show: boolean;
+    color: ICesiumEntityMaterial;
+    pixelSize: number;
+    outlineWidth: number;
+  } | null,
   entityCollection: {
     remove: (ICesiumEntity) => void
     add: (ICesiumEntity) => void
