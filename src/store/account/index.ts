@@ -152,6 +152,10 @@ const getters: GetterTree<any, TRootState> = {
     return state.account !== null && state.account.id !== null;
   },
 
+  isDev () {
+    return process.env.ENV === "development";
+  },
+
   getAccount (state: IAccountState) {
     return state.account;
   },
