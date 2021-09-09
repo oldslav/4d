@@ -32,10 +32,10 @@
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id === 2" @click="onCancel(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id !== 2" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
-                  q-item(clickable v-close-popup :disable="![9, 4, 1].includes(props.row.status.id)" @click="onDelete(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id !== 2" @click="onDelete(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("action.delete") }}
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")

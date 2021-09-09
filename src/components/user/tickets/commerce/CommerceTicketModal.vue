@@ -36,7 +36,8 @@
           .text-primary-light.text-body1.q-mb-md
             | Вид деятельности
           q-option-group(:options="options" v-model="pickedActivity")
-          q-input(v-model="otherActivity"
+          q-input(
+            v-model="otherActivity"
             dense
             outlined
             :rules="otherActive ? [(val) => !!val] : null"
@@ -57,13 +58,14 @@
 </template>
 
 <script>
+  import { cloneDeep } from "lodash";
   import { mapActions, mapGetters } from "vuex";
   import { isDocumentPresent } from "@/util/validators";
+  import { CREATE_COMMERCE_TICKET, GET_COMPANY } from "@/store/constants/action-constants";
   import BaseModal from "components/common/BaseModal";
   import FormName from "components/common/form/FormName";
   import MyDocumentsForm from "components/forms/documents/MyDocumentsForm";
   import FormContacts from "components/common/form/FormContacts";
-  import { CREATE_COMMERCE_TICKET } from "@/store/constants/action-constants";
 
   export default {
     name: "CommerceTicketModal",
@@ -77,6 +79,10 @@
         type: [Number, String],
         default: null
       }
+    },
+    async created () {
+      await this.GET_COMPANY();
+      Object.assign(this.documents, cloneDeep(this.getCompanyCard.documents));
     },
     data () {
       return {
@@ -104,6 +110,7 @@
     },
     computed: {
       ...mapGetters("services", ["getPickedFeatureId"]),
+      ...mapGetters("user/company", ["getCompanyCard"]),
       stepOneDone () {
         return !!this.name.first && !!this.companyName && this.jobPosition && Object.values(this.documents).every(isDocumentPresent);
       },
@@ -164,6 +171,7 @@
     },
     methods: {
       ...mapActions("user/tickets/commerce", [CREATE_COMMERCE_TICKET]),
+      ...mapActions("user/company", [GET_COMPANY]),
       toggleModal (value) {
         this.$emit("input", value);
         Object.assign(this.$data, this.$options.data.apply(this)); // default data
@@ -186,6 +194,11 @@
           .catch(() => {
             this.$emit("fail");
           });
+      }
+    },
+    watch: {
+      pickedActivity () {
+        this.otherActivity = "";
       }
     }
   };
