@@ -12,13 +12,14 @@
         v-for="section in getMenu.subSections"
         :key="section.id"
         :header-style="{ 'fontSize': '16px' }"
+        :ref="`section:${section.id}`"
         @show="onShowSection(section.id)"
         switch-toggle-side
         expand-separator
       )
         div.row.items-center.full-width(slot="header")
           div.col {{ section | i18nName }}
-          div.col-auto(v-if="(section.id in getGeoJSON)")
+          div.col-auto
             q-btn(
               @click.stop.prevent="toggleSectionVisibility(section.id)"
               size="12px"
@@ -66,6 +67,14 @@
   export default {
     name: "AsideMapsBuildings",
     components: { AsideRouterView },
+    created (){
+      this.disabledLayers = Object.values(this.layersBySection).reduce((res, layerIds) => {
+        for (const id of layerIds) {
+          res[id] = true;
+        }
+        return res;
+      }, {});
+    },
     data (){
       return {
         disabledLayers: {}
@@ -98,10 +107,15 @@
         toggleVisibilityByLayer: TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER
       }),
       onShowSection (sectionId){
-        this.loadSectionGeoJSON(sectionId);
+        return this.loadSectionGeoJSON(sectionId);
       },
 
       loadSectionGeoJSON (sectionId){
+        if (!(sectionId in this.getGeoJSON)) {
+          const layerIds = this.layersBySection[sectionId];
+          layerIds.map(layerId => this.$set(this.disabledLayers, layerId, false));
+        }
+
         if (sectionId) {
           this.fetchSectionGeoJSON(sectionId);
         }
@@ -116,11 +130,18 @@
 
       toggleSectionVisibility (sectionId){
         const visibility = !this.sectionsVisibility[sectionId];
-        const layerIds = this.layersBySection[sectionId];
 
+        if (visibility) {
+          const id = `section:${ sectionId }`;
+          this.$refs[id][0].show();
+        }
+
+        const layerIds = this.layersBySection[sectionId];
         layerIds.map(layerId => this.$set(this.disabledLayers, layerId, !visibility));
 
-        this.toggleVisibilityByLayer({ ids: layerIds, visibility });
+        if (sectionId in this.getGeoJSON) {
+          this.toggleVisibilityByLayer({ ids: layerIds, visibility });
+        }
       }
     }
   };
