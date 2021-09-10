@@ -417,6 +417,19 @@ const routes: RouteConfig[] = [
         ]
       },
       {
+        path: "security",
+        name: "map-security",
+        components: {
+          default: (): Promise<any> => import("pages/maps/security/MapSecurity.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/security/AsideMapsSecurity.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true
+        }
+      },
+      {
         path: "tourism",
         name: "map-tourism",
         components: {

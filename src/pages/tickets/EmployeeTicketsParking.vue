@@ -14,7 +14,7 @@
         q-tr(:props="props"  @click="expandRow(props)")
           q-td(key="fullname" :props="props")
             | {{props.row.name.full}}
-          q-td(key="parkingAddress" :props="props") 
+          q-td(key="parkingAddress" :props="props")
             | {{props.row.parkingPlace.address}}
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
@@ -25,7 +25,7 @@
           q-td(key="status" :props="props")
             ApartmentTicketStatus(:value="props.row.status.id")
           q-td(key="controls")
-            q-btn(flat icon="close" v-if="![9, 4].includes(props.row.status.id)" color="red" @click.stop="onTicketReject(props.row.id)")
+            q-btn(flat icon="close" v-if="props.row.status.id === 2" color="red" @click.stop="onTicketReject(props.row.id)")
             q-btn(flat icon="done" v-if="props.row.status.id === 2" color="primary" @click.stop="onTicketApprove(props.row.id)")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert" @click.stop)

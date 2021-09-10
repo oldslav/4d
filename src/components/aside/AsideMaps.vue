@@ -23,9 +23,12 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
+
   export default {
     name: "AsideMaps",
     computed: {
+      ...mapGetters(["isUserGIS", "isEmployee"]),
       meta () {
         return this.$route.meta;
       },
@@ -40,11 +43,15 @@
           },
           {
             label: this.$t("entity.maps.buildings.title"),
-            action: {
-              name: "map-buildings"
-            },
+            action: { name: "map-buildings" },
             icon: "o_domain",
             show: true
+          },
+          {
+            label: "Безопасность города",
+            action: { name: "map-security" },
+            icon: "o_lock",
+            show: this.isUserGIS || this.isEmployee
           }
         ];
       }
