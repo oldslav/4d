@@ -36,7 +36,7 @@
                       | {{ $t("user.tickets.actions.details") }}
 
 
-        q-tr.step-details(v-show="props.expand" :props="props")
+        q-tr.bg-blue(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
@@ -52,7 +52,7 @@
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
-            q-stepper.step-details(
+            q-stepper.bg-blue(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
@@ -303,8 +303,3 @@
     }
   };
 </script>
-
-<style lang="stylus" scoped>
-.step-details
-  background-color: #DEEFFE
-</style>
