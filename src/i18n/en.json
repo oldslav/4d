@@ -29,7 +29,9 @@
         "oops": "Упс! Произошла ошибка",
         "tryLater": "Пожалуйста, повторите попытку позже",
         "downloadFail": "Failed to download file",
-        "getTicketFail": "Ошибка при получении заявки"
+        "getTicketFail": "Ошибка при получении заявки",
+        "wrongPass": "Неверный пароль",
+        "wrongLogin": "Аккаунта не существует"
       }
     },
     "all": "Все",
