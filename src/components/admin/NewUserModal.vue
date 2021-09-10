@@ -8,7 +8,7 @@
       q-form(@submit="onSubmit")
         q-card-section
           q-input(v-model.trim="user.email" :label="$t('common.email')" :rules="validateEmail" lazy-rules dense)
-          q-input(v-model.trim="user.firstName" :label="$t('user.firstName')" :rules="requiredRule" lazy-rules dense)
+          q-input(v-model.trim="user.firstName" :label="$t('user.firstName')" :rules="validateName" lazy-rules dense)
           q-input(v-model.trim="user.password" :label="$t('user.password')" :rules="validatePassword" lazy-rules dense)
         q-card-section
           q-field(:value="roles" :rules="rolesPicked" borderless)
@@ -108,6 +108,13 @@
         return [
           ...this.requiredRule,
           val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val) || this.$t("common.error.validation.email")
+        ];
+      },
+
+      validateName () {
+        return [
+          ...this.requiredRule,
+          val => val && val.length > 0 && val.length < 50, val => val && /^[A-zА-яЁё '.-]*$/.test(val)
         ];
       },
 

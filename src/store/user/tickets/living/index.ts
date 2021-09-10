@@ -6,7 +6,7 @@ import {
   REQUEST_APPROVAL_LIVING,
   ADD_USER_TICKET_FILE_LIVING,
   CREATE_USER_TICKET_LIVING,
-  DELETE_USER_TICKET_LIVING,
+  CANCEL_USER_TICKET_LIVING,
   GET_USER_TICKETS_LIVING,
   GET_EMPLOYEE_TICKETS_LIVING,
   REJECT_TICKET_LIVING,
@@ -14,7 +14,7 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING, UPDATE_TICKET
+  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING, UPDATE_TICKET, DELETE_USER_TICKET_LIVING
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -58,7 +58,15 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_USER_TICKET] ({ commit, dispatch }, ticketId) {
     const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
     const { images, neighbors: ns, ...ticket } = data;
-    const documents = await dispatch("loadFiles", images, { root: true });
+    const documents = {
+      passport: [],
+      snils: [],
+      inn: [],
+      job: [],
+      job_petition: []
+    };
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
     const neighbors = await Promise.all(ns.map(async (n: any) => {
       const { images, ...neighbor } = n;
       const documents = await dispatch("loadFiles", images, { root: true });
@@ -98,22 +106,44 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     await this.service.user.tickets.viewedApartment(requestId, apartmentViewed);
   },
 
-  async [DELETE_USER_TICKET_LIVING] ({ dispatch }, payload) {
-    await this.service.user.tickets.deleteTicketLiving(payload);
+  async [CANCEL_USER_TICKET_LIVING] ({ dispatch }, payload) {
+    await this.service.user.tickets.cancelTicketLiving(payload);
 
     dispatch(GET_USER_TICKETS_LIVING);
   },
 
-  async [CREATE_USER_TICKET_LIVING] (_, payload) {
-    const { data } = await this.service.user.tickets.createTicketLiving(payload);
-
-    return data;
+  async [DELETE_USER_TICKET_LIVING] (_, id) {
+    await this.service.user.tickets.deleteTicketLiving(id);
   },
 
-  async [UPDATE_TICKET] (_, { ticketId, payload }) {
-    const { data } = await this.service.user.tickets.updateTicketLiving(ticketId, payload);
+  async [CREATE_USER_TICKET_LIVING] ({ dispatch }, payload) {
+    const { neighbors, documents, ...rest } = payload;
+    const { data: { id } } = await this.service.user.tickets.createTicketLiving(rest);
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
+    await Promise.all(neighbors.map((n: any) => dispatch(ADD_USER_TICKET_NEIGHBOR, { ticketId: id, payload: n })));
+    return id;
+  },
 
-    return data;
+  async [UPDATE_TICKET] ({ getters, dispatch }, { ticketId, payload }) {
+    const { neighbors, documents, ...rest } = payload;
+    const { neighbors: oldNeighbors, documents: oldDocuments } = getters.getCurrentTicket;
+    const filesIds: number[] = Object.values(oldDocuments).reduce((res: number[], val: any) => {
+      const ids = val.map((v: any) => v.id);
+      res.push(...ids);
+      return res;
+    }, []);
+    const neighborsIds: number[] = oldNeighbors.map((val: any) => val.id);
+    // console.log(filesIds, neighborsIds);
+    await Promise.all(filesIds.map((id: number) => this.service.user.tickets.deleteFileLiving(ticketId, id)));
+    await Promise.all(neighborsIds.map((id: number) => this.service.user.tickets.deleteNeighborLiving(ticketId, id)));
+    // update ticket
+    await this.service.user.tickets.updateTicketLiving(ticketId, rest);
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id: ticketId, payload: f })));
+    await Promise.all(neighbors.map((n: any) => dispatch(ADD_USER_TICKET_NEIGHBOR, { ticketId, payload: n })));
+
+    return ticketId;
   },
 
   async [CREATE_LEGAL_TICKET_LIVING] ({ dispatch }, payload) {

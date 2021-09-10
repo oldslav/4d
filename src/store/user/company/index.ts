@@ -83,7 +83,7 @@ const actions: ActionTree<ICompanyState, TRootState> = {
     const { images, ...cardPayload } = companyCard;
     const documents: any = {
       partner_card: [],
-      inn: [],
+      inn_jur: [],
       ogrn: [],
       egrjul: []
     };

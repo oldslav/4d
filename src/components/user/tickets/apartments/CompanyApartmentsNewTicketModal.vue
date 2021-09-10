@@ -3,6 +3,7 @@
     :value="value"
     position="standard"
     @input="toggleModal"
+    :loading="isLoading"
   )
     q-card.full-width
       q-stepper(
@@ -34,7 +35,7 @@
         )
           FormName(v-model="name")
           q-input(v-model="jobPosition" :label="$t('common.position')")
-          MyDocumentsForm(is-local v-model="userDocuments")
+          MyDocumentsForm(is-local v-model="userDocuments" all-required)
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -54,8 +55,9 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
-  import { CREATE_LEGAL_TICKET_LIVING } from "@/store/constants/action-constants";
+  import { cloneDeep } from "lodash";
+  import { mapActions, mapGetters } from "vuex";
+  import { CREATE_LEGAL_TICKET_LIVING, GET_COMPANY } from "@/store/constants/action-constants";
   import { isDocumentPresent } from "@/util/validators";
   import BaseModal from "components/common/BaseModal";
   import FormName from "components/common/form/FormName";
@@ -70,6 +72,10 @@
         type: Boolean,
         default: false
       }
+    },
+    async created () {
+      await this.GET_COMPANY();
+      Object.assign(this.companyDocuments, cloneDeep(this.getCompanyCard.documents));
     },
     data () {
       return {
@@ -91,6 +97,7 @@
         companyDocuments: {
           inn_jur: null,
           ogrn: null,
+          egrjul: null,
           partner_card: null
         },
         rooms: [],
@@ -100,6 +107,7 @@
       };
     },
     computed: {
+      ...mapGetters("user/company", ["getCompanyCard"]),
       stepTwoDone () {
         return !!this.name.first && !!this.jobPosition && Object.values(this.userDocuments).every(isDocumentPresent);
       },
@@ -113,10 +121,14 @@
       },
       formValid () {
         return this.stepOneDone && this.stepTwoDone && this.stepThreeDone;
+      },
+      isLoading () {
+        return this.$store.state.wait[`user/company/${ GET_COMPANY }`];
       }
     },
     methods: {
       ...mapActions("user/tickets/living", [CREATE_LEGAL_TICKET_LIVING]),
+      ...mapActions("user/company", [GET_COMPANY]),
       toggleModal (val) {
         this.$emit("input", val);
         Object.assign(this.$data, this.$options.data.apply(this));
