@@ -19,12 +19,15 @@ interface IExtendedPlaceOptions {
 
 const setEntityImage = (entity: ICesiumEntity, image: string | HTMLCanvasElement) => {
   updateEntity(entity, () => {
+    entity.billboard = entity.billboard || {};
     entity.billboard.image = image;
   });
 };
 
 
 export const renderExtendedPlace = (entity: ICesiumEntity, { radius, label, image }: IExtendedPlaceOptions): void => {
+  entity.billboard = entity.billboard || {};
+
   entity.billboard.size = 1;
   entity.billboard.width = radius * 2;
   entity.billboard.height = radius * 2;
@@ -57,6 +60,7 @@ export const renderExtendedPlace = (entity: ICesiumEntity, { radius, label, imag
 };
 
 export const renderPlace = (entity: ICesiumEntity, { label, background }: IPlaceOptions): void => {
+  entity.billboard = entity.billboard || {};
   entity.billboard.size = 1;
   entity.billboard.width = 20;
   entity.billboard.height = 20;

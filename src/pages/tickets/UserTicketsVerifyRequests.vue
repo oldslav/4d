@@ -41,6 +41,8 @@
     verification-request-details(
       v-model="visibleDetails"
       :request="detailedRequest"
+      @request:reject="onRejectRequest"
+      @request:approve="onApproveRequest"
     )
 </template>
 
