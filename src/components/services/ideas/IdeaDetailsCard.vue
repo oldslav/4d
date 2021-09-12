@@ -53,7 +53,7 @@
     components: { ImageSlider, BaseStatus },
     props: {
       id: {
-        type: Number,
+        type: [String, Number],
         required: true,
         default: null
       }

@@ -60,17 +60,6 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(UPDATE_PAGINATION, { rowsNumber: data.count });
   },
 
-  async [GET_DATA] ({ state, commit }) {
-    const { data } = await this.service.services.ideas.getIdeas({
-      ...state.filters,
-      limit: state.pagination.limit,
-      offset: state.pagination.offset - 1
-    });
-
-    commit(SET_DATA, data);
-    commit(UPDATE_PAGINATION, { rowsNumber: data.count });
-  },
-
   async [CREATE_IDEA] (_, payload) {
     const { data } = await this.service.services.ideas.createIdea(payload);
 

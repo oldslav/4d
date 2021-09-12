@@ -99,31 +99,41 @@ const actions: ActionTree<GeoState, TRootState> = {
     commit(SET_GEODATA, preparedData);
   },
 
-  async [GET_IDEAS_GEO] ({ state, commit }) {
-    const { data } = await this.service.services.ideas.getIdeas({
-      limit: 1000,
-      offset: 0
-    });
+  async [GET_IDEAS_GEO] ({ commit }) {
+    // const { data } = await this.service.services.ideas.getIdeas({
+    //   limit: 1000,
+    //   offset: 0
+    // });
+    //
+    // type Colors = {
+    //   [key in string | number]: any;
+    // };
+    //
+    // const colors: Colors = {
+    //   1: "#84D197",
+    //   2: "#FF6565"
+    // };
+    //
+    // const preparedData = {
+    //   data: data.items.map((item: any) => ({
+    //     show: true,
+    //     position: state.cesiumInstance.Cartesian3.fromDegrees(item.geometry.x, item.geometry.y, 0),
+    //     color: colors[item.type.id],
+    //     scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
+    //     heightReference: state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
+    //     ...item
+    //   })),
+    //   type: "pointPrimitive"
+    // };
 
-    type Colors = {
-      [key in string | number]: any;
-    };
-
-    const colors: Colors = {
-      1: "#84D197",
-      2: "#FF6565"
-    };
+    const { data: { type, features } } = await this.service.services.ideas.getIdeasGeo();
 
     const preparedData = {
-      data: data.items.map((item: any) => ({
-        show: true,
-        position: state.cesiumInstance.Cartesian3.fromDegrees(item.geometry.x, item.geometry.y, 0),
-        color: colors[item.type.id],
-        scaleByDistance: new state.cesiumInstance.NearFarScalar(1, 5, 3000, 1),
-        heightReference: state.cesiumInstance.HeightReference.RELATIVE_TO_GROUND,
-        ...item
-      })),
-      type: "pointPrimitive"
+      data: {
+        type,
+        features
+      },
+      type: "geoJson"
     };
 
     commit(SET_GEODATA, preparedData);

@@ -2,7 +2,7 @@
   .q-pa-lg(style="height: calc(100vh - 50px)")
     .col-12.column.justify-between.full-height(v-if="componentInstance")
       .row
-        IdeaDetailsCard(v-if="featureId" :id="featureId")
+        IdeaDetailsCard(v-if="fzz" :id="fzz")
         q-inner-loading(:showing="isLoading")
       .text-center
         q-btn(color="primary" label="Создать заявку" @click="setDrawType('pointPrimitive')")
@@ -37,6 +37,10 @@
         cesiumInstance: state => state.cesiumInstance,
         isDraw: state => state.isDraw
       }),
+
+      fzz () {
+        return this.featureId || this.$route.query.id;
+      },
 
       isLoading () {
         return this.$store.state.wait[`services/ideas/${ GET_DATA }`];
@@ -96,7 +100,14 @@
       },
 
       async featureId (val) {
-        if (val) await this.GET_DATA(val);
+        if (val) {
+          if (val !== this.$route.query.id) {
+            await this.$router.replace({ name: "services-ideas", query: { id: val } });
+          }
+          await this.GET_DATA(val);
+        } else if (this.$route.query.id) {
+          await this.$router.replace({ name: "services-ideas", query: { } });
+        }
       }
     }
   };

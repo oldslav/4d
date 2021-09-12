@@ -26,10 +26,9 @@
           :showDrawTip="false"
         )
         vc-collection-primitive-point(
+          ref="pointPrimitiveCollection"
           v-if="data && data.type === 'pointPrimitive'"
           :points="data.data"
-          @click="pointClicked"
-          @clickout="pointClickedOut"
         )
     MapLegalAgreement.z-fab.absolute-bottom-right.text-right(:style="{maxWidth: '50%'}")
 </template>
@@ -86,14 +85,35 @@
 
       pointClicked ({ pickedFeature }) {
         if (pickedFeature.id !== this.pickedFeatureId) {
-          pickedFeature.primitive.pixelSize = pickedFeature.primitive.pixelSize + 5;
+          let coords;
+          if (pickedFeature.primitive) {
+            pickedFeature.primitive.pixelSize += 5;
+            coords = pickedFeature.primitive._actualPosition;
+          } else {
+            pickedFeature.pixelSize += 5;
+            coords = pickedFeature._actualPosition;
+          }
+
           this.entitySelected(pickedFeature);
+          this.flyTo({ coords });
         }
       },
 
       pointClickedOut ({ pickedFeature }) {
-        pickedFeature.primitive.pixelSize = pickedFeature.primitive.pixelSize - 5;
+        if (pickedFeature.primitive) {
+          pickedFeature.primitive.pixelSize -= 5;
+        } else {
+          pickedFeature.pixelSize -= 5;
+        }
+
         this.entitySelected(null);
+      },
+
+      flyTo ({ cesiumInstance = this.cesiumInstance, coords }) {
+        cesiumInstance.viewer.scene.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, { ...coords }), 1000),
+          maximumHeight: 5000
+        });
       },
 
       onReadyViewer (cesiumInstance) {
@@ -115,13 +135,7 @@
 
         const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
 
-        cesiumInstance.viewer.scene.camera.flyTo({
-          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, innoCoords), 1000),
-          orientation: {
-            pitch: Cesium.Math.toRadians(-55)
-          },
-          maximumHeight: 5000
-        });
+        this.flyTo({ coords: innoCoords });
 
         cesiumInstance.viewer.scene.requestRenderMode = true;
         cesiumInstance.viewer.scene.skyBox.show = false;
@@ -210,7 +224,14 @@
 
         datasource.load(data).then((ds) => {
           render(ds.entities.values);
-          viewer.zoomTo(cesiumObject);
+
+          const pickedId = this.$route.query.id;
+
+          if (pickedId) {
+            this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
+          } else {
+            viewer.zoomTo(cesiumObject);
+          }
         });
       },
 
@@ -235,6 +256,26 @@
       }
     },
     watch: {
+      // data: {
+      //   immediate: true,
+      //   deep: true,
+      //   handler (data) {
+      //     if (this.$route.query.id && data) {
+      //       (() => {
+      //         const self = this;
+      //         return new Promise(function (resolve) {
+      //           (function waitForFoo () {
+      //             if (self.$refs.pointPrimitiveCollection && self.$root.map) return resolve();
+      //             setTimeout(waitForFoo, 30);
+      //           })();
+      //         });
+      //       })().then(() => {
+      //         const pickedFeature = this.$refs.pointPrimitiveCollection.cesiumObject._pointPrimitives.find(i => i.id === +this.$route.query.id);
+      //         this.pointClicked({ pickedFeature });
+      //       });
+      //     }
+      //   }
+      // },
       pointCoords (val) {
         if (!val) {
           this.$refs.handlerPoint.clear();
