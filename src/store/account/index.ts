@@ -134,8 +134,6 @@ const actions: ActionTree<IAccountState, TRootState> = {
     const refreshToken = this.$cookies.get(REFRESH_TOKEN_COOKIE);
     const accessToken = this.$cookies.get(ACCESS_TOKEN_COOKIE);
 
-    console.log(refreshToken, accessToken);
-
     if (!accessToken && refreshToken) {
       const payload = formUrlEncoded({
         refresh_token: refreshToken,
