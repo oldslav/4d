@@ -627,10 +627,12 @@ const routes: RouteConfig[] = [
         path: "ideas",
         name: "services-ideas",
         components: {
-          default: (): Promise<any> => import("pages/services/ServiceIdeas.vue")
+          default: (): Promise<any> => import("pages/services/ServiceIdeas.vue"),
+          asideServices: (): Promise<any> => import("components/aside/services/AsideServicesIdeas.vue")
         },
         meta: {
           map: true,
+          asideServices: true,
           toolbar: true
         }
       },
