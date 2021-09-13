@@ -5,13 +5,13 @@
     h3.text-subtitle
       | {{ $t("common.login.subtitle") }}
     q-form(@submit="onSubmit").q-gutter-y-md
-      q-input(
+      BaseInput(
         v-model="form.username"
         :label="$t('entity.email')"
         @input="resetErrors()"
         :error="loginError"
       )
-      q-input(
+      BaseInput(
         v-model="form.password"
         :label="$t('entity.password')"
         :type="isPasswordVisible ? 'text' : 'password'"
