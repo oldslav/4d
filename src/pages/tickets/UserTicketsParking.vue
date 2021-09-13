@@ -44,9 +44,9 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-        q-tr.step-details(v-show="props.expand" :props="props")
+        q-tr.bg-blue(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
-            q-stepper.step-details(
+            q-stepper.bg-blue(
               ref="stepper"
               :value="props.row.status.id"
               color="primary"
@@ -369,8 +369,3 @@
     }
   };
 </script>
-
-<style lang="stylus" scoped>
-.step-details
-  background-color: #DEEFFE
-</style>
