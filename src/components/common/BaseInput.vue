@@ -3,6 +3,7 @@
     ref="input"
     v-model="computedValue"
     color="primary"
+    :error="error"
     :dense="dense"
     :autogrow="autogrow"
     :counter="counter"
@@ -30,6 +31,10 @@
   export default {
     name: "BaseInput",
     props: {
+      error: {
+        type: Boolean,
+        default: false
+      },
       prepend: {
         type: Boolean,
         default: null
