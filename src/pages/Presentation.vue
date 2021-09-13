@@ -22,7 +22,7 @@
             q-btn.btn(
               v-if="!isLastStep"
               color="primary"
-              :label="$t('common.welcomePresentation.nextSlideBtn')" 
+              :label="$t('common.welcomePresentation.nextSlideBtn')"
               flat
               @click="$refs.stepper.next()"
             )
@@ -181,7 +181,7 @@
     .btn
       font-size: 1rem
       max-height: 100%
-  
+
   @media (max-width: $breakpoint-sm-max)
     .title
       font-size: 1.2rem
@@ -205,10 +205,11 @@
       width: 100%
       height: 100%
   .img
-    max-height: 60vh
+    max-height: 480px !important
+    object-fit contain
   ::v-deep .q-stepper__step-inner
     padding: 0px
-    
+
   @media only screen and (max-width: $breakpoint-md-max)
     ::v-deep .q-stepper__tab
       padding: .6rem
