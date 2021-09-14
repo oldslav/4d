@@ -2,7 +2,7 @@
   BaseModal(
     :value="value"
     position="standard"
-    @input="toggleModal"
+    @input="onInput"
     :loading="isLoading"
   )
     q-card.full-width
@@ -49,17 +49,16 @@
 
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
-            q-btn(@click="createLivingTicket" color="primary" :label="$t('action.create')" :disable="!isValid" :loading="isTicketCreating")
+            q-btn(@click="onSubmit()" color="primary" :label="$t('action.create')" :disable="!isValid" :loading="isTicketCreating")
 </template>
 
 <script>
+  import { cloneDeep } from "lodash";
   import { mapActions, mapGetters, mapState } from "vuex";
   import {
-    ADD_USER_TICKET_FILE_LIVING,
-    ADD_USER_TICKET_NEIGHBOR,
     CREATE_USER_TICKET_LIVING,
     GET_USER_DOCUMENTS,
-    GET_USER_TICKET
+    GET_USER_TICKET, REQUEST_APPROVAL_LIVING, UPDATE_TICKET
   } from "@/store/constants/action-constants";
   import { isDocumentPresent } from "@/util/validators";
   import TicketNeighbors from "components/user/tickets/TicketNeighbors";
@@ -84,15 +83,23 @@
       }
     },
     async created () {
+      await this.GET_USER_DOCUMENTS();
       if (this.ticketId) {
         await this.GET_USER_TICKET(this.ticketId);
-        Object.keys(this.documents).forEach(type => {
-          if (this.stateDocuments[type]) {
-            this.documents[type] = this.stateDocuments[type];
-          }
-        });
+        const { name, neighbors, documents, contacts, rooms } = this.getCurrentTicket;
+        Object.assign(this.$data, cloneDeep({
+          name,
+          neighbors,
+          documents,
+          contacts,
+          rooms
+        }));
+        // Object.keys(this.documents).forEach(type => {
+        //   if (this.stateDocuments[type]) {
+        //     this.documents[type] = this.stateDocuments[type];
+        //   }
+        // });
       } else {
-        await this.GET_USER_DOCUMENTS();
         Object.keys(this.documents).forEach(type => {
           if (this.getDocuments[type]) {
             this.documents[type] = this.getDocuments[type];
@@ -124,21 +131,25 @@
     },
     computed: {
       ...mapGetters("user/documents", ["getDocuments"]),
+      ...mapGetters("user/tickets/living", ["getCurrentTicket"]),
       ...mapState("user/tickets/living", {
         stateDocuments: state => state.current.documents
       }),
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`] ||
-          this.$store.state.wait[`user/documents/${ GET_USER_DOCUMENTS }`];
+          this.$store.state.wait[`user/documents/${ GET_USER_DOCUMENTS }`] ||
+          this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`] ||
+          this.$store.state.wait[`user/tickets/living/${ UPDATE_TICKET }`];
       },
 
       isTicketCreating () {
-        return this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`];
+        return this.$store.state.wait[`user/tickets/living/${ CREATE_USER_TICKET_LIVING }`] ||
+          this.$store.state.wait[`user/tickets/living/${ REQUEST_APPROVAL_LIVING }`];
       },
 
       isValid () {
-        return this.isUserInfo && this.isAdditionalInfo && this.familyDone && !this.ticketId;
+        return this.isUserInfo && this.isAdditionalInfo && this.familyDone;
       },
 
       isUserInfo () {
@@ -162,10 +173,10 @@
     },
     methods: {
       ...mapActions("user/tickets/living", {
-        createUserTicket: CREATE_USER_TICKET_LIVING,
-        addUserTicketFile: ADD_USER_TICKET_FILE_LIVING,
+        CREATE_USER_TICKET_LIVING,
         GET_USER_TICKET,
-        ADD_USER_TICKET_NEIGHBOR
+        REQUEST_APPROVAL_LIVING,
+        UPDATE_TICKET
       }),
       ...mapActions("user/documents", [
         GET_USER_DOCUMENTS
@@ -176,71 +187,65 @@
         this.$emit("input", false);
       },
 
+      onInput (value) {
+        this.$q.dialog({
+          message: "Сохранить введённые данные?",
+          persistent: true,
+          ok: "Сохранить",
+          cancel: "Отменить"
+        })
+          .onOk(async () => {
+            await this.submitLivingTicket();
+            this.closeModal();
+          })
+          .onCancel(() => {
+            this.toggleModal(value);
+          });
+      },
+
       toggleModal (value) {
         this.$emit("input", value);
       },
 
-      async createLivingTicket () {
+      async onSubmit () {
+        const id = await this.submitLivingTicket();
+        await this.REQUEST_APPROVAL_LIVING(id);
+        this.closeModal();
+      },
+
+      async submitLivingTicket () {
+        const payload = {
+          name: this.name,
+          contacts: this.contacts,
+          rooms: this.rooms,
+          documents: this.documents,
+          neighbors: this.neighbors
+        };
+
+        const action = !!this.ticketId ? this.updateLivingTicket : this.createLivingTicket;
+
         try {
-          const payload = {
-            name: this.name,
-            contacts: this.contacts,
-            rooms: this.rooms
-          };
-          const { id } = await this.createUserTicket(payload);
-          await this.addFiles(id);
-          await this.addNeighbors(id);
+          const id = await action.call(this, payload);
           this.$q.notify({
             type: "positive",
             message: this.$t("user.tickets.messages.create.success.title")
           });
+          return id;
         } catch (e) {
           this.$q.notify({
             type: "negative",
             message: e
           });
         }
-        this.closeModal();
       },
 
-      async addNeighbors (id) {
-        await Promise.all(this.neighbors.map(async n => {
-          await this.ADD_USER_TICKET_NEIGHBOR({ ticketId: id, payload: n });
-        }));
+      createLivingTicket (payload) {
+        return this.CREATE_USER_TICKET_LIVING(payload);
       },
 
-      async addFiles (id) {
-        const items = [
-          ...this.documents.passport.map(file => ({
-            file,
-            typeId: 1
-          })),
-          ...this.documents.inn.map(file => ({
-            file,
-            typeId: 2
-          })),
-          ...this.documents.snils.map(file => ({
-            file,
-            typeId: 13
-          })),
-          ...this.documents.job.map(file => ({
-            file,
-            typeId: 3
-          })),
-          ...this.documents.job_petition.map(file => ({
-            file,
-            typeId: 10
-          }))
-        ];
-
-        await Promise.all(items.map(async item => {
-          const payload = new FormData();
-
-          await payload.append("file", item.file);
-          await payload.append("typeId", item.typeId);
-
-          await this.addUserTicketFile({ id, payload });
-        }));
+      updateLivingTicket (payload) {
+        const { ticketId } = this;
+        return this.UPDATE_TICKET({ ticketId, payload });
       }
     }
   };

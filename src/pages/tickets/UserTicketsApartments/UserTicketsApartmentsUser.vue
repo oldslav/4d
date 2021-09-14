@@ -16,7 +16,7 @@
             icon="add"
             outline
             color="primary"
-            @click="isModalVisible = true"
+            @click="onCreateTicket"
             :label="$t('user.tickets.actions.create')"
           )
         component(
@@ -41,9 +41,12 @@
             q-btn(flat round dense icon="more_vert" @click.stop)
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id > 3" @click="onCancel(props.row.id)")
+                  q-item(clickable v-close-popup v-if="props.row.status.id < 3" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("user.tickets.actions.cancel") }}
+                  q-item(clickable v-close-popup v-if="props.row.status.id === 1" @click="onDelete(props.row.id)")
+                    q-item-section(no-wrap).text-red
+                      | {{ $t("action.delete") }}
                   q-item(clickable v-close-popup v-if="props.row.status.id === 1" @click="onEdit(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.edit") }}
@@ -51,7 +54,7 @@
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
 
-        q-tr.step-details(v-show="props.expand" :props="props")
+        q-tr.bg-blue(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 1").q-pa-md
               div.text-body1.text-wrap
@@ -110,7 +113,7 @@
                       | Телеграм
                     .flex.items-center.justify-between
                       div
-                        | @innoRentHome 
+                        | @innoRentHome
     ApartmentsTicketDetailsModal(v-model="isDetailsVisible" v-if="currentId" :id.sync="currentId")
 </template>
 
@@ -119,9 +122,10 @@
   import { mapActions, mapGetters } from "vuex";
   import {
     REQUEST_APPROVAL_LIVING,
-    DELETE_USER_TICKET_LIVING,
+    CANCEL_USER_TICKET_LIVING,
     GET_USER_TICKETS_LIVING,
-    UPDATE_TICKET_APARTMENT_VIEWED
+    UPDATE_TICKET_APARTMENT_VIEWED,
+    DELETE_USER_TICKET_LIVING
   } from "@/store/constants/action-constants";
   import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import { mapFields } from "@/plugins/mapFields";
@@ -219,10 +223,16 @@
     methods: {
       ...mapActions("user/tickets/living", {
         GET_USER_TICKETS_LIVING,
-        deleteUserTicket: DELETE_USER_TICKET_LIVING,
+        cancelUserTicket: CANCEL_USER_TICKET_LIVING,
         requestApproval: REQUEST_APPROVAL_LIVING,
-        setApartmentViewed: UPDATE_TICKET_APARTMENT_VIEWED
+        setApartmentViewed: UPDATE_TICKET_APARTMENT_VIEWED,
+        DELETE_USER_TICKET_LIVING
       }),
+
+      onCreateTicket () {
+        this.currentRow = null;
+        this.isModalVisible = true;
+      },
 
       toApartments (requestId) {
         this.$router.push({
@@ -280,7 +290,7 @@
       },
 
       cancelTicket (id) {
-        return this.deleteUserTicket(id)
+        return this.cancelUserTicket(id)
           .then(() => {
             this.$q.notify({
               type: "positive",
@@ -301,12 +311,24 @@
 
       goToPayment (id) {
         this.$router.push({ name: "user-bills-apartments", params: { ticket: id } });
+      },
+
+      onDelete (id) {
+        return this.DELETE_USER_TICKET_LIVING(id)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: "Заявка удалена"
+            });
+            this.GET_USER_TICKETS_LIVING();
+          })
+          .catch(() => {
+            this.$q.notify({
+              type: "negative",
+              message: "При удалении заявки произошла ошибка"
+            });
+          });
       }
     }
   };
 </script>
-
-<style lang="stylus">
-.step-details
-  background-color: #DEEFFE
-</style>

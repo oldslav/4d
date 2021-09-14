@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-stepper.step-details(
+    q-stepper.bg-blue(
       :value="stepsValue"
       color="primary"
       flat
@@ -144,8 +144,3 @@
     }
   };
 </script>
-
-<style lang="stylus">
-.step-details
-  background-color: #DEEFFE
-</style>

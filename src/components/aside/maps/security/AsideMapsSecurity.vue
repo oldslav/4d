@@ -1,5 +1,5 @@
 <template lang="pug">
-  aside-router-view(name="asideBuildings")
+  aside-router-view(name="asideSecurity")
     q-list
       q-item.q-py-lg.text-subtitle(clickable :to="{ name: 'map' }")
         q-item-section.list-item-avatar(avatar)
@@ -8,18 +8,18 @@
           | {{ getMenu | i18nName }}
       q-separator
 
-      q-expansion-item(
+      q-expansion-item.security-aside-expansion-item(
         v-for="section in getMenu.subSections"
         :key="section.id"
         :header-style="{ 'fontSize': '16px' }"
-        :ref="`section:${section.id}`"
-        @show="onShowSection(section.id)"
+        :disable="hasOneSection"
+        default-opened
         switch-toggle-side
         expand-separator
       )
         div.row.items-center.full-width(slot="header")
           div.col {{ section | i18nName }}
-          div.col-auto
+          div.col-auto(v-if="canDisplaySectionVisible")
             q-btn(
               @click.stop.prevent="toggleSectionVisibility(section.id)"
               size="12px"
@@ -29,11 +29,8 @@
               round
             )
 
-        q-inner-loading(:showing="!(section.id in getGeoJSON)")
-          q-spinner(size="36px" color="primary")
-
         q-list(
-          :class="{'layer__list_invisible': !(section.id in getGeoJSON), 'layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
+          :class="{'security-layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
         )
           q-item(
             v-for="layer in section.layers"
@@ -41,7 +38,7 @@
             clickable
           )
             q-item-section(avatar)
-              span.layer__color(:style="{ backgroundColor: layer.color }")
+              span.security-layer__color(:style="{ backgroundColor: layer.color }")
             q-item-section
               | {{ layer | i18nName }}
 
@@ -56,32 +53,26 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from "vuex";
-  import {
-    FETCH_BUILDINGS_SECTION_GEOJSON,
-    SET_BUILDINGS_SECTION_GEOJSON,
-    TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER
-  } from "../../../../store/constants/action-constants";
+  import { mapGetters, mapActions } from "vuex";
   import AsideRouterView from "../../services/AsideRouterView";
+  import { SET_SECURITY_LAYERS_VISIBILITY } from "../../../../store/constants/mutation-constants";
 
   export default {
-    name: "AsideMapsBuildings",
+    name: "AsideMapsSecurity",
     components: { AsideRouterView },
-    created (){
-      this.disabledLayers = Object.values(this.layersBySection).reduce((res, layerIds) => {
-        for (const id of layerIds) {
-          res[id] = true;
-        }
-        return res;
-      }, {});
-    },
     data (){
       return {
         disabledLayers: {}
       };
     },
     computed: {
-      ...mapGetters("maps/buildings", ["getMenu", "getGeoJSON"]),
+      ...mapGetters("maps/security", ["getMenu"]),
+      canDisplaySectionVisible () {
+        return this.getMenu.subSections.length > 1;
+      },
+      hasOneSection () {
+        return this.getMenu.subSections.length === 1;
+      },
       layersBySection (){
         return this.getMenu.subSections.reduce((res, subSection) => {
           res[subSection.id] = subSection.layers.map(x => x.id);
@@ -101,61 +92,41 @@
       }
     },
     methods: {
-      ...mapActions("maps/buildings", {
-        fetchSectionGeoJSON: FETCH_BUILDINGS_SECTION_GEOJSON,
-        setSectionGeoJSON: SET_BUILDINGS_SECTION_GEOJSON,
-        toggleVisibilityByLayer: TOGGLE_BUILDINGS_VISIBILITY_BY_LAYER
+      ...mapActions("maps/security", {
+        setSecurityLayersVisibility: SET_SECURITY_LAYERS_VISIBILITY
       }),
-      onShowSection (sectionId){
-        return this.loadSectionGeoJSON(sectionId);
-      },
+      toggleSectionVisibility (sectionId) {
+        const visibility = !this.sectionsVisibility[sectionId];
+        const layerIds = this.layersBySection[sectionId];
 
-      loadSectionGeoJSON (sectionId){
-        if (!(sectionId in this.getGeoJSON)) {
-          const layerIds = this.layersBySection[sectionId];
-          layerIds.map(layerId => this.$set(this.disabledLayers, layerId, false));
-        }
+        layerIds.map(layerId => this.$set(this.disabledLayers, layerId, !visibility));
 
-        if (sectionId) {
-          this.fetchSectionGeoJSON(sectionId);
-        }
+        this.setSecurityLayersVisibility({ ids: layerIds, visibility });
       },
 
       toggleLayerVisibility (layerId) {
         const visibility = !this.disabledLayers[layerId];
-
         this.$set(this.disabledLayers, layerId, visibility);
-        this.toggleVisibilityByLayer({ ids: [ layerId ], visibility: !visibility });
-      },
 
-      toggleSectionVisibility (sectionId){
-        const visibility = !this.sectionsVisibility[sectionId];
-
-        if (visibility) {
-          const id = `section:${ sectionId }`;
-          this.$refs[id][0].show();
-        }
-
-        const layerIds = this.layersBySection[sectionId];
-        layerIds.map(layerId => this.$set(this.disabledLayers, layerId, !visibility));
-
-        if (sectionId in this.getGeoJSON) {
-          this.toggleVisibilityByLayer({ ids: layerIds, visibility });
-        }
+        this.setSecurityLayersVisibility({ ids: [ layerId ], visibility: !visibility });
       }
     }
   };
 </script>
-<style lang="stylus" scoped>
-.layer__list
+<style lang="stylus">
+.security-layer__list
   background: #F5F9FE;
 
-.layer__color
+.security-layer__color
   width 14px
   height 14px
   border-radius: 100%;
   margin-left 6px
 
-.layer__list_invisible
+.security-layer__list_invisible
   visibility hidden
+
+.security-aside-expansion-item .q-item.disabled,
+.security-aside-expansion-item .q-item.disabled *
+  cursor default !important
 </style>
