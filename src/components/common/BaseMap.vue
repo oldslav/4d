@@ -225,7 +225,7 @@
         datasource.load(data).then((ds) => {
           for (let i = 0; i < ds.entities.values.length; i++) {
             let entity = ds.entities.values[i];
-            entity.billboard.image = entity.properties.image;
+            Object.assign(entity.billboard, entity.properties);
           }
 
           render(ds.entities.values);

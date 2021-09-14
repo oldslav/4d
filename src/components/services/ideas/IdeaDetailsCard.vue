@@ -88,7 +88,7 @@
       ]),
 
       getPercentage (total, partial) {
-        return (100 * partial / total) || 0;
+        return 100 * partial / total || 0;
       },
 
       async likeIdea () {
