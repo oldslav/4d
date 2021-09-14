@@ -25,18 +25,24 @@
     q-card-section
       div(v-if="current.status.id === 6")
         span.text-grey-6 Голосование
-        div(v-if="Object.keys(current.votes).length")
-          .column.items-start
-            q-btn(icon="o_thumb_up" color="green-4" flat label="Нравится идея" padding="xs" @click="vote(1)")
-            q-btn(icon="o_thumb_down" color="red-11" flat label="Не нравится идея" padding="xs" @click="vote(2)")
-            q-btn(icon="sentiment_neutral" flat label="Затрудняюсь с ответом" padding="xs" @click="vote(3)")
-        div(v-else)
-          .column.items-start
-            q-btn(icon="o_thumb_up" color="green-4" flat label="Нравится идея" padding="xs" @click="vote(1)")
-            q-btn(icon="o_thumb_down" color="red-11" flat label="Не нравится идея" padding="xs" @click="vote(2)")
-            q-btn(icon="sentiment_neutral" flat label="Затрудняюсь с ответом" padding="xs" @click="vote(3)")
+        .column.items-start
+          q-item.q-px-none.full-width
+            q-item-section.items-start.text-green-4
+              q-btn(:disable="Boolean(current.votes.votedOptionId)" icon="o_thumb_up" flat label="Нравится идея" padding="xs" @click="vote(1)")
+            q-item-section(side).text-green-4
+              | {{ getPercentage(current.votes.amount, current.votes.byOption["1"]) }}% ({{ current.votes.byOption["1"] || 0 }})
+          q-item.q-px-none.full-width
+            q-item-section.items-start.text-red-11
+              q-btn(:disable="Boolean(current.votes.votedOptionId)" icon="o_thumb_down" color="red-11" flat label="Не нравится идея" padding="xs" @click="vote(2)")
+            q-item-section(side).text-red-11
+              | {{ getPercentage(current.votes.amount, current.votes.byOption["2"]) }}% ({{ current.votes.byOption["2"] || 0 }})
+          q-item.q-px-none.full-width
+            q-item-section.items-start
+              q-btn(:disable="Boolean(current.votes.votedOptionId)" icon="sentiment_neutral" flat label="Затрудняюсь с ответом" padding="xs" @click="vote(3)")
+            q-item-section(side)
+              | {{ getPercentage(current.votes.amount, current.votes.byOption["3"]) }}% ({{ current.votes.byOption["3"] || 0 }})
     q-card-actions.row
-      q-btn(v-if="current.currentUserLike" color="pink-12" icon="favorite" flat :label="current.likes.amount" @click="likeIdea" dense padding="xs")
+      q-btn(v-if="current.likes.isLiked" color="pink-12" icon="favorite" flat :label="current.likes.amount" @click="likeIdea" dense padding="xs")
       q-btn(v-else icon="favorite_border" flat :label="current.likes.amount " @click="likeIdea" dense padding="xs")
       q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs" disable)
     q-inner-loading(:showing="isLoading")
@@ -80,6 +86,10 @@
         UPDATE_VOTE,
         GET_REFERENCES
       ]),
+
+      getPercentage (total, partial) {
+        return 100 * partial / total || 0;
+      },
 
       async likeIdea () {
         await this.UPDATE_LIKE(this.id);

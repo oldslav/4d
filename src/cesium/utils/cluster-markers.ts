@@ -4,7 +4,7 @@ interface IClusterMarker {
   height: number;
 }
 
-const renderMarker = (text: string, image: HTMLImageElement): HTMLCanvasElement => {
+const renderMarker = (text: string, image: HTMLImageElement, options: Record<string, any>): HTMLCanvasElement => {
   const width = image.naturalWidth;
   const height = image.naturalHeight;
   const canvas = document.createElement("canvas");
@@ -22,13 +22,17 @@ const renderMarker = (text: string, image: HTMLImageElement): HTMLCanvasElement 
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
+
+    if (options) {
+      ctx.fillStyle = options.isDark ? "white" : "black";
+    }
     ctx.fillText(text, centerX, centerY + 2);
   }
 
   return canvas;
 };
 
-export const createClusterMarkers = async (): Promise<Record<string, IClusterMarker>> => {
+export const createClusterMarkers = async (options: Record<string, any>): Promise<Record<string, IClusterMarker>> => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const context = require.context("@/assets/clustering", true, /\.png/);
@@ -52,7 +56,7 @@ export const createClusterMarkers = async (): Promise<Record<string, IClusterMar
     const size = sizes[i];
 
     res[size] = {
-      render: (text) => renderMarker(text, image),
+      render: (text) => renderMarker(text, image, options),
       width: image.naturalWidth,
       height: image.naturalHeight
     };

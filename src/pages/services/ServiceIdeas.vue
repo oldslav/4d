@@ -4,8 +4,8 @@
       .row
         IdeaDetailsCard(v-if="fzz" :id="fzz")
         q-inner-loading(:showing="isLoading")
-      .text-center
-        q-btn(color="primary" label="Создать заявку" @click="setDrawType('pointPrimitive')")
+      //.text-center
+      //  q-btn(color="primary" label="Создать заявку" @click="setDrawType('pointPrimitive')")
     NewIdeaModal(v-if="pointCoords" v-model="pointCoords" @created="onIdeaCreated")
 </template>
 
