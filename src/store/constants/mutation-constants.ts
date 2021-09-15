@@ -30,6 +30,7 @@ export const SET_USER = "SET_USER";
 export const SET_EMPTY = "SET_EMPTY";
 export const SET_INSTANCE = "SET_INSTANCE";
 export const SET_DATA = "SET_DATA";
+export const UPDATE_DATA = "UPDATE_DATA";
 export const SET_CURRENT = "SET_CURRENT";
 export const SET_DETAILS = "SET_DETAILS";
 export const SET_DETAILS_EMPTY = "SET_DETAILS_EMPTY";

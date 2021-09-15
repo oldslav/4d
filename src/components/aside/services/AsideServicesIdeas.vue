@@ -1,24 +1,56 @@
 <template lang="pug">
   div(v-if="cesiumInstance").q-pa-lg.full-height.column
-    q-list.column.col.q-pb-md
-      q-virtual-scroll(
-        :items="features"
-        separator
-      )
-        template(v-slot="{ item, index }")
-          q-item(clickable :key="index" @click="selectFeature(item.id)")
+    //.row.q-gutter-sm(v-if="references")
+    //  BaseSelect(
+    //    clearable
+    //    v-model="statusId"
+    //    :options="references.crowdSourcingStatuses"
+    //    label="Статус"
+    //    optionKey="id"
+    //    optionValue="description"
+    //  ).col-12
+    //  BaseSelect(
+    //    clearable
+    //    v-model="typeId"
+    //    :options="references.crowdSourcingTypes"
+    //    label="Тип"
+    //    optionKey="id"
+    //    optionValue="description"
+    //  ).col-12
+    q-list(ref="infScrollContainer" style="overflow: auto;").column.col.q-my-md
+      q-infinite-scroll(
+        :offset="50"
+        :debounce="400"
+        @load="getData"
+        :scroll-target="$refs.infScrollContainer"
+      ).full-height
+        q-item(clickable v-for="(item, index) in features" :key="index" @click="selectFeature(item.id)").q-px-none
+          q-item-section
             q-item-label
               | {{ item.title }}
+            q-item-label(caption)
+              .row
+                span {{ moment(item.created).format("DD.MM.YYYY") }}
+                template(v-if="item.likes")
+                  span.q-mx-sm |
+                  q-icon(name="favorite" size="11px").q-mr-xs
+                  span {{ item.likes.count }}
+        q-inner-loading(:showing="isLoading" color="primary")
     div
       q-btn(color="primary" label="Отметить на карте" @click="componentInstance.toggle('handlerPoint')").full-width
 </template>
 
 <script>
-  import { mapMutations, mapState } from "vuex";
-  import { SET_FEATURE_ID } from "../../../store/constants/mutation-constants";
+  import { mapActions, mapMutations, mapState } from "vuex";
+  import { SET_FEATURE_ID, UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import { GET_DATA } from "../../../store/constants/action-constants";
+  import { mapFields } from "../../../plugins/mapFields";
+  import BaseSelect from "../../common/BaseSelect";
+  import moment from "moment";
 
   export default {
     name: "AsideServicesIdeas",
+    components: { BaseSelect },
     data () {
       return {
         componentInstance: null
@@ -26,21 +58,60 @@
     },
     computed: {
       ...mapState("services", {
-        cesiumInstance: state => state.cesiumInstance,
-        geoJson: state => state.geoJson
+        cesiumInstance: state => state.cesiumInstance
+      }),
+
+      ...mapState("services/ideas", {
+        data: state => state.data,
+        filters: state => state.filters,
+        references: state => state.references
+      }),
+
+      ...mapFields("services/ideas", {
+        fields: ["limit", "offset"],
+        base: "pagination",
+        mutation: UPDATE_PAGINATION
+      }),
+
+      ...mapFields("services/ideas", {
+        fields: ["statusId", "typeId"],
+        base: "filters",
+        mutation: UPDATE_FILTERS
       }),
 
       features () {
-        return this.geoJson && this.geoJson.data.features.map(({ id, properties: { title } }) => ({
-          id,
-          title
-        }));
+        return this.data && this.data.items;
+      },
+
+      isLoading () {
+        return this.$store.state.wait[`services/ideas/${ GET_DATA }`];
       }
     },
     methods: {
+      moment,
+
       ...mapMutations("services", [
         SET_FEATURE_ID
       ]),
+
+      ...mapMutations("services/ideas", [
+        UPDATE_PAGINATION,
+        UPDATE_FILTERS
+      ]),
+
+      ...mapActions("services/ideas", {
+        GET_DATA
+      }),
+
+      async getData (i, done) {
+        if (this.data) {
+          if (this.offset * this.limit + i > this.data.count) return false;
+          else this.offset = i;
+        }
+
+        await this.GET_DATA();
+        done();
+      },
 
       selectFeature (id) {
         this.SET_FEATURE_ID(id);
@@ -53,6 +124,13 @@
           if (value) {
             this.componentInstance = this.$root.map.componentInstance;
           }
+        }
+      },
+
+      filters: {
+        deep: true,
+        async handler () {
+          await this.GET_DATA(true);
         }
       }
     }
