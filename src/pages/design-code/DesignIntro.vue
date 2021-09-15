@@ -10,7 +10,7 @@
             | Дизайн-код - это свод принципов и правил, направленных на создание стилистически единой, комфортной и безопасной городской среды.
     .row.q-pa-xl.bg-white.design-intro__sections.items-center
       .col-12.col-md-6.items-center.justify-center.flex
-        img.design-intro__sections-image(src="@/assets/svg/benches.svg")
+        img.design-intro__sections-image(:src="benchesImg")
       .col-12.col-md-6
         .column
           .design-intro__subtitle.q-mb-md
@@ -64,6 +64,12 @@
   export default {
     name: "DesignIntro",
     computed: {
+      isDarkMode () {
+        return this.$q.dark.isActive;
+      },
+      benchesImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/benches-dark.svg") : require("@/assets/svg/light/benches.svg");
+      },
       timeline () {
         return [
           {
