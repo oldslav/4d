@@ -1,7 +1,7 @@
 <template lang="pug">
   q-card(v-if="current").bg-white.modal-container__dense.full-width
     q-card-section
-      h6.q-my-auto {{ current.title }}
+      h6.q-my-auto.ellipsis {{ current.title }}
         span.float-right
       q-separator.q-my-sm
     div(v-if="current.images.length").q-px-sm
@@ -93,7 +93,7 @@
 
       async likeIdea () {
         await this.UPDATE_LIKE(this.id);
-        await this.GET_CURRENT(this.id);
+        setTimeout(await this.GET_CURRENT(this.id), 100);
       },
 
       vote (answerId) {
