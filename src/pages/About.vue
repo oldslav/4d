@@ -2,7 +2,7 @@
   .about.full-width.full-height.bg-white
     .about__model.row.q-py-xl.q-px-md.q-px-md-xl
       .col-12.col-md-6.flex.items-center.justify-center
-        img.about__model-image(src="@/assets/svg/lady-tablet.svg")
+        img.about__model-image(:src="ladyImg")
       .col-12.col-md-6.flex.justify-center.items-center.q-mt-sm-lg
         div
           h2.about__header.q-mb-md
@@ -10,7 +10,7 @@
           .about__caption-large
             | {{$t("entity.about.model.caption")}}
     .about__inno.bg-blue.row.q-py-xl.q-col-gutter-lg.q-px-md.q-px-md-xl
-      img.about__inno-image(src="@/assets/svg/noon.svg")
+      img.about__inno-image(:src="noonImg")
       .col-12.col-md-6.flex.items-center.justify-center.z-fab
         div
           h2.about__header.text-primary
@@ -26,7 +26,7 @@
               | {{ stat.caption }}
             q-separator(v-if="index < innoInfo.length - 1").q-mt-lg
     .about__sections.relative-position.q-py-xl.q-px-md.q-px-md-xl
-      img.about__sections-blob.rotate-180(src="@/assets/svg/blob.svg")
+      img.about__sections-blob.rotate-180(:src="blobImg")
       h2.about__header.z-fab
         | {{$t("entity.about.sections.title")}}
       .about__cards.z-fab
@@ -36,8 +36,8 @@
             .about__caption-medium.text-weight-bold
               | {{ card.title }}
     .about__services.relative-position.q-py-xl.q-px-md.q-px-md-xl
-      img.about__services-blob(src="@/assets/svg/blob.svg")
-      img.about__services-image(src="@/assets/svg/big-tablet.svg")
+      img.about__services-blob(:src="blobImg")
+      img.about__services-image(:src="bigTabletImg")
       h2.about__header.z-fab
         | {{$t("entity.about.service.title")}}
       .about__caption-medium.q-mb-md
@@ -60,6 +60,21 @@
   export default {
     name: "About",
     computed: {
+      isDarkMode () {
+        return this.$q.dark.isActive;
+      },
+      ladyImg () {
+        return this.isDarkMode ? require("assets/svg/dark/lady-tablet-dark.svg") : require("@/assets/svg/light/lady-tablet.svg");
+      },
+      noonImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/noon-dark.svg") : require("@/assets/svg/light/noon.svg");
+      },
+      blobImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/blob-dark.svg") : require("@/assets/svg/light/blob.svg");
+      },
+      bigTabletImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/big-tablet-dark.svg") : require("@/assets/svg/light/big-tablet.svg");
+      },
       innoInfo () {
         return [
           {
@@ -80,52 +95,52 @@
         return [
           {
             title: this.$t("entity.estate.title"),
-            image: require("@/assets/svg/building.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/building-dark.svg") : require("@/assets/svg/light/building.svg"),
             name: ""
           },
           {
             title: this.$t("entity.transport"),
-            image: require("@/assets/svg/two-wheels.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/two-wheels-dark.svg") : require("@/assets/svg/light/two-wheels.svg"),
             name: ""
           },
           {
             title: this.$t("entity.landscape"),
-            image: require("@/assets/svg/benches.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/benches-dark.svg") : require("@/assets/svg/light/benches.svg"),
             name: ""
           },
           {
             title: this.$t("entity.lighting"),
-            image: require("@/assets/svg/lights.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/city-lights-dark.svg") : require("@/assets/svg/light/city-lights.svg"),
             name: ""
           },
           {
             title: this.$t("entity.tourism"),
-            image: require("@/assets/svg/hike.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/hike-dark.svg") : require("@/assets/svg/light/hike.svg"),
             name: ""
           },
           {
             title: this.$t("entity.ideas"),
-            image: require("@/assets/svg/lady-tag.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/lady-tag-dark.svg") : require("@/assets/svg/light/lady-tag.svg"),
             name: ""
           },
           {
             title: this.$t("entity.planning"),
-            image: require("@/assets/svg/big-phone.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/big-phone-dark.svg") : require("@/assets/svg/light/big-phone.svg"),
             name: ""
           },
           {
             title: this.$t("entity.engineering"),
-            image: require("@/assets/svg/chart.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/chart-dark.svg") : require("@/assets/svg/light/chart.svg"),
             name: ""
           },
           {
             title: this.$t("entity.environment"),
-            image: require("@/assets/svg/bushes.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/bushes-dark.svg") : require("@/assets/svg/light/bushes.svg"),
             name: ""
           },
           {
             title: this.$t("entity.safety"),
-            image: require("@/assets/svg/city-lock.svg"),
+            image: this.isDarkMode ? require("@/assets/svg/dark/city-lock-dark.svg") : require("@/assets/svg/light/city-lock.svg"),
             name: ""
           }
         ];

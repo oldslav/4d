@@ -6,8 +6,8 @@
         span.q-px-sm.text-blue.verify-company-card__link(@click="onClickSendRequest")
           | {{ $t('user.verifyCompany.requestCard.action') }}
     div.verify-company-card__image.flex-break.flex.items-center.justify-center
-      img(v-if="!$q.dark.isActive" src="@/assets/svg/welcome/5.svg")
-      img(v-if="$q.dark.isActive" src="@/assets/svg/welcome/5-dark.svg")
+      img(v-if="!$q.dark.isActive" src="@/assets/svg/light/rain.svg")
+      img(v-if="$q.dark.isActive" src="@/assets/svg/dark/rain-dark.svg")
 </template>
 <script>
   export default {

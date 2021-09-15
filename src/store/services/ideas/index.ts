@@ -2,7 +2,7 @@ import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import {
   SET_CURRENT,
   SET_DATA,
-  SET_EMPTY, SET_REFERENCES, UPDATE_FILTERS,
+  SET_EMPTY, SET_REFERENCES, UPDATE_DATA, UPDATE_FILTERS,
   UPDATE_PAGINATION
 } from "src/store/constants/mutation-constants";
 import { TRootState } from "src/store/types/root";
@@ -40,6 +40,12 @@ const mutations: MutationTree<IUserTicketsState> = {
   [SET_DATA]: (state, payload) => state.data = payload,
   [SET_CURRENT]: (state, payload) => state.current = payload,
   [SET_REFERENCES]: (state, payload) => state.references = payload,
+  [UPDATE_DATA]: (state, payload) => {
+    if (state.data) {
+      state.data.items = [...state.data.items, ...payload.items];
+      state.data.count = payload.count;
+    }
+  },
   [UPDATE_PAGINATION] (state, pagination) {
     state.pagination = { ...state.pagination, ...pagination };
   },
@@ -49,14 +55,16 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
-  async [GET_DATA] ({ state, commit }) {
+  async [GET_DATA] ({ state, commit }, isSet = false) {
     const { data } = await this.service.services.ideas.getIdeas({
       ...state.filters,
       limit: state.pagination.limit,
       offset: state.pagination.offset - 1
     });
 
-    commit(SET_DATA, data);
+    if (isSet || !state.data) commit(SET_DATA, data);
+    else commit(UPDATE_DATA, data);
+
     commit(UPDATE_PAGINATION, { rowsNumber: data.count });
   },
 
