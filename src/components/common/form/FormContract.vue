@@ -14,9 +14,9 @@
       :rules="[ () => !!range.to && !!range.from || '']"
       @click="$refs.dateRange.show()"
     )
-      template(v-slot:prepend)
+      template(#before)
         q-icon(name="event" class="cursor-pointer")
-          q-popup-proxy(ref="dateRange")
+          q-popup-proxy(ref="dateRange" @before-show="log")
             q-date(
               v-model="range"
               :options="startOptions"
@@ -33,6 +33,12 @@
 
   export default {
     name: "FormContract",
+    props: {
+      start: {
+        type: String,
+        default: ""
+      }
+    },
     data () {
       return {
         number: null,
@@ -40,7 +46,7 @@
           from: null,
           to: null
         },
-        startOptions: date => moment(date).isSameOrAfter(moment())
+        startOptions: date => moment(date).isSameOrAfter(moment(this.start))
       };
     },
     computed: {
@@ -52,6 +58,9 @@
       }
     },
     methods: {
+      log () {
+        console.log(this.range);
+      },
       onSubmit () {
         const { number, range: { from, to } } = this;
         const payload = {
@@ -60,6 +69,14 @@
           endDate: to
         };
         this.$emit("submit", payload);
+      }
+    },
+    watch: {
+      start: {
+        immediate: true,
+        handler (val) {
+          this.range.from = moment(val).format("YYYY-MM-DD");
+        }
       }
     }
   };

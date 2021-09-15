@@ -44,7 +44,7 @@
                 | Договор подписан.
               div
                 | Введите данные договора.
-              FormContract(@submit="sendContract")
+              FormContract(@submit="sendContract" :start="value.updated")
 </template>
 
 <script>
@@ -60,22 +60,22 @@
     },
     computed: {
       stepsValue () {
-        if (this.value.id === 11) return 1;
-        if (this.value.id === 12) return 2;
-        if (this.value.id === 3) return 3;
-        if ([5, 6, 7].includes(this.value.id)) return 4;
+        if (this.value.status.id === 11) return 1;
+        if (this.value.status.id === 12) return 2;
+        if (this.value.status.id === 3) return 3;
+        if ([5, 6, 7].includes(this.value.status.id)) return 4;
       },
       stepOneDone () {
-        return this.value.id === 12 || this.stepTwoDone;
+        return this.value.status.id === 12 || this.stepTwoDone;
       },
       stepTwoDone () {
-        return this.value.id === 3 || this.stepThreeDone;
+        return this.value.status.id === 3 || this.stepThreeDone;
       },
       stepThreeDone () {
-        return [5, 6, 7].includes(this.value.id) || this.stepFourDone;
+        return [5, 6, 7].includes(this.value.status.id) || this.stepFourDone;
       },
       stepFourDone () {
-        return this.value.id === 8;
+        return this.value.status.id === 8;
       }
     },
     methods: {

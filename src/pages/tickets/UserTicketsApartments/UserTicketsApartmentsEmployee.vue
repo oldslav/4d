@@ -40,7 +40,7 @@
                 | Примите или отклоните заявку
             ApartmentTicketEmployeeFlow(
               v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
-              :value="props.row.status"
+              :value="props.row"
               @contract="sendContractInfo($event, props.row.id)"
             )
             ValidContractState(
@@ -169,6 +169,7 @@
       },
 
       expandRow (props) {
+        console.log(props.row);
         const row = this.expanded.indexOf(props.key);
         if (row === -1) {
           this.expanded.push(props.key);
