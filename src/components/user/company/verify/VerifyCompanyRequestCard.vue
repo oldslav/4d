@@ -7,7 +7,8 @@
         span.q-px-sm.text-blue.verify-company-card__link(@click="onClickSendRequest") {{ $t('user.verifyCompany.requestCard.action') }}
         | {{ $t(`user.verifyCompany.requestCard.${service}-description`) }}
     div.verify-company-card__image.flex-break.flex.items-center.justify-center
-      img(src="@/assets/svg/verify-company-placeholder.svg")
+      img(v-if="!$q.dark.isActive" src="@/assets/svg/light/verify-company.svg")
+      img(v-if="$q.dark.isActive" src="@/assets/svg/dark/verify-company-dark.svg")
 
 </template>
 <script>

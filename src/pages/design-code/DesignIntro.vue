@@ -1,7 +1,7 @@
 <template lang="pug">
   .design-intro.full-width.full-height.bg-blue
     .row.q-pa-xl.relative-position.design-intro__top
-      img.design-intro__top-image(src="@/assets/svg/houses.svg")
+      img.design-intro__top-image(:src="housesImg")
       .col-12.col-md-6.z-fab
         div
           .design-intro__header.text-primary.q-mb-lg
@@ -32,7 +32,7 @@
               q-card-section.design-intro__caption-medium
                 | {{card.caption}}
     .row.q-pa-xl.design-intro__who.relative-position
-      img(src="@/assets/svg/peoplegroup.svg").design-intro__who-image
+      img(:src="peopleImg").design-intro__who-image
       .col-12.col-md-6.z-fab
         .column
           .design-intro__subtitle.q-mb-md
@@ -69,6 +69,12 @@
       },
       benchesImg () {
         return this.isDarkMode ? require("@/assets/svg/dark/benches-dark.svg") : require("@/assets/svg/light/benches.svg");
+      },
+      housesImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/houses-dark.svg") : require("@/assets/svg/light/houses.svg");
+      },
+      peopleImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/peoplegroup-dark.svg") : require("@/assets/svg/light/peoplegroup.svg");
       },
       timeline () {
         return [
