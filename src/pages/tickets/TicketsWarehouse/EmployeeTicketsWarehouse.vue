@@ -78,7 +78,11 @@
                         | Договор подписан.
                       div
                         | Введите данные договора.
-                      FormContract(@submit="sendContractInfo($event, props.row.id)")
+                      FormContract(
+                        @submit="sendContractInfo($event, props.row.id)"
+                        :start="props.row.updated"
+                        :lasts="props.row.serviceOption.storagePeriod"
+                      )
 
     TicketWarehouseDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>

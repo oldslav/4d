@@ -12,7 +12,7 @@
             | {{ $t("entity.tickets.contract.startDate") }}
           .text-body1
             | {{ contract.startDate | formatDate }}
-        .col-6
+        .col-6(v-if="contract.endDate")
           .text-primary-light.text-small
             | {{ $t("entity.tickets.contract.endDate") }}
           .text-body1

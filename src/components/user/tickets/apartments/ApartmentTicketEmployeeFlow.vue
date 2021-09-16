@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    q-stepper(
+    q-stepper.bg-blue(
       :value="stepsValue"
       color="primary"
       flat
@@ -44,11 +44,16 @@
                 | Договор подписан.
               div
                 | Введите данные договора.
-              FormContract(@submit="sendContract" :start="value.updated")
+              FormContract(
+                @submit="sendContract"
+                :start="value.updated"
+                :termless="!value.fixedTermContract"
+              )
 </template>
 
 <script>
   import FormContract from "components/common/form/FormContract";
+
   export default {
     name: "ApartmentTicketEmployeeFlow",
     components: { FormContract },
