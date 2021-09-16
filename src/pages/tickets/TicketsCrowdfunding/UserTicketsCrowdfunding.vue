@@ -8,6 +8,16 @@
       :loading="isLoading"
       :getData="getUserTickets"
     )
+      template(v-slot:top)
+        .row.full-width.justify-between
+          .row.q-gutter-sm.col
+          q-btn(
+            icon="add"
+            outline
+            color="primary"
+            @click="toNewCrowdfundingProject"
+            :label="$t('user.tickets.actions.create')"
+          )
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="author" :props="props")
@@ -125,6 +135,10 @@
         if (ticket.rejected) return 4;
         if (ticket.approved) return 3;
         return 2;
+      },
+
+      toNewCrowdfundingProject () {
+        this.$router.push({ name: "services-crowdfunding", params: { newProject: "true" } });
       },
 
       moment
