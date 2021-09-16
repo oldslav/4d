@@ -86,7 +86,7 @@ const actions: ActionTree<IVehiclesState, TRootState> = {
       Object.assign(documents, files);
       result.push({ id, model, brand, type, number, documents });
     }));
-    commit(SET_ITEMS, result);
+    commit(SET_ITEMS, result.sort((a: any, b: any) => a.id - b.id)); // чтобы не скакали вкладки
   }
 };
 
