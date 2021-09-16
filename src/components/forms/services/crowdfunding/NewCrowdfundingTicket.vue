@@ -59,15 +59,23 @@
     )
 
     .text-medium
+      | {{ $t("entity.services.crowdfunding.form.cover") }}
+    .hint.text-caption.q-mb-md
+      | Формат jpg, jpeg, png, pdf
+    BaseImageDragDrop(
+      v-model="cover"
+      :max-files="1"
+    )
+
+    .text-medium
       | {{ $t("entity.services.crowdfunding.form.media") }}
     .sub-header.text-small.q-mb-md
       | {{ $t("entity.services.crowdfunding.form.mediaMaxCount") }}
     .hint.text-caption.q-mb-md
       | Формат jpg, jpeg, png, pdf
-    BaseDragDrop.q-mb-md(
-      :value="media"
-      max-files="5"
-      @input="uploadMedia"
+    BaseImageDragDrop(
+      v-model="media"
+      :max-files="5"
     )
     .text-medium.q-mb-md(v-if="media.length > 0")
       | {{ $t("entity.services.crowdfunding.form.loadedMedia") }}
@@ -94,7 +102,7 @@
   import { mapActions } from "vuex";
   import BaseModal from "components/common/BaseModal";
   import BaseSelect from "components/common/BaseSelect";
-  import BaseDragDrop from "components/common/BaseDragDrop";
+  import BaseImageDragDrop from "components/common/BaseImageDragDrop";
   import FormContacts from "components/common/form/FormContacts";
   import FilePicker from "components/common/FilePicker";
   import FormName from "components/common/form/FormName";
@@ -102,7 +110,7 @@
 
   export default {
     name: "NewCrowdfundingTicket",
-    components: { FormName, BaseModal, BaseSelect, BaseDragDrop, FormContacts, FilePicker },
+    components: { FormName, BaseModal, BaseSelect, BaseImageDragDrop, FormContacts, FilePicker },
     props: {
       isVisible: {
         type: Boolean,
@@ -119,32 +127,32 @@
         category: "",
         categoriesList: [
           {
-            value: 1,
-            label: "Технологии и дизайн"
+            value: "Технологии и дизайн",
+            label: 1
           },
           {
-            value: 2,
-            label: "Спорт"
+            value: "Спорт",
+            label: 2
           },
           {
-            value: 3,
-            label: "Искусство"
+            value: "Искусство",
+            label: 3
           },
           {
-            value: 4,
-            label: "Здоровье и экология"
+            value: "Здоровье и экология",
+            label: 4
           },
           {
-            value: 5,
-            label: "Путешествие и туризм"
+            value: "Путешествие и туризм",
+            label: 5
           },
           {
-            value: 6,
-            label: "Домашние животные"
+            value: "Домашние животные",
+            label: 6
           },
           {
-            value: 7,
-            label: "Развлечения и досуг"
+            value: "Развлечения и досуг",
+            label: 7
           }
         ],
         markdownContent: "",
@@ -196,7 +204,7 @@
       },
       onSubmit () {
         const { title, description, startDate, endDate, category, markdownContent, cover, media } = this;
-        return this.CREATE_USER_TICKET_CROWDFUNDING({ title, description, startDate, endDate, categoryId: category.value, markdownContent, cover: cover[0], media })
+        return this.CREATE_USER_TICKET_CROWDFUNDING({ title, description, startDate, endDate, categoryId: category, markdownContent, cover: cover[0], media })
           .then(() => {
             this.$emit("success");
           })
