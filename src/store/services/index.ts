@@ -131,7 +131,13 @@ const actions: ActionTree<GeoState, TRootState> = {
     const preparedData = {
       data: {
         type,
-        features
+        features: features.map((i: any) => ({
+          ...i,
+          properties: {
+            ...i.properties,
+            image: require("@/assets/clustering/10.png")
+          }
+        }))
       },
       type: "geoJson"
     };

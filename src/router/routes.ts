@@ -9,7 +9,8 @@ const routes: RouteConfig[] = [
     },
     meta: {
       toolbar: true,
-      prod: true
+      prod: true,
+      unauthorized: true
     }
   },
   {
@@ -18,7 +19,8 @@ const routes: RouteConfig[] = [
     component: (): Promise<any> => import("pages/About.vue"),
     meta: {
       toolbar: true,
-      prod: true
+      prod: true,
+      unauthorized: true
     }
   },
   {
@@ -34,7 +36,8 @@ const routes: RouteConfig[] = [
     meta: {
       toolbar: true,
       asideLeft: true,
-      prod: true
+      prod: true,
+      unauthorized: true
     },
     children: [
       {
@@ -46,7 +49,8 @@ const routes: RouteConfig[] = [
         meta: {
           toolbar: true,
           asideLeft: true,
-          prod: true
+          prod: true,
+          unauthorized: true
         }
       },
       {
@@ -59,38 +63,9 @@ const routes: RouteConfig[] = [
         meta: {
           toolbar: true,
           asideSection: true,
-          prod: true
+          prod: true,
+          unauthorized: true
         }
-      }
-    ]
-  },
-  {
-    path: "/playground",
-    name: "playground",
-    redirect: {
-      name: "playground-buttons"
-    },
-    components: {
-      default: (): Promise<any> => import("pages/UIPlayground.vue")
-    },
-    meta: {
-      toolbar: true
-    },
-    children: [
-      {
-        path: "buttons",
-        name: "playground-buttons",
-        component: (): Promise<any> => import("components/playground/Buttons.vue")
-      },
-      {
-        path: "inputs",
-        name: "playground-inputs",
-        component: (): Promise<any> => import("components/playground/Inputs.vue")
-      },
-      {
-        path: "selects",
-        name: "playground-selects",
-        component: (): Promise<any> => import("components/playground/Selects.vue")
       }
     ]
   },
@@ -377,7 +352,8 @@ const routes: RouteConfig[] = [
       default: (): Promise<any> => import("pages/UnderDevelopment.vue")
     },
     meta: {
-      prod: true
+      prod: true,
+      unauthorized: true
     }
   },
   {
@@ -398,7 +374,8 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           toolbar: true,
-          asideMaps: true
+          asideMaps: true,
+          unauthorized: true
         },
         children: [
           {
@@ -411,7 +388,8 @@ const routes: RouteConfig[] = [
             meta: {
               map: true,
               toolbar: true,
-              asideMaps: true
+              asideMaps: true,
+              unauthorized: true
             }
           }
         ]
@@ -426,7 +404,8 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           toolbar: true,
-          asideMaps: true
+          asideMaps: true,
+          unauthorized: true
         }
       },
       {
@@ -439,7 +418,8 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           toolbar: true,
-          asideMaps: true
+          asideMaps: true,
+          unauthorized: true
         },
         children: [
           {
@@ -452,7 +432,8 @@ const routes: RouteConfig[] = [
             meta: {
               map: true,
               toolbar: true,
-              asideMaps: true
+              asideMaps: true,
+              unauthorized: true
             }
           },
           {
@@ -465,7 +446,8 @@ const routes: RouteConfig[] = [
             meta: {
               map: true,
               toolbar: true,
-              asideMaps: true
+              asideMaps: true,
+              unauthorized: true
             }
           },
           {
@@ -478,7 +460,8 @@ const routes: RouteConfig[] = [
             meta: {
               map: true,
               toolbar: true,
-              asideMaps: true
+              asideMaps: true,
+              unauthorized: true
             }
           }
         ]
@@ -491,7 +474,8 @@ const routes: RouteConfig[] = [
         },
         meta: {
           map: true,
-          toolbar: true
+          toolbar: true,
+          unauthorized: true
         }
       }
     ]
@@ -719,7 +703,8 @@ const routes: RouteConfig[] = [
       default: (): Promise<any> => import("pages/Error404.vue")
     },
     meta: {
-      prod: true
+      prod: true,
+      unauthorized: true
     }
   }
 ];

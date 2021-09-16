@@ -183,7 +183,7 @@
       },
 
       async createClustering (dataSource) {
-        const markers = await createClusterMarkers();
+        const markers = await createClusterMarkers({ isDark: this.$q.dark.isActive });
         const sizes = Object.keys(markers)
           .map(x => parseInt(x, 10))
           .sort((a, b) => b - a);
@@ -223,6 +223,11 @@
         const data = dataType === "geoJson" ? this.data.data : FAKE_GEOJSON_DATA;
 
         datasource.load(data).then((ds) => {
+          for (let i = 0; i < ds.entities.values.length; i++) {
+            let entity = ds.entities.values[i];
+            Object.assign(entity.billboard || {}, entity.properties);
+          }
+
           render(ds.entities.values);
 
           const pickedId = this.$route.query.id;
