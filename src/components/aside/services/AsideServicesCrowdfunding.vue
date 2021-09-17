@@ -24,6 +24,9 @@
   export default {
     name: "AsideServicesCrowdfunding",
     components: { NewCrowdfundingTicket, ModalFail, ModalSuccess },
+    created () {
+      if (this.$route.params.newProject) this.showNewTicketForm();
+    },
     data () {
       return {
         newTicketVisible: false,

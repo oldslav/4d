@@ -7,12 +7,20 @@
       router-link.text-primary(to="/")
         | {{ $t("entity.services.title") }}
       | {{ $t("user.tickets.empty.subtitle2") }}
-    q-img.tickets-empty__image.q-mt-xl(src="@/assets/svg/lady-tag.svg")
+    q-img.tickets-empty__image.q-mt-xl(:src="tagImg")
 </template>
 
 <script>
   export default {
-    name: "TicketsEmpty"
+    name: "TicketsEmpty",
+    computed: {
+      isDarkMode () {
+        return this.$q.dark.isActive;
+      },
+      tagImg () {
+        return this.isDarkMode ? require("@/assets/svg/dark/lady-tag-dark.svg") : require("@/assets/svg/light/lady-tag.svg");
+      }
+    }
   };
 </script>
 

@@ -628,7 +628,6 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesCrowdfunding.vue")
         },
         meta: {
-          map: true,
           asideServices: true,
           toolbar: true
         }
