@@ -14,6 +14,7 @@
       v-model="isParkingPlaceModal"
       :parkingPlaces="parkingPlaces"
       :buildingId="buildingId"
+      :type="pickedFeature.properties.parking_places_type"
       @update="onParkingPlaceChange"
     )
     template(v-if="parkingPlaceId")
@@ -85,7 +86,7 @@
     },
     computed: {
       ...mapState("services", {
-        buildingId: state => state.pickedFeatureId
+        pickedFeatureId: state => state.pickedFeatureId
       }),
 
       ...mapState("services/parking", {
@@ -97,13 +98,22 @@
         "pickedFeature"
       ]),
 
+      buildingId () {
+        switch (this.pickedFeature.properties.parking_places_type) {
+          case "Обычное":
+            return 1;
+          case "Льготное":
+            return 2;
+        }
+      },
+
       isEntityHoverModal: {
         set () {
           this.SET_FEATURE_ID(null);
         },
 
         get () {
-          return Boolean(this.buildingId);
+          return Boolean(this.pickedFeatureId);
         }
       },
 
