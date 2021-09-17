@@ -1,15 +1,15 @@
 <template lang="pug">
   q-page.presentation.bg-white.full-height.q-px-md.q-px-md-xl.q-pt-md.q-pt-md-xl
     .row.presentation__main.reverse-wrap-sm.reverse-wrap-xs(
-        v-for="slide in slides"
-        :key="slide.id"
-        v-show="step === slide.id"
-      )
+      v-for="slide in slides"
+      :key="slide.id"
+      v-show="step === slide.id"
+    )
       .col-12.col-md-6.column.flex.items-center.justify-center
-        div.text-left.full-width
+        div.text-left.full-width.flex.column(:style="{minHeight: '35vh'}")
           .presentation__title.q-mb-xl
             | {{ slide.title }}
-          .presentation__caption
+          .presentation__caption(:style="{flex: '1'}")
             | {{ slide.description }}
           .presentation__controls.text-left.full-width.q-mt-xl
             q-btn(
@@ -203,6 +203,7 @@
       min-width: .6rem
     }
   }
+
   @media (max-width: $breakpoint-xs-max) {
     .q-stepper__dot {
       width: .4rem
