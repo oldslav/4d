@@ -4,7 +4,7 @@
       q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
     q-layout(ref="layout" view="hHh Lpr lFf")
       template(v-if="isMobile")
-        q-fab(v-if="isMobile" color="primary" icon="menu" round direction="down" padding="sm").fixed-top-right.q-ma-md.z-max
+        q-fab(v-if="isMobile" v-show="!(isBurger || isSettings)" color="primary" icon="menu" round direction="down" padding="sm").fixed-top-left.q-ma-md.z-max
           q-fab-action(color="primary" icon="menu" round @click="toggleBurger")
           q-fab-action(color="primary" icon="settings" round @click="toggleSettings")
         q-drawer(

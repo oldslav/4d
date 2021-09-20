@@ -82,8 +82,7 @@
           },
           {
             name: "map",
-            label: this.$t("entity.maps.title"),
-            hide: !this.isDev
+            label: this.$t("entity.maps.title")
           },
           {
             name: "data",
