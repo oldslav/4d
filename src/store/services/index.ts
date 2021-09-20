@@ -5,7 +5,8 @@ import {
   GET_COMMERCE_GEO,
   GET_IDEAS_GEO, GET_LIGHT_GEO,
   GET_PARKING_GEO,
-  GET_TREES_GEO, GET_WAREHOUSE_GEO
+  GET_TREES_GEO, GET_WAREHOUSE_GEO,
+  TOGGLE_VISIBILITY_BY_LAYER
 } from "src/store/constants/action-constants";
 import {
   SET_CLUSTERING,
@@ -28,6 +29,7 @@ import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
 import tourism from "src/store/services/tourism";
 import warehouse from "src/store/services/warehouse";
+import { cloneDeep } from "lodash";
 
 const initialState = (): GeoState => {
   return {
@@ -62,13 +64,24 @@ const actions: ActionTree<GeoState, TRootState> = {
       data: {
         type,
         features: features.map((i: any) => {
-          if (!i.properties.free) {
-            i.properties.fill = "#FF6565";
-          } else if (i.properties.parking_places_type === "Обычное") {
+          if (i.properties.parking_places_type === "Обычное") {
+            i.properties.layer = 1;
             i.properties.fill = "#84D197";
+            if (!i.properties.free) {
+              i.properties.layer = 3;
+              i.properties.fill = "#FF6565";
+            }
           } else if (i.properties.parking_places_type === "Льготное") {
+            i.properties.layer = 2;
             i.properties.fill = "#298BAF";
+              if (!i.properties.free) {
+                i.properties.layer = 3;
+                i.properties.fill = "#FF6565";
+              }
           }
+
+          i.properties.visibility = true;
+          i.properties.type = "building";
 
           Object.assign(i.properties, {
             stroke: "#333333"
@@ -135,7 +148,8 @@ const actions: ActionTree<GeoState, TRootState> = {
           ...i,
           properties: {
             ...i.properties,
-            image: require("@/assets/clustering/10.png")
+            // TODO: Исправить ужас ниже
+            image: i.properties.fill === "#FF6565" ? require("@/assets/png/problem.png") : require("@/assets/png/idea.png")
           }
         }))
       },
@@ -215,6 +229,22 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
 
     commit(SET_GEODATA, preparedData);
+  },
+
+  [TOGGLE_VISIBILITY_BY_LAYER] ({ state, commit }, { ids, visibility }) {
+    if (state.geoJson) {
+      const geoJson = cloneDeep(state.geoJson.data);
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      for (const feature of geoJson.features) {
+        if (ids.includes(feature.properties.layer)) {
+          feature.properties.visibility = visibility;
+        }
+      }
+
+      commit(SET_GEODATA, { type: "geoJson", data: geoJson });
+    }
   }
 };
 

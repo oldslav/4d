@@ -30,7 +30,7 @@
       h2.about__header.z-fab
         | {{$t("entity.about.sections.title")}}
       .about__cards.z-fab
-        q-card.about__card.flex.column.justify-around(v-for="(card, index) in sections" :key="index" @click="goTo(card.name)")
+        q-card.about__card.bg-card.flex.column.justify-around(v-for="(card, index) in sections" :key="index" @click="goTo(card.name)")
           img.about__card-image.q-px-md(:src="card.image")
           q-card-section
             .about__caption-medium.text-weight-bold
@@ -175,9 +175,8 @@
       }
     },
     methods: {
-      // eslint-disable-next-line no-unused-vars
       goTo (name) {
-        // this.$router.push({ name });
+        this.$router.push({ name });
       }
     }
   };
