@@ -11,12 +11,14 @@
         :key="index"
         @click="openProject(project)"
       )
-        q-card
-          q-img(:src="getCoverUrl(project)")
-          q-card-section
+        q-card.card
+          q-img.cover-image(:src="getCoverUrl(project)")
+          q-card-section.title.text-body1
             | {{ project.title }}
-          q-card-section
+          q-card-section.description.text-body2
             | {{ project.description }}
+          q-card-section.author.text-body2.row.items-end
+            | {{ project.author.name.first }} {{ project.author.name.last }}
 </template>
 
 <script>
@@ -62,3 +64,20 @@
     }
   };
 </script>
+
+<style lang="stylus" scoped>
+  .card
+    height: 370px
+  .cover-image
+    height: 200px
+  .title
+    height: 60px
+  .description
+    height: 50px
+    overflow: hidden
+    text-overflow: ellipsis
+    color: #666666
+  .author
+    height: 50px
+    color: #666666
+</style>

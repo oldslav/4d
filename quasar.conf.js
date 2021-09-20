@@ -138,6 +138,10 @@ module.exports = configure(function () {
         "/oauth": {
           target: API_HOST,
           changeOrigin: true
+        },
+        "/uploads": {
+          target: API_HOST,
+          changeOrigin: true
         }
       }
     },
@@ -147,9 +151,7 @@ module.exports = configure(function () {
       cssAddon: true,
       iconSet: "material-icons", // Quasar icon set
       lang: "ru", // Quasar language pack
-      config: {
-
-      },
+      config: {},
 
       // Possible values for "importStrategy":
       // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
