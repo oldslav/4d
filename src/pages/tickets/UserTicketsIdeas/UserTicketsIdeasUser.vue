@@ -55,6 +55,9 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("action.details") }}
+                  q-item(clickable v-close-popup @click="toIdeas({ id: props.row.id })")
+                    q-item-section(no-wrap)
+                      | {{ $t("action.showOnMap") }}
 
     BaseModal(
       v-model="isDetailsModal"
@@ -170,8 +173,8 @@
         GET_REFERENCES
       ]),
 
-      toIdeas () {
-        this.$router.push({ name: "services-ideas" });
+      toIdeas (query) {
+        this.$router.push({ name: "services-ideas", query });
       },
 
       openDetails (id) {

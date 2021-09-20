@@ -175,9 +175,8 @@
       }
     },
     methods: {
-      // eslint-disable-next-line no-unused-vars
       goTo (name) {
-        // this.$router.push({ name });
+        this.$router.push({ name });
       }
     }
   };

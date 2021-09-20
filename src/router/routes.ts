@@ -363,6 +363,10 @@ const routes: RouteConfig[] = [
       default: (): Promise<any> => import("pages/maps/MapsService.vue"),
       asideLeft: (): Promise<any> => import("components/aside/AsideMaps.vue")
     },
+    meta: {
+      map: true,
+      isBurger: true
+    },
     children: [
       {
         path: "buildings",
@@ -489,7 +493,9 @@ const routes: RouteConfig[] = [
     },
     meta: {
       toolbar: true,
-      prod: true
+      prod: true,
+      map: true,
+      isBurger: true
     },
     children: [
       {
