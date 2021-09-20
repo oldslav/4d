@@ -155,7 +155,7 @@
 
       parkingPlacesCount () {
         return this.geoJson.data.features.reduce((acc, i) => {
-          acc.free += i.properties.parking_places_type === "Обычное" ? i.properties.free : 0;
+          acc.free += i.properties.parking_places_type === "Обычное" ? i.properties.total : 0;
           acc.busy += i.properties.busy;
           acc.social += i.properties.parking_places_type === "Льготное" ? i.properties.total : 0;
           return acc;
@@ -168,6 +168,10 @@
       },
 
       buildingId () {
+        if (this.pickedFeature.properties.name.includes("122")) {
+          return 2;
+        }
+
         switch (this.pickedFeature.properties.parking_places_type) {
           case "Обычное":
             return 1;
