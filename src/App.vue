@@ -4,18 +4,32 @@
       q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
     q-layout(ref="layout" view="hHh Lpr lFf")
       template(v-if="isMobile")
+        q-fab(v-if="isMobile" color="primary" icon="menu" round direction="down" padding="sm").fixed-top-right.q-ma-md.z-max
+          q-fab-action(color="primary" icon="menu" round @click="toggleBurger")
+          q-fab-action(color="primary" icon="settings" round @click="toggleSettings")
         q-drawer(
-          v-show="isComponentPassed('asideLeft')"
+          v-model="isBurger"
+          v-if="isComponentPassed('asideLeft')"
           :width="300"
           :breakpoint="500"
           overlay
           elevated
+          behavior="mobile"
         )
           transition(name="fade" mode="out-in")
             router-view(name="asideLeft")
               AsideProfile
-          q-list
-            q-item(dense)
+        q-drawer(
+          v-model="isSettings"
+          v-if="isComponentPassed('asideLeft')"
+          :width="300"
+          :breakpoint="500"
+          overlay
+          elevated
+          behavior="mobile"
+        )
+          q-list.q-pa-lg.full-height.column
+            q-item(dense).q-px-none
               q-item-section
                 q-select(
                   v-model="locale" color="primary" :options="locales"
@@ -59,7 +73,7 @@
 
       transition(name="fade" mode="out-in")
         AuthModal(v-model="auth")
-    
+
       MailConfirmedModal(v-model="showMailConfirmedModal" @show-auth="showAuthAfterConfirmation")
 </template>
 
@@ -97,7 +111,9 @@
       return {
         auth: false,
         isStartedLoading: false,
-        showMailConfirmedModal: false
+        showMailConfirmedModal: false,
+        isBurger: false,
+        isSettings: false
       };
     },
     computed: {
@@ -152,6 +168,16 @@
     methods: {
       ...mapActions("references", [GET_REFERENCES]),
 
+      toggleSettings () {
+        this.isBurger = false;
+        this.isSettings = !this.isSettings;
+      },
+
+      toggleBurger () {
+        this.isSettings = false;
+        this.isBurger = !this.isBurger;
+      },
+
       isComponentPassed (viewName) {
         return Boolean(this.components[viewName]);
       },
@@ -186,6 +212,11 @@
       showAuthAfterConfirmation () {
         this.showMailConfirmedModal = false;
         this.auth = true;
+      }
+    },
+    watch: {
+      "$route.meta.isBurger" () {
+        this.isBurger = true;
       }
     }
   };
