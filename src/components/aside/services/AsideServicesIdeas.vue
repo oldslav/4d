@@ -17,7 +17,7 @@
     //    optionKey="id"
     //    optionValue="description"
     //  ).col-12
-    q-list(ref="infScrollContainer" style="overflow: auto;").column.col.q-my-md
+    q-list(ref="infScrollContainer" style="overflow-y: auto;").column.col.q-my-md
       q-infinite-scroll(
         :offset="50"
         :debounce="400"
@@ -26,7 +26,7 @@
       ).full-height
         q-item(clickable v-for="(item, index) in features" :key="index" @click="selectFeature(item.id)").q-px-none
           q-item-section
-            q-item-label
+            q-item-label(style="max-width: 250px").ellipsis
               | {{ item.title }}
             q-item-label(caption)
               .row
