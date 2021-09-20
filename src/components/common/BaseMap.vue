@@ -30,7 +30,7 @@
           v-if="data && data.type === 'pointPrimitive'"
           :points="data.data"
         )
-    MapLegalAgreement.z-fab.absolute-bottom-right.text-right(:style="{maxWidth: '50%'}")
+    MapLegalAgreement.absolute-bottom-right.text-right(:style="{ maxWidth: isMobile ? '100%' : '50%' }" :class="{ 'q-mb-xl': isMobile }")
 </template>
 
 <script>
@@ -70,6 +70,10 @@
         pickedFeatureId: state => state.pickedFeatureId,
         clustering: state => state.clustering
       }),
+
+      isMobile () {
+        return !this.$q.platform.is.desktop;
+      },
 
       mapUrl () {
         return this.$q.dark.isActive
@@ -225,7 +229,7 @@
         datasource.load(data).then((ds) => {
           for (let i = 0; i < ds.entities.values.length; i++) {
             let entity = ds.entities.values[i];
-            Object.assign(entity.billboard, entity.properties);
+            Object.assign(entity.billboard || {}, entity.properties);
           }
 
           render(ds.entities.values);

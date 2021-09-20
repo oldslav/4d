@@ -19,7 +19,7 @@
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
           q-td(key="type" :props="props")
-            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
+            | {{ parkingType(props.row) }}
           q-td(key="created" :props="props")
             | {{ props.row.created | ticketDate }}
           q-td(key="status" :props="props")
@@ -79,7 +79,11 @@
                         | Договор подписан.
                       div
                         | Введите данные договора.
-                      FormContract(@submit="sendContractInfo($event, props.row.id)")
+                      FormContract(
+                        @submit="sendContractInfo($event, props.row.id)"
+                        :start="props.row.updated"
+                        :lasts="props.row.price.period"
+                      )
 
     TicketDetailsModal(:id.sync="activeId" v-model="showDetailsModal" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
@@ -197,6 +201,13 @@
         SEND_CONTRACT_INFO_PARKING
       }),
 
+      parkingType (row) {
+        if (row.isGuestVisit) {
+          return this.$t("entity.services.parking.ticketType.guest");
+        }
+        return this.$t(`entity.services.parking.ticketType.${ row.parkingPlace.type.name }`);
+      },
+
       async getEmployeeTickets (props) {
         if (props) {
           const { pagination: { page, rowsPerPage, sortBy } } = props;
@@ -290,13 +301,13 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("user.tickets.contract.sendSuccess")
+              message: this.$t("user.tickets.contract.sendSuccess")
             });
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("user.tickets.contract.sendFail")
+              message: this.$t("user.tickets.contract.sendFail")
             });
           });
       }

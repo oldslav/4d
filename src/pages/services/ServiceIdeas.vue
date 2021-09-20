@@ -11,7 +11,7 @@
 
 <script>
   import { mapActions, mapMutations, mapState } from "vuex";
-  import { GET_DATA, GET_IDEAS_GEO, UPDATE_LIKE } from "../../store/constants/action-constants";
+  import { GET_DATA, GET_IDEAS_GEO, GET_REFERENCES, UPDATE_LIKE } from "../../store/constants/action-constants";
   import NewIdeaModal from "../../components/services/ideas/NewIdeaModal";
   import { SET_DRAW_TYPE, SET_POINT_COORDS } from "../../store/constants/mutation-constants";
   import IdeaDetailsCard from "../../components/services/ideas/IdeaDetailsCard";
@@ -24,6 +24,9 @@
         type: [Object, null],
         default: null
       }
+    },
+    async created () {
+      await this.GET_REFERENCES();
     },
     data () {
       return {
@@ -39,7 +42,7 @@
       }),
 
       fzz () {
-        return this.featureId || this.$route.query.id;
+        return this.$route.query.id;
       },
 
       isLoading () {
@@ -68,7 +71,8 @@
 
       ...mapActions("services/ideas", [
         GET_DATA,
-        UPDATE_LIKE
+        UPDATE_LIKE,
+        GET_REFERENCES
       ]),
 
       ...mapMutations("services", {
@@ -104,7 +108,6 @@
           if (val !== this.$route.query.id) {
             await this.$router.replace({ name: "services-ideas", query: { id: val } });
           }
-          await this.GET_DATA(val);
         } else if (this.$route.query.id) {
           await this.$router.replace({ name: "services-ideas", query: { } });
         }
