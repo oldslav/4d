@@ -589,7 +589,15 @@
       },
       "parking": {
         "title": "Parking lots",
+        "lots": {
+          "free": "Парковочных мест свободно",
+          "total": "Парковочных мест всего"
+        },
         "parkingType": "Parking type",
+        "level": "Уровень парковки",
+        "parkingCount": "Количество парковочных мест",
+        "entries": "Количество въездов на парковку",
+        "exits": "Количество выездов из парковки",
         "types": {
           "common": "Parking",
           "social": "Social parking",
