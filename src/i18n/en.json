@@ -966,6 +966,17 @@
       },
       "security": {
         "title": "City safety"
+      },
+      "engineering": {
+        "menu": "Engineering and utility infrastructure",
+        "name": "Object name",
+        "elevation": "elevation",
+        "diameter": "Diameter",
+        "hatchRingMark": "Hatch Ring Mark",
+        "gasketTopMark": "Top gasket mark",
+        "bottomMark": "Bottom Mark",
+        "meter": "m",
+        "centimeter": "cm"
       }
     },
     "data": "Data",

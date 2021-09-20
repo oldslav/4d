@@ -20,7 +20,8 @@ export interface GeoState {
   clustering: boolean
   pointCoords: any | null
   isDraw: any | null
-  cesiumInstance: any | null
+  cesiumInstance: any | null,
+  entityDistance: null | number
 }
 
 export interface GeoData {

@@ -964,6 +964,17 @@
       },
       "security": {
         "title": "Безопасность города"
+      },
+      "engineering": {
+        "menu": "Инженерная и коммунальная инфраструктура",
+        "name": "Название объекта",
+        "elevation": "elevation",
+        "diameter": "Диаметр",
+        "hatchRingMark": "Отметка кольца люка",
+        "gasketTopMark": "Отметка верхней прокладки",
+        "bottomMark": "Нижняя отметка",
+        "meter": "м",
+        "centimeter": "см"
       }
     },
     "data": "Данные",
