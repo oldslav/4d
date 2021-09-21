@@ -1,5 +1,6 @@
 <template lang="pug">
   q-page.presentation.bg-white.full-height.q-px-md.q-px-md-xl.q-pt-md.q-pt-md-xl
+    SetNewPasswordModal(v-model="showSetPassword").z-top
     .row.presentation__main.reverse-wrap-sm.reverse-wrap-xs(
       v-for="slide in slides"
       :key="slide.id"
@@ -53,14 +54,27 @@
 </template>
 
 <script>
+  import ResetPasswordModal from "components/auth/ResetPasswordModal";
+  import SetNewPasswordModal from "components/auth/SetNewPasswordModal";
+
   export default {
     name: "Presentation",
+    components: { SetNewPasswordModal, ResetPasswordModal },
+    created () {
+      if (this.isPasswordReset) {
+        this.showSetPassword = true;
+      }
+    },
     data () {
       return {
-        step: 1
+        step: 1,
+        showSetPassword: false
       };
     },
     computed: {
+      isPasswordReset () {
+        return !!this.$route.query.token;
+      },
       slides () {
         return [
           {

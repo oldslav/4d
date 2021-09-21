@@ -1,5 +1,6 @@
 <template lang="pug">
-  div
+  div.login
+    ResetPasswordModal(v-model="resetPassword")
     h3.text-title
       | {{ $t("common.login.title") }}
     h3.text-subtitle
@@ -25,6 +26,8 @@
             class="cursor-pointer"
             @click="isPasswordVisible = !isPasswordVisible"
           )
+      a(role="button" @click.stop.prevent="onResetPassword()").login__link
+        | Забыли пароль?
       .q-mx-lg.q-py-md.flex.items-center.justify-center.full-width.login__error.text-subtitle(v-show="isError")
         | {{ errorMessage }}
       q-btn(:label="$t('action.login')" type="submit" color="primary").full-width
@@ -35,10 +38,11 @@
 <script>
   import { ACCOUNT_LOGIN } from "@/store/constants/action-constants";
   import BaseInput from "../common/BaseInput";
+  import ResetPasswordModal from "components/auth/ResetPasswordModal";
 
   export default {
     name: "LoginForm",
-    components: { BaseInput },
+    components: { ResetPasswordModal, BaseInput },
     data () {
       return {
         form: {
@@ -47,7 +51,8 @@
         },
         isPasswordVisible: false,
         loginError: false,
-        passwordError: false
+        passwordError: false,
+        resetPassword: false
       };
     },
     computed: {
@@ -67,6 +72,9 @@
       }
     },
     methods: {
+      onResetPassword () {
+        this.resetPassword = true;
+      },
       resetErrors () {
         this.passwordError = false;
         this.loginError = false;
@@ -97,5 +105,10 @@
   .login__error {
     background-color #FFECEC
     color #FF4040
+  }
+
+  .login__link {
+    text-decoration none
+    color $primary
   }
 </style>
