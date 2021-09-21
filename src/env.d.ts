@@ -59,6 +59,7 @@ declare interface ICesiumEntity {
     width?: number;
     height?: number;
     image?: string | HTMLCanvasElement
+    pixelOffset?: any
   } | null,
   label: ICesiumEntityLabel | null,
   point: {

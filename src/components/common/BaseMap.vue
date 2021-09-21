@@ -68,7 +68,8 @@
         pointCoords: state => state.pointCoords,
         isDraw: state => state.isDraw,
         pickedFeatureId: state => state.pickedFeatureId,
-        clustering: state => state.clustering
+        clustering: state => state.clustering,
+        getEntityDistance: state => state.getEntityDistance
       }),
 
       isMobile () {
@@ -113,10 +114,10 @@
         this.entitySelected(null);
       },
 
-      flyTo ({ cesiumInstance = this.cesiumInstance, coords }) {
+      flyTo ({ cesiumInstance = this.cesiumInstance, coords, maximumHeight = 5000, zOffset = 1000 }) {
         cesiumInstance.viewer.scene.camera.flyTo({
-          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, { ...coords }), 1000),
-          maximumHeight: 5000
+          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, { ...coords }), zOffset),
+          maximumHeight
         });
       },
 
@@ -139,7 +140,7 @@
 
         const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
 
-        this.flyTo({ coords: innoCoords });
+        this.flyTo({ coords: innoCoords, zOffset: 12000 });
 
         cesiumInstance.viewer.scene.requestRenderMode = true;
         cesiumInstance.viewer.scene.skyBox.show = false;
@@ -194,6 +195,7 @@
 
         dataSource.clustering.clusterEvent.addEventListener(
           function (clusteredEntities, cluster) {
+            cluster.zIndex = 3;
             cluster.label.show = false;
             cluster.billboard.show = true;
             cluster.billboard.id = cluster.label.id;
@@ -202,6 +204,7 @@
             for (const size of sizes) {
               if (clusteredEntities.length >= size) {
                 const marker = markers[size];
+                cluster.billboard.zIndex = 3;
                 cluster.billboard.width = marker.width;
                 cluster.billboard.height = marker.height;
                 cluster.billboard.image = marker.render(String(size));
@@ -234,32 +237,36 @@
 
           render(ds.entities.values);
 
+          /*
+             todo - автор, бери id текущей сущности из хранилища.
+             P.S. не забудь сначала его туда положить.
+           */
           const pickedId = this.$route.query.id;
-
           if (pickedId) {
             this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
           } else {
             viewer.zoomTo(cesiumObject);
           }
+          /* end todo */
+
+          this.onChangePickedFeatureId(this.pickedFeatureId);
         });
       },
 
       onChangePickedFeatureId (val) {
         const { datasource, viewer } = this.$refs.ds;
+        const entity = datasource.entities.getById(val);
 
-        if (val === null) {
+        if (!entity) {
           viewer.selectedEntity = null;
         } else {
-          const entity = datasource.entities.getById(val);
-          if (entity) {
-            viewer.flyTo(entity,{
-              offset: new Cesium.HeadingPitchRange(
-                viewer.camera.heading,
-                viewer.camera.pitch,
-                800.0
-              )
-            });
-          }
+          viewer.flyTo(entity,{
+            offset: new Cesium.HeadingPitchRange(
+              viewer.camera.heading,
+              viewer.camera.pitch,
+              this.getEntityDistance
+            )
+          });
           viewer.selectedEntity = entity;
         }
       }

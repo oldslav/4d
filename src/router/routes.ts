@@ -371,7 +371,8 @@ const routes: RouteConfig[] = [
     },
     meta: {
       map: true,
-      isBurger: true
+      isBurger: true,
+      prod: true
     },
     children: [
       {
@@ -385,7 +386,8 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
-          unauthorized: true
+          unauthorized: true,
+          prod: true
         },
         children: [
           {
@@ -399,7 +401,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           }
         ]
@@ -429,7 +432,8 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
-          unauthorized: true
+          unauthorized: true,
+          prod: true
         },
         children: [
           {
@@ -443,7 +447,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           },
           {
@@ -457,7 +462,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           },
           {
@@ -471,7 +477,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           }
         ]
@@ -487,6 +494,36 @@ const routes: RouteConfig[] = [
           toolbar: true,
           unauthorized: true
         }
+      },
+      {
+        path: "engineering",
+        name: "map-engineering",
+        components: {
+          default: (): Promise<any> => import("pages/maps/engineering/MapsEngineering.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/engineering/AsideMapsEngineering.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true
+        },
+        children: [
+          {
+            path: ":layer/:id",
+            name: "map-engineering-item",
+            components: {
+              default: (): Promise<any> => import("pages/maps/engineering/MapsEngineeringItem.vue"),
+              asideEngineering: (): Promise<any> => import("components/aside/maps/engineering/AsideMapsEngineeringItem.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true,
+              unauthorized: true
+            }
+          }
+        ]
       }
     ]
   },

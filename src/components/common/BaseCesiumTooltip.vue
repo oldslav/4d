@@ -88,17 +88,17 @@
           const currentId = this.entity ? this.entity.id : null;
 
           if (targetEntity && targetEntity.id && targetEntity.id !== currentId) {
-            this.onMouseEnterEntity(viewer, targetEntity);
+            this.onMouseEnterEntity(viewer, targetEntity, movement);
           } else if (!targetEntity) {
             this.onMouseOutEntity();
           }
         }, window.Cesium.ScreenSpaceEventType.MOUSE_MOVE);
       },
 
-      onMouseEnterEntity (viewer, entity) {
+      onMouseEnterEntity (viewer, entity, movement) {
         this.entity = {
           id: entity.id,
-          position: this.getEntityPosition(viewer, entity),
+          position: this.getEntityPosition(viewer, entity, movement),
           properties: entity.properties.propertyNames.reduce((res, name) => {
             res[name] = entity.properties[name].getValue();
             return res;
@@ -106,7 +106,7 @@
         };
       },
 
-      getEntityPosition (viewer, entity) {
+      getEntityPosition (viewer, entity, movement) {
         if (entity.position) {
           const position3d = entity.position.getValue();
           return window.Cesium.SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, position3d);
@@ -117,6 +117,8 @@
           const orientedBoundingBox = window.Cesium.OrientedBoundingBox.fromPoints(positions);
 
           return window.Cesium.SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, orientedBoundingBox.center);
+        } else {
+          return movement.endPosition;
         }
 
         return { x: 0, y: 0 };

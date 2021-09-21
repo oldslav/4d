@@ -589,7 +589,15 @@
       },
       "parking": {
         "title": "Parking lots",
+        "lots": {
+          "free": "Парковочных мест свободно",
+          "total": "Парковочных мест всего"
+        },
         "parkingType": "Parking type",
+        "level": "Уровень парковки",
+        "parkingCount": "Количество парковочных мест",
+        "entries": "Количество въездов на парковку",
+        "exits": "Количество выездов из парковки",
         "types": {
           "common": "Parking",
           "social": "Social parking",
@@ -958,6 +966,17 @@
       },
       "security": {
         "title": "City safety"
+      },
+      "engineering": {
+        "menu": "Engineering and utility infrastructure",
+        "name": "Object name",
+        "elevation": "elevation",
+        "diameter": "Diameter",
+        "hatchRingMark": "Hatch Ring Mark",
+        "gasketTopMark": "Top gasket mark",
+        "bottomMark": "Bottom Mark",
+        "meter": "m",
+        "centimeter": "cm"
       }
     },
     "data": "Data",
