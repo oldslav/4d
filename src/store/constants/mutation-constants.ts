@@ -26,6 +26,7 @@ export const SET_POINT_COORDS = "SET_POINT_COORDS";
 export const SET_DRAW_TYPE = "SET_DRAW_TYPE";
 export const SET_CESIUM = "SET_CESIUM";
 export const SET_CLUSTERING = "SET_CLUSTERING";
+export const SET_MAP_ENTITY_DISTANCE = "SET_MAP_ENTITY_DISTANCE";
 export const SET_USER = "SET_USER";
 export const SET_EMPTY = "SET_EMPTY";
 export const SET_INSTANCE = "SET_INSTANCE";

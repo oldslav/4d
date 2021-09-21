@@ -48,9 +48,15 @@
             show: true
           },
           {
-            label: "Безопасность города",
+            label: this.$t("entity.maps.security.title"),
             action: { name: "map-security" },
             icon: "o_lock",
+            show: this.isUserGIS || this.isEmployee
+          },
+          {
+            label: this.$t("entity.maps.engineering.menu"),
+            action: { name: "map-engineering" },
+            icon: "engineering",
             show: this.isUserGIS || this.isEmployee
           }
         ];
