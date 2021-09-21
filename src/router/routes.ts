@@ -500,7 +500,8 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
-          unauthorized: true
+          unauthorized: true,
+          prod: true
         },
         children: [
           {
@@ -514,7 +515,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           }
         ]
