@@ -4,6 +4,8 @@ import excursion from "./excursion";
 import stop from "./stop";
 import building from "./building";
 import camera from "./camera";
+import well from "./well";
+import pipe from "./pipe";
 
 export default [
   place,
@@ -11,5 +13,7 @@ export default [
   excursion,
   stop,
   building,
-  camera
+  camera,
+  well,
+  pipe
 ];

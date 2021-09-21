@@ -16,7 +16,7 @@ import {
   SET_CESIUM,
   SET_GEODATA,
   SET_POINT_COORDS,
-  SET_USER
+  SET_USER, SET_MAP_ENTITY_DISTANCE
 } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
@@ -38,7 +38,8 @@ const initialState = (): GeoState => {
     pointCoords: null,
     isDraw: null,
     cesiumInstance: null,
-    clustering: true
+    clustering: true,
+    entityDistance: null
   };
 };
 
@@ -52,7 +53,8 @@ const mutations: MutationTree<GeoState> = {
   [SET_POINT_COORDS]: (state, payload) => state.pointCoords = payload,
   [SET_DRAW_TYPE]: (state, payload) => state.isDraw = payload,
   [SET_CESIUM]: (state, payload) => state.cesiumInstance = payload,
-  [SET_CLUSTERING]: (state, payload) => state.clustering = payload
+  [SET_CLUSTERING]: (state, payload) => state.clustering = payload,
+  [SET_MAP_ENTITY_DISTANCE]: (state, distance) => state.entityDistance = distance || 1000
 };
 
 const actions: ActionTree<GeoState, TRootState> = {
@@ -250,16 +252,21 @@ const actions: ActionTree<GeoState, TRootState> = {
 
 const getters: GetterTree<GeoState, TRootState> = {
   pickedFeature (state) {
-    if (state.geoJson) {
-      switch (state.geoJson.type) {
+    const pickedFeatureId = state.pickedFeatureId;
+    const geoJson = state.geoJson;
+
+    if (geoJson) {
+      switch (geoJson.type) {
         case "geoJson":
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          return state.geoJson.data.features.find((i: any) => Number(i.id) === Number(state.pickedFeatureId));
+          // eslint-disable-next-line eqeqeq
+          return geoJson.data.features.find((i: any) => i.id == pickedFeatureId);
         case "pointPrimitive":
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          return state.geoJson.data.find((i: any) => Number(i.id) === Number(state.pickedFeatureId));
+          // eslint-disable-next-line eqeqeq
+          return geoJson.data.find((i: any) => i.id == pickedFeatureId);
       }
     }
   },
@@ -271,6 +278,9 @@ const getters: GetterTree<GeoState, TRootState> = {
   },
   getGeoJson (state){
     return state.geoJson;
+  },
+  getEntityDistance (state){
+    return state.entityDistance;
   }
 };
 
