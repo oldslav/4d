@@ -6,6 +6,7 @@ import building from "./building";
 import camera from "./camera";
 import well from "./well";
 import pipe from "./pipe";
+import engineeringUnit from "./engineering-unit";
 
 export default [
   place,
@@ -15,5 +16,6 @@ export default [
   building,
   camera,
   well,
-  pipe
+  pipe,
+  engineeringUnit
 ];
