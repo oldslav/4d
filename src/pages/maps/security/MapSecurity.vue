@@ -9,7 +9,7 @@
 <script>
   import BaseCesiumTooltip from "../../../components/common/BaseCesiumTooltip";
   import { FETCH_SECURITY_MAP } from "../../../store/constants/action-constants";
-  import { SET_CLUSTERING } from "../../../store/constants/mutation-constants";
+  import { SET_CLUSTERING, SET_GEODATA } from "../../../store/constants/mutation-constants";
 
   export default {
     name: "MapSecurity",
@@ -25,6 +25,10 @@
     },
     mounted () {
       this.$store.commit(`services/${ SET_CLUSTERING }`, true);
+    },
+    beforeRouteLeave (to, from, next){
+      this.$store.commit(`services/${ SET_GEODATA }`, null);
+      next();
     }
   };
 </script>
