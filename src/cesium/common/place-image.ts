@@ -2,7 +2,8 @@ const PLACE_IMAGES_CACHE: Record<string, HTMLCanvasElement> = {};
 
 interface IPlacePointOptions {
   color: string;
-  label: string;
+  label?: string;
+  size?: number;
 }
 
 interface IStubImageOptions {
@@ -13,9 +14,9 @@ interface IImageOptions extends IStubImageOptions{
   src: string;
 }
 
-export const renderPlacePoint = ({ color, label }: IPlacePointOptions): string => {
-  const source = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none">
-    <circle fill="${ color }" r="10" cy="10" cx="10"/>
+export const renderPlacePoint = ({ color, label, size = 20 }: IPlacePointOptions): string => {
+  const source = `<svg width="${ size }" height="${ size }" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <circle fill="${ color }" r="${ size/2 }" cy="${ size/2 }" cx="${ size/2 }"/>
     <text
             font-style="normal"
             font-weight="normal"
@@ -30,7 +31,7 @@ export const renderPlacePoint = ({ color, label }: IPlacePointOptions): string =
             fill="#ffffff">{label}</text>
     </svg>`;
 
-  const result = source.replace("{label}", label);
+  const result = source.replace("{label}", label || "");
   return "data:image/svg+xml;base64," + btoa(result);
 };
 
