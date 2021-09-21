@@ -17,7 +17,11 @@
   export default {
     name: "MapsEngineering",
     components: { BaseCesiumTooltip },
-    async preFetch ({ store, currentRoute }) {
+    async preFetch ({ store, currentRoute, redirect }) {
+      if (!store.getters.isUserGIS){
+        return redirect({ name:"map" });
+      }
+
       await store.dispatch(`maps/engineering/${ FETCH_ENGINEERING_MENU }`);
       store.commit(`services/${ SET_GEODATA }`, null);
 
