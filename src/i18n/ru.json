@@ -1,11 +1,11 @@
 {
   "common": {
     "locales": {
-      "ru-RU": {
+      "RU": {
         "alias": "RU",
         "full": "Русский"
       },
-      "en-US": {
+      "EN": {
         "alias": "EN",
         "full": "Английский"
       }

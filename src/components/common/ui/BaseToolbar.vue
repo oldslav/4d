@@ -130,12 +130,12 @@
       locales () {
         return [
           {
-            value: "ru-RU",
-            label: this.$t("common.locales.ru-RU.alias")
+            value: "RU",
+            label: this.$t("common.locales.RU.alias")
           },
           {
-            value: "en-US",
-            label: this.$t("common.locales.en-US.alias")
+            value: "EN",
+            label: this.$t("common.locales.EN.alias")
           }
         ];
       }
