@@ -40,7 +40,7 @@
             q-item-section(avatar)
               span.security-layer__color(:style="{ backgroundColor: layer.color }")
             q-item-section
-              | {{ layer | i18nName }}
+              | {{ layer }} {{ layer | i18nName }}
 
             q-btn(
               @click.stop.prevent="toggleLayerVisibility(layer.id)"
