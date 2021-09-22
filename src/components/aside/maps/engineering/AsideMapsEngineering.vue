@@ -1,61 +1,64 @@
 <template lang="pug">
   aside-router-view(name="asideEngineering")
-    q-list
-      q-item.q-py-lg.text-subtitle(clickable :to="{ name: 'map' }")
-        q-item-section.list-item-avatar(avatar)
-          q-icon.text-primary(name="arrow_back")
-        q-item-section(avatar)
-          | {{ getMenu | i18nName }}
+    div.full-height.flex.column
+      q-list
+        q-item.q-py-lg.text-subtitle(clickable :to="{ name: 'map' }")
+          q-item-section.list-item-avatar(avatar)
+            q-icon.text-primary(name="arrow_back")
+          q-item-section(avatar)
+            | {{ getMenu | i18nName }}
 
       q-separator
 
-      q-expansion-item(
-        v-for="section in getMenu.subSections"
-        :key="section.id"
-        :header-style="{ 'fontSize': '16px' }"
-        :ref="`section:${section.id}`"
-        :value="sectionId === section.id"
-        @show="onShowSection(section.id)"
-        group="sections"
-        switch-toggle-side
-        expand-separator
-      )
-        div.row.items-center.full-width(slot="header")
-          div.col {{ section | i18nName }}
-          div.col-auto
-            q-btn(
-              @click.stop.prevent="toggleSectionVisibility(section.id)"
-              size="12px"
-              :icon="!sectionsVisibility[section.id] ? 'visibility_off' : 'visibility'"
-              flat
-              dense
-              round
-            )
-
-        q-inner-loading(:showing="!(section.id in getGeoJSON)")
-          q-spinner(size="36px" color="primary")
-
-        q-list(
-          :class="{'layer__list_invisible': !(section.id in getGeoJSON), 'layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
+      div.column.col.items-center.justify-center.text-h6(v-if="!getMenu.subSections.length") {{ $t('common.noData') }}
+      div.full-width(v-else)
+        q-expansion-item(
+          v-for="section in getMenu.subSections"
+          :key="section.id"
+          :header-style="{ 'fontSize': '16px' }"
+          :ref="`section:${section.id}`"
+          :value="sectionId === section.id"
+          @show="onShowSection(section.id)"
+          group="sections"
+          switch-toggle-side
+          expand-separator
         )
-          q-item(
-            v-for="layer in section.layers"
-            :key="layer.id"
-            clickable
-          )
-            q-item-section(avatar)
-              span.layer__color(:style="{ backgroundColor: layer.color }")
-            q-item-section
-              | {{ layer | i18nName }}
+          div.row.items-center.full-width(slot="header")
+            div.col {{ section | i18nName }}
+            div.col-auto
+              q-btn(
+                @click.stop.prevent="toggleSectionVisibility(section.id)"
+                size="12px"
+                :icon="!sectionsVisibility[section.id] ? 'visibility_off' : 'visibility'"
+                flat
+                dense
+                round
+              )
 
-            q-btn(
-              @click.stop.prevent="toggleLayerVisibility(layer.id)"
-              :icon="disabledLayers[layer.id] ? 'visibility_off' : 'visibility'"
-              size="12px"
-              flat
-              dense
-              round
+          q-inner-loading(:showing="!(section.id in getGeoJSON)")
+            q-spinner(size="36px" color="primary")
+
+          q-list(
+            :class="{'layer__list_invisible': !(section.id in getGeoJSON), 'layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
+          )
+            q-item(
+              v-for="layer in section.layers"
+              :key="layer.id"
+              clickable
             )
+              q-item-section(avatar)
+                span.layer__color(:style="{ backgroundColor: layer.color }")
+              q-item-section
+                | {{ layer | i18nName }}
+
+              q-btn(
+                @click.stop.prevent="toggleLayerVisibility(layer.id)"
+                :icon="disabledLayers[layer.id] ? 'visibility_off' : 'visibility'"
+                size="12px"
+                flat
+                dense
+                round
+              )
 </template>
 
 <script>

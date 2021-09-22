@@ -62,6 +62,7 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
               feature.properties.layer = section.layers[i].id;
               feature.properties.id = feature.id;
               feature.id = `${ feature.id }_${ section.layers[i].id }`;
+              feature.properties.type = feature.properties.type || "engineering-unit";
               return feature;
             })
           ),

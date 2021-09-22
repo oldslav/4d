@@ -1,9 +1,6 @@
 <template lang="pug">
   div#q-app
     q-no-ssr
-      // Preload cesium placeholder
-      div.preload-map(v-show="visibleMapPlaceholder")
-        vc-viewer(@ready="onReadyMapPlaceholder")
       q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
     q-layout(ref="layout" view="hHh Lpr lFf")
       template(v-if="isMobile")
@@ -78,6 +75,10 @@
         AuthModal(v-model="auth")
 
       MailConfirmedModal(v-model="showMailConfirmedModal" @show-auth="showAuthAfterConfirmation")
+    q-no-ssr
+      // Preload cesium placeholder
+      div.preload-map(v-if="isVisibleMap")
+        vc-viewer(@ready="onReadyMapPlaceholder")
 </template>
 
 <script>
@@ -117,7 +118,7 @@
         showMailConfirmedModal: false,
         isBurger: false,
         isSettings: false,
-        visibleMapPlaceholder: true
+        mapReady: false
       };
     },
     computed: {
@@ -170,6 +171,10 @@
             label: this.$t("common.locales.en-us.alias")
           }
         ];
+      },
+
+      isVisibleMap (){
+        return !this.mapReady && !this.$route.meta.map;
       }
     },
     methods: {
@@ -222,7 +227,7 @@
       },
 
       onReadyMapPlaceholder (){
-        this.visibleMapPlaceholder = false;
+        this.mapReady = true;
       }
     },
     watch: {
