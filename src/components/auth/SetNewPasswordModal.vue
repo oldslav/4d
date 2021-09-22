@@ -8,7 +8,7 @@
       q-form(@submit.prevent="onSubmit()")
         q-card-section.row.items-center.q-pb-none
           .text-medium
-            | Задайте новый пароль
+            | {{ $t("common.passwordReset.setNew") }}
           q-space
           q-btn(icon="close" flat round dense v-close-popup)
         q-card-section
@@ -104,14 +104,14 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: "Пароль успешно изменен"
+              message: this.$t("common.passwordReset.response.changeSuccess")
             });
             this.toggleModal(false);
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: "Ошибка при изменении пароля"
+              message: this.$t("common.passwordReset.response.changeFail")
             });
           });
       }
