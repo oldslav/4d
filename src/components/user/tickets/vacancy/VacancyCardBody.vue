@@ -5,7 +5,7 @@
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.profIndustry') }}
-        div.text-body1.q-mt-sm.break-word {{ value.profIndustry.description }}
+        div.text-body1.q-mt-sm.break-word {{ value.profIndustry.text }}
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.salary') }}
@@ -14,15 +14,15 @@
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.experience') }}
-        div.text-body1.q-mt-sm {{ value.experience.description }}
+        div.text-body1.q-mt-sm {{ value.experience.text }}
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.schedule') }}
-        div.text-body1.q-mt-sm {{ value.workSchedule.description }}
+        div.text-body1.q-mt-sm {{ value.workSchedule.text }}
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.employmentType') }}
-        div.text-body1.q-mt-sm {{ value.employmentType.description }}
+        div.text-body1.q-mt-sm {{ value.employmentType.text }}
 
       div.q-mb-lg
         div.text-caption.text-grey-8 {{ $t('user.tickets.vacancies.forms.create.address') }}

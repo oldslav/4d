@@ -181,7 +181,7 @@
       },
       getClosureReasonsOptions () {
         return this.getVacancyReferences[VacancyReferencesEnum.closureReason]
-          .map(closureReason => ({ value: closureReason.id, label: closureReason.description }));
+          .map(closureReason => ({ value: closureReason.id, label: closureReason.text }));
       }
     },
     methods: {
