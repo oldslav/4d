@@ -186,7 +186,6 @@ const actions: ActionTree<GeoState, TRootState> = {
       type: "geoJson"
     };
     // Временно по просьбе Саши, пока здание одно
-    console.log(preparedData);
     const { id } = preparedData.data.features[0];
     commit(SET_FEATURE_ID, id);
     commit(SET_GEODATA, preparedData);
