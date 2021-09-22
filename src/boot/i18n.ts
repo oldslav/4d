@@ -49,8 +49,8 @@ const pluralizationRules = {
 };
 
 export const i18n = new VueI18n({
-  locale: "ru",
-  fallbackLocale: "en-us",
+  locale: "ru-RU",
+  fallbackLocale: "en-US",
   messages,
   pluralizationRules,
   numberFormats
@@ -60,6 +60,6 @@ export default boot(({ app }) => {
   const application = app as any;
 
   // Set i18n instance on app
-  i18n.locale = application.$cookies.get("locale") || "ru";
+  i18n.locale = application.$cookies.get("locale") || "ru-Ru";
   app.i18n = i18n;
 });
