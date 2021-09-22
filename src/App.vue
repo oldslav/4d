@@ -100,7 +100,7 @@
       if (!this.isAuthenticated) {
         this.checkForMailConfirmed();
       }
-      if (!this.showMailConfirmedModal) this.auth = !this.isAuthenticated;
+      if (!this.showMailConfirmedModal && !this.isPasswordReset) this.auth = !this.isAuthenticated;
     },
     mounted () {
       this.$q.dark.set(this.$q.cookies.get("darkMode") === true);
@@ -123,6 +123,9 @@
     },
     computed: {
       ...mapGetters(["isAuthenticated"]),
+      isPasswordReset () {
+        return !!this.$route.query.token;
+      },
       meta () {
         return this.$route.meta;
       },
@@ -195,12 +198,12 @@
         this.auth = true;
       },
 
-      onRouteChangedBegin (from ,to ,next) {
+      onRouteChangedBegin (from, to, next) {
         if (this.isStartedLoading) {
           this.$refs.progress.stop();
         }
 
-        if(from.path !== to.path) {
+        if (from.path !== to.path) {
           this.$refs.progress.start();
           this.isStartedLoading = true;
         }

@@ -129,7 +129,15 @@
                   q-item-label.text-primary-light
                     | {{ $t("entity.services.parking.parkingCount") }}
                   q-item-label
-                    | {{ getParkingInfo.building.parkingCount }}
+                    | {{ getParkingInfo.spaces }}
+            .col-12(v-if="!!getParkingInfo.videos.length")
+              q-item
+                q-item-section
+                  q-item-label.text-primary-light
+                    | {{$t("entity.maps.buildings.reviews")}}
+                  q-item-label(v-for="(video, index) in getParkingInfo.videos" :key="index").ellipsis
+                    a(target="_blank" :href="video.path")
+                      | {{video.path}}
             .col-12
               q-separator
             .col-12.col-md-6
@@ -143,11 +151,16 @@
               q-item
                 q-item-section
                   q-item-label.text-primary-light
-                    | {{$t('entity.maps.buildings.constructYear')}}
+                    | {{$t("entity.maps.buildings.constructYear")}}
                   q-item-label
                     | {{ getParkingInfo.building.constructYear }}
-            .col-12(v-if="getParkingInfo.documents")
+            .col-12(v-if="getParkingInfo.regulations")
               q-separator
+            .col-12
+              DownloadTemplate(
+                :path="getParkingInfo.regulations.imagePath"
+                :name="$t('entity.files.parkingRegulations')"
+              ).q-px-md
 </template>
 
 <script>
@@ -156,10 +169,11 @@
   import BaseModal from "../common/BaseModal";
   import BaseTabs from "../common/BaseTabs";
   import ImageSlider from "components/common/ImageSlider";
+  import DownloadTemplate from "components/user/tickets/DownloadTemplate";
 
   export default {
     name: "ParkingHoverModal",
-    components: { ImageSlider, BaseTabs, BaseModal },
+    components: { DownloadTemplate, ImageSlider, BaseTabs, BaseModal },
     props: {
       value: {
         type: Boolean,

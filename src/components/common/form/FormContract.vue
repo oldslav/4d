@@ -56,6 +56,10 @@
         type: String,
         default: null
       },
+      end: {
+        type: String,
+        default: null
+      },
       lasts: {
         type: Number,
         default: null
@@ -118,6 +122,14 @@
         handler (val) {
           if (val) {
             this.startDate = moment(val).format("YYYY-MM-DD");
+          }
+        }
+      },
+      end: {
+        immediate: true,
+        handler (val) {
+          if (val && !this.lasts) {
+            this.endDate = moment(val).format("YYYY-MM-DD");
           }
         }
       },

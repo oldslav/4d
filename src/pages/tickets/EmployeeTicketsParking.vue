@@ -81,8 +81,9 @@
                         | Введите данные договора.
                       FormContract(
                         @submit="sendContractInfo($event, props.row.id)"
-                        :start="props.row.updated"
-                        :lasts="props.row.price.period"
+                        :start="props.row.isGuestVisit ? props.row.startDate : props.row.updated"
+                        :end="props.row.isGuestVisit ? props.row.endDate : null"
+                        :lasts="!props.row.isGuestVisit ? props.row.price.period : null"
                       )
 
     TicketDetailsModal(:id.sync="activeId" v-model="showDetailsModal" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
