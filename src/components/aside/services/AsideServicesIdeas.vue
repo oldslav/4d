@@ -34,7 +34,7 @@
                 template(v-if="item.likes")
                   span.q-mx-sm |
                   q-icon(name="favorite" size="11px").q-mr-xs
-                  span {{ item.likes.count }}
+                  span {{ item.likes.amount }}
         q-inner-loading(:showing="isLoading" color="primary")
     div
       q-btn(color="primary" label="Отметить на карте" @click="componentInstance.toggle('handlerPoint')").full-width
