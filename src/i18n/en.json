@@ -41,6 +41,17 @@
       "subtitle": "It's good to be at the forefront of various technologies",
       "noAccount": "Don't have an account yet?"
     },
+    "passwordReset": {
+      "title": "Восстановление пароля",
+      "message": "Напишите адрес электронной почты, с помощью которой вы зарегистрировались. Мы отправим на указанный адрес письмо с инструкцией по сбросу пароля.",
+      "setNew": "Задайте новый пароль",
+      "error": "Данный Email не найден в системе",
+      "response": {
+        "changeSuccess": "Пароль успешно изменен",
+        "changeFail": "Ошибка при изменении пароля",
+        "resetFail": "Ошибка при сбросе пароля"
+      }
+    },
     "register": {
       "title": "Registration",
       "subtitle": "Become a part of the Innopolis city and change it with us",
@@ -913,7 +924,8 @@
       "social_confirm": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
       "ogrn": "Скан-копия ОГРН",
       "egrjul": "Скан-копия выписки из ЕГРЮЛ",
-      "partner_card": "Скан-копия карты партнера"
+      "partner_card": "Скан-копия карты партнера",
+      "parkingRegulations": "Регламент пользования подземной парковкой"
     },
     "tickets": {
       "title": "Tickets",
@@ -962,7 +974,8 @@
         "buildingDescription": "Description",
         "buildingCommerce": "Organizations",
         "phone": "Phone",
-        "link": "Site"
+        "link": "Site",
+        "reviews": "Video reviews"
       },
       "security": {
         "title": "City safety"

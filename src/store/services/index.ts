@@ -76,10 +76,10 @@ const actions: ActionTree<GeoState, TRootState> = {
           } else if (i.properties.parking_places_type === "Льготное") {
             i.properties.layer = 2;
             i.properties.fill = "#298BAF";
-              if (!i.properties.free) {
-                i.properties.layer = 3;
-                i.properties.fill = "#FF6565";
-              }
+            if (!i.properties.free) {
+              i.properties.layer = 3;
+              i.properties.fill = "#FF6565";
+            }
           }
 
           i.properties.visibility = true;
@@ -273,13 +273,13 @@ const getters: GetterTree<GeoState, TRootState> = {
   getPickedFeatureId (state) {
     return state.pickedFeatureId;
   },
-  getCesium (state){
+  getCesium (state) {
     return state.cesiumInstance;
   },
-  getGeoJson (state){
+  getGeoJson (state) {
     return state.geoJson;
   },
-  getEntityDistance (state){
+  getEntityDistance (state) {
     return state.entityDistance;
   }
 };

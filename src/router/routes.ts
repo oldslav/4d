@@ -14,6 +14,12 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/auth/newpass",
+    redirect: {
+      name: "main"
+    }
+  },
+  {
     path: "/about",
     name: "about",
     component: (): Promise<any> => import("pages/About.vue"),

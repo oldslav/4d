@@ -18,7 +18,7 @@
                 .col-12.col-sm-6.col-md-6
                   q-card.row.bg-white.q-ma-sm.q-pa-md.apartments-list-item
                     q-card-section.col-12.col-sm-6.col-md-6.full-height
-                      q-img(:src="imagePlan(props.row.plan)" :ratio="16/9" contain).full-height
+                      q-img(:src="imagePlan(props.row.plan.imagePath)" :ratio="16/9" contain).full-height
                     q-card-section.col-12.col-sm-6.col-md-6
                       h5.q-mt-none.text-subtitle {{ $t("entity.services.living.apartment") }} № {{ props.row.number }}
 

@@ -6,7 +6,7 @@
           q-card-section
             .text-h6.q-mb-md
               | {{ $t('entity.services.commerce.premisesNumber', {number: getCurrentPlace.id}) }}
-            q-img(:src="imagePlan(getCurrentPlace.plan)" :ratio="16/9" contain).full-height
+            q-img(:src="imagePlan(getCurrentPlace.plan.imagePath)" :ratio="16/9" contain).full-height
         .col-4
           q-card-section
             .row.items-center.justify-between.no-wrap
@@ -59,6 +59,9 @@
     components: { ModalSuccess, ModalFail, CommerceTicketModal },
     preFetch ({ currentRoute, store }) {
       return store.dispatch(`services/commerce/${ GET_COMMERCE_PLACE }`, currentRoute.params.id);
+    },
+    created () {
+      console.log(this.getCurrentPlace);
     },
     data () {
       return {
