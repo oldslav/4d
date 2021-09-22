@@ -164,8 +164,8 @@
             label: this.$t("common.locales.ru.alias")
           },
           {
-            value: "en-us",
-            label: this.$t("common.locales.en-us.alias")
+            value: "EN",
+            label: this.$t("common.locales.EN.alias")
           }
         ];
       },
