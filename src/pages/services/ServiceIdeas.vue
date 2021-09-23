@@ -2,7 +2,7 @@
   .q-pa-lg(style="height: calc(100vh - 50px)")
     .col-12.column.justify-between.full-height(v-if="componentInstance")
       .row
-        IdeaDetailsCard(v-if="fzz" :id="fzz")
+        IdeaDetailsCard(v-if="id" :id="id")
         q-inner-loading(:showing="isLoading")
       //.text-center
       //  q-btn(color="primary" label="Создать заявку" @click="setDrawType('pointPrimitive')")
@@ -26,7 +26,9 @@
       }
     },
     async created () {
-      await this.GET_REFERENCES();
+      if (!this.references) {
+        await this.GET_REFERENCES();
+      }
     },
     data () {
       return {
@@ -41,7 +43,11 @@
         isDraw: state => state.isDraw
       }),
 
-      fzz () {
+      ...mapState("services/ideas", {
+        references: state => state.references
+      }),
+
+      id () {
         return this.$route.query.id;
       },
 
@@ -86,6 +92,7 @@
           type: "positive",
           message: "Идея успешно создана"
         });
+        this.pointCoords = null;
       },
 
       async onViewerReady () {

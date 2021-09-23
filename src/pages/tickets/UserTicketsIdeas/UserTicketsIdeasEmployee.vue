@@ -13,17 +13,26 @@
       template(v-slot:top)
         .row.full-width.justify-between(v-if="references")
           .row.q-gutter-sm.col
+            BaseInput(
+              v-model="computedQuery"
+              hideBottom
+              :label="$t('common.search')"
+            ).col-12.col-sm-6.col-md
             BaseSelect(
               v-model="statusId"
+              hideBottom
               :options="references.crowdSourcingStatuses"
               label="Статус"
+              clearable
               optionKey="id"
               optionValue="description"
             ).col-12.col-sm-6.col-md-3
             BaseSelect(
               v-model="typeId"
+              hideBottom
               :options="references.crowdSourcingTypes"
               label="Тип"
+              clearable
               optionKey="id"
               optionValue="description"
             ).col-12.col-sm-6.col-md-3
@@ -36,22 +45,22 @@
           q-td(key="date" :props="props")
             | {{ props.row.created | formatDate }}
           q-td(key="status" :props="props")
-            | {{ currentStatus(props.row.status) }}
+            | {{ props.row.status.description }}
             //base-status(:value="props.row.status.id")
           q-td(auto-width)
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id >= 3" @click="onCancel(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id >= 3 && props.row.status.id !== 6" @click="onCancel(props.row.id)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("action.reject") }}
-                  q-item(v-if="props.row.status.id === 1" clickable v-close-popup @click="changeStatus(props.row.id, 2)")
+                  q-item(v-if="props.row.status.id === 1 || props.row.status.id === 6" clickable v-close-popup @click="changeStatus(props.row.id, 2)")
                     q-item-section(no-wrap).text-positive
                       | {{ $t("action.accept") }}
                   q-item(v-if="props.row.status.id === 3" clickable v-close-popup @click="changeStatus(props.row.id, 4)")
                     q-item-section(no-wrap).text-positive
                       | {{ $t("entity.tickets.ideas.action.finish") }}
-                  q-item(v-if="props.row.status.id === 2" clickable v-close-popup @click="changeStatus(props.row.id, 6)")
+                  q-item(v-if="props.row.status.id <= 2" clickable v-close-popup @click="changeStatus(props.row.id, 6)")
                     q-item-section(no-wrap).text-positive
                       | {{ $t("entity.tickets.ideas.action.toVote") }}
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
@@ -68,17 +77,18 @@
 <script>
   import BaseTable from "components/common/BaseTable";
   import BaseStatus from "components/common/BaseStatus";
-  import { mapActions, mapGetters, mapState } from "vuex";
+  import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import { DELETE_ITEM, GET_DATA, GET_REFERENCES, UPDATE_STATUS } from "../../../store/constants/action-constants";
   import BaseModal from "../../../components/common/BaseModal";
   import IdeaDetailsCard from "../../../components/services/ideas/IdeaDetailsCard";
   import { mapFields } from "../../../plugins/mapFields";
-  import { UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import { SET_EMPTY, SET_QUERY, UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
   import BaseSelect from "../../../components/common/BaseSelect";
+  import BaseInput from "../../../components/common/BaseInput";
 
   export default {
     name: "UserTicketsIdeasEmployee",
-    components: { BaseSelect, BaseTable, BaseStatus, BaseModal, IdeaDetailsCard },
+    components: { BaseInput, BaseSelect, BaseTable, BaseStatus, BaseModal, IdeaDetailsCard },
     async created () {
       if (!this.references) {
         this.GET_REFERENCES();
@@ -93,6 +103,7 @@
     },
     computed: {
       ...mapState("services/ideas", {
+        query: state => state.query,
         filters: state => state.filters,
         references: state => state.references
       }),
@@ -113,6 +124,16 @@
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
+
+      computedQuery: {
+        get () {
+          return this.query;
+        },
+
+        set (value) {
+          this.SET_QUERY(value);
+        }
+      },
 
       isDetailsModal: {
         isActive: false,
@@ -169,15 +190,10 @@
         GET_REFERENCES
       ]),
 
-      currentStatus (status) {
-        if (status.id === 1) {
-          return "Новая";
-        } else if (status.id === 2 || status.id === 3) {
-          return "В работе";
-        } else {
-          return status.description;
-        }
-      },
+      ...mapMutations("services/ideas", [
+        SET_QUERY,
+        SET_EMPTY
+      ]),
 
       openDetails (id) {
         this.currentId = id;
@@ -191,7 +207,7 @@
           this.offset = page;
         }
 
-        await this.GET_DATA();
+        await this.GET_DATA(true);
       },
 
       async changeStatus (id, statusId) {
@@ -237,7 +253,14 @@
         async handler () {
           await this.getUserTickets();
         }
+      },
+
+      computedQuery () {
+        this.GET_DATA(true);
       }
+    },
+    beforeDestroy () {
+      this.SET_EMPTY();
     }
   };
 </script>

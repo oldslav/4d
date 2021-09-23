@@ -22,7 +22,7 @@
           | {{  props.row.closedDate | formatDate }}
 
         q-td(key="closeReason" :props="props")
-          | {{ props.row.closureReason ? props.row.closureReason.description : '' }}
+          | {{ props.row.closureReason ? props.row.closureReason.text : '' }}
 
         q-td(key="status" :props="props")
           vacancy-ticket-status(:value="props.row.status")

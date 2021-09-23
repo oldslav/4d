@@ -18,7 +18,7 @@ const numberFormats = {
       currency: "USD"
     }
   },
-  "ru": {
+  "RU": {
     currency: {
       style: "currency",
       currency: "RUB",

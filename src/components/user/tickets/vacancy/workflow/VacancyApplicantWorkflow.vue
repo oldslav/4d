@@ -22,7 +22,7 @@
         prefix="2"
         active-icon="question_answer"
       )
-        div.rich-text {{ $t('user.tickets.vacancies.workflow.applicant.second.description') }}
+        div.rich-text {{ $t('user.tickets.vacancies.workflow.applicant.second.text') }}
 
       q-step(
         :name="3"

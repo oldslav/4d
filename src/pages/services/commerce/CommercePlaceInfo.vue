@@ -60,9 +60,6 @@
     preFetch ({ currentRoute, store }) {
       return store.dispatch(`services/commerce/${ GET_COMMERCE_PLACE }`, currentRoute.params.id);
     },
-    created () {
-      console.log(this.getCurrentPlace);
-    },
     data () {
       return {
         modalVisible: false,

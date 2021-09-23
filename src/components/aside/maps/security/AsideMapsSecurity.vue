@@ -40,7 +40,7 @@
             q-item-section(avatar)
               span.security-layer__color(:style="{ backgroundColor: layer.color }")
             q-item-section
-              | {{ layer }} {{ layer | i18nName }}
+              | {{ layer | i18nName }}
 
             q-btn(
               @click.stop.prevent="toggleLayerVisibility(layer.id)"
@@ -70,9 +70,11 @@
       canDisplaySectionVisible () {
         return this.getMenu.subSections.length > 1;
       },
+
       hasOneSection () {
         return this.getMenu.subSections.length === 1;
       },
+
       layersBySection (){
         return this.getMenu.subSections.reduce((res, subSection) => {
           res[subSection.id] = subSection.layers.map(x => x.id);

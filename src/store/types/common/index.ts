@@ -65,8 +65,8 @@ export interface Document {
 export type I18nNameLikeProps = "nameRu" | "nameEn"
 
 export enum I18nNamePropertyByLang {
-  "RU" = "nameRu",
-  "EN" = "nameEn",
+  RU = "nameRu",
+  EN = "nameEn"
 }
 
 export type I18nNameLike = {

@@ -1,23 +1,39 @@
 <template lang="pug">
-  div(v-if="cesiumInstance").q-pa-lg.full-height.column
-    //.row.q-gutter-sm(v-if="references")
-    //  BaseSelect(
-    //    clearable
-    //    v-model="statusId"
-    //    :options="references.crowdSourcingStatuses"
-    //    label="Статус"
-    //    optionKey="id"
-    //    optionValue="description"
-    //  ).col-12
-    //  BaseSelect(
-    //    clearable
-    //    v-model="typeId"
-    //    :options="references.crowdSourcingTypes"
-    //    label="Тип"
-    //    optionKey="id"
-    //    optionValue="description"
-    //  ).col-12
-    q-list(ref="infScrollContainer" style="overflow-y: auto;").column.col.q-my-md
+  div(v-if="cesiumInstance").full-height.column
+    q-item.q-py-lg.text-subtitle(clickable @click="$router.back()")
+      q-item-section.list-item-avatar(avatar)
+        q-icon.text-primary(name="arrow_back")
+      q-item-section(avatar)
+        | {{ $t("action.back") }}
+    q-separator
+    .row.q-col-gutter-sm.q-px-lg(v-if="references")
+      BaseInput(
+        v-model="computedQuery"
+        hideBottom
+          dense
+        :label="$t('common.search')"
+      ).col-12
+      BaseSelect(
+        clearable
+        v-model="statusId"
+        :options="references.crowdSourcingStatuses"
+        label="Статус"
+        optionKey="id"
+        optionValue="description"
+        hideBottom
+        dense
+      ).col
+      BaseSelect(
+        clearable
+        v-model="typeId"
+        :options="references.crowdSourcingTypes"
+        label="Тип"
+        optionKey="id"
+        optionValue="description"
+        hideBottom
+        dense
+      ).col
+    q-list(ref="infScrollContainer" style="overflow-y: auto;").column.col.q-ma-lg
       q-infinite-scroll(
         :offset="50"
         :debounce="400"
@@ -36,21 +52,28 @@
                   q-icon(name="favorite" size="11px").q-mr-xs
                   span {{ item.likes.amount }}
         q-inner-loading(:showing="isLoading" color="primary")
-    div
-      q-btn(color="primary" label="Отметить на карте" @click="componentInstance.toggle('handlerPoint')").full-width
+    div.q-mx-lg.q-mb-lg
+      q-btn(color="primary" :disable="isDrawing" :label="btnCreateLabel" @click="componentInstance.toggle('handlerPoint')").full-width
 </template>
 
 <script>
   import { mapActions, mapMutations, mapState } from "vuex";
-  import { SET_FEATURE_ID, UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import {
+    SET_EMPTY,
+    SET_FEATURE_ID,
+    SET_QUERY,
+    UPDATE_FILTERS,
+    UPDATE_PAGINATION
+  } from "../../../store/constants/mutation-constants";
   import { GET_DATA } from "../../../store/constants/action-constants";
   import { mapFields } from "../../../plugins/mapFields";
   import BaseSelect from "../../common/BaseSelect";
   import moment from "moment";
+  import BaseInput from "../../common/BaseInput";
 
   export default {
     name: "AsideServicesIdeas",
-    components: { BaseSelect },
+    components: { BaseInput, BaseSelect },
     data () {
       return {
         componentInstance: null
@@ -64,7 +87,8 @@
       ...mapState("services/ideas", {
         data: state => state.data,
         filters: state => state.filters,
-        references: state => state.references
+        references: state => state.references,
+        query: state => state.query
       }),
 
       ...mapFields("services/ideas", {
@@ -79,12 +103,32 @@
         mutation: UPDATE_FILTERS
       }),
 
+      isDrawing () {
+        return this.componentInstance.$refs.handlerPoint.drawing;
+      },
+
+      computedQuery: {
+        get () {
+          return this.query;
+        },
+
+        set (value) {
+          this.SET_QUERY(value);
+        }
+      },
+
       features () {
         return this.data && this.data.items;
       },
 
       isLoading () {
         return this.$store.state.wait[`services/ideas/${ GET_DATA }`];
+      },
+
+      btnCreateLabel () {
+        if (this.isDrawing) {
+          return "Отметьте место на карте";
+        } else return "Создать заявку";
       }
     },
     methods: {
@@ -96,7 +140,9 @@
 
       ...mapMutations("services/ideas", [
         UPDATE_PAGINATION,
-        UPDATE_FILTERS
+        UPDATE_FILTERS,
+        SET_QUERY,
+        SET_EMPTY
       ]),
 
       ...mapActions("services/ideas", {
@@ -132,7 +178,14 @@
         async handler () {
           await this.GET_DATA(true);
         }
+      },
+
+      computedQuery () {
+        this.GET_DATA(true);
       }
+    },
+    beforeDestroy () {
+      this.SET_EMPTY();
     }
   };
 </script>
