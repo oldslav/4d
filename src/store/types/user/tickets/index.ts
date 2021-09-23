@@ -9,5 +9,6 @@ export interface IUserTicketsState {
   pagination: IUserTicketsPagination;
   data: IUserTickets | null;
   current?: any | null;
+  query?: string | null;
   references?: any | null
 }

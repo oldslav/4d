@@ -15,6 +15,8 @@
     :option-label="optionValue"
     :rules="rules"
     :stack-label="stackLabel"
+    :hide-hint="hideBottom"
+    :hide-bottom-space="hideBottom"
   )
     template(v-slot:prepend)
       slot(name="prepend")
@@ -29,6 +31,10 @@
       value: {
         type: [String, Number, Array, Object, null],
         default: null
+      },
+      hideBottom: {
+        type: Boolean,
+        default: false
       },
       stackLabel: {
         type: Boolean,

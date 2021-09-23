@@ -70,9 +70,11 @@
       canDisplaySectionVisible () {
         return this.getMenu.subSections.length > 1;
       },
+
       hasOneSection () {
         return this.getMenu.subSections.length === 1;
       },
+
       layersBySection (){
         return this.getMenu.subSections.reduce((res, subSection) => {
           res[subSection.id] = subSection.layers.map(x => x.id);

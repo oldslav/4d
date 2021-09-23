@@ -96,9 +96,9 @@
         setTimeout(await this.GET_CURRENT(this.id), 100);
       },
 
-      vote (answerId) {
-        this.UPDATE_VOTE({ id: this.id, answerId });
-        this.GET_CURRENT(this.id);
+      async vote (answerId) {
+        await this.UPDATE_VOTE({ id: this.id, answerId });
+        setTimeout(this.GET_CURRENT(this.id), 300);
       }
     },
     watch: {
