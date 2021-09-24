@@ -6,7 +6,7 @@
           q-item-section.list-item-avatar(avatar)
             q-icon.text-primary(name="arrow_back")
           q-item-section(avatar)
-            | {{ getMenu | i18nName }}
+            | {{ getMenu.name }}
 
       q-separator
 
@@ -24,7 +24,7 @@
           expand-separator
         )
           div.row.items-center.full-width(slot="header")
-            div.col {{ section | i18nName }}
+            div.col {{ section.name }}
             div.col-auto
               q-btn(
                 @click.stop.prevent="toggleSectionVisibility(section.id)"
@@ -49,7 +49,7 @@
               q-item-section(avatar)
                 span.layer__color(:style="{ backgroundColor: layer.color }")
               q-item-section
-                | {{ layer | i18nName }}
+                | {{ layer.name }}
 
               q-btn(
                 @click.stop.prevent="toggleLayerVisibility(layer.id)"

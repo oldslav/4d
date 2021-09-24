@@ -1,11 +1,11 @@
 {
   "common": {
     "locales": {
-      "ru-RU": {
+      "RU": {
         "alias": "RU",
         "full": "Russian"
       },
-      "en-US": {
+      "EN": {
         "alias": "EN",
         "full": "English"
       }
@@ -36,6 +36,7 @@
     },
     "all": "Все",
     "theme": "Theme",
+    "search": "Search",
     "login": {
       "title": "Login",
       "subtitle": "It's good to be at the forefront of various technologies",

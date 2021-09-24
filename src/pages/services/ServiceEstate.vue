@@ -17,7 +17,7 @@
               disable
               dense
               class="col-12 col-sm-6 col-md"
-              label="Поиск">
+              :label="$t('common.search')">
             </BaseInput>
             <BaseSelect
               v-if="infrastructureTypes"

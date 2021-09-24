@@ -12,13 +12,13 @@ declare module "vue/types/vue" {
 Vue.use(VueI18n);
 
 const numberFormats = {
-  "en-us": {
+  "EN": {
     currency: {
       style: "currency",
       currency: "USD"
     }
   },
-  "ru": {
+  "RU": {
     currency: {
       style: "currency",
       currency: "RUB",
@@ -49,8 +49,8 @@ const pluralizationRules = {
 };
 
 export const i18n = new VueI18n({
-  locale: "ru-RU",
-  fallbackLocale: "en-US",
+  locale: "RU",
+  fallbackLocale: "EN",
   messages,
   pluralizationRules,
   numberFormats
@@ -60,6 +60,6 @@ export default boot(({ app }) => {
   const application = app as any;
 
   // Set i18n instance on app
-  i18n.locale = application.$cookies.get("locale") || "ru-Ru";
+  i18n.locale = application.$cookies.get("locale") || "RU";
   app.i18n = i18n;
 });

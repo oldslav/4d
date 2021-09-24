@@ -22,6 +22,16 @@ export class IdeasService extends Service {
     return this.api.post(`api/v1/services/crowdsourcing/${ id }/file`, files);
   }
 
+  public createComment (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/services/crowdsourcing/${ id }/comments`, payload, { headers: {
+        "Content-Type": "text/plain"
+      } });
+  }
+
+  public getComments (id: number, params: unknown): AxiosPromise<any> {
+    return this.api.get(`api/v1/services/crowdsourcing/${ id }/comments`, { params });
+  }
+
   public likeIdea (id: number): AxiosPromise<any> {
     return this.api.post(`api/v1/services/crowdsourcing/${ id }/like`);
   }

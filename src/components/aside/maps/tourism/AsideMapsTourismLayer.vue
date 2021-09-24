@@ -6,7 +6,7 @@
           q-item-section.list-item-avatar(avatar)
             q-icon.text-primary(name="arrow_back")
           q-item-section(avatar)
-            | {{ getLayer | i18nName }}
+            | {{ getLayer.name }}
         q-separator
 
         q-item.q-py-md.text-subtitle(

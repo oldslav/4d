@@ -20,6 +20,9 @@
     :mask="mask"
     :unmasked-value="unmaskedValue"
     :stack-label="stackLabel"
+    :debounce="300"
+    :hide-hint="hideBottom"
+    :hide-bottom-space="hideBottom"
   )
     template(v-if="prepend" v-slot:prepend)
       slot(name="prepend")
@@ -32,6 +35,10 @@
     name: "BaseInput",
     props: {
       error: {
+        type: Boolean,
+        default: false
+      },
+      hideBottom: {
         type: Boolean,
         default: false
       },

@@ -2,7 +2,7 @@
   q-card
     q-card-section
       div.q-mb-md.sm-hide.xs-hide
-        q-badge(color="blue-grey-1" text-color="dark") {{ value.profIndustry.description }}
+        q-badge(color="blue-grey-1" text-color="dark") {{ value.profIndustry.text }}
       div.row
         div.col-md.col-lg.col-xs-12.col-sm-12.q-pr-md-md.q-pr-md-lg
           div.text-h6
