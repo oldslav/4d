@@ -58,6 +58,12 @@
             action: { name: "map-engineering" },
             icon: "engineering",
             show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.maps.transport.title"),
+            action: { name: "map-transport" },
+            icon: "directions_bus",
+            show: true
           }
         ];
       }

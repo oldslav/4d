@@ -991,6 +991,19 @@
         "bottomMark": "Bottom Mark",
         "meter": "m",
         "centimeter": "cm"
+      },
+      "transport": {
+        "title": "Transport infrastructure",
+        "type": "Type",
+        "address": "Address",
+        "regulations": "Terms of use",
+        "area": "Area",
+        "height": "Height",
+        "width": "Width",
+        "length": "Length",
+        "manufacturer": "Developer",
+        "installedYear": "Installation year",
+        "material": "Material"
       }
     },
     "data": "Data",
