@@ -51,6 +51,13 @@
             .text-body1
               a(role="button" @click="downloadList()").apartment-info__link
                 | {{ getApartmentInfo.equipment.fileName }}
+          .row.items-center.justify-between.no-wrap.q-mt-md(v-if="!!getApartmentInfo.videos.length")
+            .text-body1
+              | {{$t("entity.maps.buildings.reviews")}}
+            .text-body1
+              div(v-for="(video, index) in getApartmentInfo.videos" :key="index").ellipsis
+                a(target="_blank" :href="video.path")
+                  | {{video.path}}
           ImageSlider(:value="getImages" :slides-to-show="4").q-mt-md
     q-card-actions(align="right")
       q-btn(color="primary" :label="$t('action.rent')" @click="onRent()").q-px-xl.q-py-sm
