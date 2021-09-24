@@ -5,7 +5,7 @@
         q-item-section.list-item-avatar(avatar)
           q-icon.text-primary(name="arrow_back")
         q-item-section(avatar)
-          | {{ getServiceMenu | i18nName }}
+          | {{ getServiceMenu.name }}
       q-separator
 
       q-item.q-py-md.text-subtitle(
@@ -17,7 +17,7 @@
         q-item-section.list-item-avatar(avatar)
           q-icon(:name="`img:${item.icon}`")
         q-item-section
-          | {{ item | i18nName }}
+          | {{ item.name }}
 </template>
 
 <script>

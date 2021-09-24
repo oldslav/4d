@@ -44,8 +44,9 @@
     q-card-actions.row
       q-btn(v-if="current.likes.isLiked" color="pink-12" icon="favorite" flat :label="current.likes.amount" @click="likeIdea" dense padding="xs")
       q-btn(v-else icon="favorite_border" flat :label="current.likes.amount " @click="likeIdea" dense padding="xs")
-      q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs" disable)
+      q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs" @click="toggleComments")
     q-inner-loading(:showing="isLoading")
+    IdeaCommentsModal(v-if="isCommentsModal" v-model="isCommentsModal")
 </template>
 
 <script>
@@ -53,10 +54,12 @@
   import { mapActions, mapState } from "vuex";
   import { GET_CURRENT, GET_REFERENCES, UPDATE_LIKE, UPDATE_VOTE } from "../../../store/constants/action-constants";
   import ImageSlider from "../../common/ImageSlider";
+  import BaseModal from "../../common/BaseModal";
+  import IdeaCommentsModal from "./IdeaCommentsModal";
 
   export default {
     name: "IdeaDetailsCard",
-    components: { ImageSlider, BaseStatus },
+    components: { IdeaCommentsModal, BaseModal, ImageSlider, BaseStatus },
     props: {
       id: {
         type: [String, Number],
@@ -68,6 +71,11 @@
       if (!this.references) {
         this.GET_REFERENCES();
       }
+    },
+    data () {
+      return {
+        isCommentsModal: false
+      };
     },
     computed: {
       ...mapState("services/ideas", {
@@ -99,6 +107,10 @@
       async vote (answerId) {
         await this.UPDATE_VOTE({ id: this.id, answerId });
         setTimeout(this.GET_CURRENT(this.id), 300);
+      },
+
+      toggleComments () {
+        this.isCommentsModal = !this.isCommentsModal;
       }
     },
     watch: {
