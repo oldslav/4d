@@ -150,6 +150,7 @@ const actions: ActionTree<GeoState, TRootState> = {
           ...i,
           properties: {
             ...i.properties,
+            layer: i.properties.typeId,
             // TODO: Исправить ужас ниже
             image: i.properties.fill === "#FF6565" ? require("@/assets/png/problem.png") : require("@/assets/png/idea.png")
           }

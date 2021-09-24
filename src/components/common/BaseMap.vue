@@ -245,7 +245,8 @@
           if (pickedId) {
             this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
           } else {
-            viewer.zoomTo(cesiumObject);
+            viewer.zoomTo({});
+            // viewer.zoomTo(cesiumObject);
           }
           /* end todo */
 

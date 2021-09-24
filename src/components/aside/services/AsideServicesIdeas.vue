@@ -10,7 +10,7 @@
       BaseInput(
         v-model="computedQuery"
         hideBottom
-          dense
+        dense
         :label="$t('common.search')"
       ).col-12
       BaseSelect(
@@ -33,12 +33,11 @@
         hideBottom
         dense
       ).col
-    q-list(ref="infScrollContainer" style="overflow-y: auto;").column.col.q-ma-lg
+    .column.col.q-ma-lg.overflow-auto
       q-infinite-scroll(
         :offset="50"
         :debounce="400"
         @load="getData"
-        :scroll-target="$refs.infScrollContainer"
       ).full-height
         q-item(clickable v-for="(item, index) in features" :key="index" @click="selectFeature(item.id)").q-px-none
           q-item-section

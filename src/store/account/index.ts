@@ -166,6 +166,12 @@ const getters: GetterTree<any, TRootState> = {
     return state.account.roles.map((role) => role.name);
   },
 
+  getUserId (state: IAccountState) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return state.account.id;
+  },
+
   isUserNature (state) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
