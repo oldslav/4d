@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     .text-small.text-primary-light.q-mb-xs
-      | {{ value.description }}
+      | {{ value.description || value.text }}
     q-linear-progress(:value="getState.value" :color="getState.color" size="lg" rounded)
 </template>
 

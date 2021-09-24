@@ -15,6 +15,7 @@ import {
   UPDATE_LIKE,
   UPDATE_STATUS, UPDATE_VOTE, UPLOAD_IMAGES
 } from "src/store/constants/action-constants";
+import comments from "src/store/services/ideas/comments";
 
 const initialState = (): IUserTicketsState => {
   return {
@@ -143,7 +144,10 @@ const ideas: Module<IUserTicketsState, TRootState> = {
   state,
   mutations,
   actions,
-  getters
+  getters,
+  modules: {
+    comments
+  }
 };
 
 export default ideas;

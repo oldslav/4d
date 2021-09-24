@@ -133,6 +133,7 @@ export const GET_DESIGN_SECTIONS = "GET_DESIGN_SECTIONS";
 export const GET_DESIGN_SECTION = "GET_DESIGN_SECTION";
 
 export const GET_DATA = "GET_DATA";
+export const CREATE_COMMENT = "CREATE_COMMENT";
 export const GET_GEO = "GET_GEO";
 export const UPDATE_LIKE = "UPDATE_LIKE";
 export const UPDATE_STATUS = "UPDATE_STATUS";
