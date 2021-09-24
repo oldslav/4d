@@ -57,7 +57,8 @@
 
       onMapClick (e) {
         if (e) {
-          this.SET_FEATURE_ID(e.id);
+          const [id] = e.id.split("_");
+          this.SET_FEATURE_ID(id);
         } else {
           this.SET_FEATURE_ID(null);
         }

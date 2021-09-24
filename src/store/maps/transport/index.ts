@@ -1,51 +1,61 @@
-import { cloneDeep, get } from "lodash";
-import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import { TRootState } from "src/store/types/root";
-import { IMapEngineeringState } from "src/store/types/maps/engineering";
-import {
-  FETCH_ENGINEERING_MENU,
-  FETCH_ENGINEERING_SECTION_GEOJSON,
-  TOGGLE_ENGINEERING_VISIBILITY_BY_LAYER,
-  SET_ACTIVE_ENGINEERING_ITEM,
-  REMOVE_ACTIVE_ENGINEERING_ITEM,
-  FETCH_ENGINEERING_ITEM
-} from "src/store/constants/action-constants";
-import { IMapMenuLayer, IMapMenuSection } from "src/store/types/maps/common";
-import { SET_GEODATA } from "src/store/constants/mutation-constants";
 import Vue from "vue";
+import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
+import { cloneDeep, get } from "lodash";
+import { TRootState } from "src/store/types/root";
+import { IMapTransportState } from "src/store/types/maps/transport";
+import { IMapMenuLayer, IMapMenuSection } from "src/store/types/maps/common";
 
-const initialState = (): IMapEngineeringState => ({
+import {
+  FETCH_TRANSPORT_ITEM,
+  FETCH_TRANSPORT_MENU,
+  FETCH_TRANSPORT_SECTION_GEOJSON,
+  REMOVE_ACTIVE_TRANSPORT_ITEM,
+  SET_ACTIVE_TRANSPORT_ITEM,
+  TOGGLE_TRANSPORT_VISIBILITY_BY_LAYER
+} from "src/store/constants/action-constants";
+import { SET_GEODATA } from "src/store/constants/mutation-constants";
+
+const initialState = (): IMapTransportState => ({
   menu: null,
-  geoJSON: {},
-  feature: null
+  feature: null,
+  geoJSON: {}
 });
 
 const state = initialState;
 
-const mutations: MutationTree<IMapEngineeringState> = {
-  setMenu (state, menu){
+const mutations: MutationTree<IMapTransportState> = {
+  setMenu (state, menu) {
     state.menu = menu;
   },
-  setSectionGeoJSON (state, { section, data }) {
+  setGeoJson (state, { section, data }) {
     Vue.set(state.geoJSON, section, data);
   },
-  setFeature (state, feature) {
+  setFeature (state, feature){
+    feature.geometry = undefined;
     state.feature = feature;
   }
 };
 
-const actions: ActionTree<IMapEngineeringState, TRootState> = {
-  async [FETCH_ENGINEERING_MENU] ({ commit }) {
-    const { data: menu } = await this.service.services.engineering.getMenu();
-    commit("setMenu", menu);
+const actions: ActionTree<IMapTransportState, TRootState> = {
+  async [FETCH_TRANSPORT_MENU] ({ commit }) {
+    const { data } = await this.service.services.transport.getMapMenu();
+
+    commit("setMenu", data);
   },
 
-  async [FETCH_ENGINEERING_SECTION_GEOJSON] ({ rootState, getters, commit }, id) {
+  async [FETCH_TRANSPORT_ITEM] ({ commit, getters }, { layerId, id }) {
+    const layer = getters.getLayerById(layerId);
+    const { data } = await this.service.services.transport.getFeature(layer.path, id);
+
+    commit("setFeature", data);
+  },
+
+  async [FETCH_TRANSPORT_SECTION_GEOJSON] ({ getters, commit, rootState }, id) {
     if (!getters.getGeoJSON[id]) {
       const section = getters.getMenu.subSections.find((x: IMapMenuSection) => x.id === id);
 
       const awaits = section.layers.map(
-        (layer: IMapMenuLayer) => this.service.services.engineering.getLayerGeoJSON(layer.path)
+        (layer: IMapMenuLayer) => this.service.services.buildings.getLayerGeoJSON(layer.path)
       );
 
       const layers = await Promise.all(awaits);
@@ -56,9 +66,9 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
           (res: any[], layer: any, i) => res.concat(
             layer.features.map((feature: any) => {
               feature.properties.layer = section.layers[i].id;
+              feature.properties.type = "transport";
               feature.properties.id = feature.id;
-              feature.id = `${ feature.id }_${ section.layers[i].id }`;
-              feature.properties.type = feature.properties.type || "engineering-unit";
+              feature.id = `${ section.layers[i].id }-${ feature.id }`;
               return feature;
             })
           ),
@@ -66,17 +76,17 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
         )
       };
 
-      commit("setSectionGeoJSON", { section: id, data });
+      commit("setGeoJson", { section: id, data });
     }
 
-    const sectionId = get(rootState.services.geoJson, "sectionId", []);
+    const sectionId = get(rootState.services.geoJson, "sectionId", null);
 
     if (sectionId !== id) {
       commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: getters.getGeoJSON[id], sectionId: id }, { root: true });
     }
   },
 
-  async [TOGGLE_ENGINEERING_VISIBILITY_BY_LAYER] ({ rootState, commit }, { ids, visibility }) {
+  async [TOGGLE_TRANSPORT_VISIBILITY_BY_LAYER] ({ rootState, commit }, { ids, visibility }) {
     const geoJson = cloneDeep(rootState.services.geoJson);
     const idsSet = new Set(ids);
 
@@ -85,10 +95,11 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
         feature.properties.visibility = visibility;
       }
     }
+
     commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
   },
 
-  [SET_ACTIVE_ENGINEERING_ITEM] ({ rootState, commit }, id) {
+  async [SET_ACTIVE_TRANSPORT_ITEM] ({ rootState, commit }, id) {
     const geoJson = cloneDeep(rootState.services.geoJson);
 
     for (const feature of geoJson.data.features) {
@@ -104,7 +115,7 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
     commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
   },
 
-  [REMOVE_ACTIVE_ENGINEERING_ITEM] ({ rootState, commit }) {
+  async [REMOVE_ACTIVE_TRANSPORT_ITEM] ({ rootState, commit }) {
     const geoJson = cloneDeep(rootState.services.geoJson);
 
     for (const feature of geoJson.data.features) {
@@ -113,26 +124,14 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
     }
 
     commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
-  },
-
-  async [FETCH_ENGINEERING_ITEM] ({ commit, getters }, { layerId, id }) {
-    const layer = getters.getLayerById(layerId);
-    const { data } = await this.service.services.engineering.getFeature(layer.path, id);
-
-    commit("setFeature", data);
   }
 };
 
-const getters: GetterTree<IMapEngineeringState, TRootState> = {
-  getMenu (state: IMapEngineeringState) {
-    return state.menu;
-  },
-
-  getGeoJSON (state: IMapEngineeringState) {
-    return state.geoJSON;
-  },
-
-  getLayerById: (state: IMapEngineeringState) => (id: number) => {
+const getters: GetterTree<IMapTransportState, TRootState> = {
+  getMenu: (state: IMapTransportState) => state.menu,
+  getFeature: (state: IMapTransportState) => state.feature,
+  getGeoJSON: (state: IMapTransportState) => state.geoJSON,
+  getLayerById: (state: IMapTransportState) => (id: number) => {
     const subSections = state.menu ? state.menu.subSections : [];
 
     const layers = subSections.reduce(
@@ -142,21 +141,16 @@ const getters: GetterTree<IMapEngineeringState, TRootState> = {
 
     return layers.find(x => x.id === id);
   },
-
-  getSectionByLayerId: (state: IMapEngineeringState) => (id: number) => {
+  getSectionByLayerId: (state: IMapTransportState) => (id: number) => {
     const subSections = state.menu ? state.menu.subSections : [];
 
     return subSections.find(
       subSection => subSection.layers.find(x => x.id === id)
     );
-  },
-
-  getFeature (state){
-    return state.feature;
   }
 };
 
-const engineering: Module<IMapEngineeringState, TRootState> = {
+const transport: Module<IMapTransportState, TRootState> = {
   namespaced: true,
   state,
   mutations,
@@ -164,4 +158,4 @@ const engineering: Module<IMapEngineeringState, TRootState> = {
   getters
 };
 
-export default engineering;
+export default transport;
