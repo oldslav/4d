@@ -1004,6 +1004,9 @@
         "manufacturer": "Developer",
         "installedYear": "Installation year",
         "material": "Material"
+      },
+      "territory": {
+        "title": "Territorial planning"
       }
     },
     "data": "Data",

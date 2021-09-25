@@ -64,6 +64,12 @@
             action: { name: "map-transport" },
             icon: "directions_bus",
             show: true
+          },
+          {
+            label: this.$t("entity.maps.territory.title"),
+            action: { name: "map-territory" },
+            icon: "o_explore",
+            show: true
           }
         ];
       }

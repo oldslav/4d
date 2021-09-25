@@ -455,6 +455,21 @@ const routes: RouteConfig[] = [
         }
       },
       {
+        path: "territory",
+        name: "map-territory",
+        components: {
+          default: (): Promise<any> => import("pages/maps/territory/MapTerritory.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/territory/AsideMapsTerritory.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
+        }
+      },
+      {
         path: "tourism",
         name: "map-tourism",
         components: {
