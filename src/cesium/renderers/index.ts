@@ -8,6 +8,7 @@ import well from "./well";
 import pipe from "./pipe";
 import engineeringUnit from "./engineering-unit";
 import transport from "./transport";
+import territoryFeature from "./territory-feature";
 
 export default [
   place,
@@ -19,5 +20,6 @@ export default [
   well,
   pipe,
   engineeringUnit,
-  transport
+  transport,
+  territoryFeature
 ];
