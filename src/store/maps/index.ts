@@ -5,6 +5,7 @@ import security from "src/store/maps/security";
 import engineering from "src/store/maps/engineering";
 import transport from "src/store/maps/transport";
 import territory from "src/store/maps/territory";
+import light from "src/store/maps/light";
 
 interface IMapsState {
 
@@ -17,7 +18,8 @@ const maps: Module<IMapsState, TRootState> = {
     security,
     engineering,
     transport,
-    territory
+    territory,
+    light
   }
 };
 

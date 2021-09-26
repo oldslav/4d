@@ -7,19 +7,20 @@
         | {{ getMenu.name }}
     q-separator
 
-    q-expansion-item.territory-aside-expansion-item(
-      v-for="section in getMenu.subSections"
+    q-expansion-item.security-light-expansion-item(
+      v-for="section in getSections"
       :key="section.id"
-      :value="section.id === sectionId"
       :header-style="{ 'fontSize': '16px' }"
+      :disable="hasOneSection"
+      :value="section.id === sectionId"
       @show="onShowSection(section.id)"
-      group="territory"
+      default-opened
       switch-toggle-side
       expand-separator
     )
       div.row.items-center.full-width(slot="header")
         div.col {{ section.name }}
-        div.col-auto
+        div.col-auto(v-if="canDisplaySectionVisible")
           q-btn(
             @click.stop.prevent="toggleSectionVisibility(section.id)"
             size="12px"
@@ -29,11 +30,8 @@
             round
           )
 
-      q-inner-loading(:showing="!(section.id in getGeoJSON)")
-        q-spinner(size="36px" color="primary")
-
       q-list(
-        :class="{'layer__list_invisible': !(section.id in getGeoJSON), 'layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
+        :class="{'security-layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
       )
         q-item(
           v-for="layer in section.layers"
@@ -41,7 +39,7 @@
           clickable
         )
           q-item-section(avatar)
-            span.layer__color(:style="{ backgroundColor: layer.color }")
+            span.security-layer__color(:style="{ backgroundColor: layer.color }")
           q-item-section
             | {{ layer.name }}
 
@@ -56,38 +54,58 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex";
+  import { mapActions, mapGetters } from "vuex";
   import AsideRouterView from "../../services/AsideRouterView";
-  import { FETCH_TERRITORY_SECTION_GEOJSON, SET_TERRITORY_LAYERS_VISIBILITY } from "../../../../store/constants/action-constants";
+  import {
+    FETCH_LIGHT_SECTION_GEOJSON,
+    SET_LIGHT_LAYERS_VISIBILITY
+  } from "../../../../store/constants/action-constants";
 
   export default {
-    name: "AsideMapsTerritory",
+    name: "AsideMapsLight",
     components: { AsideRouterView },
     created () {
-      this.disabledLayers = Object.values(this.layersBySection)
-        .reduce((res, layerIds) => {
+      if (this.getSections.length === 1) {
+        this.sectionId = this.getSections[0].id;
+      }
+
+      this.disabledLayers = Object.entries(this.layersBySection)
+        .reduce((res, [sectionId, layerIds]) => {
+          const section = parseInt(sectionId, 10);
           for (const id of layerIds) {
-            res[id] = true;
+            res[id] = this.sectionId !== section;
           }
           return res;
         }, {});
     },
-    data () {
+    data (){
       return {
         disabledLayers: {},
         sectionId: null
       };
     },
     computed: {
-      ...mapGetters("maps/territory", ["getMenu", "getGeoJSON"]),
-      layersBySection () {
-        return this.getMenu.subSections.reduce((res, subSection) => {
+      ...mapGetters("maps/light", ["getMenu"]),
+      getSections (){
+        return this.getMenu.subSections;
+      },
+
+      canDisplaySectionVisible () {
+        return this.getSections.length > 1;
+      },
+
+      hasOneSection () {
+        return this.getSections.length === 1;
+      },
+
+      layersBySection (){
+        return this.getSections.reduce((res, subSection) => {
           res[subSection.id] = subSection.layers.map(x => x.id);
           return res;
         }, {});
       },
 
-      sectionsVisibility () {
+      sectionsVisibility (){
         const { disabledLayers, layersBySection } = this;
         const ids = Object.keys(layersBySection);
 
@@ -99,11 +117,10 @@
       }
     },
     methods: {
-      ...mapActions("maps/territory", {
-        setLayersVisibility: SET_TERRITORY_LAYERS_VISIBILITY,
-        fetchSectionGeoJSON: FETCH_TERRITORY_SECTION_GEOJSON
+      ...mapActions("maps/light",{
+        fetchSectionGeoJSON: FETCH_LIGHT_SECTION_GEOJSON,
+        setLayersVisibility: SET_LIGHT_LAYERS_VISIBILITY
       }),
-
       setLayerVisibilityBySection (sectionId) {
         for (const section of this.getMenu.subSections) {
           const layerIds = this.layersBySection[section.id];
@@ -114,19 +131,19 @@
         }
       },
 
-      toggleLayerVisibility (layerId) {
-        const visibility = !this.disabledLayers[layerId];
-        this.$set(this.disabledLayers, layerId, visibility);
-
-        this.setLayersVisibility({ ids: [layerId], visibility: !visibility });
-      },
-
-      onShowSection (sectionId) {
+      onShowSection (sectionId){
         if (this.sectionId !== sectionId) {
           this.sectionId = sectionId;
           this.setLayerVisibilityBySection(sectionId);
           this.fetchSectionGeoJSON(sectionId);
         }
+      },
+
+      toggleLayerVisibility (layerId) {
+        const visibility = !this.disabledLayers[layerId];
+        this.$set(this.disabledLayers, layerId, visibility);
+
+        this.setLayersVisibility({ ids: [layerId], visibility: !visibility });
       },
 
       toggleSectionVisibility (sectionId) {
@@ -148,15 +165,19 @@
   };
 </script>
 <style lang="stylus">
-.layer__list
+.security-layer__list
   background: #F5F9FE;
 
-.layer__color
+.security-layer__color
   width 14px
   height 14px
   border-radius: 100%;
   margin-left 6px
 
-.layer__list_invisible
+.security-layer__list_invisible
   visibility hidden
+
+.security-light-expansion-item .q-item.disabled,
+.security-light-expansion-item .q-item.disabled *
+  cursor default !important
 </style>
