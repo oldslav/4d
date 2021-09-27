@@ -574,6 +574,21 @@ const routes: RouteConfig[] = [
             }
           }
         ]
+      },
+      {
+        path: "light",
+        name: "map-light",
+        components: {
+          default: (): Promise<any> => import("pages/maps/light/MapLight.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/light/AsideMapsLight.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
+        }
       }
     ]
   },
