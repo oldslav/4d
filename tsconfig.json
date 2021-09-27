@@ -1,0 +1,25 @@
+{
+  "extends": "@quasar/app/tsconfig-preset",
+  "skipLibCheck": true,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noEmit": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "target": "esnext",
+    "module": "commonjs",
+    "sourceMap": false,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/boot/cesium.ts"
+  ]
+}

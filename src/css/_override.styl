@@ -1,0 +1,169 @@
+@import "_colors.styl"
+
+/////////////////////////////////////////////////////////////////
+//////////////////////    BUTTONS    ////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+.border-width
+  &:before
+    border-width: $border-width-base
+
+.q-btn--outline
+  .q-btn__wrapper
+    @extend .border-width
+
+.q-uploader
+  &__header
+    background: transparent
+    color: $light
+
+    &::before
+      background: transparent
+
+.q-field
+  &__prepend
+    display: none
+  .q-field--outlined
+    .q-field__inner
+      .q-field__control
+        @extend .border-width
+
+.q-btn--flat
+  max-height: 40px
+
+  .q-btn__wrapper
+    padding: 0 16px
+
+.height
+  &__2
+    height: 2rem
+
+.text
+  &-title
+    margin-top: 20px
+    margin-bottom: 20px
+
+  &-subtitle
+    &_m
+      margin-top: 20px
+      margin-bottom: 20px
+
+  &-primary-flat
+    background: $primary-light
+    color: $primary
+
+    &__bordered
+      @extend .text-primary-flat
+      background: inherit
+      border: 2px solid $primary
+
+    .q-btn
+      &__content
+        text-transform: none
+
+    i
+      color: $primary
+
+.is-paddingless
+  padding: 0 !important
+
+.text-wrap
+  white-space: pre-wrap
+
+.text-primary-light
+  color: $grey
+
+.text-primary
+  color $primary
+
+.bg-primary-light
+  background: $primary-light
+
+.bg-secondary-light
+  background $background-secondary
+
+.text-status-green
+  color $secondary
+
+.modal-container
+  min-width: 40vw !important
+
+  &__wide
+    max-width: 1600px !important
+
+  &__dense
+    max-width: 400px !important
+    max-height: 600px !important
+    overflow-y: auto
+
+
+.mobile
+  .q-toolbar
+    padding: 0
+
+    .q-tabs
+
+      .q-tab
+        padding: 0 10px
+
+        &__label
+          font-size: 10px
+
+.q-tab
+  &__label
+    text-transform: none
+  &__indicator
+    background-color: $primary
+
+.q-stepper
+  &__nav
+    display: flex;
+    justify-content: flex-end;
+
+.text-caption
+  font-size: 10px !important
+
+.body
+  &--light
+    .q-uploader
+      &__header
+        color: $dark
+
+    .bg-white
+      background: $illustration-white !important
+
+    .bg-blue
+      background: $illustration-light !important
+
+    .error
+      @extend .bg-secondary-light
+
+    .q-header, .q-drawer, .q-footer
+      background: $background
+
+    .q-tab
+      &__label, &__icon
+        color: $grey
+
+    .q-layout
+      background: $background-secondary
+
+  &--dark
+    .bg-white
+      background: $dark-secondary !important
+
+    .bg-blue
+      background: $dark-theme-dark !important
+
+    .q-header, .q-drawer, .q-footer
+      background: $dark-secondary
+
+    .q-tab
+      &__label
+        color: $primary
+
+    .q-layout
+      background: initial
+
+.cesium-widget-credits
+  display:none !important;

@@ -1,0 +1,100 @@
+<template lang="pug">
+  q-table(
+    flat
+    ref="baseTable"
+    :grid="grid"
+    :title="title"
+    :data="data.items"
+    :loading="isLoading"
+    :columns="columns"
+    :row-key="rowKey"
+    :pagination="pagination"
+    :filter="filter"
+    :expanded.sync="expanded"
+    :card-container-class="cardContainerClass"
+    :rows-per-page-options="rowsPerPageOptions"
+    @request="getData"
+    @update:pagination="$emit('update:pagination', $event)"
+  )
+    template(v-slot:loading)
+      q-inner-loading(showing color="primary")
+    template(v-slot:top)
+      slot(name="top")
+    //template(v-slot:top-left)
+    //  slot(name="top-left")
+    //template(v-slot:top-right)
+    //  slot(name="top-right")
+    template(v-slot:body="props")
+      slot(name="body" v-bind="props")
+    template(v-slot:item="props")
+      slot(name="item" v-bind="props")
+</template>
+
+<script>
+  export default {
+    name: "BaseTable",
+    props: {
+      cardContainerClass: {
+        type: String,
+        default: null
+      },
+      getData: {
+        type: Function,
+        required: true
+      },
+      title: {
+        type: String,
+        default: null
+      },
+      rowKey: {
+        type: String,
+        default: "name"
+      },
+      data: {
+        type: Object,
+        required: true
+      },
+      pagination: {
+        type: Object,
+        default: () => {}
+      },
+      filter: {
+        type: Object,
+        default: () => {}
+      },
+      columns: {
+        type: Array,
+        default: () => []
+      },
+      expanded: {
+        type: Array,
+        default: () => []
+      },
+      isLoading: {
+        type: Boolean,
+        default: false
+      },
+      rowsPerPageOptions: {
+        type: Array,
+        default: () => [5, 10, 25, 50]
+      },
+      virtualScroll: {
+        type: Boolean,
+        default: false
+      },
+      grid: {
+        type: Boolean,
+        default: false
+      }
+    }
+    // computed: {
+    //   passedSlotTop () {
+    //     return this.$refs.baseTable.$slots.top;
+    //   }
+    // }
+  };
+</script>
+
+<style lang="stylus" scoped>
+
+</style>

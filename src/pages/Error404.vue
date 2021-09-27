@@ -1,0 +1,37 @@
+<template lang="pug">
+  q-page.error.column.justify-start.items-center.q-pt-xl.full-height
+    h2.text-title.text-center.error404__title
+      | {{ $t("common.error.notFound.title") }}
+    h3.text-subtitle.text-center.q-my-lg.q-px-sm
+      div
+        | {{ $t("common.error.notFound.topSub") }}
+      div
+        | {{ $t("common.error.notFound.bottomSub") }}
+    q-btn(flat @click="back()" color="primary" :label="$t('action.back')")
+    q-img.q-mt-xl.error404__image(src="@/assets/svg/404.svg")
+</template>
+
+<script>
+  export default {
+    name: "Error404",
+    methods: {
+      back () {
+        this.$router.go(-1);
+      }
+    }
+  };
+</script>
+
+<style lang="stylus">
+  .error404 {
+    &__image {
+      max-width 660px
+    }
+  }
+
+  @media (max-width: $breakpoint-sm-min) {
+    .error404__title {
+      font-size $h4
+    }
+  }
+</style>

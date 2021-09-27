@@ -1,0 +1,1110 @@
+{
+  "common": {
+    "locales": {
+      "ru": {
+        "alias": "RU",
+        "full": "Russian"
+      },
+      "en-us": {
+        "alias": "EN",
+        "full": "English"
+      }
+    },
+    "error": {
+      "notFound": {
+        "title": "Page not found",
+        "topSub": "Looking for something interesting?",
+        "bottomSub": "Unfortunately, the page you are requesting does not exist…"
+      },
+      "validation": {
+        "required": "This field is required",
+        "invalid": "Invalid characters",
+        "passwordReg": "Password: 8 symbols, lowercase and uppercase letters, digits",
+        "email": "Please enter valid email",
+        "confirmPassword": "Password mismatch",
+        "letters": "Only letters allowed",
+        "length": "Поле должно быть длинной %{length} символов"
+      },
+      "response": {
+        "oops": "Упс! Произошла ошибка",
+        "tryLater": "Пожалуйста, повторите попытку позже",
+        "downloadFail": "Failed to download file",
+        "getTicketFail": "Ошибка при получении заявки",
+        "wrongPass": "Неверный пароль",
+        "wrongLogin": "Аккаунта не существует"
+      }
+    },
+    "all": "Все",
+    "theme": "Theme",
+    "login": {
+      "title": "Login",
+      "subtitle": "It's good to be at the forefront of various technologies",
+      "noAccount": "Don't have an account yet?"
+    },
+    "register": {
+      "title": "Registration",
+      "subtitle": "Become a part of the Innopolis city and change it with us",
+      "haveAccount": "Already have an account?",
+      "chooseProfile": "Choose user profile",
+      "consent": {
+        "byHitting": "By clicking the \"Register\" button, I accept the terms and conditions ",
+        "userConsent": "User agreement",
+        "allow": " and I give my consent to ",
+        "dataProcessing": "processing of personal data"
+      },
+      "messages": {
+        "registered": "User registered",
+        "success": "A confirmation email has been sent to your mailbox",
+        "fail": "An error occurred during registration"
+      }
+    },
+    "welcomePresentation": {
+      "firstSlide": {
+        "title": "Welcome to the site of the Digital Model of the city of Innopolis",
+        "description": "Here you can get the necessary information and suggest ideas for the development of our city. We suggest that you familiarize yourself with the capabilities of the Digital Model or go directly to the interactive map of the city of Innopolis."
+      },
+      "secondSlide": {
+        "title": "Find out what objects and services are already in the city",
+        "description": "All information about social, business and service real estate in one place. You can now choose an institution for lunch, see how many hours a pharmacy is open or find out the area of ​​a kindergarten in one click."
+      },
+      "thirdSlide": {
+        "title": "Watch your city change",
+        "description": "Visual graphs will show you city changes in various parameters: landscaping, lighting, transport infrastructure and much more. The data is updated in real time."
+      },
+      "fourthSlide": {
+        "title": "Understand if the city is green enough",
+        "description": "On the city map, we marked each tree, described its properties and determined the city's greening index. Stay tuned for changes in this index and join the tree care."
+      },
+      "fifthSlide": {
+        "title": "Explore the city in a convenient way",
+        "description": "A motorist, pedestrian or cyclist will find useful information on routes, road signs and crossings here. Feel free to build new routes and explore interesting places."
+      },
+      "sixthSlide": {
+        "title": "Dress for the weather",
+        "description": "We have placed meteorological sensors around the city, which will show the current weather in Innopolis, as well as draw up a graph of changes in the average temperature."
+      },
+      "seventhSlide": {
+        "title": "Change the world around you",
+        "description": "Mark problem areas and suggest your ideas for the development of public spaces and the city as a whole."
+      },
+      "eighthSlide": {
+        "title": "Discover new places and routes",
+        "description": "On an interactive city map, you will find attractions and popular routes near Innopolis. Explore the city and its surroundings using the Digital Model."
+      },
+      "ninthSlide": {
+        "title": "Start exploring the city now",
+        "description": "Register and change the city with us!"
+      },
+      "toMapBtn": "Go to the map",
+      "nextSlideBtn": "Onwards"
+    },
+    "rent": "Rent",
+    "position": "Position",
+    "guestVisit": "Guest visit",
+    "description": "Description",
+    "notice": "Message",
+    "reason": "Reason",
+    "rentPrice": "Rent price, rubles",
+    "street": "Street",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "documents": "Documents",
+    "photos": "Photos",
+    "info": "Info",
+    "quantity": {
+      "area": "Area, sq.m",
+      "rooms": "Rooms",
+      "floor": "Floor",
+      "entrance": "Entrance"
+    },
+    "address": "Address",
+    "number": "Number",
+    "premisesNumber": "Premises №",
+    "type": "Type",
+    "status": "Status",
+    "id": "ID",
+    "nameOf": "Name",
+    "name": "Name",
+    "fullname": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "telegramAlias": "Telegram",
+    "role": "Role",
+    "created": "Created at",
+    "noData": "No data",
+    "permissions": {
+      "title": "Permissions",
+      "ROLE_QGIS": "GIS employee",
+      "ROLE_ADMIN": "Admin",
+      "ROLE_USER": "Resident",
+      "ROLE_USER_JURISTIC": "@:common.permissions.ROLE_USER, Legal entity",
+      "ROLE_EMPLOYEE": "Fund employee",
+      "ROLE_EMPLOYEE_PARKING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.parking.title",
+      "ROLE_EMPLOYEE_IDEA": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.ideas",
+      "ROLE_EMPLOYEE_WAREHOUSE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.warehouse.title",
+      "ROLE_EMPLOYEE_LIVING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.living.title",
+      "ROLE_EMPLOYEE_EMPLOYMENT_CENTER": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.employmentCenter",
+      "ROLE_EMPLOYEE_LIGHT": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.light",
+      "ROLE_EMPLOYEE_TREES": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.trees.title",
+      "ROLE_EMPLOYEE_COMMERCE": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.commerce.title",
+      "ROLE_EMPLOYEE_CROWDFUNDING": "@:common.permissions.ROLE_EMPLOYEE, @:entity.services.crowdfunding.title"
+    },
+    "components": {
+      "dragDrop": {
+        "info": "Переместите файлы в выделенную область или нажмите для загрузки"
+      },
+      "imageDragDrop": {
+        "addPhoto": "Add photo",
+        "maxFiles": "No more than {maxFiles} photos"
+      }
+    }
+  },
+  "user": {
+    "messages": {
+      "apartmentNotSelected": "Address will appear after the apartment selection",
+      "ticketStatusUpdate": "Статус заявки обновится автоматически."
+    },
+    "tickets": {
+      "actions": {
+        "create": "Create new ticket",
+        "details": "Show ticket details",
+        "edit": "edit",
+        "cancel": "Cancel ticket",
+        "next": "Далее"
+      },
+      "empty": {
+        "title": "You don't have any applications yet",
+        "subtitle1": "You can go to the section ",
+        "subtitle2": " and get acquainted with the opportunities and offers of Innopolis"
+      },
+      "messages": {
+        "create": {
+          "success": {
+            "title": "Спасибо! Ваша заявка успешно отправлена",
+            "label": "В ближайшее время с вами свяжется представитель фонда развития города Иннополис для уточнения деталей.",
+            "caption": "Отследить статус заявки можно в личном кабинете"
+          }
+        }
+      },
+      "contract": {
+        "sendSuccess": "Данные договора успешно отправлены",
+        "sendFail": "При отправлении данных договора произошла ошибка"
+      },
+      "parking": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора и получение ключа"
+        }
+      },
+      "warehouse": {
+        "steps": {
+          "first": "Оплата",
+          "second": "Подписание договора"
+        }
+      },
+      "vacancies": {
+        "export": "Download Excel",
+        "respondDate": "Response date",
+        "createdEntity": "Date the job was posted",
+        "entityStatus": "Job Status",
+        "respondStatus": "Response Status",
+        "add": "Add vacancy",
+        "edit": "Edit",
+        "table": {
+          "name": "Name",
+          "profIndustry": "Professional Industry",
+          "publishDate": "Publish date",
+          "closedDate": "Closing date",
+          "openDate": "Opening date",
+          "respondsCount": "Applicants",
+          "status": "Status",
+          "viewVacancy": "View vacancy",
+          "viewResponds": "View candidates",
+          "closeVacancy": "Close vacancy",
+          "reopenVacancy": "Open vacancy again",
+          "companyName": "Company",
+          "closeReason": "Closing reason",
+          "rejectVacancy": "Submit for revision",
+          "viewDetails": "View job details",
+          "respondDate": "Response date"
+        },
+        "workflow": {
+          "applicant": {
+            "first": {
+              "title": "Response"
+            },
+            "second": {
+              "title": "Interview",
+              "description": "Congratulations! \n\nYou have successfully completed your interviews. Our HR manager will contact you to clarify the details."
+            },
+            "third": {
+              "title": "Hiring Decision",
+              "successDescription": "Good afternoon! \n nThank you for your interest in our vacancy. \nWe would like to invite you for a meeting. Our HR manager will contact you to clarify the details."
+            }
+          }
+        },
+        "modals": {
+          "create": {
+            "title": "New vacancy",
+            "progress": "Create vacancy",
+            "success": "The vacancy was successfully created",
+            "error": "An error occurred while creating the job, please try again later",
+            "submit": "Add"
+          }
+        },
+        "forms": {
+          "create": {
+            "details": "Details",
+            "positionName": "Position name",
+            "profIndustry": "Professional Industry",
+            "salary": "Salary (rubles)",
+            "experience": "Work experience",
+            "schedule": "Schedule",
+            "employmentType": "Employment type",
+            "address": "Office or workplace address",
+            "dutiesHint": "Please describe in detail the duties of the candidate",
+            "requirementsHint": "Specify the requirements for the candidate",
+            "conditionsHint": "Tell us about the working conditions and benefits of your company"
+          },
+          "update": {
+            "progress": "Updating vacancy",
+            "success": "Vacancy has been successfully updated",
+            "error": "An error occurred while updating the vacancy, please try again later"
+          }
+        },
+        "entity": {
+          "info": "Job description",
+          "candidates": "Candidates"
+        },
+        "closeVacancy": {
+          "modalTitle": "Closing vacancy",
+          "progress": "Closing the vacancy",
+          "success": "The vacancy was successfully closed",
+          "error": "An error occurred while closing the vacancy, please try again later"
+        },
+        "publishVacancy": {
+          "progress": "Publishing a vacancy",
+          "success": "The vacancy was successfully published",
+          "error": "An error occurred while posting this job, please try again later."
+        },
+        "rejectVacancy": {
+          "progress": "Submitting for revision",
+          "success": "Vacancy has been sent for revision",
+          "error": "An error occurred while submitting a vacancy for revision, please try again later"
+        },
+        "exportVacancies": {
+          "progress": "Preparing the file",
+          "error": "An error occurred while exporting jobs, please try again later."
+        }
+      },
+      "responds": {
+        "respondDate": "Response date",
+        "respondStatus": "Response Status",
+        "details": "Response details",
+        "table": {
+          "fullName": "Full name of the candidate",
+          "status": "Status"
+        },
+        "companyWorkflow": {
+          "steps": {
+            "first": {
+              "description": "You have invited a candidate for an interview! \n\nAfter the interview, please do not forget to inform the candidate of your decision.",
+              "reject": "Reject",
+              "approve": "Interview passed"
+            },
+            "second": {
+              "description": "Completed the interview stage, please remember to inform the candidate about your hiring decision.",
+              "approve": "Hire"
+            }
+          }
+        },
+        "reject": {
+          "progress": "Rejecting the candidate",
+          "success": "The candidate was successfully rejected",
+          "error": "An error occurred while rejecting the candidate, please try again later",
+          "title": "Candidate rejection",
+          "hint": "Rejection text",
+          "message": "Hello! \n\nThank you very much for your interest in this vacancy. Unfortunately, at the moment we are not ready to invite you for a further interview for this vacancy. We have carefully reviewed your resume and may return to Your candidacy when we have such a need. "
+        },
+        "approve": {
+          "progress": "Sending invitation",
+          "success": "The invitation was successfully sent",
+          "error": "There was an error sending the invitation, please try again later",
+          "title": "Candidate invitation",
+          "hint": "Invitation text",
+          "message": "Good afternoon! \n\nThank you for your interest in our vacancy. \nWe would like to invite you for a meeting. Our HR manager will contact you to clarify the details."
+        },
+        "interviewApprove": {
+          "progress": "We are putting a mark on the passage of the interview",
+          "success": "The check mark was successfully set",
+          "error": "An error has occurred, please try again later"
+        },
+        "sendOffer": {
+          "progress": "Sending invitation",
+          "success": "The invitation was successfully sent",
+          "error": "There was an error sending the invitation, please try again later."
+        },
+        "modals": {
+          "details": {
+            "title": "Response details",
+            "name": "Full name of the candidate",
+            "resumeLink": "Open link",
+            "resume": "Resume file",
+            "respondText": "Cover Letter",
+            "contacts": "Contacts",
+            "sendInvite": "Invite for an interview"
+          }
+        },
+        "applicantName": "name of the applicant",
+        "sendNotify": "Notify company",
+        "search": "Search by title",
+        "notify": {
+          "progress": "Sending notification",
+          "success": "Notification sent successfully",
+          "error": "An error occurred while sending the notification, please try again later",
+          "title": "Company Notice"
+        },
+        "export": {
+          "action": "Download the list of all responses",
+          "progress": "Preparing the file",
+          "error": "An error occurred while exporting responses, please try again later."
+        }
+      },
+      "verifyRequests": {
+        "search": "Search by title",
+        "publishDate": "Order placement date",
+        "status": "Application status",
+        "detailsTitle": "Company verification request",
+        "approve": {
+          "title": "Application approval",
+          "message": "Congratulations, your application has been approved! \n\n\n nInnopolis City Development Fund",
+          "progress": "We approve the application",
+          "success": "Application was successfully approved",
+          "error": "An error occurred while approving the application, please try again later."
+        },
+        "reject": {
+          "title": "Application rejection",
+          "message": "Dear {authorName}. \n\nYour application for company verification was rejected due to the reason (please indicate the reason for refusal) \n\nInnopolis City Development Fund",
+          "progress": "Rejecting the request",
+          "success": "The application was successfully sent for revision",
+          "error": "An error occurred while rejecting the application, please try again later."
+        },
+        "table": {
+          "details": "View application details",
+          "companyName": "Company name",
+          "legalAddress": "Legal Address",
+          "created": "Date of application",
+          "status": "Status"
+        }
+      }
+    },
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "patronymic": "Patronymic",
+    "noPatronymic": "No patronymic",
+    "companyName": "Company name",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "individual": "Natural person",
+    "legalEntity": "Legal entity",
+    "profile": {
+      "mainForm": {
+        "nameSection": "User name",
+        "email": "Email",
+        "password": "Password",
+        "contacts": "Contacts",
+        "phone": "Phone",
+        "telegramAlias": "Telegram (alias)",
+        "change": "Change",
+        "save": "Save"
+      },
+      "changePasswordModal": {
+        "title": "Change password",
+        "password": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "save": "Save"
+      },
+      "changeEmailModal": {
+        "title": "Change email",
+        "email": "Email",
+        "message": "After saving, a confirmation email will be sent to the new address.",
+        "save": "Save"
+      },
+      "mailConfirmedModal": {
+        "title": "Почта подтверждена",
+        "message": "Регистрация успешно завершена! Теперь вы можете войти в свой аккаунт."
+      }
+    },
+    "bills": {
+      "contractNumber": "Contract number",
+      "monthlyPrice": "Payment per month",
+      "depositPrice": "Deposit payment",
+      "totalPrice": "Total amount",
+      "cardPrice": "Card price",
+      "dateContractConcluded": "Дата заключения",
+      "dateContractExpire": "Дата окончания",
+      "columns": {
+        "paymentAmount": "Payment amount"
+      },
+      "statuses": {
+        "paid": "Оплачен",
+        "pending": "Ожидает оплаты"
+      }
+    },
+    "verifyCompany": {
+      "requestCard": {
+        "title": "The function is available only to verified companies",
+        "firstDescPart": "Submit",
+        "action": "request",
+        "vacancy-description": "to the City Hall of Innpolis to provide access to the city vacancy service. You will then be able to post vacancies and view candidates' responses.",
+        "rejectDescription": "Sorry, your verification request was rejected. \n\nYou can send a new one."
+      },
+      "awaitCardText": "This function is only available to verified companies. \n\nYou have already sent a verification request. Please wait for a response.",
+      "form": {
+        "title": "Company verification request",
+        "loading": "Submitting a request",
+        "requestError": "There was an error sending your request, please try again later",
+        "requestSuccessTitle": "Thank you! Your request has been sent successfully",
+        "requestSuccessDescription": "Thank you! Your request has been sent successfully",
+        "commonInfo": "Basic Information"
+      }
+    }
+  },
+  "action": {
+    "showOnMap": "Show on map",
+    "applicationMake": "Make an application",
+    "block": "Block",
+    "unblock": "Unblock",
+    "addPhone": "Add phone",
+    "login": "Login",
+    "rent": "Rent",
+    "details": "Details",
+    "register": "Register",
+    "edit": "Edit",
+    "back": "Back",
+    "save": "Save",
+    "clear": "Clear",
+    "close": "Close",
+    "send": "Send",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "submit": "Submit",
+    "continue": "Continue",
+    "create": "Create",
+    "accept": "Accept",
+    "reject": "Reject",
+    "pay": "Pay",
+    "book": "Book",
+    "download": "Download",
+    "toProfile": "Go to the profile",
+    "toMap": "Go to the map",
+    "registerUser": "Register employee",
+    "select": {
+      "building": "Select a building",
+      "parking": {
+        "type": "Select a parking type",
+        "lot": "Select a parking lot"
+      }
+    }
+  },
+  "entity": {
+    "estate": {
+      "title": "Estate Object",
+      "details": {
+        "id": "ID",
+        "number": "House number",
+        "infrastructureType": "Infrastructure type",
+        "category": "Category",
+        "name": "Name",
+        "constructYear": "Year of construction",
+        "residentsCount": "Amount of residents",
+        "builder": "Property developer",
+        "street": "Street",
+        "area": "Area of the object",
+        "parkingCount": "Amount of parking places",
+        "floors": "Amount of floors",
+        "managingCompany": "Managing company",
+        "status": "Construction stage",
+        "organizationCount": "Amount of organizations",
+        "link": "Link to website"
+      }
+    },
+    "transport": "Transport Infrastructure",
+    "landscape": "Urban Landscaping",
+    "lighting": "Urban Lighting",
+    "tourism": "Tourism Infrastructure",
+    "ideas": "Ideas and Propositions",
+    "planning": "Urban Planning",
+    "engineering": "Engineering and Municipal Infrastructure",
+    "environment": "Environment Conditions",
+    "safety": "The Safety of the City",
+    "socialTypes": {
+      "title": "Категория граждан, имеющих право на льготы",
+      "largeFamily": "Large family",
+      "disability": "A person with a disability",
+      "retired": "Retired people",
+      "veteran": "Veteran"
+    },
+    "users": {
+      "title": "Users"
+    },
+    "services": {
+      "mainInfo": "Main information",
+      "ticketApprovement": "Одобрение заявки",
+      "ticketRejection": "Отклонение заявки",
+      "title": "Services",
+      "messages": {
+        "approve": {
+          "success": "Заявка одобрена",
+          "fail": "При одобрении заявки произошла ошибка"
+        },
+        "reject": {
+          "success": "Заявка отклонена",
+          "fail": "При отклонении заявки произошла ошибка"
+        }
+      },
+      "living": {
+        "title": "Residential real estate",
+        "info": {
+          "rooms": "{n} room | {n} rooms"
+        },
+        "apartment": "Apartment",
+        "roomsAmount": "Количество комнат",
+        "contractType": {
+          "choose": "Выберите тип договора",
+          "fixedTerm": "Срочный",
+          "termless": "Бессрочный"
+        },
+        "chooseApartmentSuccess": "Квартира выбрана"
+      },
+      "commerce": {
+        "title": "Commercial real estate",
+        "premisesNumber": "Premises № {number}",
+        "ceilingHeight": "Высота потолка, м",
+        "premisesCount": "Количество помещений",
+        "area": "Плошадь, кв.м",
+        "price": "Стоимость аренды, руб",
+        "minimalRent": "Минимальный срок аренды, мес"
+      },
+      "parking": {
+        "title": "Parking lots",
+        "parkingType": "Parking type",
+        "types": {
+          "common": "Parking",
+          "social": "Social parking",
+          "guest": "Guest parking"
+        },
+        "ticketType": {
+          "for_disabled_people": "Социальная",
+          "guest": "Гостевая",
+          "regular": "Платная"
+        },
+        "rentTypes": {
+          "title": "Rent types",
+          "description": "Choose one of the suggested rental types. Only the frequency of payment for the service depends on the type of rental.",
+          "short": {
+            "title": "1 month rent",
+            "price": {
+              "title": "1 500 rubles"
+            }
+          },
+          "mid": {
+            "title": "6 months rent",
+            "description": "The payment is made once in 6 months",
+            "price": {
+              "title": "7 200 rubles",
+              "description": "or 1 200 rubles per month"
+            }
+          },
+          "long": {
+            "title": "11 months rent",
+            "description": "The payment is made once in 11 months",
+            "price": {
+              "title": "11 000 rubles",
+              "description": "or 1 000 rubles per month"
+            }
+          },
+          "guest": {
+            "title": "Guest visit",
+            "description": "",
+            "price": {
+              "title": "70 rubles per day",
+              "description": ""
+            }
+          },
+          "social": {
+            "title": "Rent price",
+            "description": "",
+            "price": {
+              "title": "Free",
+              "description": ""
+            }
+          }
+        }
+      },
+      "warehouse": {
+        "month": {
+          "one": "1 month",
+          "six": "6 months",
+          "twelve": "12 months"
+        },
+        "title": "Warehouse",
+        "radius": "Tire radius",
+        "bikeType": "Bicycle type",
+        "tabs": {
+          "tires": "Tires warehouse",
+          "bicycles": "Bicycles warehouse"
+        },
+        "workTime": {
+          "title": "Schedule",
+          "season": {
+            "label": "Season (spring, autumn)",
+            "schedule": "9:00 - 21:00",
+            "caption": "no weekends"
+          },
+          "noSeason": {
+            "label": "Not a season (winter, summer)",
+            "schedule": "9:00 - 18:00",
+            "caption": "monday to friday"
+          }
+        },
+        "storagePrice": {
+          "dynamic": "%{price} rubles",
+          "title": "Storage price",
+          "schedule": {
+            "six": "Платеж осуществляется 1 раз в 6 месяцев",
+            "twelve": "Платеж осуществляется 1 раз в 12 месяцев"
+          },
+          "tires": {
+            "short": {
+              "label": "Store for 1 month",
+              "price": "from 200 rubles"
+            },
+            "mid": {
+              "label": "Store for 6 months",
+              "price": "from 1 000 rubles",
+              "caption": "or 166 rubles/month"
+            },
+            "long": {
+              "label": "Store for 11 months",
+              "price": "from 2 000 rubles",
+              "caption": "or 181 rubles/month"
+            }
+          },
+          "bikes": {
+            "child": {
+              "label": "Children",
+              "price": "130 rubles/month"
+            },
+            "adult": {
+              "label": "Adult",
+              "price": "160 rubles/month"
+            },
+            "tandem": {
+              "label": "Tandem",
+              "price": "200 rubles/month"
+            }
+          }
+        },
+        "storageTypes": {
+          "title": "Storage type",
+          "rentType": "Rent type",
+          "rack": "On a rack",
+          "bikePark": "On a bicycle parking",
+          "subtitle": {
+            "top": "Выберите один из предложенных типов хранения.",
+            "bottom": "От типа хранения зависит только периодичность оплаты сервиса."
+          },
+          "duration": "Хранение на {n} месяц | Хранение на {n} месяца | Хранение на {n} месяцев"
+        }
+      },
+      "ideas": "Ideas and suggestions",
+      "crowdfunding": {
+        "title": "City projects",
+        "form": {
+          "title": "Название проекта",
+          "description": "Добавьте краткое описание проекта",
+          "dates": {
+            "title": "Выберите сроки реализации проекта",
+            "input": "Сроки реализации"
+          },
+          "category": "Категория",
+          "cover": "Добавьте обложку проекта",
+          "markdownDescription": "Добавьте описание проекта",
+          "media": "Добавьте фото",
+          "mediaMaxCount": "Не более 5 фото",
+          "loadedMedia": "Загруженные фотографии"
+        }
+      },
+      "employmentCenter": "Employment center",
+      "light": "Light",
+      "trees":  {
+        "title": "Trees",
+        "aside": {
+          "status": "Состояние",
+          "comment": "Комментарий",
+          "statusChangedDate": "Статус изменен",
+          "statusChangedBy": "Изменил статус",
+          "changeStatus": "Редактировать статус"
+        }
+      },
+      "vacancies": {
+        "title": "City vacancies",
+        "searchResult": "Total {n} vacancies | Total {n} vacancies | Total {n} vacancies",
+        "respond": "Respond",
+        "searchPlaceholder": "Search jobs by category, company or title",
+        "searchErrorTitle": "An error occurred",
+        "searchErrorSubtitle": "An error occurred while searching for jobs, please try again later",
+        "searchErrorRetry": "Try again",
+        "searchEmptyTitle": "No vacancies found",
+        "searchEmptyDescription": "Try changing your search criteria",
+        "searchEmptyRetry": "Reset Filter",
+        "processSearch": "Searching for vacancies",
+        "processLoadPage": "Loading data",
+        "successSearch": "Results filtered successfully",
+        "successLoadPage": "Data loaded",
+        "errorSearch": "An error occurred while searching for jobs",
+        "errorLoadPage": "An error occurred while loading data",
+        "respondModalTitle": "Apply for vacancy",
+        "respondPresent": "You have already applied for this vacancy",
+        "duties": "Duties",
+        "requirements": "Requirements",
+        "conditions": "Conditions",
+        "workTime": "Work mode",
+        "salary": "Salary",
+        "experience": "Work experience",
+        "employmentType": "Work schedule",
+        "workSchedule": "Employment type",
+        "sendRespond": "Apply for vacancy",
+        "respondForm": {
+          "about": "Basic information",
+          "contacts": "Contacts",
+          "resume": "Resume",
+          "respondError": "There was an error sending your response, please try again later",
+          "respondProgress": "Sending a response",
+          "respondSuccessTitle": "Thank you! Your response was successfully submitted",
+          "respondSuccessMessage": "You can track the response status in your account",
+          "resumeHint": "You can attach a file with a resume or a link",
+          "resumeError": "You must attach a file or provide a link to your resume",
+          "resumeFile": "Resume file",
+          "resumeFileFormat": "pdf, doc, docx format",
+          "resumeLink": "Resume link",
+          "textHint": "Add cover letter text",
+          "textPlaceholder": "Tell us about yourself",
+          "resumeLinkRequired": "You must provide a link to your resume",
+          "resumeLinkInvalid": "Некорректная ссылка"
+        }
+      },
+      "tourism": {
+        "labels": {
+          "km": "km",
+          "description": "Description",
+          "photos": "Photos",
+          "workTime": "Working hours",
+          "link": "Link to the site",
+          "distance": "Distance",
+          "duration": "Travel time",
+          "routeType": "Route type",
+          "routesFor": "Routes to",
+          "downloadRoute": "Download route",
+          "routeFileFormat": "Select the desired file format",
+          "offerRoute": "Suggest your route",
+          "routeMinutesDuration": "{minutes}min.",
+          "routeDuration": "{hours}hr. {minutes}min."
+        },
+        "offerForm": {
+          "title": "Suggest a route",
+          "offerSuccess": "The route data was successfully sent to the mayor's office employee",
+          "offerError": "The route data was successfully sent to the mayor's office employee",
+          "descriptionLabel": "Add a description",
+          "routeDescription": "Describe your route",
+          "route": "Track route",
+          "routeFileFormat": "Format gpx, tcx"
+        }
+      }
+    },
+    "guestCard": {
+      "title": "Guest card",
+      "period": "Permanent",
+      "necessary": {
+        "true": "I need to issue a guest card",
+        "false": "I already have a guest card"
+      },
+      "price": "100 rubles"
+    },
+    "dashboard": "Personal account",
+    "profile": "Profile",
+    "companyProfile": {
+      "title": "Company profile",
+      "description": "Description",
+      "workTime": "Work time",
+      "site": "Site",
+      "messages": {
+        "logoUpdate": {
+          "success": "Company logo updated successfully",
+          "fail": "Company logo failed to update"
+        },
+        "update": {
+          "success": "Company data updated successfully",
+          "fail": "Error while updating company data"
+        }
+      }
+    },
+    "companyDocuments": {
+      "bankDetails": "Банковские реквизиты",
+      "companyCard": "Карточка предприятия",
+      "bank": "Банк",
+      "inn": "ИНН",
+      "bik": "БИК",
+      "kpp": "КПП",
+      "okpo": "ОКПО",
+      "legalAddress": "Юридический адрес",
+      "fullCompanyName": "Полное название организации",
+      "okved": "Сфера деятельности ОКВЭД",
+      "realAddress": "Фактический адрес",
+      "account": "Р/счет",
+      "corAccount": "Кор/счет",
+      "messages": {
+        "bankUpdate": {
+          "success": "Банковские реквизиты успешно обновлены",
+          "fails": "Ошибка при обновлении банковских реквизитов"
+        },
+        "cardUpdate": {
+          "success": "Карточка предприятия обновлена",
+          "fail": "Ошибка при обновлении карточки предприятия"
+        }
+      }
+    },
+    "documents": {
+      "title": "Documents",
+      "data": "My documents"
+    },
+    "contacts": {
+      "title": "Contacts",
+      "phone": "Phone",
+      "telegram": "Telegram",
+      "email": "Email",
+      "whatsApp": "WhatsApp",
+      "preferred": "Preferred method"
+    },
+    "files": {
+      "business_plan": "Презентация бизнесс-плана",
+      "passport": "Passport scan",
+      "snils": "SNILS scan",
+      "inn": "INN scan",
+      "inn_jur": "@:entity.files.inn",
+      "job": "Employment certificate",
+      "birth": "Birth certificate scan",
+      "marriage": "Marriage certificate scan",
+      "children_registration": "Residence permit scan",
+      "sts": "Vehicle registration certificate or vehicle passport scan",
+      "pts": "Vehicle passport scan",
+      "consent_processing_personal_data": "Consent to the processing of personal data",
+      "job_petition": "Application from the employer",
+      "social_confirm": "Копия справки об инвалидности, либо документа, подтверждающего отнесение к льготной категории лиц",
+      "ogrn": "Скан-копия ОГРН",
+      "egrjul": "Скан-копия выписки из ЕГРЮЛ",
+      "partner_card": "Скан-копия карты партнера"
+    },
+    "tickets": {
+      "title": "Tickets",
+      "apartments": "Apartment rent",
+      "ideas": {
+        "title": "Ideas and suggestions",
+        "action": {
+          "toVote": "Submit to the vote",
+          "forConsideration": "For consideration",
+          "finish": "Finish project"
+        }
+      },
+      "parking": "Parking rent",
+      "crowdfunding": "City projects",
+      "vacancy": "City vacancies",
+      "warehouse": "Warehouse rent",
+      "responds": "Responses",
+      "verifyRequests": "Verifying Companies",
+      "contract": {
+        "number": "Номер договора",
+        "startDate": "Дата заключения",
+        "dateRange": "Срок действия",
+        "message": "Если вы хотите расторгнуть договор, пожалуйста, скачайте соглашение о расторжении."
+      },
+      "commerce": {
+        "title": "Коммерческая недвижимость",
+        "activityType": "Напишите название вида деятельности",
+        "ticketTitle": "Заявка на коммерческую недвижимость"
+      }
+    },
+    "bills": "Bills",
+    "main": "Main",
+    "maps": {
+      "title": "Maps",
+      "buildings": {
+        "title": "Real estate objects",
+        "residentsCount": "Number of residents",
+        "organizationCount": "Number of organizations",
+        "address": "Address",
+        "floors": "Number of floors",
+        "parkingCount": "Parking spaces",
+        "area": "Object area, sq. m",
+        "managementCompany": "Management Company",
+        "builder": "Builder",
+        "constructYear": "Year of construction",
+        "buildingDescription": "Description",
+        "buildingCommerce": "Organizations",
+        "phone": "Phone",
+        "link": "Site"
+      },
+      "security": {
+        "title": "City safety"
+      }
+    },
+    "data": {
+      "title": "Data",
+      "aside": {
+        "objects": {
+          "title": "en Объекты недвижимости"
+        },
+        "transport": {
+          "title": "en Транспортная инфраструктура"
+        },
+        "improvement": {
+          "title": "en Благоустройство города"
+        },
+        "lighting": {
+          "title": "en Освещение города"
+        },
+        "tourism": {
+          "title": "en Туристическая инфраструктура"
+        },
+        "territory": {
+          "title": "en Территориальное планирование"
+        },
+        "environment": {
+          "title": "en Состояние окружающей среды"
+        }
+      },
+      "statistic": "Statistic",
+      "crads": {
+        "newObject": "en Новый объект жилой недвижимости",
+        "newIdeas": "en Новых идей жителей",
+        "newProblems": "en Новые проблемы в городе",
+        "bicycleForRent": "en Велосипедов в аренду в день"
+      },
+      "months": {
+        "jan": "January",
+        "feb": "February",
+        "mar": "March",
+        "apr": "April",
+        "may": "May",
+        "jun": "June",
+        "jul": "July",
+        "aug": "August",
+        "sep": "September",
+        "oct": "October",
+        "nov": "November",
+        "dec": "December"
+      }
+    },
+    "about": {
+      "title": "About",
+      "toMap": "Go to map",
+      "model": {
+        "title": "Digital model of the city of Innopolis",
+        "caption": "A platform aimed at automating tasks in the activities of local governments and organizations that manage urban facilities, as well as creating effective interaction with the residents of Innopolis. The platform provides storage, processing and visualization of data about urban infrastructure objects and provides statistical information about the current state of the city."
+      },
+      "inno": {
+        "title": "Innopolis",
+        "caption": "The first city built in Russia in the 21st century, the infrastructure of which is created from scratch in accordance with the principles of «Smart City». Innopolis aims to make a qualitative change in the situation with a shortage of IT-specialists in Russia. Innopolis is one of the pilot cities selected for integration of solutions in the direction of “Smart city”.",
+        "people": "people are constantly in the city",
+        "companies": "companies registered",
+        "events": "major events are held annually"
+      },
+      "sections": {
+        "title": "Sections"
+      },
+      "service": {
+        "title": "Services for residents and guests of the city",
+        "subtitle": "Services are available for registered users only",
+        "estate": {
+          "title": "Estate object",
+          "caption": "Estate object service allows you to rent or buy an apartment in residential complexes in Innopolis. You can use it to select the apartment you are interested in, view the necessary information about the room, sign a contract and pay for the apartment."
+        },
+        "commercialEstate": {
+          "title": "Commercial Real Estate",
+          "caption": "With the help of the commercial real estate service, you can rent non-residential premises, namely: choose the room you are interested in, get detailed information about it and the terms of the lease, sign a contract and start a business in Innopolis."
+        },
+        "parking": {
+          "title": "Inno-Parking",
+          "caption": "With the help of the Parking space rental service, you can choose a Parking space for residential complexes in the city of Innopolis, view information about the space and conditions of Parking rental, as well as sign a contract and pay for the lease."
+        },
+        "tires": {
+          "title": "Tires and Bicycles Storage",
+          "caption": "The tire and Bicycle storage service offers you to book your storage space, view information about the space, storage capabilities of your equipment, and no longer worry about the safety of your tires and bicycles."
+        },
+        "ideas": {
+          "title": "Ideas and Propositions",
+          "caption": "The ideas and suggestions service provides an opportunity to share your ideas and suggestions for improving the city, as well as to get acquainted with current projects of the city. In addition, all residents can evaluate ideas by viewing them on the interactive map of Innopolis."
+        },
+        "jobs": {
+          "title": "City Jobs",
+          "caption": "The city vacancies service helps non-IT professionals find jobs, ensuring interaction between the service operator, job seekers and employers. Here you can view the Bank of vacancies, post a resume or find a job."
+        }
+      }
+    },
+    "design": "Design code",
+    "playground": "Playground",
+    "email": "E-mail / Login",
+    "password": "Password",
+    "vehicles": {
+      "add": "Add vehicle",
+      "title": "Vehicles",
+      "data": "Vehicles data",
+      "type": "Type",
+      "brand": "Brand",
+      "model": "Model",
+      "plates": "Plate number",
+      "messages": {
+        "create": {
+          "success": "Vehicle has been created",
+          "fail": "An error occurred during vehicle creation"
+        },
+        "update": {
+          "success": "Vehicle has been updated",
+          "fail": "An error occurred during vehicle update"
+        },
+        "delete": {
+          "success": "Vehicle has been deleted",
+          "fail": "An error occurred during vehicle deletion"
+        }
+      }
+    },
+    "neighbors": {
+      "add": "Add neighbor",
+      "title": "Relatives",
+      "child": "Child",
+      "spouse": "Spouse (а)",
+      "data": "Relatives data",
+      "messages": {
+        "create": {
+          "success": "Relative has been created",
+          "fail": "An error occurred during relative creation"
+        },
+        "update": {
+          "success": "Relative has been updated",
+          "fail": "An error occurred during relative update"
+        },
+        "delete": {
+          "prompt": "Are you sure you want to delete the data about this relative?",
+          "success": "Relative has been deleted",
+          "fail": "An error occurred during relative deletion"
+        }
+      }
+    },
+    "vacancy": {
+      "search": "Поиск по названию",
+      "add": "Добавить вакансию"
+    }
+  }
+}
