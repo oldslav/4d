@@ -70,6 +70,12 @@
             action: { name: "map-territory" },
             icon: "o_explore",
             show: true
+          },
+          {
+            label: this.$t("entity.maps.light.title"),
+            action: { name: "map-light" },
+            icon: "o_lightbulb",
+            show: true
           }
         ];
       }
