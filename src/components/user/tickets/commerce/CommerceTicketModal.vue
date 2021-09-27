@@ -21,9 +21,9 @@
           :error="step > 1 && !stepOneDone"
           icon="edit"
         )
-          q-input(v-model="companyName" :label="$t('user.companyName')")
+          q-input(v-model="companyName" :label="$t('user.companyName')" :rules="required")
           FormName(v-model="name")
-          q-input(v-model="jobPosition" :label="$t('common.position')")
+          q-input(v-model="jobPosition" :label="$t('common.position')" :rules="required")
           MyDocumentsForm(v-model="documents" is-local all-required)
           q-stepper-navigation
             q-btn(@click="step++" color="primary" :label="$t('action.continue')")
@@ -83,6 +83,7 @@
     async created () {
       await this.GET_COMPANY();
       Object.assign(this.documents, cloneDeep(this.getCompanyCard.documents));
+      this.companyName = this.getCompanyCard.name;
     },
     data () {
       return {
@@ -111,8 +112,13 @@
     computed: {
       ...mapGetters("services", ["getPickedFeatureId"]),
       ...mapGetters("user/company", ["getCompanyCard"]),
+      required () {
+        return [
+          val => !!val
+        ];
+      },
       stepOneDone () {
-        return !!this.name.first && !!this.companyName && this.jobPosition && Object.values(this.documents).every(isDocumentPresent);
+        return !!this.name.first && !!this.companyName && !!this.jobPosition && Object.values(this.documents).every(isDocumentPresent);
       },
       stepTwoDone () {
         return !!this.activityType;

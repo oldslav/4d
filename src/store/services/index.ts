@@ -188,6 +188,7 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
     // Временно по просьбе Саши, пока здание одно
     const { id } = preparedData.data.features[0];
+    console.log("preparedData", preparedData);
     commit(SET_FEATURE_ID, id);
     commit(SET_GEODATA, preparedData);
   },
