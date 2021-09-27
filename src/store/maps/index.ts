@@ -3,6 +3,8 @@ import { TRootState } from "src/store/types/root";
 import buildings from "src/store/maps/buildings";
 import security from "src/store/maps/security";
 import engineering from "src/store/maps/engineering";
+import transport from "src/store/maps/transport";
+import territory from "src/store/maps/territory";
 
 interface IMapsState {
 
@@ -13,7 +15,9 @@ const maps: Module<IMapsState, TRootState> = {
   modules: {
     buildings,
     security,
-    engineering
+    engineering,
+    transport,
+    territory
   }
 };
 

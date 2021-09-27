@@ -992,6 +992,22 @@
         "bottomMark": "Нижняя отметка",
         "meter": "м",
         "centimeter": "см"
+      },
+      "transport": {
+        "title": "Транспортная инфраструктура",
+        "type": "Тип",
+        "address": "Адрес",
+        "regulations": "Правила использования",
+        "area": "Площадь",
+        "height": "Высота",
+        "width": "Ширина",
+        "length": "Длина",
+        "manufacturer": "Застройщик",
+        "installedYear": "Год установки",
+        "material": "Материал"
+      },
+      "territory": {
+        "title": "Территориальное планирование"
       }
     },
     "data": "Данные",

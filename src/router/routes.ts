@@ -408,6 +408,38 @@ const routes: RouteConfig[] = [
         ]
       },
       {
+        path: "transport",
+        name: "map-transport",
+        components: {
+          default: (): Promise<any> => import("pages/maps/transport/MapTransport.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/transport/AsideMapsTransport.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
+        },
+        children: [
+          {
+            path: ":layer/:id",
+            name: "map-transport-item",
+            components: {
+              default: (): Promise<any> => import("pages/maps/transport/MapTransportItem.vue"),
+              asideTransport: (): Promise<any> => import("components/aside/maps/transport/AsideMapsTransportItem.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true,
+              unauthorized: true,
+              prod: true
+            }
+          }
+        ]
+      },
+      {
         path: "security",
         name: "map-security",
         components: {
@@ -420,6 +452,21 @@ const routes: RouteConfig[] = [
           asideMaps: true,
           unauthorized: true,
           prod: true
+        }
+      },
+      {
+        path: "territory",
+        name: "map-territory",
+        components: {
+          default: (): Promise<any> => import("pages/maps/territory/MapTerritory.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/territory/AsideMapsTerritory.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
         }
       },
       {

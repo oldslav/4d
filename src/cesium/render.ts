@@ -12,10 +12,6 @@ export default (entities: ICesiumEntity[]): void => {
     if (type && type in renderersByName) {
       renderersByName[type].render(entity);
     } else {
-      if (entity.polyline) {
-        entity.polyline.zIndex = -1;
-      }
-
       anyRenderer.render(entity);
     }
   }
