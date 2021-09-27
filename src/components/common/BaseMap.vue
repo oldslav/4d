@@ -151,7 +151,6 @@
         document.getElementById("cesiumContainer").style.height = "";
 
         this.$emit("onViewerReady", vcViewer);
-        this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
       },
 
       activeEvt (_) {
@@ -221,7 +220,9 @@
       },
 
       entitySelected (e) {
-        this.$emit("change", e);
+        if (typeof e !== "undefined") {
+          this.$emit("change", e);
+        }
       },
 
       onUpdateData () {
@@ -238,9 +239,9 @@
           render(ds.entities.values);
 
           /*
-             todo - автор, бери id текущей сущности из хранилища.
-             P.S. не забудь сначала его туда положить.
-           */
+           todo - автор, бери id текущей сущности из хранилища.
+           P.S. не забудь сначала его туда положить.
+         */
           const pickedId = this.$route.query.id;
           if (pickedId) {
             this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
@@ -311,9 +312,9 @@
         }
       }
 
-      // onMapMove () {
-      //   this.$emit("on-map-move", this.$refs.vcViewer);
-      // }
+    // onMapMove () {
+    //   this.$emit("on-map-move", this.$refs.vcViewer);
+    // }
     },
     destroyed () {
       this.SET_CESIUM(null);
@@ -323,20 +324,20 @@
 </script>
 
 <style lang="stylus" scoped>
-  .cesiumWrapper
-    #cesiumContainer
-      display: block;
-      position: absolute;
-      top: 50px;
-      left: 400px;
-      border: none;
-      width: calc(100% - 400px);
-      height: calc(100% - 50px);
+.cesiumWrapper
+  #cesiumContainer
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: 400px;
+    border: none;
+    width: calc(100% - 400px);
+    height: calc(100% - 50px);
 
-      @media (max-width: $breakpoint-sm-min)
-        top: 0;
-        bottom: 50px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 50px);
+    @media (max-width: $breakpoint-sm-min)
+      top: 0;
+      bottom: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 50px);
 </style>
