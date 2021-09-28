@@ -49,7 +49,9 @@ const mutations: MutationTree<GeoState> = {
   [SET_USER]: (state, payload) => Object.assign(state, payload),
   [SET_EMPTY]: state => Object.assign(state, initialState()),
   [SET_GEODATA]: (state, payload) => state.geoJson = payload,
-  [SET_FEATURE_ID]: (state, payload) => state.pickedFeatureId = payload,
+  [SET_FEATURE_ID]: (state, payload) => {
+    state.pickedFeatureId = payload;
+  },
   [SET_POINT_COORDS]: (state, payload) => state.pointCoords = payload,
   [SET_DRAW_TYPE]: (state, payload) => state.isDraw = payload,
   [SET_CESIUM]: (state, payload) => state.cesiumInstance = payload,
@@ -141,7 +143,11 @@ const actions: ActionTree<GeoState, TRootState> = {
     //   type: "pointPrimitive"
     // };
 
-    const { data: { type, features } } = await this.service.services.ideas.getIdeasGeo();
+    const { data: { type, features } } = await this.service.services.ideas.getIdeasGeo({
+      filters: {
+        statusId: [2, 3, 4, 6]
+      }
+    });
 
     const preparedData = {
       data: {
@@ -188,7 +194,6 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
     // Временно по просьбе Саши, пока здание одно
     const { id } = preparedData.data.features[0];
-    console.log("preparedData", preparedData);
     commit(SET_FEATURE_ID, id);
     commit(SET_GEODATA, preparedData);
   },

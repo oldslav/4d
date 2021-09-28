@@ -5,17 +5,17 @@
         q-route-tab(
           v-for="(route, index) in tabs"
           :key="index"
-          :to="{name: route.name}"
+          :to="{ name: route.name }"
           :name="route.name"
-          :label="route.label"
+          :icon="route.icon"
+          v-if="!route.hide"
         ).col
-
     template(v-else)
       BaseTabs(v-model="tab" :dense="false")
         q-route-tab(
           v-for="(route, index) in tabs"
           :key="index"
-          :to="{name: route.name}"
+          :to="{ name: route.name }"
           :name="route.name"
           :label="route.label"
           v-if="!route.hide"
@@ -78,29 +78,41 @@
         return [
           {
             name: "about",
-            label: this.$t("entity.about.title")
+            label: this.$t("entity.about.title"),
+            icon: "help_outline"
           },
           {
             name: "map",
-            label: this.$t("entity.maps.title")
+            label: this.$t("entity.maps.title"),
+            icon: "map"
           },
           {
             name: "data",
-            label: this.$t("entity.data")
+            label: this.$t("entity.data"),
+            icon: "bar_chart"
           },
           {
             name: "design",
-            label: this.$t("entity.design")
+            label: this.$t("entity.design"),
+            icon: "list_alt"
           },
           {
             name: "services",
             label: this.$t("entity.services.title"),
-            hide: !this.isAuthenticated || this.isUserAdmin
+            hide: !this.isAuthenticated || this.isUserAdmin,
+            icon: "ballot"
           },
           {
             name: "users",
             label: this.$t("entity.users.title"),
-            hide: !this.isUserAdmin
+            hide: !this.isUserAdmin,
+            icon: "o_account_circle"
+          },
+          {
+            name: "user-profile",
+            label: this.$t("entity.profile"),
+            hide: !this.isAuthenticated,
+            icon: "o_account_circle"
           }
         ];
       },

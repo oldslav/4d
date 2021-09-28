@@ -28,24 +28,41 @@
           elevated
           behavior="mobile"
         )
-          q-list.q-pa-lg.full-height.column
-            q-item(dense).q-px-none
-              q-item-section
-                q-select(
-                  v-model="locale" color="primary" :options="locales"
-                  option-label="label" option-value="value" filled dense
-                )
-              q-item-section(side)
-                q-toggle(
-                  v-model="darkMode"
-                  unchecked-icon="dark_mode"
-                  checked-icon="light_mode"
-                  color="dark"
-                  icon-color="yellow"
-                  keep-color
-                  size="md"
-                  dense
-                )
+          q-list.q-pa-lg.full-height.column.justify-betweenz
+            div
+              q-item(:to="{ name: 'user-profile' }" v-if="isAuthenticated").q-px-none.items-center
+                q-item-section(avatar)
+                  q-icon(name="o_account_circle")
+                q-item-section
+                  | {{ $t("entity.profile") }}
+              q-item(dense).q-px-none
+                q-item-section
+                  q-select(
+                    v-model="locale" color="primary" :options="locales"
+                    option-label="label" option-value="value" filled dense
+                  )
+                q-item-section(side)
+                  q-toggle(
+                    v-model="darkMode"
+                    unchecked-icon="dark_mode"
+                    checked-icon="light_mode"
+                    color="dark"
+                    icon-color="yellow"
+                    keep-color
+                    size="md"
+                    dense
+                  )
+            div
+              q-item(clickable @click="onLogout()" v-if="isAuthenticated").q-px-none.items-center
+                q-item-section(avatar)
+                  q-icon(name="logout").rotate-180
+                q-item-label
+                  span Выход
+              q-item(clickable @click="onAuth()" v-else).q-px-none.items-center
+                q-item-section(avatar)
+                  q-icon(name="login")
+                q-item-label
+                  span Войти
 
         q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
           transition(name="fade" mode="out-in")
@@ -164,7 +181,7 @@
         return [
           {
             value: "ru",
-            label: this.$t("common.locales.ru.alias")
+            label: this.$t("common.locales.RU.alias")
           },
           {
             value: "EN",

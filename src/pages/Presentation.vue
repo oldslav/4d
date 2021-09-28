@@ -16,6 +16,7 @@
             q-btn(
               color="primary"
               :label="$t('common.welcomePresentation.toMapBtn')"
+              @click="goTo('map')"
               outline
             ).q-mr-md
             q-btn(
@@ -142,11 +143,18 @@
           }
         ];
       },
+
       isDarkMode () {
         return this.$q.dark.isActive;
       },
+
       isLastStep () {
         return this.slides.length === this.step;
+      }
+    },
+    methods: {
+      goTo (name) {
+        this.$router.push({ name });
       }
     }
   };

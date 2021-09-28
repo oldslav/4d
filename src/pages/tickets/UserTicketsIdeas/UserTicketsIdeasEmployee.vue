@@ -51,7 +51,7 @@
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id >= 3 && props.row.status.id !== 6" @click="onCancel(props.row.id)")
+                  q-item(clickable v-close-popup :disable="props.row.status.id >= 3 && props.row.status.id !== 6" @click="changeStatus(props.row.id, 5)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("action.reject") }}
                   q-item(v-if="props.row.status.id === 1 || props.row.status.id === 6" clickable v-close-popup @click="changeStatus(props.row.id, 2)")
@@ -66,6 +66,9 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("action.details") }}
+                  q-item(clickable v-close-popup @click="toIdeas({ id: props.row.id })")
+                    q-item-section(no-wrap)
+                      | {{ $t("action.showOnMap") }}
 
     BaseModal(
       v-model="isDetailsModal"
@@ -195,6 +198,10 @@
         SET_EMPTY
       ]),
 
+      toIdeas (query) {
+        this.$router.push({ name: "services-ideas", query });
+      },
+
       openDetails (id) {
         this.currentId = id;
       },
@@ -216,7 +223,7 @@
           type: "positive",
           message: "Статус изменён"
         });
-        await this.getUserTickets();
+        setTimeout(await this.getUserTickets(), 300);
       },
 
       onCancel (id) {
