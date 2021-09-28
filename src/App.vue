@@ -4,9 +4,7 @@
       q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
     q-layout(ref="layout" view="hHh Lpr lFf")
       template(v-if="isMobile")
-        q-fab(v-if="isMobile" v-show="!(isBurger || isSettings)" color="primary" icon="menu" round direction="down" padding="sm").fixed-top-left.q-ma-md.z-max
-          q-fab-action(color="primary" icon="menu" round @click="toggleBurger")
-          q-fab-action(color="primary" icon="settings" round @click="toggleSettings")
+        q-fab(:value="isBurger" color="primary" icon="menu" round direction="down" padding="sm" @click="toggleBurger").fixed-top-left.q-ma-md
         q-drawer(
           v-model="isBurger"
           v-if="isComponentPassed('asideLeft')"
@@ -16,54 +14,40 @@
           elevated
           behavior="mobile"
         )
-          transition(name="fade" mode="out-in")
-            router-view(name="asideLeft")
-              AsideProfile
-        q-drawer(
-          v-model="isSettings"
-          v-if="isComponentPassed('asideLeft')"
-          :width="300"
-          :breakpoint="500"
-          overlay
-          elevated
-          behavior="mobile"
-        )
-          q-list.q-pa-lg.full-height.column.justify-betweenz
-            div
-              q-item(:to="{ name: 'user-profile' }" v-if="isAuthenticated").q-px-none.items-center
-                q-item-section(avatar)
-                  q-icon(name="o_account_circle")
-                q-item-section
-                  | {{ $t("entity.profile") }}
-              q-item(dense).q-px-none
-                q-item-section
-                  q-select(
-                    v-model="locale" color="primary" :options="locales"
-                    option-label="label" option-value="value" filled dense
-                  )
-                q-item-section(side)
-                  q-toggle(
-                    v-model="darkMode"
-                    unchecked-icon="dark_mode"
-                    checked-icon="light_mode"
-                    color="dark"
-                    icon-color="yellow"
-                    keep-color
-                    size="md"
-                    dense
-                  )
-            div
-              q-item(clickable @click="onLogout()" v-if="isAuthenticated").q-px-none.items-center
-                q-item-section(avatar)
-                  q-icon(name="logout").rotate-180
-                q-item-label
-                  span Выход
-              q-item(clickable @click="onAuth()" v-else).q-px-none.items-center
-                q-item-section(avatar)
-                  q-icon(name="login")
-                q-item-label
-                  span Войти
-
+          .full-height.column.justify-between
+            transition(name="fade" mode="out-in")
+              router-view(name="asideLeft")
+                AsideProfile
+            .q-pa-lg.column
+              div
+                q-item(dense).q-px-none
+                  q-item-section
+                    q-select(
+                      v-model="locale" color="primary" :options="locales"
+                      option-label="label" option-value="value" filled dense
+                    )
+                  q-item-section(side)
+                    q-toggle(
+                      v-model="darkMode"
+                      unchecked-icon="dark_mode"
+                      checked-icon="light_mode"
+                      color="dark"
+                      icon-color="yellow"
+                      keep-color
+                      size="md"
+                      dense
+                    )
+              div
+                q-item(clickable @click="onLogout()" v-if="isAuthenticated").q-px-none.items-center
+                  q-item-section(avatar)
+                    q-icon(name="logout").rotate-180
+                  q-item-label
+                    span {{ $t("action.login") }}
+                q-item(clickable @click="onAuth()" v-else).q-px-none.items-center
+                  q-item-section(avatar)
+                    q-icon(name="login")
+                  q-item-label
+                    span {{ $t("action.login") }}
         q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
           transition(name="fade" mode="out-in")
             router-view(name="asideRight")
@@ -134,7 +118,6 @@
         isStartedLoading: false,
         showMailConfirmedModal: false,
         isBurger: false,
-        isSettings: false,
         mapReady: false
       };
     },
@@ -197,13 +180,7 @@
     methods: {
       ...mapActions("references", [GET_REFERENCES]),
 
-      toggleSettings () {
-        this.isBurger = false;
-        this.isSettings = !this.isSettings;
-      },
-
       toggleBurger () {
-        this.isSettings = false;
         this.isBurger = !this.isBurger;
       },
 

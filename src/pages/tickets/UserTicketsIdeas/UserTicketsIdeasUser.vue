@@ -215,7 +215,7 @@
           this.offset = page;
         }
 
-        await this.GET_DATA(true);
+        await this.GET_DATA({ isSet: true });
       },
 
       onCancel (id) {
@@ -248,13 +248,13 @@
     },
     watch: {
       computedQuery () {
-        this.GET_DATA(true);
+        this.GET_DATA({ isSet: true });
       },
 
       filters: {
         deep: true,
         async handler () {
-          await this.GET_DATA(true);
+          await this.GET_DATA({ isSet: true });
         }
       }
     },

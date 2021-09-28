@@ -87,6 +87,7 @@ const routes: RouteConfig[] = [
     },
     meta: {
       toolbar: true,
+      isBurger: true,
       asideLeft: true
     },
     children: [
