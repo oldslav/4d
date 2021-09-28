@@ -105,7 +105,7 @@
               name: "services-ideas"
             },
             icon: "o_online_prediction",
-            show: this.isDev && this.isUserNature
+            show: this.isDev && this.isUserNature || this.isEmployee
           },
           {
             label: this.$t("entity.services.crowdfunding.title"),

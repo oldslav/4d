@@ -217,7 +217,7 @@
           this.offset = page;
         }
 
-        await this.GET_DATA(true);
+        await this.GET_DATA({ isSet: true });
       },
 
       async changeStatus (id, statusId) {
@@ -266,7 +266,7 @@
       },
 
       computedQuery () {
-        this.GET_DATA(true);
+        this.GET_DATA({ isSet: true });
       }
     },
     beforeDestroy () {
