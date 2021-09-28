@@ -2,10 +2,10 @@
   div.cesiumWrapper
     q-no-ssr
       vc-viewer(
+        v-if="fakeData"
         ref="vcViewer"
         :infoBox="false"
         :selection-indicator="false"
-        @selectedEntityChanged="entitySelected"
         @ready="onReadyViewer"
       )
         vc-layer-imagery
@@ -15,6 +15,7 @@
             :data="fakeData"
             :show="show"
             :entities="entities"
+            @click="entitySelected"
             @ready="onDatasourceReady"
           )
         vc-handler-draw-point(
@@ -37,6 +38,7 @@
   import render from "../../cesium/render";
   import { get } from "lodash";
   import { mapMutations, mapState } from "vuex";
+  import { CesiumScenes } from "../../constaints";
   import { toDegrees } from "../../util/map";
   import { createClusterMarkers } from "../../cesium/utils/cluster-markers";
   import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
@@ -69,7 +71,8 @@
         isDraw: state => state.isDraw,
         pickedFeatureId: state => state.pickedFeatureId,
         clustering: state => state.clustering,
-        getEntityDistance: state => state.getEntityDistance
+        getEntityDistance: state => state.getEntityDistance,
+        getMapScene: state => state.scene
       }),
 
       isMobile () {
@@ -146,12 +149,13 @@
         cesiumInstance.viewer.scene.skyBox.show = false;
         cesiumInstance.viewer.scene.fxaa = false;
         cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
+        cesiumInstance.viewer.scene.globe.tileCacheSize = 1000;
 
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
 
         this.$emit("onViewerReady", vcViewer);
-        this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
+        this.$watch("getMapScene", this.onChangeMapScene, { immediate: true });
       },
 
       activeEvt (_) {
@@ -221,7 +225,9 @@
       },
 
       entitySelected (e) {
-        this.$emit("change", e);
+        if (typeof e !== "undefined") {
+          this.$emit("change", e);
+        }
       },
 
       onUpdateData () {
@@ -238,9 +244,9 @@
           render(ds.entities.values);
 
           /*
-             todo - автор, бери id текущей сущности из хранилища.
-             P.S. не забудь сначала его туда положить.
-           */
+           todo - автор, бери id текущей сущности из хранилища.
+           P.S. не забудь сначала его туда положить.
+         */
           const pickedId = this.$route.query.id;
           if (pickedId) {
             this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
@@ -269,6 +275,18 @@
             )
           });
           viewer.selectedEntity = entity;
+        }
+      },
+
+      onChangeMapScene (val){
+        const value = val || CesiumScenes["3d"];
+        const mapping = {
+          [CesiumScenes["3d"]]: Cesium.SceneMode.SCENE3D,
+          [CesiumScenes["2d"]]: Cesium.SceneMode.SCENE2D
+        };
+
+        if (this.$root.map){
+          this.$root.map.cesiumInstance.viewer.scene.mode = mapping[value];
         }
       }
     },
@@ -311,9 +329,9 @@
         }
       }
 
-      // onMapMove () {
-      //   this.$emit("on-map-move", this.$refs.vcViewer);
-      // }
+    // onMapMove () {
+    //   this.$emit("on-map-move", this.$refs.vcViewer);
+    // }
     },
     destroyed () {
       this.SET_CESIUM(null);
@@ -323,20 +341,20 @@
 </script>
 
 <style lang="stylus" scoped>
-  .cesiumWrapper
-    #cesiumContainer
-      display: block;
-      position: absolute;
-      top: 50px;
-      left: 400px;
-      border: none;
-      width: calc(100% - 400px);
-      height: calc(100% - 50px);
+.cesiumWrapper
+  #cesiumContainer
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: 400px;
+    border: none;
+    width: calc(100% - 400px);
+    height: calc(100% - 50px);
 
-      @media (max-width: $breakpoint-sm-min)
-        top: 0;
-        bottom: 50px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 50px);
+    @media (max-width: $breakpoint-sm-min)
+      top: 0;
+      bottom: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 50px);
 </style>

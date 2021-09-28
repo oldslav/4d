@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, get } from "lodash";
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IMapEngineeringState } from "src/store/types/maps/engineering";
@@ -17,7 +17,6 @@ import Vue from "vue";
 const initialState = (): IMapEngineeringState => ({
   menu: null,
   geoJSON: {},
-  currentSectionId: null,
   feature: null
 });
 
@@ -30,9 +29,6 @@ const mutations: MutationTree<IMapEngineeringState> = {
   setSectionGeoJSON (state, { section, data }) {
     Vue.set(state.geoJSON, section, data);
   },
-  setCurrentSectionId (state, val) {
-    state.currentSectionId = val;
-  },
   setFeature (state, feature) {
     state.feature = feature;
   }
@@ -44,7 +40,7 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
     commit("setMenu", menu);
   },
 
-  async [FETCH_ENGINEERING_SECTION_GEOJSON] ({ state, getters, commit }, id) {
+  async [FETCH_ENGINEERING_SECTION_GEOJSON] ({ rootState, getters, commit }, id) {
     if (!getters.getGeoJSON[id]) {
       const section = getters.getMenu.subSections.find((x: IMapMenuSection) => x.id === id);
 
@@ -73,29 +69,29 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
       commit("setSectionGeoJSON", { section: id, data });
     }
 
-    if (state.currentSectionId !== id) {
-      commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: getters.getGeoJSON[id] }, { root: true });
-      commit("setCurrentSectionId", id);
+    const sectionId = get(rootState.services.geoJson, "sectionId", []);
+
+    if (sectionId !== id) {
+      commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: getters.getGeoJSON[id], sectionId: id }, { root: true });
     }
   },
 
   async [TOGGLE_ENGINEERING_VISIBILITY_BY_LAYER] ({ rootState, commit }, { ids, visibility }) {
-    const geoJson = cloneDeep(rootState.services.geoJson.data);
+    const geoJson = cloneDeep(rootState.services.geoJson);
     const idsSet = new Set(ids);
 
-    for (const feature of geoJson.features) {
+    for (const feature of geoJson.data.features) {
       if (idsSet.has(feature.properties.layer)) {
         feature.properties.visibility = visibility;
       }
     }
-
-    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
+    commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
   },
 
   [SET_ACTIVE_ENGINEERING_ITEM] ({ rootState, commit }, id) {
-    const geoJson = cloneDeep(rootState.services.geoJson.data);
+    const geoJson = cloneDeep(rootState.services.geoJson);
 
-    for (const feature of geoJson.features) {
+    for (const feature of geoJson.data.features) {
       if (feature.id === id) {
         feature.properties.active = true;
         feature.properties.extended = true;
@@ -105,18 +101,18 @@ const actions: ActionTree<IMapEngineeringState, TRootState> = {
       }
     }
 
-    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
+    commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
   },
 
   [REMOVE_ACTIVE_ENGINEERING_ITEM] ({ rootState, commit }) {
-    const geoJson = cloneDeep(rootState.services.geoJson.data);
+    const geoJson = cloneDeep(rootState.services.geoJson);
 
-    for (const feature of geoJson.features) {
+    for (const feature of geoJson.data.features) {
       feature.properties.active = true;
       feature.properties.extended = false;
     }
 
-    commit(`services/${ SET_GEODATA }`, { type: "geoJson", data: geoJson }, { root: true });
+    commit(`services/${ SET_GEODATA }`, geoJson, { root: true });
   },
 
   async [FETCH_ENGINEERING_ITEM] ({ commit, getters }, { layerId, id }) {

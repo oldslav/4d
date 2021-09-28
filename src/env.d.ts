@@ -46,6 +46,8 @@ declare interface ICesiumEntity {
     show: boolean;
     outline: boolean;
     extrudedHeight: number;
+    outlineWidth: number;
+    outlineColor: any;
     material: ICesiumEntityMaterial;
   },
   polyline: {

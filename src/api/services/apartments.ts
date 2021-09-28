@@ -10,6 +10,10 @@ export class ApartmentsService extends Service {
     return this.api.get("api/v1/services/apartments/user", { params });
   }
 
+  public getApartmentDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`/api/v1/services/apartments/${ id }`);
+  }
+
   // public static getApartments (id: number): AxiosPromise<any> {
   //   return this.api.get(`/api/v1/services/apartments/${ id }`);
   // }

@@ -93,16 +93,19 @@
             q-item.q-px-none.items-start.q-mb-md
               q-item-section
                 q-item-label
-                  | {{ $t('entity.services.warehouse.storagePrice.bikes.tandem.label') }}
+                  | {{ $t("entity.services.warehouse.storagePrice.bikes.tandem.label") }}
               q-item-section.text-right
                 q-item-label.text-primary
-                  | {{ $t('entity.services.warehouse.storagePrice.bikes.tandem.price') }}
+                  | {{ $t("entity.services.warehouse.storagePrice.bikes.tandem.price") }}
             .text-caption.text-primary-light
-              | {{ $t('entity.services.warehouse.storageTypes.title') }}
+              | {{ $t("entity.services.warehouse.storageTypes.title") }}
             q-item.q-px-none.items-start.q-mb-md
               q-item-section
                 q-item-label
                   | {{ $t('entity.services.warehouse.storageTypes.bikePark') }}
+        q-item(v-if="!!this.pickedFeature")
+          q-item-section
+            ImageSlider(:value="images" :slides-to-show="4")
     div.text-center(v-if="true")
       q-btn.full-width(color="primary" label="Оформить заявку" :style="{maxWidth: '90%'}" @click="onCreate()" :disable="!pickedFeature")
 </template>
@@ -111,10 +114,11 @@
   import { mapGetters, mapMutations } from "vuex";
   import BaseTabs from "components/common/BaseTabs";
   import { SET_CREATE_TICKET } from "@/store/constants/mutation-constants";
+  import ImageSlider from "components/common/ImageSlider";
 
   export default {
     name: "AsideServicesWarehouse",
-    components: { BaseTabs },
+    components: { ImageSlider, BaseTabs },
     data () {
       return {
         currentTab: "tires"
@@ -124,6 +128,9 @@
       ...mapGetters("services", ["pickedFeature"]),
       warehouseAddress () {
         return this.pickedFeature ? `ул. ${ this.pickedFeature.properties.name }` : this.$t("action.select.building");
+      },
+      images () {
+        return this.pickedFeature.properties.images;
       }
     },
     methods: {

@@ -117,6 +117,7 @@
     "notice": "Message",
     "reason": "Reason",
     "rentPrice": "Rent price, rubles",
+    "minRent": "Минимальный срок аренды",
     "street": "Street",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
@@ -127,7 +128,8 @@
       "area": "Area, sq.m",
       "rooms": "Rooms",
       "floor": "Floor",
-      "entrance": "Entrance"
+      "entrance": "Entrance",
+      "ceilingHeight": "Высота потолка, м"
     },
     "address": "Address",
     "number": "Number",
@@ -583,6 +585,7 @@
         },
         "apartment": "Apartment",
         "roomsAmount": "Количество комнат",
+        "equipment": "Комплектация квартиры",
         "contractType": {
           "choose": "Выберите тип договора",
           "fixedTerm": "Срочный",
@@ -991,6 +994,28 @@
         "bottomMark": "Bottom Mark",
         "meter": "m",
         "centimeter": "cm"
+      },
+      "transport": {
+        "title": "Transport infrastructure",
+        "type": "Type",
+        "address": "Address",
+        "regulations": "Terms of use",
+        "area": "Area",
+        "height": "Height",
+        "width": "Width",
+        "length": "Length",
+        "manufacturer": "Developer",
+        "installedYear": "Installation year",
+        "material": "Material"
+      },
+      "territory": {
+        "title": "Territorial planning"
+      },
+      "light": {
+        "title": "City lighting"
+      },
+      "improvement": {
+        "title": "City improvement"
       }
     },
     "data": "Data",

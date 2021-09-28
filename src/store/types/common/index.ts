@@ -8,6 +8,8 @@
 //   imagePath: string
 // }
 
+import { CesiumScenes } from "src/constaints";
+
 interface DocType {
   description: string,
   id: number,
@@ -22,6 +24,7 @@ export interface GeoState {
   isDraw: any | null
   cesiumInstance: any | null,
   entityDistance: null | number
+  scene: null | CesiumScenes
 }
 
 export interface GeoData {

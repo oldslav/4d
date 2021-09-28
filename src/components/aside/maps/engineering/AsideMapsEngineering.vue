@@ -73,15 +73,13 @@
     name: "AsideMapsEngineering",
     components: { AsideRouterView },
     created (){
-      const routeSection = parseInt(this.$route.query.section, 10);
-      this.sectionId = routeSection in this.layersBySection ? routeSection : null;
+      const routeSection = this.$route.query.section;
+      this.sectionId = routeSection in this.layersBySection ? parseInt(routeSection, 10) : null;
 
       this.disabledLayers = Object.entries(this.layersBySection)
         .reduce((res, [sectionId, layerIds]) => {
-          if (sectionId !== routeSection) {
-            for (const id of layerIds) {
-              res[id] = true;
-            }
+          for (const id of layerIds) {
+            res[id] = sectionId !== routeSection;
           }
           return res;
         }, {});

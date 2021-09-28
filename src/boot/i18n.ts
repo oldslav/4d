@@ -28,7 +28,7 @@ const numberFormats = {
 };
 
 const pluralizationRules = {
-  ru: (choice: number, choiceLength: number) => {
+  RU: (choice: number, choiceLength: number) => {
     const teen = choice > 10 && choice < 20;
     const endsWithOne = choice % 10 === 1;
 
@@ -45,12 +45,12 @@ const pluralizationRules = {
 
     return choiceLength - 1;
   },
-  en: (choice: number, choiceLength: number) => choice === 1 ? 0 : choiceLength - 1
+  EN: (choice: number, choiceLength: number) => choice === 1 ? 0 : choiceLength - 1
 };
 
 export const i18n = new VueI18n({
   locale: "RU",
-  fallbackLocale: "EN",
+  fallbackLocale: "EN", 
   messages,
   pluralizationRules,
   numberFormats
