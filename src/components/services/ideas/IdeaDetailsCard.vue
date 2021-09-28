@@ -22,8 +22,8 @@
         span.text-grey-6 Статус
         span.q-my-auto {{ current.status.description }}
         BaseStatus(:value="Number(current.status.id)")
-    q-card-section
-      div(v-if="current.status.id === 6")
+    q-card-section(v-if="current.status.id === 6")
+      div
         span.text-grey-6 Голосование
         .column.items-start
           q-item.q-px-none.full-width

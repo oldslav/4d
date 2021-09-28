@@ -2,10 +2,10 @@
   div.cesiumWrapper
     q-no-ssr
       vc-viewer(
+        v-if="fakeData"
         ref="vcViewer"
         :infoBox="false"
         :selection-indicator="false"
-        @selectedEntityChanged="entitySelected"
         @ready="onReadyViewer"
       )
         vc-layer-imagery
@@ -15,6 +15,7 @@
             :data="fakeData"
             :show="show"
             :entities="entities"
+            @click="entitySelected"
             @ready="onDatasourceReady"
           )
         vc-handler-draw-point(

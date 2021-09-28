@@ -29,7 +29,6 @@ const initialState = (): IUserTicketsState => {
       limit: 10,
       offset: 1
     },
-    query: null,
     data: null,
     current: null,
     references: null
@@ -61,12 +60,13 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_DATA] ({ state, commit }, isSet = false) {
-    const { query, filters, pagination: { limit, offset } } = state;
+    const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.services.ideas.getIdeas({
-      query,
       filters,
       limit,
+      sort: "created",
+      order: "desc",
       offset: offset - 1
     });
 

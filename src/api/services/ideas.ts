@@ -2,8 +2,8 @@ import { Service } from "src/api/common";
 import { AxiosPromise } from "axios";
 
 export class IdeasService extends Service {
-  public getIdeasGeo (): AxiosPromise<any> {
-    return this.api.get("api/v1/services/crowdsourcing/all");
+  public getIdeasGeo (params: unknown): AxiosPromise<any> {
+    return this.api.get("api/v1/services/crowdsourcing/all", { params });
   }
 
   public getIdeas (params: unknown): AxiosPromise<any> {

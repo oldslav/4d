@@ -8,7 +8,7 @@
     q-separator
     .row.q-col-gutter-sm.q-px-lg(v-if="references")
       BaseInput(
-        v-model="computedQuery"
+        v-model="query"
         hideBottom
         dense
         :label="$t('common.search')"
@@ -86,8 +86,7 @@
       ...mapState("services/ideas", {
         data: state => state.data,
         filters: state => state.filters,
-        references: state => state.references,
-        query: state => state.query
+        references: state => state.references
       }),
 
       ...mapFields("services/ideas", {
@@ -97,23 +96,13 @@
       }),
 
       ...mapFields("services/ideas", {
-        fields: ["statusId", "typeId"],
+        fields: ["statusId", "typeId", "query"],
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
 
       isDrawing () {
         return this.componentInstance.$refs.handlerPoint.drawing;
-      },
-
-      computedQuery: {
-        get () {
-          return this.query;
-        },
-
-        set (value) {
-          this.SET_QUERY(value);
-        }
       },
 
       features () {
@@ -177,10 +166,6 @@
         async handler () {
           await this.GET_DATA(true);
         }
-      },
-
-      computedQuery () {
-        this.GET_DATA(true);
       }
     },
     beforeDestroy () {
