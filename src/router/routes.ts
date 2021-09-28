@@ -597,6 +597,21 @@ const routes: RouteConfig[] = [
           unauthorized: true,
           prod: false
         }
+      },
+      {
+        path: "improvement",
+        name: "map-improvement",
+        components: {
+          default: (): Promise<any> => import("pages/maps/improvement/MapImprovement.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/improvement/AsideMapsImprovement.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
+        }
       }
     ]
   },

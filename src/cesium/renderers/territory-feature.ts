@@ -6,7 +6,6 @@ export default {
     const visibility = entity.properties.visibility ? entity.properties.visibility.getValue<boolean>() : true;
     const fill = entity.properties.fill.getValue();
 
-
     updateEntity(entity, () => {
       entity.show = visibility;
 

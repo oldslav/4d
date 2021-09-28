@@ -10,6 +10,7 @@ import engineeringUnit from "./engineering-unit";
 import transport from "./transport";
 import territoryFeature from "./territory-feature";
 import light from "./light";
+import improvement from "./improvement";
 
 export default [
   place,
@@ -23,5 +24,6 @@ export default [
   engineeringUnit,
   transport,
   territoryFeature,
-  light
+  light,
+  improvement
 ];

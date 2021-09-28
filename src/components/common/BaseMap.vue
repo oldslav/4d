@@ -38,6 +38,7 @@
   import render from "../../cesium/render";
   import { get } from "lodash";
   import { mapMutations, mapState } from "vuex";
+  import { CesiumScenes } from "../../constaints";
   import { toDegrees } from "../../util/map";
   import { createClusterMarkers } from "../../cesium/utils/cluster-markers";
   import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
@@ -70,7 +71,8 @@
         isDraw: state => state.isDraw,
         pickedFeatureId: state => state.pickedFeatureId,
         clustering: state => state.clustering,
-        getEntityDistance: state => state.getEntityDistance
+        getEntityDistance: state => state.getEntityDistance,
+        getMapScene: state => state.scene
       }),
 
       isMobile () {
@@ -147,11 +149,13 @@
         cesiumInstance.viewer.scene.skyBox.show = false;
         cesiumInstance.viewer.scene.fxaa = false;
         cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
+        cesiumInstance.viewer.scene.globe.tileCacheSize = 1000;
 
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
 
         this.$emit("onViewerReady", vcViewer);
+        this.$watch("getMapScene", this.onChangeMapScene, { immediate: true });
       },
 
       activeEvt (_) {
@@ -272,6 +276,18 @@
             )
           });
           viewer.selectedEntity = entity;
+        }
+      },
+
+      onChangeMapScene (val){
+        const value = val || CesiumScenes["3d"];
+        const mapping = {
+          [CesiumScenes["3d"]]: Cesium.SceneMode.SCENE3D,
+          [CesiumScenes["2d"]]: Cesium.SceneMode.SCENE2D
+        };
+
+        if (this.$root.map){
+          this.$root.map.cesiumInstance.viewer.scene.mode = mapping[value];
         }
       }
     },
