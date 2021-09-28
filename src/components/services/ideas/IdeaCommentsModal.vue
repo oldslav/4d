@@ -7,6 +7,7 @@
     q-card.modal-container
       q-card-section
         q-virtual-scroll(
+          v-if="data.length"
           :items="data"
           :style="{ maxHeight: '600px' }"
         ).overflow-hidden
@@ -36,6 +37,7 @@
           //          q-icon(name="favorite" size="11px").q-mr-xs
           //          span {{ item.likes.amount }}
           //q-inner-loading(:showing="isLoading" color="primary")
+        h6(v-else).text-center Нет комментариев
       q-card-actions.q-px-md
         BaseInput(
           v-model="message"
