@@ -51,12 +51,12 @@
                   q-icon(name="favorite" size="11px").q-mr-xs
                   span {{ item.likes.amount }}
         q-inner-loading(:showing="isLoading" color="primary")
-    div.q-mx-lg.q-mb-lg
+    div(v-if="isUserNature").q-mx-lg.q-mb-lg
       q-btn(color="primary" :label="btnCreateLabel" @click="componentInstance.toggle('handlerPoint')").full-width
 </template>
 
 <script>
-  import { mapActions, mapMutations, mapState } from "vuex";
+  import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import {
     SET_EMPTY,
     SET_FEATURE_ID,
@@ -79,6 +79,8 @@
       };
     },
     computed: {
+      ...mapGetters(["isUserNature"]),
+
       ...mapState("services", {
         cesiumInstance: state => state.cesiumInstance
       }),

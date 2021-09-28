@@ -6,6 +6,7 @@
         ref="vcViewer"
         :infoBox="false"
         :selection-indicator="false"
+        @selectedEntityChanged="entitySelected"
         @ready="onReadyViewer"
       )
         vc-layer-imagery
@@ -15,7 +16,6 @@
             :data="fakeData"
             :show="show"
             :entities="entities"
-            @click="entitySelected"
             @ready="onDatasourceReady"
           )
         vc-handler-draw-point(
@@ -174,6 +174,7 @@
 
       toggle (type) {
         this.$refs[type].drawing = !this.$refs[type].drawing;
+        this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = this.$refs[type].drawing;
       },
 
       onDatasourceReady (vcViewer) {
@@ -315,19 +316,19 @@
         if (!val) {
           this.$refs.handlerPoint.clear();
         }
-      },
-
-      isDraw (val) {
-        switch (val) {
-          case "pointPrimitive":
-            this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
-            this.toggle("handlerPoint");
-            break;
-          case null:
-            this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = false;
-            break;
-        }
       }
+
+      // isDraw (val) {
+      //   switch (val) {
+      //     case "pointPrimitive":
+      //       this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
+      //       this.toggle("handlerPoint");
+      //       break;
+      //     case null:
+      //       this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = false;
+      //       break;
+      //   }
+      // }
 
     // onMapMove () {
     //   this.$emit("on-map-move", this.$refs.vcViewer);

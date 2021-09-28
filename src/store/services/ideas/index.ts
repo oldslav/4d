@@ -63,7 +63,10 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.services.ideas.getIdeas({
-      filters,
+      filters: {
+        ...filters,
+        statusId: filters.statusId && filters.statusId.length ? filters.statusId : [2, 3, 4, 6]
+      },
       limit,
       sort: "created",
       order: "desc",
