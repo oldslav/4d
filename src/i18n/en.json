@@ -501,6 +501,7 @@
     "clear": "Clear",
     "close": "Close",
     "send": "Send",
+    "inProgress": "In progress",
     "cancel": "Cancel",
     "delete": "Delete",
     "submit": "Submit",

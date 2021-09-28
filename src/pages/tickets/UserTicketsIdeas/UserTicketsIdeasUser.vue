@@ -64,7 +64,7 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("action.details") }}
-                  q-item(v-if="[1, 5, 8].some(i => i === props.row.status)" clickable v-close-popup @click="toIdeas({ id: props.row.id })")
+                  q-item(v-if="![1, 5, 8].includes(props.row.status.id)" clickable v-close-popup @click="toIdeas({ id: props.row.id })")
                     q-item-section(no-wrap)
                       | {{ $t("action.showOnMap") }}
 
