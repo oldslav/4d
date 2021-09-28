@@ -180,7 +180,7 @@
       locales () {
         return [
           {
-            value: "ru",
+            value: "RU",
             label: this.$t("common.locales.RU.alias")
           },
           {
@@ -216,6 +216,10 @@
       },
 
       onRouteChangedBegin (from, to, next) {
+        if (!this.$refs.progress) {
+          return next();
+        }
+
         if (this.isStartedLoading) {
           this.$refs.progress.stop();
         }
@@ -228,7 +232,9 @@
       },
 
       onRouteChangedDone () {
-        this.$refs.progress.stop();
+        if (this.$refs.progress) {
+          this.$refs.progress.stop();
+        }
         this.isStartedLoading = false;
       },
 
