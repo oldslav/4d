@@ -151,7 +151,9 @@
           else this.offset = i;
         }
 
-        await this.GET_DATA();
+        await this.GET_DATA({
+          statusId: [2, 3, 4, 6]
+        });
         done();
       },
 
@@ -172,7 +174,7 @@
       filters: {
         deep: true,
         async handler () {
-          await this.GET_DATA(true);
+          await this.GET_DATA({ isSet: true, statusId: [2, 3, 4, 6] });
         }
       }
     },
