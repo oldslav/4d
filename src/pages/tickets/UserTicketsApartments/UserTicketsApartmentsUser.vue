@@ -58,9 +58,9 @@
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 1").q-pa-md
               div.text-body1.text-wrap
-                | Для продолжения оформления отправьте заявку на рассмотрение.
+                | Для подачи заявки продолжите заполнение формы.
               div.text-right
-                q-btn(color="primary" label="Отправить на рассмотрение" @click="sendOnApproval(props.row.id)")
+                q-btn(color="primary" :label="$t('user.tickets.actions.edit')" @click="onEdit(props.row)")
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Дождитесь рассмотрения вашей заявки
