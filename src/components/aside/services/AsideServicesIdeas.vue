@@ -16,7 +16,7 @@
       BaseSelect(
         clearable
         v-model="statusId"
-        :options="references.crowdSourcingStatuses"
+        :options="statuses"
         label="Статус"
         optionKey="id"
         optionValue="description"
@@ -52,7 +52,7 @@
                   span {{ item.likes.amount }}
         q-inner-loading(:showing="isLoading" color="primary")
     div.q-mx-lg.q-mb-lg
-      q-btn(color="primary" :disable="isDrawing" :label="btnCreateLabel" @click="componentInstance.toggle('handlerPoint')").full-width
+      q-btn(color="primary" :label="btnCreateLabel" @click="componentInstance.toggle('handlerPoint')").full-width
 </template>
 
 <script>
@@ -100,6 +100,12 @@
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
+
+      statuses () {
+        const blockedStatuses = [1, 5, 8];
+
+        return this.references && this.references.crowdSourcingStatuses.filter(i => !blockedStatuses.includes(i.id));
+      },
 
       isDrawing () {
         return this.componentInstance.$refs.handlerPoint.drawing;

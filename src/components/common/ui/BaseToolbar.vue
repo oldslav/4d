@@ -111,7 +111,7 @@
           {
             name: "user-profile",
             label: this.$t("entity.profile"),
-            hide: !this.isAuthenticated,
+            hide: !this.isAuthenticated || !this.isMobile,
             icon: "o_account_circle"
           }
         ];
