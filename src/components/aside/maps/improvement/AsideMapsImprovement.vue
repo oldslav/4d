@@ -31,7 +31,7 @@
           )
 
       q-list(
-        :class="{'layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
+        :class="{'security-layer__list': !$q.dark.isActive, 'q-dark': $q.dark.isActive}"
       )
         q-item(
           v-for="layer in section.layers"
@@ -39,7 +39,7 @@
           clickable
         )
           q-item-section(avatar)
-            span.layer__color(:style="{ backgroundColor: layer.color }")
+            span.security-layer__color(:style="{ backgroundColor: layer.color }")
           q-item-section
             | {{ layer.name }}
 
@@ -57,12 +57,12 @@
   import { mapActions, mapGetters } from "vuex";
   import AsideRouterView from "../../services/AsideRouterView";
   import {
-    FETCH_LIGHT_SECTION_GEOJSON,
-    SET_LIGHT_LAYERS_VISIBILITY
+    FETCH_IMPROVEMENT_SECTION_GEOJSON,
+    SET_IMPROVEMENT_LAYERS_VISIBILITY
   } from "../../../../store/constants/action-constants";
 
   export default {
-    name: "AsideMapsLight",
+    name: "AsideMapsImprovement",
     components: { AsideRouterView },
     created () {
       if (this.getSections.length === 1) {
@@ -85,7 +85,7 @@
       };
     },
     computed: {
-      ...mapGetters("maps/light", ["getMenu", "getGeoJSON"]),
+      ...mapGetters("maps/improvement", ["getMenu", "getGeoJSON"]),
       getSections (){
         return this.getMenu.subSections;
       },
@@ -117,9 +117,9 @@
       }
     },
     methods: {
-      ...mapActions("maps/light",{
-        fetchSectionGeoJSON: FETCH_LIGHT_SECTION_GEOJSON,
-        setLayersVisibility: SET_LIGHT_LAYERS_VISIBILITY
+      ...mapActions("maps/improvement",{
+        fetchSectionGeoJSON: FETCH_IMPROVEMENT_SECTION_GEOJSON,
+        setLayersVisibility: SET_IMPROVEMENT_LAYERS_VISIBILITY
       }),
       setLayerVisibilityBySection (sectionId) {
         for (const section of this.getMenu.subSections) {
@@ -165,15 +165,19 @@
   };
 </script>
 <style lang="stylus">
-.layer__list
+.security-layer__list
   background: #F5F9FE;
 
-.layer__color
+.security-layer__color
   width 14px
   height 14px
   border-radius: 100%;
   margin-left 6px
 
-.layer__list_invisible
+.security-layer__list_invisible
   visibility hidden
+
+.security-light-expansion-item .q-item.disabled,
+.security-light-expansion-item .q-item.disabled *
+  cursor default !important
 </style>

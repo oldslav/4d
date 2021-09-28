@@ -16,7 +16,9 @@ import {
   SET_CESIUM,
   SET_GEODATA,
   SET_POINT_COORDS,
-  SET_USER, SET_MAP_ENTITY_DISTANCE
+  SET_USER,
+  SET_MAP_ENTITY_DISTANCE,
+  SET_MAP_SCENE
 } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
@@ -30,6 +32,7 @@ import estate from "src/store/services/estate";
 import tourism from "src/store/services/tourism";
 import warehouse from "src/store/services/warehouse";
 import { cloneDeep } from "lodash";
+import { CesiumScenes } from "src/constaints";
 
 const initialState = (): GeoState => {
   return {
@@ -39,7 +42,8 @@ const initialState = (): GeoState => {
     isDraw: null,
     cesiumInstance: null,
     clustering: true,
-    entityDistance: null
+    entityDistance: null,
+    scene: null
   };
 };
 
@@ -54,7 +58,8 @@ const mutations: MutationTree<GeoState> = {
   [SET_DRAW_TYPE]: (state, payload) => state.isDraw = payload,
   [SET_CESIUM]: (state, payload) => state.cesiumInstance = payload,
   [SET_CLUSTERING]: (state, payload) => state.clustering = payload,
-  [SET_MAP_ENTITY_DISTANCE]: (state, distance) => state.entityDistance = distance || 1000
+  [SET_MAP_ENTITY_DISTANCE]: (state, distance) => state.entityDistance = distance || 1000,
+  [SET_MAP_SCENE]: (state, scene) => state.scene = scene || CesiumScenes["3d"]
 };
 
 const actions: ActionTree<GeoState, TRootState> = {

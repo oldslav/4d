@@ -3,22 +3,22 @@ import { cloneDeep, get } from "lodash";
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { TRootState } from "src/store/types/root";
 import { IMapMenuLayer, IMapMenuSection } from "src/store/types/maps/common";
-import { IMapLightState } from "src/store/types/maps/light";
+import { IMapImprovementState } from "src/store/types/maps/improvement";
 import {
-  FETCH_LIGHT_MENU,
-  FETCH_LIGHT_SECTION_GEOJSON,
-  SET_LIGHT_LAYERS_VISIBILITY
+  FETCH_IMPROVEMENT_MENU,
+  FETCH_IMPROVEMENT_SECTION_GEOJSON,
+  SET_IMPROVEMENT_LAYERS_VISIBILITY
 } from "src/store/constants/action-constants";
 import { SET_GEODATA } from "src/store/constants/mutation-constants";
 
-const initialState = (): IMapLightState => ({
+const initialState = (): IMapImprovementState => ({
   menu: null,
   geoJSON: {}
 });
 
 const state = initialState;
 
-const mutations: MutationTree<IMapLightState> = {
+const mutations: MutationTree<IMapImprovementState> = {
   setMenu (state, menu) {
     state.menu = menu;
   },
@@ -27,18 +27,18 @@ const mutations: MutationTree<IMapLightState> = {
   }
 };
 
-const actions: ActionTree<IMapLightState, TRootState> = {
-  async [FETCH_LIGHT_MENU] ({ commit }) {
-    const { data: menu } = await this.service.services.light.getMapMenu();
+const actions: ActionTree<IMapImprovementState, TRootState> = {
+  async [FETCH_IMPROVEMENT_MENU] ({ commit }) {
+    const { data: menu } = await this.service.services.improvement.getMapMenu();
     commit("setMenu", menu);
   },
 
-  async [FETCH_LIGHT_SECTION_GEOJSON] ({ getters, commit, rootState }, id){
+  async [FETCH_IMPROVEMENT_SECTION_GEOJSON] ({ getters, commit, rootState }, id){
     if (!getters.getGeoJSON[id]) {
       const section = getters.getMenu.subSections.find((x: IMapMenuSection) => x.id === id);
 
       const awaits = section.layers.map(
-        (layer: IMapMenuLayer) => this.service.services.light.getMapLayerGeoJSON(layer.path)
+        (layer: IMapMenuLayer) => this.service.services.improvement.getMapLayerGeoJSON(layer.path)
       );
 
       const layers = await Promise.all(awaits);
@@ -50,7 +50,7 @@ const actions: ActionTree<IMapLightState, TRootState> = {
             layer.features.map((feature: any) => {
               feature.properties.layer = section.layers[i].id;
               feature.properties.id = feature.id;
-              feature.properties.type = "light";
+              feature.properties.type = "improvement";
               return feature;
             })
           ),
@@ -69,7 +69,7 @@ const actions: ActionTree<IMapLightState, TRootState> = {
     }
   },
 
-  [SET_LIGHT_LAYERS_VISIBILITY] ({ rootState, commit }, { ids, visibility }) {
+  [SET_IMPROVEMENT_LAYERS_VISIBILITY] ({ rootState, commit }, { ids, visibility }) {
     const geoJson = cloneDeep(rootState.services.geoJson);
 
     for (const feature of geoJson.data.features) {
@@ -82,7 +82,7 @@ const actions: ActionTree<IMapLightState, TRootState> = {
   }
 };
 
-const getters: GetterTree<IMapLightState, TRootState> = {
+const getters: GetterTree<IMapImprovementState, TRootState> = {
   getMenu (state){
      return state.menu;
   },
@@ -91,7 +91,7 @@ const getters: GetterTree<IMapLightState, TRootState> = {
   }
 };
 
-const light: Module<IMapLightState, TRootState> = {
+const improvement: Module<IMapImprovementState, TRootState> = {
   namespaced: true,
   state,
   mutations,
@@ -99,4 +99,4 @@ const light: Module<IMapLightState, TRootState> = {
   getters
 };
 
-export default light;
+export default improvement;
