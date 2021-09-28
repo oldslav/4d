@@ -16,7 +16,7 @@
       BaseSelect(
         clearable
         v-model="statusId"
-        :options="references.crowdSourcingStatuses"
+        :options="statuses"
         label="Статус"
         optionKey="id"
         optionValue="description"
@@ -51,12 +51,12 @@
                   q-icon(name="favorite" size="11px").q-mr-xs
                   span {{ item.likes.amount }}
         q-inner-loading(:showing="isLoading" color="primary")
-    div.q-mx-lg.q-mb-lg
-      q-btn(color="primary" :disable="isDrawing" :label="btnCreateLabel" @click="componentInstance.toggle('handlerPoint')").full-width
+    div(v-if="isUserNature").q-mx-lg.q-mb-lg
+      q-btn(color="primary" :label="btnCreateLabel" @click="componentInstance.toggle('handlerPoint')").full-width
 </template>
 
 <script>
-  import { mapActions, mapMutations, mapState } from "vuex";
+  import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import {
     SET_EMPTY,
     SET_FEATURE_ID,
@@ -79,6 +79,8 @@
       };
     },
     computed: {
+      ...mapGetters(["isUserNature"]),
+
       ...mapState("services", {
         cesiumInstance: state => state.cesiumInstance
       }),
@@ -100,6 +102,12 @@
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
+
+      statuses () {
+        const blockedStatuses = [1, 5, 8];
+
+        return this.references && this.references.crowdSourcingStatuses.filter(i => !blockedStatuses.includes(i.id));
+      },
 
       isDrawing () {
         return this.componentInstance.$refs.handlerPoint.drawing;
@@ -143,7 +151,9 @@
           else this.offset = i;
         }
 
-        await this.GET_DATA();
+        await this.GET_DATA({
+          statusId: [2, 3, 4, 6]
+        });
         done();
       },
 
@@ -164,7 +174,7 @@
       filters: {
         deep: true,
         async handler () {
-          await this.GET_DATA(true);
+          await this.GET_DATA({ isSet: true, statusId: [2, 3, 4, 6] });
         }
       }
     },

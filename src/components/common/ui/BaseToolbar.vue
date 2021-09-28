@@ -44,12 +44,12 @@
               q-item-section(avatar)
                 q-icon(name="logout")
               q-item-section
-                | Выход
+                | {{ $t("action.logout") }}
             q-item(clickable @click="onAuth()" v-else)
               q-item-section(avatar)
                 q-icon(name="login")
               q-item-section
-                | Войти
+                | {{ $t("action.login") }}
 </template>
 
 <script>
@@ -111,7 +111,7 @@
           {
             name: "user-profile",
             label: this.$t("entity.profile"),
-            hide: !this.isAuthenticated,
+            hide: !this.isAuthenticated || !this.isMobile,
             icon: "o_account_circle"
           }
         ];

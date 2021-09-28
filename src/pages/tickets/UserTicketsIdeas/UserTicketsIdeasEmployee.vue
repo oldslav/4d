@@ -51,12 +51,15 @@
             q-btn(flat round dense icon="more_vert")
               q-menu
                 q-list
-                  q-item(clickable v-close-popup :disable="props.row.status.id >= 3 && props.row.status.id !== 6" @click="changeStatus(props.row.id, 5)")
+                  q-item(clickable v-close-popup :disable="[4, 5, 8].includes(props.row.status.id)" @click="changeStatus(props.row.id, 5)")
                     q-item-section(no-wrap).text-red
                       | {{ $t("action.reject") }}
-                  q-item(v-if="props.row.status.id === 1 || props.row.status.id === 6" clickable v-close-popup @click="changeStatus(props.row.id, 2)")
+                  q-item(v-if="props.row.status.id === 1" clickable v-close-popup @click="changeStatus(props.row.id, 2)")
                     q-item-section(no-wrap).text-positive
                       | {{ $t("action.accept") }}
+                  q-item(v-if="props.row.status.id === 2 || props.row.status.id === 6" clickable v-close-popup @click="changeStatus(props.row.id, 3)")
+                    q-item-section(no-wrap).text-positive
+                      | {{ $t("action.inProgress") }}
                   q-item(v-if="props.row.status.id === 3" clickable v-close-popup @click="changeStatus(props.row.id, 4)")
                     q-item-section(no-wrap).text-positive
                       | {{ $t("entity.tickets.ideas.action.finish") }}
@@ -66,7 +69,7 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("action.details") }}
-                  q-item(clickable v-close-popup @click="toIdeas({ id: props.row.id })")
+                  q-item(v-if="![1, 5, 8].includes(props.row.status.id)" clickable v-close-popup @click="toIdeas({ id: props.row.id })")
                     q-item-section(no-wrap)
                       | {{ $t("action.showOnMap") }}
 
@@ -214,7 +217,7 @@
           this.offset = page;
         }
 
-        await this.GET_DATA(true);
+        await this.GET_DATA({ isSet: true });
       },
 
       async changeStatus (id, statusId) {
@@ -263,7 +266,7 @@
       },
 
       computedQuery () {
-        this.GET_DATA(true);
+        this.GET_DATA({ isSet: true });
       }
     },
     beforeDestroy () {

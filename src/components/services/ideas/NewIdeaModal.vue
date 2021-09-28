@@ -65,7 +65,7 @@
         description: null,
         rules: [
           val => !!val || this.$t("common.error.validation.required"),
-          val => !new RegExp(/[<>"'%;()&\d*+]/g).test(val) || this.$t("common.error.validation.invalid")
+          val => !new RegExp(/[<>"'%;()&*+]/g).test(val) || this.$t("common.error.validation.invalid")
         ],
         typeId: 1,
         options: [

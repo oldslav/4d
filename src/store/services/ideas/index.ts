@@ -59,11 +59,14 @@ const mutations: MutationTree<IUserTicketsState> = {
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
-  async [GET_DATA] ({ state, commit }, isSet = false) {
+  async [GET_DATA] ({ state, commit }, { isSet = false, statusId = [] }) {
     const { filters, pagination: { limit, offset } } = state;
 
     const { data } = await this.service.services.ideas.getIdeas({
-      filters,
+      filters: {
+        ...filters,
+        statusId: filters.statusId ? filters.statusId : statusId
+      },
       limit,
       sort: "created",
       order: "desc",

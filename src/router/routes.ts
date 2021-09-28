@@ -87,6 +87,7 @@ const routes: RouteConfig[] = [
     },
     meta: {
       toolbar: true,
+      isBurger: true,
       asideLeft: true
     },
     children: [
@@ -386,6 +387,7 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
+          isBurger: true,
           unauthorized: true,
           prod: true
         },
@@ -418,6 +420,7 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
+          isBurger: true,
           unauthorized: true,
           prod: false
         },
@@ -450,6 +453,7 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
+          isBurger: true,
           unauthorized: true,
           prod: true
         }
@@ -465,6 +469,7 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
+          isBurger: true,
           unauthorized: true,
           prod: false
         }
@@ -480,6 +485,7 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
+          isBurger: true,
           unauthorized: true,
           prod: true
         },
@@ -540,6 +546,7 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           toolbar: true,
+          isBurger: true,
           unauthorized: true
         }
       },
@@ -554,6 +561,7 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
+          isBurger: true,
           unauthorized: true,
           prod: true
         },
@@ -585,6 +593,7 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           toolbar: true,
+          isBurger: true,
           asideMaps: true,
           unauthorized: true,
           prod: false
