@@ -1,6 +1,5 @@
-import { Service } from "src/api/common";
+import { ResetPasswordPayload, Service, ProfileFormPayload, NewPasswordPayload } from "src/api/common";
 import { AxiosPromise } from "axios";
-import { ProfileFormPayload, NewPasswordPayload } from "src/api/common";
 
 export class UserProfileService extends Service {
 
@@ -18,5 +17,13 @@ export class UserProfileService extends Service {
 
   public changePassword (passwordForm: NewPasswordPayload): AxiosPromise<any> {
     return this.api.put("api/v1/profile/password", passwordForm);
+  }
+
+  public resetPassword (email: string): AxiosPromise<any> {
+    return this.api.put("/api/v1/profile/password/reset", email);
+  }
+
+  public confirmResetPassword (payload: ResetPasswordPayload): AxiosPromise<any> {
+    return this.api.post("/api/v1/profile/password/activate", payload);
   }
 }

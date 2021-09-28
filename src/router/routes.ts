@@ -14,6 +14,12 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: "/auth/newpass",
+    redirect: {
+      name: "main"
+    }
+  },
+  {
     path: "/about",
     name: "about",
     component: (): Promise<any> => import("pages/About.vue"),
@@ -475,6 +481,11 @@ const routes: RouteConfig[] = [
       default: (): Promise<any> => import("pages/maps/MapsService.vue"),
       asideLeft: (): Promise<any> => import("components/aside/AsideMaps.vue")
     },
+    meta: {
+      map: true,
+      isBurger: true,
+      prod: true
+    },
     children: [
       {
         path: "buildings",
@@ -487,7 +498,9 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
-          unauthorized: true
+          isBurger: true,
+          unauthorized: true,
+          prod: true
         },
         children: [
           {
@@ -501,7 +514,41 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
+            }
+          }
+        ]
+      },
+      {
+        path: "transport",
+        name: "map-transport",
+        components: {
+          default: (): Promise<any> => import("pages/maps/transport/MapTransport.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/transport/AsideMapsTransport.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          isBurger: true,
+          unauthorized: true,
+          prod: false
+        },
+        children: [
+          {
+            path: ":layer/:id",
+            name: "map-transport-item",
+            components: {
+              default: (): Promise<any> => import("pages/maps/transport/MapTransportItem.vue"),
+              asideTransport: (): Promise<any> => import("components/aside/maps/transport/AsideMapsTransportItem.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true,
+              unauthorized: true,
+              prod: true
             }
           }
         ]
@@ -517,7 +564,25 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
-          unauthorized: true
+          isBurger: true,
+          unauthorized: true,
+          prod: true
+        }
+      },
+      {
+        path: "territory",
+        name: "map-territory",
+        components: {
+          default: (): Promise<any> => import("pages/maps/territory/MapTerritory.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/territory/AsideMapsTerritory.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          isBurger: true,
+          unauthorized: true,
+          prod: false
         }
       },
       {
@@ -531,7 +596,9 @@ const routes: RouteConfig[] = [
           map: true,
           toolbar: true,
           asideMaps: true,
-          unauthorized: true
+          isBurger: true,
+          unauthorized: true,
+          prod: true
         },
         children: [
           {
@@ -545,7 +612,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           },
           {
@@ -559,7 +627,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           },
           {
@@ -573,7 +642,8 @@ const routes: RouteConfig[] = [
               map: true,
               toolbar: true,
               asideMaps: true,
-              unauthorized: true
+              unauthorized: true,
+              prod: true
             }
           }
         ]
@@ -587,7 +657,72 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           toolbar: true,
+          isBurger: true,
           unauthorized: true
+        }
+      },
+      {
+        path: "engineering",
+        name: "map-engineering",
+        components: {
+          default: (): Promise<any> => import("pages/maps/engineering/MapsEngineering.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/engineering/AsideMapsEngineering.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          isBurger: true,
+          unauthorized: true,
+          prod: true
+        },
+        children: [
+          {
+            path: ":layer/:id",
+            name: "map-engineering-item",
+            components: {
+              default: (): Promise<any> => import("pages/maps/engineering/MapsEngineeringItem.vue"),
+              asideEngineering: (): Promise<any> => import("components/aside/maps/engineering/AsideMapsEngineeringItem.vue")
+            },
+            meta: {
+              map: true,
+              toolbar: true,
+              asideMaps: true,
+              unauthorized: true,
+              prod: true
+            }
+          }
+        ]
+      },
+      {
+        path: "light",
+        name: "map-light",
+        components: {
+          default: (): Promise<any> => import("pages/maps/light/MapLight.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/light/AsideMapsLight.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          isBurger: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
+        }
+      },
+      {
+        path: "improvement",
+        name: "map-improvement",
+        components: {
+          default: (): Promise<any> => import("pages/maps/improvement/MapImprovement.vue"),
+          asideMaps: (): Promise<any> => import("components/aside/maps/improvement/AsideMapsImprovement.vue")
+        },
+        meta: {
+          map: true,
+          toolbar: true,
+          asideMaps: true,
+          unauthorized: true,
+          prod: false
         }
       }
     ]
@@ -601,7 +736,9 @@ const routes: RouteConfig[] = [
     },
     meta: {
       toolbar: true,
-      prod: true
+      prod: true,
+      map: true,
+      isBurger: true
     },
     children: [
       {
@@ -740,7 +877,6 @@ const routes: RouteConfig[] = [
           asideServices: (): Promise<any> => import("components/aside/services/AsideServicesCrowdfunding.vue")
         },
         meta: {
-          map: true,
           asideServices: true,
           toolbar: true
         }

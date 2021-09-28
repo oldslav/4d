@@ -33,6 +33,12 @@ export interface NewPasswordPayload {
   confirmPassword: string | null
 }
 
+export interface ResetPasswordPayload {
+  token: string | null,
+  password: string | null,
+  confirmPassword: string | null
+}
+
 export interface PaginationOutput {
   count: number;
   items: Array<any>;

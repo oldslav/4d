@@ -46,6 +46,7 @@
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
             ).q-pa-lg
+            ExpiredContractState(v-if="props.row.status.id === 13").q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -71,10 +72,11 @@
   import CommerceTicketDetailsModal from "components/user/tickets/commerce/CommerceTicketDetailsModal";
   import CommerceTicketStatus from "components/user/tickets/commerce/CommerceTicketStatus";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import ExpiredContractState from "components/user/tickets/ExpiredContractState";
 
   export default {
     name: "TicketsCommerceEmployee",
-    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable, ValidContractState },
+    components: { ExpiredContractState, CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable, ValidContractState },
     async created () {
       await this.getEmployeeTickets();
     },

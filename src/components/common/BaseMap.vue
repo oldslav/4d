@@ -2,6 +2,7 @@
   div.cesiumWrapper
     q-no-ssr
       vc-viewer(
+        v-if="fakeData"
         ref="vcViewer"
         :infoBox="false"
         :selection-indicator="false"
@@ -30,13 +31,14 @@
           v-if="data && data.type === 'pointPrimitive'"
           :points="data.data"
         )
-    MapLegalAgreement.z-fab.absolute-bottom-right.text-right(:style="{maxWidth: '50%'}")
+    MapLegalAgreement.absolute-bottom-right.text-right(:style="{ maxWidth: isMobile ? '100%' : '50%' }" :class="{ 'q-mb-xl': isMobile }")
 </template>
 
 <script>
   import render from "../../cesium/render";
   import { get } from "lodash";
   import { mapMutations, mapState } from "vuex";
+  import { CesiumScenes } from "../../constaints";
   import { toDegrees } from "../../util/map";
   import { createClusterMarkers } from "../../cesium/utils/cluster-markers";
   import { SET_CESIUM, SET_FEATURE_ID } from "../../store/constants/mutation-constants";
@@ -68,8 +70,14 @@
         pointCoords: state => state.pointCoords,
         isDraw: state => state.isDraw,
         pickedFeatureId: state => state.pickedFeatureId,
-        clustering: state => state.clustering
+        clustering: state => state.clustering,
+        getEntityDistance: state => state.getEntityDistance,
+        getMapScene: state => state.scene
       }),
+
+      isMobile () {
+        return !this.$q.platform.is.desktop;
+      },
 
       mapUrl () {
         return this.$q.dark.isActive
@@ -109,10 +117,10 @@
         this.entitySelected(null);
       },
 
-      flyTo ({ cesiumInstance = this.cesiumInstance, coords }) {
+      flyTo ({ cesiumInstance = this.cesiumInstance, coords, maximumHeight = 5000, zOffset = 1000 }) {
         cesiumInstance.viewer.scene.camera.flyTo({
-          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, { ...coords }), 1000),
-          maximumHeight: 5000
+          destination: Cesium.Cartesian3.fromDegrees(...toDegrees(Cesium, { ...coords }), zOffset),
+          maximumHeight
         });
       },
 
@@ -135,18 +143,19 @@
 
         const innoCoords = new Cesium.Cartesian3(2372526, 2704780, 5248000);
 
-        this.flyTo({ coords: innoCoords });
+        this.flyTo({ coords: innoCoords, zOffset: 12000 });
 
         cesiumInstance.viewer.scene.requestRenderMode = true;
         cesiumInstance.viewer.scene.skyBox.show = false;
         cesiumInstance.viewer.scene.fxaa = false;
         cesiumInstance.viewer.resolutionScale = window.devicePixelRatio;
+        cesiumInstance.viewer.scene.globe.tileCacheSize = 1000;
 
         document.getElementById("cesiumContainer").style.width = "";
         document.getElementById("cesiumContainer").style.height = "";
 
         this.$emit("onViewerReady", vcViewer);
-        this.$watch("getPickedFeatureId", this.onChangePickedFeatureId);
+        this.$watch("getMapScene", this.onChangeMapScene, { immediate: true });
       },
 
       activeEvt (_) {
@@ -165,6 +174,7 @@
 
       toggle (type) {
         this.$refs[type].drawing = !this.$refs[type].drawing;
+        this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = this.$refs[type].drawing;
       },
 
       onDatasourceReady (vcViewer) {
@@ -190,6 +200,7 @@
 
         dataSource.clustering.clusterEvent.addEventListener(
           function (clusteredEntities, cluster) {
+            cluster.zIndex = 3;
             cluster.label.show = false;
             cluster.billboard.show = true;
             cluster.billboard.id = cluster.label.id;
@@ -198,6 +209,7 @@
             for (const size of sizes) {
               if (clusteredEntities.length >= size) {
                 const marker = markers[size];
+                cluster.billboard.zIndex = 3;
                 cluster.billboard.width = marker.width;
                 cluster.billboard.height = marker.height;
                 cluster.billboard.image = marker.render(String(size));
@@ -214,7 +226,9 @@
       },
 
       entitySelected (e) {
-        this.$emit("change", e);
+        if (typeof e !== "undefined") {
+          this.$emit("change", e);
+        }
       },
 
       onUpdateData () {
@@ -225,38 +239,55 @@
         datasource.load(data).then((ds) => {
           for (let i = 0; i < ds.entities.values.length; i++) {
             let entity = ds.entities.values[i];
-            Object.assign(entity.billboard, entity.properties);
+            Object.assign(entity.billboard || {}, entity.properties);
           }
 
           render(ds.entities.values);
 
+          /*
+           todo - автор, бери id текущей сущности из хранилища.
+           P.S. не забудь сначала его туда положить.
+         */
           const pickedId = this.$route.query.id;
-
           if (pickedId) {
             this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
           } else {
-            viewer.zoomTo(cesiumObject);
+            viewer.zoomTo({});
+            // viewer.zoomTo(cesiumObject);
           }
+          /* end todo */
+
+          this.onChangePickedFeatureId(this.pickedFeatureId);
         });
       },
 
       onChangePickedFeatureId (val) {
         const { datasource, viewer } = this.$refs.ds;
+        const entity = datasource.entities.getById(val);
 
-        if (val === null) {
+        if (!entity) {
           viewer.selectedEntity = null;
         } else {
-          const entity = datasource.entities.getById(val);
-          if (entity) {
-            viewer.flyTo(entity,{
-              offset: new Cesium.HeadingPitchRange(
-                viewer.camera.heading,
-                viewer.camera.pitch,
-                800.0
-              )
-            });
-          }
+          viewer.flyTo(entity,{
+            offset: new Cesium.HeadingPitchRange(
+              viewer.camera.heading,
+              viewer.camera.pitch,
+              this.getEntityDistance
+            )
+          });
           viewer.selectedEntity = entity;
+        }
+      },
+
+      onChangeMapScene (val){
+        const value = val || CesiumScenes["3d"];
+        const mapping = {
+          [CesiumScenes["3d"]]: Cesium.SceneMode.SCENE3D,
+          [CesiumScenes["2d"]]: Cesium.SceneMode.SCENE2D
+        };
+
+        if (this.$root.map){
+          this.$root.map.cesiumInstance.viewer.scene.mode = mapping[value];
         }
       }
     },
@@ -285,23 +316,23 @@
         if (!val) {
           this.$refs.handlerPoint.clear();
         }
-      },
-
-      isDraw (val) {
-        switch (val) {
-          case "pointPrimitive":
-            this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
-            this.toggle("handlerPoint");
-            break;
-          case null:
-            this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = false;
-            break;
-        }
       }
 
-      // onMapMove () {
-      //   this.$emit("on-map-move", this.$refs.vcViewer);
+      // isDraw (val) {
+      //   switch (val) {
+      //     case "pointPrimitive":
+      //       this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = true;
+      //       this.toggle("handlerPoint");
+      //       break;
+      //     case null:
+      //       this.cesiumInstance.viewer.scene.globe.depthTestAgainstTerrain = false;
+      //       break;
+      //   }
       // }
+
+    // onMapMove () {
+    //   this.$emit("on-map-move", this.$refs.vcViewer);
+    // }
     },
     destroyed () {
       this.SET_CESIUM(null);
@@ -311,20 +342,20 @@
 </script>
 
 <style lang="stylus" scoped>
-  .cesiumWrapper
-    #cesiumContainer
-      display: block;
-      position: absolute;
-      top: 50px;
-      left: 400px;
-      border: none;
-      width: calc(100% - 400px);
-      height: calc(100% - 50px);
+.cesiumWrapper
+  #cesiumContainer
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: 400px;
+    border: none;
+    width: calc(100% - 400px);
+    height: calc(100% - 50px);
 
-      @media (max-width: $breakpoint-sm-min)
-        top: 0;
-        bottom: 50px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 50px);
+    @media (max-width: $breakpoint-sm-min)
+      top: 0;
+      bottom: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 50px);
 </style>

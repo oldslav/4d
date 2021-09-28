@@ -2,7 +2,7 @@ import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import {
   SET_CURRENT,
   SET_DATA,
-  SET_EMPTY, SET_REFERENCES, UPDATE_FILTERS,
+  SET_EMPTY, SET_QUERY, SET_REFERENCES, UPDATE_DATA, UPDATE_FILTERS,
   UPDATE_PAGINATION
 } from "src/store/constants/mutation-constants";
 import { TRootState } from "src/store/types/root";
@@ -15,13 +15,15 @@ import {
   UPDATE_LIKE,
   UPDATE_STATUS, UPDATE_VOTE, UPLOAD_IMAGES
 } from "src/store/constants/action-constants";
+import comments from "src/store/services/ideas/comments";
 
 const initialState = (): IUserTicketsState => {
   return {
     filters: {
       statusId: null,
       typeId: null,
-      authorId: null
+      authorId: null,
+      query: null
     },
     pagination: {
       limit: 10,
@@ -38,25 +40,42 @@ const state = initialState;
 const mutations: MutationTree<IUserTicketsState> = {
   [SET_EMPTY]: state => Object.assign(state, initialState()),
   [SET_DATA]: (state, payload) => state.data = payload,
+  [SET_QUERY]: (state, payload) => state.query = payload,
   [SET_CURRENT]: (state, payload) => state.current = payload,
   [SET_REFERENCES]: (state, payload) => state.references = payload,
+  [UPDATE_DATA]: (state, payload) => {
+    if (state.data) {
+      state.data.items = [...state.data.items, ...payload.items];
+      state.data.count = payload.count;
+    }
+  },
   [UPDATE_PAGINATION] (state, pagination) {
     state.pagination = { ...state.pagination, ...pagination };
   },
   [UPDATE_FILTERS] (state, filters) {
     state.filters = { ...state.filters, ...filters };
+    state.pagination.offset = 1;
   }
 };
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
-  async [GET_DATA] ({ state, commit }) {
+  async [GET_DATA] ({ state, commit }, isSet = false) {
+    const { filters, pagination: { limit, offset } } = state;
+
     const { data } = await this.service.services.ideas.getIdeas({
-      ...state.filters,
-      limit: state.pagination.limit,
-      offset: state.pagination.offset - 1
+      filters: {
+        ...filters,
+        statusId: filters.statusId && filters.statusId.length ? filters.statusId : [2, 3, 4, 6]
+      },
+      limit,
+      sort: "created",
+      order: "desc",
+      offset: offset - 1
     });
 
-    commit(SET_DATA, data);
+    if (isSet || !state.data) commit(SET_DATA, data);
+    else commit(UPDATE_DATA, data);
+
     commit(UPDATE_PAGINATION, { rowsNumber: data.count });
   },
 
@@ -128,7 +147,10 @@ const ideas: Module<IUserTicketsState, TRootState> = {
   state,
   mutations,
   actions,
-  getters
+  getters,
+  modules: {
+    comments
+  }
 };
 
 export default ideas;

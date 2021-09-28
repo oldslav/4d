@@ -17,15 +17,15 @@
 
           div.q-mb-lg
             div.text-caption.text-grey-8.q-mb-sm {{ $t('entity.services.vacancies.experience') }}
-            div.text-body2 {{ getCurrentVacancy.experience.description }}
+            div.text-body2 {{ getCurrentVacancy.experience.text }}
 
           div.q-mb-lg
             div.text-caption.text-grey-8.q-mb-sm {{ $t('entity.services.vacancies.employmentType') }}
-            div.text-body2 {{ getCurrentVacancy.employmentType.description }}
+            div.text-body2 {{ getCurrentVacancy.employmentType.text }}
 
           div.q-mb-lg
             div.text-caption.text-grey-8.q-mb-sm {{ $t('entity.services.vacancies.employmentType') }}
-            div.text-body2 {{ getCurrentVacancy.workSchedule.description }}
+            div.text-body2 {{ getCurrentVacancy.workSchedule.text }}
 
           div.q-mb-lg
             div.text-caption.text-grey-8.q-mb-sm.break-word {{ $t('common.address') }}

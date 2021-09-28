@@ -50,7 +50,7 @@
 					},
           {
 						name: this.$t("entity.data.lighting.lightsInPark"),
-						icon: "lighting/tree.svg",
+						icon: "lighting/icon-tree.svg",
 						data: "test",
 						leftSectionName: this.$t("entity.data.lighting.lamp"),
 						leftSectionData: "data",

@@ -4,6 +4,13 @@ import excursion from "./excursion";
 import stop from "./stop";
 import building from "./building";
 import camera from "./camera";
+import well from "./well";
+import pipe from "./pipe";
+import engineeringUnit from "./engineering-unit";
+import transport from "./transport";
+import territoryFeature from "./territory-feature";
+import light from "./light";
+import improvement from "./improvement";
 
 export default [
   place,
@@ -11,5 +18,12 @@ export default [
   excursion,
   stop,
   building,
-  camera
+  camera,
+  well,
+  pipe,
+  engineeringUnit,
+  transport,
+  territoryFeature,
+  light,
+  improvement
 ];

@@ -19,7 +19,7 @@
           q-td(key="parkingNumber" :props="props")
             | {{props.row.parkingPlace.number}}
           q-td(key="type" :props="props")
-            | {{$t(`entity.services.parking.ticketType.${props.row.parkingPlace.type.name}`)}}
+            | {{ parkingType(props.row) }}
           q-td(key="created" :props="props")
             | {{ props.row.created | ticketDate }}
           q-td(key="status" :props="props")
@@ -49,6 +49,7 @@
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
             ).q-pa-lg
+            ExpiredContractState(v-if="props.row.status.id === 13").q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -79,7 +80,12 @@
                         | Договор подписан.
                       div
                         | Введите данные договора.
-                      FormContract(@submit="sendContractInfo($event, props.row.id)")
+                      FormContract(
+                        @submit="sendContractInfo($event, props.row.id)"
+                        :start="props.row.isGuestVisit ? props.row.startDate : props.row.updated"
+                        :end="props.row.isGuestVisit ? props.row.endDate : null"
+                        :lasts="!props.row.isGuestVisit ? props.row.price.period : null"
+                      )
 
     TicketDetailsModal(:id.sync="activeId" v-model="showDetailsModal" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
@@ -103,6 +109,7 @@
   import ApartmentsEmployeeDetailsModal from "components/user/tickets/apartments/ApartmentsTicketDetailsModal";
   import FormContract from "components/common/form/FormContract";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import ExpiredContractState from "components/user/tickets/ExpiredContractState";
 
   export default {
     name: "EmployeeTicketsParking",
@@ -114,7 +121,8 @@
       BaseDatepicker,
       ApartmentTicketStatus,
       TicketDetailsModal,
-      ValidContractState
+      ValidContractState,
+      ExpiredContractState
     },
     async created () {
       await this.getEmployeeTickets();
@@ -196,6 +204,13 @@
         APPROVE_TICKET_PARKING,
         SEND_CONTRACT_INFO_PARKING
       }),
+
+      parkingType (row) {
+        if (row.isGuestVisit) {
+          return this.$t("entity.services.parking.ticketType.guest");
+        }
+        return this.$t(`entity.services.parking.ticketType.${ row.parkingPlace.type.name }`);
+      },
 
       async getEmployeeTickets (props) {
         if (props) {
@@ -290,13 +305,13 @@
           .then(() => {
             this.$q.notify({
               type: "positive",
-              message: $t("user.tickets.contract.sendSuccess")
+              message: this.$t("user.tickets.contract.sendSuccess")
             });
           })
           .catch(() => {
             this.$q.notify({
               type: "negative",
-              message: $t("user.tickets.contract.sendFail")
+              message: this.$t("user.tickets.contract.sendFail")
             });
           });
       }

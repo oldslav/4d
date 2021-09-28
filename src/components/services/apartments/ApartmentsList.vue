@@ -1,8 +1,9 @@
 <template lang="pug">
   q-layout(view="Lhh lpR fff" container).modal-container__wide
     q-page-container
-      q-page
-        q-card.q-my-lg
+      q-page.column
+        ApartmentInfo(v-if="showDetails" @back="hideDetails()" @rent="setTicketApartment").col
+        q-card.q-my-lg(v-else)
           q-card-section.row.q-col-gutter-md.items-start
             BaseTable(
               v-if="tableData"
@@ -18,7 +19,7 @@
                 .col-12.col-sm-6.col-md-6
                   q-card.row.bg-white.q-ma-sm.q-pa-md.apartments-list-item
                     q-card-section.col-12.col-sm-6.col-md-6.full-height
-                      q-img(:src="imagePlan(props.row.plan)" :ratio="16/9" contain).full-height
+                      q-img(:src="imagePlan(props.row.plan.imagePath)" :ratio="16/9" contain).full-height
                     q-card-section.col-12.col-sm-6.col-md-6
                       h5.q-mt-none.text-subtitle {{ $t("entity.services.living.apartment") }} № {{ props.row.number }}
 
@@ -56,25 +57,31 @@
                           span {{ props.row.price }}
 
                       .row.q-gutter-md.q-mt-sm
-                        //q-btn(:label="$t('action.details')" color="primary" outline).col
+                        q-btn(:label="$t('action.details')" color="primary" outline @click="onShowDetails(props.row.id)").col
                         q-btn(
                           :label="$t('action.rent')"
                           color="primary"
                           @click="setTicketApartment(props.row.id)"
                         ).col
+        q-inner-loading(:showing="loadingDetails")
 </template>
 
 <script>
   import { mapActions, mapGetters, mapState } from "vuex";
   import { mapFields } from "../../../plugins/mapFields";
-  import { GET_APARTMENTS, UPDATE_TICKET_APARTMENT } from "../../../store/constants/action-constants";
+  import {
+    GET_APARTMENT_INFO,
+    GET_APARTMENTS,
+    UPDATE_TICKET_APARTMENT
+  } from "../../../store/constants/action-constants";
   import { UPDATE_APARTMENTS_PAGINATION } from "../../../store/constants/mutation-constants";
   import BaseSelect from "../../common/BaseSelect";
   import BaseTable from "../../common/BaseTable";
+  import ApartmentInfo from "components/services/apartments/ApartmentInfo";
 
   export default {
     name: "ApartmentsList",
-    components: { BaseSelect, BaseTable },
+    components: { ApartmentInfo, BaseSelect, BaseTable },
     props: {
       requestId: {
         type: [Number, String],
@@ -101,6 +108,11 @@
         await this.getApartments();
       }
     },
+    data () {
+      return {
+        showDetails: false
+      };
+    },
     computed: {
       ...mapState("services/apartments", {
         tableData: state => state.data
@@ -118,16 +130,33 @@
 
       isLoading () {
         return this.$store.state.wait[`services/apartments/${ GET_APARTMENTS }`];
+      },
+      loadingDetails () {
+        return this.$store.state.wait[`services/apartments/${ GET_APARTMENT_INFO }`];
       }
     },
     methods: {
-      ...mapActions("services/apartments", {
-        GET_APARTMENTS
-      }),
+      ...mapActions("services/apartments", [GET_APARTMENTS, GET_APARTMENT_INFO]),
 
       ...mapActions("user/tickets/living", {
         UPDATE_TICKET_APARTMENT
       }),
+
+      async onShowDetails (id) {
+        try {
+          await this.GET_APARTMENT_INFO(id);
+          this.showDetails = true;
+        } catch (e) {
+          this.$q.notify({
+            type: "negative",
+            message: this.$t("common.error.response.tryLater")
+          });
+        }
+      },
+
+      hideDetails () {
+        this.showDetails = false;
+      },
 
       imagePlan (src) {
         return process.env.SERVER_API_HOST + src;

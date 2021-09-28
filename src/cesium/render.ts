@@ -1,6 +1,7 @@
 import { keyBy } from "lodash";
 
 import renderers from "./renderers";
+import anyRenderer from "./renderers/any";
 
 const renderersByName = keyBy(renderers,"name");
 
@@ -10,6 +11,8 @@ export default (entities: ICesiumEntity[]): void => {
 
     if (type && type in renderersByName) {
       renderersByName[type].render(entity);
+    } else {
+      anyRenderer.render(entity);
     }
   }
 };

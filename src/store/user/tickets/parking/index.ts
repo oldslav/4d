@@ -55,7 +55,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_EMPLOYEE_TICKETS_PARKING] ({ state, commit }) {
     const { filters, pagination: { limit, offset, sort } } = state;
 
-    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
+    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] });
 
     const { data } = await this.service.user.tickets.getEmployeeTicketsParking({
       filters: f,

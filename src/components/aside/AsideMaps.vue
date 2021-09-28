@@ -48,10 +48,40 @@
             show: true
           },
           {
-            label: "Безопасность города",
+            label: this.$t("entity.maps.security.title"),
             action: { name: "map-security" },
             icon: "o_lock",
             show: this.isUserGIS || this.isEmployee
+          },
+          {
+            label: this.$t("entity.maps.engineering.menu"),
+            action: { name: "map-engineering" },
+            icon: "engineering",
+            show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.maps.transport.title"),
+            action: { name: "map-transport" },
+            icon: "directions_bus",
+            show: true
+          },
+          {
+            label: this.$t("entity.maps.territory.title"),
+            action: { name: "map-territory" },
+            icon: "o_explore",
+            show: true
+          },
+          {
+            label: this.$t("entity.maps.light.title"),
+            action: { name: "map-light" },
+            icon: "o_lightbulb",
+            show: true
+          },
+          {
+            label: this.$t("entity.maps.improvement.title"),
+            action: { name: "map-improvement" },
+            icon: "o_nature",
+            show: true
           }
         ];
       }

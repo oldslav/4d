@@ -2,6 +2,6 @@ import en from "./en.json";
 import ru from "./ru.json";
 
 export default {
-  "en-us": en,
-  "ru": ru
+  "EN": en,
+  "RU": ru
 };

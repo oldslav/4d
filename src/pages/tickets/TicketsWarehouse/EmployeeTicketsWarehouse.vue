@@ -48,6 +48,7 @@
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
             ).q-pa-lg
+            ExpiredContractState(v-if="props.row.status.id === 13").q-pa-lg
             div.column(v-if="[4, 9].includes(props.row.status.id)").q-pa-md
               div.text-body1.text-wrap
                 | Работа над заявкой завершена
@@ -78,7 +79,11 @@
                         | Договор подписан.
                       div
                         | Введите данные договора.
-                      FormContract(@submit="sendContractInfo($event, props.row.id)")
+                      FormContract(
+                        @submit="sendContractInfo($event, props.row.id)"
+                        :start="props.row.updated"
+                        :lasts="props.row.serviceOption.storagePeriod"
+                      )
 
     TicketWarehouseDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
 </template>
@@ -102,6 +107,7 @@
   import TicketWarehouseDetailsModal from "components/user/tickets/warehouse/TicketWarehouseDetailsModal";
   import FormContract from "components/common/form/FormContract";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import ExpiredContractState from "components/user/tickets/ExpiredContractState";
 
   export default {
     name: "EmployeeTicketsWarehouse",
@@ -113,7 +119,8 @@
       BaseInput,
       BaseDatepicker,
       ApartmentTicketStatus,
-      ValidContractState
+      ValidContractState,
+      ExpiredContractState
     },
     async created () {
       await this.getEmployeeTickets();

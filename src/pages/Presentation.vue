@@ -1,20 +1,22 @@
 <template lang="pug">
   q-page.presentation.bg-white.full-height.q-px-md.q-px-md-xl.q-pt-md.q-pt-md-xl
+    SetNewPasswordModal(v-model="showSetPassword").z-top
     .row.presentation__main.reverse-wrap-sm.reverse-wrap-xs(
-        v-for="slide in slides"
-        :key="slide.id"
-        v-show="step === slide.id"
-      )
+      v-for="slide in slides"
+      :key="slide.id"
+      v-show="step === slide.id"
+    )
       .col-12.col-md-6.column.flex.items-center.justify-center
-        div.text-left.full-width
+        div.text-left.full-width.flex.column(:style="{minHeight: '35vh'}")
           .presentation__title.q-mb-xl
             | {{ slide.title }}
-          .presentation__caption
+          .presentation__caption(:style="{flex: '1'}")
             | {{ slide.description }}
           .presentation__controls.text-left.full-width.q-mt-xl
             q-btn(
               color="primary"
               :label="$t('common.welcomePresentation.toMapBtn')"
+              @click="goTo('map')"
               outline
             ).q-mr-md
             q-btn(
@@ -53,86 +55,106 @@
 </template>
 
 <script>
+  import ResetPasswordModal from "components/auth/ResetPasswordModal";
+  import SetNewPasswordModal from "components/auth/SetNewPasswordModal";
+
   export default {
     name: "Presentation",
+    components: { SetNewPasswordModal, ResetPasswordModal },
+    created () {
+      if (this.isPasswordReset) {
+        this.showSetPassword = true;
+      }
+    },
     data () {
       return {
-        step: 1
+        step: 1,
+        showSetPassword: false
       };
     },
     computed: {
+      isPasswordReset () {
+        return !!this.$route.query.token;
+      },
       slides () {
         return [
           {
             id: 1,
             title: this.$t("common.welcomePresentation.firstSlide.title"),
             description: this.$t("common.welcomePresentation.firstSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/0.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/0-dark.svg")
+            imgSrc: require("@/assets/svg/light/skater.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/skater-dark.svg")
           },
           {
             id: 2,
             title: this.$t("common.welcomePresentation.secondSlide.title"),
             description: this.$t("common.welcomePresentation.secondSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/1.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/1-dark.svg")
+            imgSrc: require("@/assets/svg/light/lady-music.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/lady-music-dark.svg")
           },
           {
             id: 3,
             title: this.$t("common.welcomePresentation.thirdSlide.title"),
             description: this.$t("common.welcomePresentation.thirdSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/2.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/2-dark.svg")
+            imgSrc: require("@/assets/svg/light/big-tablet-blob.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/big-tablet-blob-dark.svg")
           },
           {
             id: 4,
             title: this.$t("common.welcomePresentation.fourthSlide.title"),
             description: this.$t("common.welcomePresentation.fourthSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/3.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/3-dark.svg")
+            imgSrc: require("@/assets/svg/light/tree.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/tree-dark.svg")
           },
           {
             id: 5,
             title: this.$t("common.welcomePresentation.fifthSlide.title"),
             description: this.$t("common.welcomePresentation.fifthSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/4.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/4-dark.svg")
+            imgSrc: require("@/assets/svg/light/bicycle.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/bicycle-dark.svg")
           },
           {
             id: 6,
             title: this.$t("common.welcomePresentation.sixthSlide.title"),
             description: this.$t("common.welcomePresentation.sixthSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/5.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/5-dark.svg")
+            imgSrc: require("@/assets/svg/light/rain.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/rain-dark.svg")
           },
           {
             id: 7,
             title: this.$t("common.welcomePresentation.seventhSlide.title"),
             description: this.$t("common.welcomePresentation.seventhSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/6.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/6-dark.svg")
+            imgSrc: require("@/assets/svg/light/lady-building.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/lady-building-dark.svg")
           },
           {
             id: 8,
             title: this.$t("common.welcomePresentation.eighthSlide.title"),
             description: this.$t("common.welcomePresentation.eighthSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/7.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/7-dark.svg")
+            imgSrc: require("@/assets/svg/light/signpost.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/signpost-dark.svg")
           },
           {
             id: 9,
             title: this.$t("common.welcomePresentation.ninthSlide.title"),
             description: this.$t("common.welcomePresentation.ninthSlide.description"),
-            imgSrc: require("@/assets/svg/welcome/8.svg"),
-            imgDarkSrc: require("@/assets/svg/welcome/8-dark.svg")
+            imgSrc: require("@/assets/svg/light/lady-tablet.svg"),
+            imgDarkSrc: require("@/assets/svg/dark/lady-tablet-dark.svg")
           }
         ];
       },
+
       isDarkMode () {
         return this.$q.dark.isActive;
       },
+
       isLastStep () {
         return this.slides.length === this.step;
+      }
+    },
+    methods: {
+      goTo (name) {
+        this.$router.push({ name });
       }
     }
   };

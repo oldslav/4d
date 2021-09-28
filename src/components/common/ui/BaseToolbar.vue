@@ -5,17 +5,17 @@
         q-route-tab(
           v-for="(route, index) in tabs"
           :key="index"
-          :to="{name: route.name}"
+          :to="{ name: route.name }"
           :name="route.name"
-          :label="route.label"
+          :icon="route.icon"
+          v-if="!route.hide"
         ).col
-
     template(v-else)
       BaseTabs(v-model="tab" :dense="false")
         q-route-tab(
           v-for="(route, index) in tabs"
           :key="index"
-          :to="{name: route.name}"
+          :to="{ name: route.name }"
           :name="route.name"
           :label="route.label"
           v-if="!route.hide"
@@ -78,30 +78,41 @@
         return [
           {
             name: "about",
-            label: this.$t("entity.about.title")
+            label: this.$t("entity.about.title"),
+            icon: "help_outline"
           },
           {
             name: "map",
             label: this.$t("entity.maps.title"),
-            hide: !this.isDev
+            icon: "map"
           },
           {
             name: "data",
-            label: this.$t("entity.data.title")
+            label: this.$t("entity.data.title"),
+            icon: "bar_chart"
           },
           {
             name: "design",
-            label: this.$t("entity.design")
+            label: this.$t("entity.design"),
+            icon: "list_alt"
           },
           {
             name: "services",
             label: this.$t("entity.services.title"),
-            hide: !this.isAuthenticated || this.isUserAdmin
+            hide: !this.isAuthenticated || this.isUserAdmin,
+            icon: "ballot"
           },
           {
             name: "users",
             label: this.$t("entity.users.title"),
-            hide: !this.isUserAdmin
+            hide: !this.isUserAdmin,
+            icon: "o_account_circle"
+          },
+          {
+            name: "user-profile",
+            label: this.$t("entity.profile"),
+            hide: !this.isAuthenticated || !this.isMobile,
+            icon: "o_account_circle"
           }
         ];
       },
@@ -131,12 +142,12 @@
       locales () {
         return [
           {
-            value: "ru",
-            label: this.$t("common.locales.ru.alias")
+            value: "RU",
+            label: this.$t("common.locales.RU.alias")
           },
           {
-            value: "en-us",
-            label: this.$t("common.locales.en-us.alias")
+            value: "EN",
+            label: this.$t("common.locales.EN.alias")
           }
         ];
       }

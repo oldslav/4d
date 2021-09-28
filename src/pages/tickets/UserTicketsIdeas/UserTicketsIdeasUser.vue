@@ -11,29 +11,38 @@
       :expanded.sync="expanded"
     )
       template(v-slot:top)
-        .row.full-width.justify-between(v-if="references")
+        .row.full-width.justify-between.items-end(v-if="references")
           .row.q-gutter-sm.col
-            //BaseSelect(
-            //  v-model="statusId"
-            //  :options="references.crowdSourcingStatuses"
-            //  label="Статус"
-            //  optionKey="id"
-            //  optionValue="description"
-            //).col-12.col-sm-6.col-md-3
-            //BaseSelect(
-            //  v-model="typeId"
-            //  :options="references.crowdSourcingTypes"
-            //  label="Тип"
-            //  optionKey="id"
-            //  optionValue="description"
-            //).col-12.col-sm-6.col-md-3
+            BaseInput(
+              v-model="computedQuery"
+              hideBottom
+              :label="$t('common.search')"
+            ).col-12.col-sm-6.col-md
+            BaseSelect(
+              v-model="statusId"
+              hideBottom
+              :options="references.crowdSourcingStatuses"
+              label="Статус"
+              clearable
+              optionKey="id"
+              optionValue="description"
+            ).col-12.col-sm-6.col-md-3
+            BaseSelect(
+              v-model="typeId"
+              hideBottom
+              :options="references.crowdSourcingTypes"
+              label="Тип"
+              clearable
+              optionKey="id"
+              optionValue="description"
+            ).col-12.col-sm-6.col-md-3
           q-btn(
             icon="add"
             outline
             color="primary"
             @click="toIdeas"
             :label="$t('user.tickets.actions.create')"
-          )
+          ).q-ml-sm
       template(v-slot:body="props")
         q-tr(:props="props")
           q-td(key="nameOf" :props="props")
@@ -55,6 +64,9 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("action.details") }}
+                  q-item(v-if="![1, 5, 8].includes(props.row.status.id)" clickable v-close-popup @click="toIdeas({ id: props.row.id })")
+                    q-item-section(no-wrap)
+                      | {{ $t("action.showOnMap") }}
 
     BaseModal(
       v-model="isDetailsModal"
@@ -66,23 +78,23 @@
 <script>
   import BaseTable from "components/common/BaseTable";
   import BaseStatus from "components/common/BaseStatus";
-  import { mapActions, mapGetters, mapState } from "vuex";
+  import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import { DELETE_ITEM, GET_DATA, GET_REFERENCES } from "../../../store/constants/action-constants";
   import BaseModal from "../../../components/common/BaseModal";
   import IdeaDetailsCard from "../../../components/services/ideas/IdeaDetailsCard";
   import { mapFields } from "../../../plugins/mapFields";
-  import { UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
+  import { SET_EMPTY, SET_QUERY, UPDATE_FILTERS, UPDATE_PAGINATION } from "../../../store/constants/mutation-constants";
   import BaseSelect from "../../../components/common/BaseSelect";
+  import BaseInput from "../../../components/common/BaseInput";
 
   export default {
     name: "UserTicketsIdeasUser",
-    components: { BaseTable, BaseStatus, BaseModal, IdeaDetailsCard, BaseSelect },
+    components: { BaseInput, BaseTable, BaseStatus, BaseModal, IdeaDetailsCard, BaseSelect },
     async created () {
       if (!this.references) {
-        this.GET_REFERENCES();
+        await this.GET_REFERENCES();
       }
       this.authorId = this.userId;
-      await this.getUserTickets();
     },
     data () {
       return {
@@ -96,8 +108,20 @@
       }),
 
       ...mapState("services/ideas", {
-        references: state => state.references
+        references: state => state.references,
+        filters: state => state.filters,
+        query: state => state.query
       }),
+
+      computedQuery: {
+        get () {
+          return this.query;
+        },
+
+        set (value) {
+          this.SET_QUERY(value);
+        }
+      },
 
       ...mapGetters("services/ideas", [
         "tableData",
@@ -170,8 +194,13 @@
         GET_REFERENCES
       ]),
 
-      toIdeas () {
-        this.$router.push({ name: "services-ideas" });
+      ...mapMutations("services/ideas", [
+        SET_QUERY,
+        SET_EMPTY
+      ]),
+
+      toIdeas (query) {
+        this.$router.push({ name: "services-ideas", query });
       },
 
       openDetails (id) {
@@ -186,7 +215,7 @@
           this.offset = page;
         }
 
-        await this.GET_DATA();
+        await this.GET_DATA(true);
       },
 
       onCancel (id) {
@@ -216,6 +245,21 @@
             });
           });
       }
+    },
+    watch: {
+      computedQuery () {
+        this.GET_DATA(true);
+      },
+
+      filters: {
+        deep: true,
+        async handler () {
+          await this.GET_DATA(true);
+        }
+      }
+    },
+    beforeDestroy () {
+      this.SET_EMPTY();
     }
   };
 </script>

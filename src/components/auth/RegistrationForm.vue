@@ -39,11 +39,14 @@
       };
     },
     computed: {
+      locale () {
+        return this.$i18n.locale;
+      },
       consentLink () {
-        return "/uploads/personal_data_policy.pdf";
+        return this.locale === "RU" ? "/uploads/personal_data_policy.pdf" : "/uploads/personal_data_policy_en.pdf";
       },
       processingLink () {
-        return "/uploads/personal_data_processing.pdf";
+        return this.locale === "RU" ? "/uploads/personal_data_processing.pdf" : "/uploads/personal_data_processing_en.pdf";
       },
       buttonActive () {
         return this.consent;

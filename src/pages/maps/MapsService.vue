@@ -17,10 +17,7 @@
   import BaseMap from "../../components/common/BaseMap";
   import { SET_FEATURE_ID, SET_POINT_COORDS } from "../../store/constants/mutation-constants";
   import {
-    GET_APARTMENTS_GEO,
-    GET_COMMERCE_GEO,
-    GET_IDEAS_GEO,
-    GET_PARKING_GEO
+    FETCH_BUILDINGS_SECTION_GEOJSON
   } from "../../store/constants/action-constants";
 
   export default {
@@ -41,10 +38,7 @@
       },
 
       isLoading () {
-        return this.$store.state.wait[`services/${ GET_PARKING_GEO }`] ||
-          this.$store.state.wait[`services/${ GET_APARTMENTS_GEO }`] ||
-          this.$store.state.wait[`services/${ GET_IDEAS_GEO }`] ||
-          this.$store.state.wait[`services/${ GET_COMMERCE_GEO }`];
+        return this.$store.state.wait[`maps/buildings/${ FETCH_BUILDINGS_SECTION_GEOJSON }`];
       },
 
       isSimple () {
@@ -63,7 +57,8 @@
 
       onMapClick (e) {
         if (e) {
-          this.SET_FEATURE_ID(e.id);
+          const [id] = e.id.split("_");
+          this.SET_FEATURE_ID(id);
         } else {
           this.SET_FEATURE_ID(null);
         }

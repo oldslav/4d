@@ -13,7 +13,7 @@
         :title="$t('user.tickets.vacancies.workflow.applicant.first.title')"
         prefix="1"
       )
-        div.rich-text {{ $t('user.tickets.responds.companyWorkflow.steps.first.description') }}
+        div.rich-text {{ $t('user.tickets.responds.companyWorkflow.steps.first.text') }}
         div.row.q-mt-lg.items-center.justify-end
           q-btn.q-mr-md(flat color="red" @click="onClickReject")
             | {{ $t('user.tickets.responds.companyWorkflow.steps.first.reject') }}
@@ -27,7 +27,7 @@
         prefix="2"
         active-icon="question_answer"
       )
-        div.rich-text {{ $t('user.tickets.responds.companyWorkflow.steps.second.description') }}
+        div.rich-text {{ $t('user.tickets.responds.companyWorkflow.steps.second.text') }}
 
         div.row.q-mt-lg.items-center.justify-end
           q-btn.q-mr-md(flat color="red" @click="onClickReject")

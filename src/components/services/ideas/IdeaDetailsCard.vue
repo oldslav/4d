@@ -1,7 +1,7 @@
 <template lang="pug">
   q-card(v-if="current").bg-white.modal-container__dense.full-width
     q-card-section
-      h6.q-my-auto {{ current.title }}
+      h6.q-my-auto.ellipsis {{ current.title }}
         span.float-right
       q-separator.q-my-sm
     div(v-if="current.images.length").q-px-sm
@@ -22,8 +22,8 @@
         span.text-grey-6 Статус
         span.q-my-auto {{ current.status.description }}
         BaseStatus(:value="Number(current.status.id)")
-    q-card-section
-      div(v-if="current.status.id === 6")
+    q-card-section(v-if="current.status.id === 6")
+      div
         span.text-grey-6 Голосование
         .column.items-start
           q-item.q-px-none.full-width
@@ -44,8 +44,9 @@
     q-card-actions.row
       q-btn(v-if="current.likes.isLiked" color="pink-12" icon="favorite" flat :label="current.likes.amount" @click="likeIdea" dense padding="xs")
       q-btn(v-else icon="favorite_border" flat :label="current.likes.amount " @click="likeIdea" dense padding="xs")
-      q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs" disable)
+      q-btn(icon="o_chat" flat :label="current.commentsCount" dense padding="xs" @click="toggleComments")
     q-inner-loading(:showing="isLoading")
+    IdeaCommentsModal(v-if="isCommentsModal" v-model="isCommentsModal")
 </template>
 
 <script>
@@ -53,10 +54,12 @@
   import { mapActions, mapState } from "vuex";
   import { GET_CURRENT, GET_REFERENCES, UPDATE_LIKE, UPDATE_VOTE } from "../../../store/constants/action-constants";
   import ImageSlider from "../../common/ImageSlider";
+  import BaseModal from "../../common/BaseModal";
+  import IdeaCommentsModal from "./IdeaCommentsModal";
 
   export default {
     name: "IdeaDetailsCard",
-    components: { ImageSlider, BaseStatus },
+    components: { IdeaCommentsModal, BaseModal, ImageSlider, BaseStatus },
     props: {
       id: {
         type: [String, Number],
@@ -68,6 +71,11 @@
       if (!this.references) {
         this.GET_REFERENCES();
       }
+    },
+    data () {
+      return {
+        isCommentsModal: false
+      };
     },
     computed: {
       ...mapState("services/ideas", {
@@ -93,12 +101,16 @@
 
       async likeIdea () {
         await this.UPDATE_LIKE(this.id);
-        await this.GET_CURRENT(this.id);
+        setTimeout(await this.GET_CURRENT(this.id), 100);
       },
 
-      vote (answerId) {
-        this.UPDATE_VOTE({ id: this.id, answerId });
-        this.GET_CURRENT(this.id);
+      async vote (answerId) {
+        await this.UPDATE_VOTE({ id: this.id, answerId });
+        setTimeout(this.GET_CURRENT(this.id), 300);
+      },
+
+      toggleComments () {
+        this.isCommentsModal = !this.isCommentsModal;
       }
     },
     watch: {

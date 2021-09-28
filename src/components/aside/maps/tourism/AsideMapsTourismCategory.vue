@@ -4,9 +4,8 @@
       q-item-section.list-item-avatar(avatar)
         q-icon.text-primary(name="arrow_back")
       q-item-section(avatar)
-        | {{ getCategoryMenu | i18nName }}
+        | {{ getCategoryMenu.name }}
     q-separator
-
     q-item.q-py-md.text-subtitle(
       v-for="(layer, index) in getCategoryMenu.layers"
      :key="layer.id"
@@ -16,7 +15,7 @@
       q-item-section.list-item-avatar(v-if="item.icon" avatar)
         q-icon(:name="item.icon")
       q-item-section
-        | {{ layer | i18nName }}
+        | {{ layer.name }}
 </template>
 
 <script>

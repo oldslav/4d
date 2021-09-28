@@ -5,7 +5,8 @@ import {
   GET_COMMERCE_GEO,
   GET_IDEAS_GEO, GET_LIGHT_GEO,
   GET_PARKING_GEO,
-  GET_TREES_GEO, GET_WAREHOUSE_GEO
+  GET_TREES_GEO, GET_WAREHOUSE_GEO,
+  TOGGLE_VISIBILITY_BY_LAYER
 } from "src/store/constants/action-constants";
 import {
   SET_CLUSTERING,
@@ -15,7 +16,9 @@ import {
   SET_CESIUM,
   SET_GEODATA,
   SET_POINT_COORDS,
-  SET_USER
+  SET_USER,
+  SET_MAP_ENTITY_DISTANCE,
+  SET_MAP_SCENE
 } from "src/store/constants/mutation-constants";
 import { GeoState } from "src/store/types/common";
 import parking from "src/store/services/parking";
@@ -28,6 +31,8 @@ import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
 import tourism from "src/store/services/tourism";
 import warehouse from "src/store/services/warehouse";
+import { cloneDeep } from "lodash";
+import { CesiumScenes } from "src/constaints";
 
 const initialState = (): GeoState => {
   return {
@@ -36,7 +41,9 @@ const initialState = (): GeoState => {
     pointCoords: null,
     isDraw: null,
     cesiumInstance: null,
-    clustering: true
+    clustering: true,
+    entityDistance: null,
+    scene: null
   };
 };
 
@@ -46,11 +53,15 @@ const mutations: MutationTree<GeoState> = {
   [SET_USER]: (state, payload) => Object.assign(state, payload),
   [SET_EMPTY]: state => Object.assign(state, initialState()),
   [SET_GEODATA]: (state, payload) => state.geoJson = payload,
-  [SET_FEATURE_ID]: (state, payload) => state.pickedFeatureId = payload,
+  [SET_FEATURE_ID]: (state, payload) => {
+    state.pickedFeatureId = payload;
+  },
   [SET_POINT_COORDS]: (state, payload) => state.pointCoords = payload,
   [SET_DRAW_TYPE]: (state, payload) => state.isDraw = payload,
   [SET_CESIUM]: (state, payload) => state.cesiumInstance = payload,
-  [SET_CLUSTERING]: (state, payload) => state.clustering = payload
+  [SET_CLUSTERING]: (state, payload) => state.clustering = payload,
+  [SET_MAP_ENTITY_DISTANCE]: (state, distance) => state.entityDistance = distance || 1000,
+  [SET_MAP_SCENE]: (state, scene) => state.scene = scene || CesiumScenes["3d"]
 };
 
 const actions: ActionTree<GeoState, TRootState> = {
@@ -62,13 +73,24 @@ const actions: ActionTree<GeoState, TRootState> = {
       data: {
         type,
         features: features.map((i: any) => {
-          if (!i.properties.free) {
-            i.properties.fill = "#FF6565";
-          } else if (i.properties.parking_places_type === "Обычное") {
+          if (i.properties.parking_places_type === "Обычное") {
+            i.properties.layer = 1;
             i.properties.fill = "#84D197";
+            if (!i.properties.free) {
+              i.properties.layer = 3;
+              i.properties.fill = "#FF6565";
+            }
           } else if (i.properties.parking_places_type === "Льготное") {
+            i.properties.layer = 2;
             i.properties.fill = "#298BAF";
+            if (!i.properties.free) {
+              i.properties.layer = 3;
+              i.properties.fill = "#FF6565";
+            }
           }
+
+          i.properties.visibility = true;
+          i.properties.type = "building";
 
           Object.assign(i.properties, {
             stroke: "#333333"
@@ -126,7 +148,11 @@ const actions: ActionTree<GeoState, TRootState> = {
     //   type: "pointPrimitive"
     // };
 
-    const { data: { type, features } } = await this.service.services.ideas.getIdeasGeo();
+    const { data: { type, features } } = await this.service.services.ideas.getIdeasGeo({
+      filters: {
+        statusId: [2, 3, 4, 6]
+      }
+    });
 
     const preparedData = {
       data: {
@@ -135,7 +161,9 @@ const actions: ActionTree<GeoState, TRootState> = {
           ...i,
           properties: {
             ...i.properties,
-            image: require("@/assets/clustering/10.png")
+            layer: i.properties.typeId,
+            // TODO: Исправить ужас ниже
+            image: i.properties.fill === "#FF6565" ? require("@/assets/png/problem.png") : require("@/assets/png/idea.png")
           }
         }))
       },
@@ -215,32 +243,56 @@ const actions: ActionTree<GeoState, TRootState> = {
     };
 
     commit(SET_GEODATA, preparedData);
+  },
+
+  [TOGGLE_VISIBILITY_BY_LAYER] ({ state, commit }, { ids, visibility }) {
+    if (state.geoJson) {
+      const geoJson = cloneDeep(state.geoJson.data);
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      for (const feature of geoJson.features) {
+        if (ids.includes(feature.properties.layer)) {
+          feature.properties.visibility = visibility;
+        }
+      }
+
+      commit(SET_GEODATA, { type: "geoJson", data: geoJson });
+    }
   }
 };
 
 const getters: GetterTree<GeoState, TRootState> = {
   pickedFeature (state) {
-    if (state.geoJson) {
-      switch (state.geoJson.type) {
+    const pickedFeatureId = state.pickedFeatureId;
+    const geoJson = state.geoJson;
+
+    if (geoJson) {
+      switch (geoJson.type) {
         case "geoJson":
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          return state.geoJson.data.features.find((i: any) => Number(i.id) === Number(state.pickedFeatureId));
+          // eslint-disable-next-line eqeqeq
+          return geoJson.data.features.find((i: any) => i.id == pickedFeatureId);
         case "pointPrimitive":
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          return state.geoJson.data.find((i: any) => Number(i.id) === Number(state.pickedFeatureId));
+          // eslint-disable-next-line eqeqeq
+          return geoJson.data.find((i: any) => i.id == pickedFeatureId);
       }
     }
   },
   getPickedFeatureId (state) {
     return state.pickedFeatureId;
   },
-  getCesium (state){
+  getCesium (state) {
     return state.cesiumInstance;
   },
-  getGeoJson (state){
+  getGeoJson (state) {
     return state.geoJson;
+  },
+  getEntityDistance (state) {
+    return state.entityDistance;
   }
 };
 

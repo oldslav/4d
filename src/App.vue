@@ -4,34 +4,65 @@
       q-ajax-bar(ref="progress" position="top" color="primary" size="3px" skip-hijack)
     q-layout(ref="layout" view="hHh Lpr lFf")
       template(v-if="isMobile")
+        q-fab(v-if="isMobile" v-show="!(isBurger || isSettings)" color="primary" icon="menu" round direction="down" padding="sm").fixed-top-left.q-ma-md.z-max
+          q-fab-action(color="primary" icon="menu" round @click="toggleBurger")
+          q-fab-action(color="primary" icon="settings" round @click="toggleSettings")
         q-drawer(
-          v-show="isComponentPassed('asideLeft')"
+          v-model="isBurger"
+          v-if="isComponentPassed('asideLeft')"
           :width="300"
           :breakpoint="500"
           overlay
           elevated
+          behavior="mobile"
         )
           transition(name="fade" mode="out-in")
             router-view(name="asideLeft")
               AsideProfile
-          q-list
-            q-item(dense)
-              q-item-section
-                q-select(
-                  v-model="locale" color="primary" :options="locales"
-                  option-label="label" option-value="value" filled dense
-                )
-              q-item-section(side)
-                q-toggle(
-                  v-model="darkMode"
-                  unchecked-icon="dark_mode"
-                  checked-icon="light_mode"
-                  color="dark"
-                  icon-color="yellow"
-                  keep-color
-                  size="md"
-                  dense
-                )
+        q-drawer(
+          v-model="isSettings"
+          v-if="isComponentPassed('asideLeft')"
+          :width="300"
+          :breakpoint="500"
+          overlay
+          elevated
+          behavior="mobile"
+        )
+          q-list.q-pa-lg.full-height.column.justify-betweenz
+            div
+              q-item(:to="{ name: 'user-profile' }" v-if="isAuthenticated").q-px-none.items-center
+                q-item-section(avatar)
+                  q-icon(name="o_account_circle")
+                q-item-section
+                  | {{ $t("entity.profile") }}
+              q-item(dense).q-px-none
+                q-item-section
+                  q-select(
+                    v-model="locale" color="primary" :options="locales"
+                    option-label="label" option-value="value" filled dense
+                  )
+                q-item-section(side)
+                  q-toggle(
+                    v-model="darkMode"
+                    unchecked-icon="dark_mode"
+                    checked-icon="light_mode"
+                    color="dark"
+                    icon-color="yellow"
+                    keep-color
+                    size="md"
+                    dense
+                  )
+            div
+              q-item(clickable @click="onLogout()" v-if="isAuthenticated").q-px-none.items-center
+                q-item-section(avatar)
+                  q-icon(name="logout").rotate-180
+                q-item-label
+                  span Выход
+              q-item(clickable @click="onAuth()" v-else).q-px-none.items-center
+                q-item-section(avatar)
+                  q-icon(name="login")
+                q-item-label
+                  span Войти
 
         q-drawer(:value="isComponentPassed('asideRight')" side="right" elevated)
           transition(name="fade" mode="out-in")
@@ -59,8 +90,12 @@
 
       transition(name="fade" mode="out-in")
         AuthModal(v-model="auth")
-    
+
       MailConfirmedModal(v-model="showMailConfirmedModal" @show-auth="showAuthAfterConfirmation")
+    q-no-ssr
+      // Preload cesium placeholder
+      div.preload-map(v-if="isVisibleMap")
+        vc-viewer(@ready="onReadyMapPlaceholder")
 </template>
 
 <script>
@@ -82,7 +117,7 @@
       if (!this.isAuthenticated) {
         this.checkForMailConfirmed();
       }
-      if (!this.showMailConfirmedModal) this.auth = !this.isAuthenticated;
+      if (!this.showMailConfirmedModal && !this.isPasswordReset) this.auth = !this.isAuthenticated;
     },
     mounted () {
       this.$q.dark.set(this.$q.cookies.get("darkMode") === true);
@@ -97,11 +132,17 @@
       return {
         auth: false,
         isStartedLoading: false,
-        showMailConfirmedModal: false
+        showMailConfirmedModal: false,
+        isBurger: false,
+        isSettings: false,
+        mapReady: false
       };
     },
     computed: {
       ...mapGetters(["isAuthenticated"]),
+      isPasswordReset () {
+        return !!this.$route.query.token;
+      },
       meta () {
         return this.$route.meta;
       },
@@ -139,18 +180,32 @@
       locales () {
         return [
           {
-            value: "ru",
-            label: this.$t("common.locales.ru.alias")
+            value: "RU",
+            label: this.$t("common.locales.RU.alias")
           },
           {
-            value: "en-us",
-            label: this.$t("common.locales.en-us.alias")
+            value: "EN",
+            label: this.$t("common.locales.EN.alias")
           }
         ];
+      },
+
+      isVisibleMap (){
+        return !this.mapReady && !this.$route.meta.map;
       }
     },
     methods: {
       ...mapActions("references", [GET_REFERENCES]),
+
+      toggleSettings () {
+        this.isBurger = false;
+        this.isSettings = !this.isSettings;
+      },
+
+      toggleBurger () {
+        this.isSettings = false;
+        this.isBurger = !this.isBurger;
+      },
 
       isComponentPassed (viewName) {
         return Boolean(this.components[viewName]);
@@ -160,12 +215,16 @@
         this.auth = true;
       },
 
-      onRouteChangedBegin (from ,to ,next) {
+      onRouteChangedBegin (from, to, next) {
+        if (!this.$refs.progress) {
+          return next();
+        }
+
         if (this.isStartedLoading) {
           this.$refs.progress.stop();
         }
 
-        if(from.path !== to.path) {
+        if (from.path !== to.path) {
           this.$refs.progress.start();
           this.isStartedLoading = true;
         }
@@ -173,7 +232,9 @@
       },
 
       onRouteChangedDone () {
-        this.$refs.progress.stop();
+        if (this.$refs.progress) {
+          this.$refs.progress.stop();
+        }
         this.isStartedLoading = false;
       },
 
@@ -186,7 +247,27 @@
       showAuthAfterConfirmation () {
         this.showMailConfirmedModal = false;
         this.auth = true;
+      },
+
+      onReadyMapPlaceholder (){
+        this.mapReady = true;
+      }
+    },
+    watch: {
+      "$route.meta.isBurger" () {
+        this.isBurger = true;
       }
     }
   };
 </script>
+<style lang="stylus">
+.preload-map
+  visibility hidden
+  position absolute
+  left 0
+  top 0
+  z-index -1
+  opacity 0
+  width: 100px
+  height: 100px
+</style>

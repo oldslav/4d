@@ -63,7 +63,10 @@ const requestInterceptor = (store: Store<any>) => {
 
       return {
         ...config,
-        headers: Object.assign({}, headers,{ Authorization : `Bearer ${ accessToken }` })
+        headers: Object.assign({}, headers,{
+          Authorization : `Bearer ${ accessToken }`,
+          "Content-Language": store.$cookies.get("locale") || "RU"
+        })
       };
     }
 

@@ -24,7 +24,6 @@ const setEntityImage = (entity: ICesiumEntity, image: string | HTMLCanvasElement
   });
 };
 
-
 export const renderExtendedPlace = (entity: ICesiumEntity, { radius, label, image }: IExtendedPlaceOptions): void => {
   entity.billboard = entity.billboard || {};
 

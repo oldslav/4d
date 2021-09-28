@@ -8,6 +8,8 @@
 //   imagePath: string
 // }
 
+import { CesiumScenes } from "src/constaints";
+
 interface DocType {
   description: string,
   id: number,
@@ -20,7 +22,9 @@ export interface GeoState {
   clustering: boolean
   pointCoords: any | null
   isDraw: any | null
-  cesiumInstance: any | null
+  cesiumInstance: any | null,
+  entityDistance: null | number
+  scene: null | CesiumScenes
 }
 
 export interface GeoData {
@@ -64,8 +68,8 @@ export interface Document {
 export type I18nNameLikeProps = "nameRu" | "nameEn"
 
 export enum I18nNamePropertyByLang {
-  ru = "nameRu",
-  "en-us" = "nameEn",
+  RU = "nameRu",
+  EN = "nameEn"
 }
 
 export type I18nNameLike = {
