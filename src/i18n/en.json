@@ -1013,6 +1013,9 @@
       },
       "light": {
         "title": "City lighting"
+      },
+      "improvement": {
+        "title": "City improvement"
       }
     },
     "data": "Data",

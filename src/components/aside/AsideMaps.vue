@@ -76,6 +76,12 @@
             action: { name: "map-light" },
             icon: "o_lightbulb",
             show: true
+          },
+          {
+            label: this.$t("entity.maps.improvement.title"),
+            action: { name: "map-improvement" },
+            icon: "o_nature",
+            show: true
           }
         ];
       }
