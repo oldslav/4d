@@ -225,7 +225,6 @@
       min-width: .6rem
     }
   }
-
   @media (max-width: $breakpoint-xs-max) {
     .q-stepper__dot {
       width: .4rem

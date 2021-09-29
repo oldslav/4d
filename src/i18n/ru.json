@@ -1018,7 +1018,195 @@
         "title": "Благоустройство города"
       }
     },
-    "data": "Данные",
+    "data": {
+      "title": "Данные",
+      "sqm": "кв. м",
+      "aside": {
+        "buildings": {
+          "title": "Объекты недвижимости"
+        },
+        "transport": {
+          "title": "Транспортная инфраструктура"
+        },
+        "improvement": {
+          "title": "Благоустройство города"
+        },
+        "lighting": {
+          "title": "Освещение города"
+        },
+        "tourism": {
+          "title": "Туристическая инфраструктура"
+        },
+        "territory": {
+          "title": "Территориальное планирование"
+        },
+        "environment": {
+          "title": "Состояние окружающей среды"
+        }
+      },
+      "statistic": "Статистика",
+      "crads": {
+        "newObject": "Новый объект жилой недвижимости",
+        "newIdeas": "Новых идей жителей",
+        "newProblems": "Новые проблемы в городе",
+        "bicycleForRent": "Велосипедов в аренду в день"
+      },
+      "months": {
+        "jan": "Января",
+        "feb": "Февраля",
+        "mar": "Марта",
+        "apr": "Апреля",
+        "may": "Мая",
+        "jun": "Июня",
+        "jul": "Июля",
+        "aug": "Августа",
+        "sep": "Сентября",
+        "oct": "Октября",
+        "nov": "Ноября",
+        "dec": "Декабря"
+      },
+      "weather": {
+        "precipitation": "Осадки",
+        "precipitationNumber": "Количество осадков",
+        "humidity": "Влажность",
+        "airPressure": "Давление",
+        "windVelocity": "Скорость ветра",
+        "dry": "Сухо",
+        "rain": "Дождь",
+        "snow": "Снег",
+        "snowWithRain": "Снег с дождем",
+        "strongSnow": "Сильный снег",
+        "feeling": "Ощущения",
+        "dewPoint": "Точка росы",
+        "direction": "Направление",
+        "windDirection": "Направление ветра"
+      },
+      "buildings": {
+        "squareBuildings": "Площадь застройки",
+        "squareCommercial": "Площадь коммерческих помещений",
+        "squareOffice": "Площадь офисных помещений",
+        "organizations": "Организации в городе",
+        "offices": "Офисы в здании технопарка",
+        "squareSocial": "Площадь социальных объектов",
+        "averageFloor": "Средняя этажность",
+        "flats": "Квартиры",
+        "MKD": "МКД",
+        "townhouses": "Таунхаусы",
+        "busy": "Занято",
+        "free": "Свободно",
+        "commercial": "Коммерческих",
+        "service": "Сервисных",
+        "forEvents": "Зала для мероприятий",
+        "cafes": "Кафе",
+        "education": "Образовательные",
+        "leisure": "Досуговые",
+        "min": "Минимум",
+        "max": "Максимум",
+        "room1": "1-комн. квартиры",
+        "room2": "2-комн. квартиры"
+      },
+      "transport": {
+        "crosswalk": "Наземных переходов",
+        "in2020": "В 2020",
+        "in2021": "В 2021",
+        "stops": "Остановок",
+        "pedestrian": "Пешеходных дорожек",
+        "inResidential": "В жилых зонах",
+        "alongRoads": "Вдоль дорог",
+        "averageTime": "Среднее время в пути",
+        "kindergarten": "До дет. садика",
+        "medCenter": "До мед. центра",
+        "bycyclePathLength": "Протяженность велодорожек",
+        "inPublic": "В общ. зонах",
+        "bicycleParking": "Велопарковки",
+        "bicyclesForRent": "Велосипедов в аренду за день",
+        "weekends": "В выходные",
+        "weekdays": "В будни",
+        "bicycleTraffic": "Зафиксировано велотрафика в сутки",
+        "carsharing": "Каршеринг",
+        "scooters": "Самокаты",
+        "cars": "Автомобили",
+        "rings": "Разворотных колец",
+        "toKazan": "В Казань",
+        "locality": "Населенные пункты",
+        "motorization": "Средний уровень автомобилизации",
+        "personalTransport": "Личный транспорт",
+        "unmannedTransport": "Беспилотный транспорт",
+        "passengerTraffic": "Сред. пассажиропоток за месяц в автобусах",
+        "citizensAndWorkers": "Жителей и работников",
+        "guestsAndTourists": "Гостей и туристов",
+        "parking": "Парковочных мест",
+        "nearPublicBuildings": "У общ. зданий",
+        "squareParking": "Площадь парковок в ЖК",
+        "terrestrial": "Наземных",
+        "underground": "Подземных",
+        "parkingForRent": "Парковочных мест для аренды",
+        "busy": "Занято",
+        "free": "Свободно",
+        "parkingForGuests": "Доступно для гостей",
+        "nearSport": "У спорт. комплекса",
+        "nearUniversity": "У университета"
+      },
+      "improvement": {
+        "recreational": "Площадь рекреационных зон",
+        "plantTypes": "Видов растений",
+        "tree": "Деревьев",
+        "bush": "Кустарников",
+        "plantedPlant": "Растений высажено",
+        "inResidential": "В жилых зонах",
+        "inPublic": "В общ. зонах",
+        "squareLawn": "Площадь газонов",
+        "parks": "Парков",
+        "squares": "Скверов"
+      },
+      "lighting": {
+        "alongRoads": "Вдоль дорог",
+        "inResidential": "В жилых зонах",
+        "flashlights": "Фонарей установлено в городе",
+        "lamps": "Светильников",
+        "flashlightWord": "Фонарей",
+        "backlight": "Подсветки",
+        "lightsInPark": "Фонарей в парке",
+        "lamp": "Светильника",
+        "bollards": "Боллардов освещения",
+        "colors": "Цветов подсветки",
+        "warm": "Теплых",
+        "cold": "Холодных"
+      },
+      "tourism": {
+        "sights": "Достопримечательностей",
+        "culture": "Культурных",
+        "entertainment": "Развлекательных",
+        "closeToCity": "Рядом с городом",
+        "village": "Поселка",
+        "smallVillage": "Деревни",
+        "distance": "Расстояние до мест отдыха",
+        "toSviyaga": "До свяжских холмов",
+        "toMonastery": "До Макарьевского монастыря",
+        "height": "Перепад высот на территории города",
+        "upPoint": "Верхняя точка города",
+        "downPoint": "Нижняя точка города"
+      },
+      "territory": {
+        "territoryGP": "Площадь территории в соотв. с ГП",
+        "builtUp": "Застроено",
+        "available": "Доступно",
+        "residentialPZZ": "Площадь жилых зон в соотв. с ПЗЗ",
+        "public": "Общ.-деловых зон",
+        "recreational": "Зон рекреац. назн.",
+        "residentialPPT": "Площадь жилых зон в соотв. с ППТ",
+        "masteredGP": "Освоено земель относительно ГП",
+        "technopark": "Технопарка",
+        "publicCenter": "Общ. центра",
+        "projectPopulation": "Проектное население",
+        "population": "Факт. население"
+      },
+      "environment": {
+        "note": "Примечание",
+        "number": "Количество",
+        "norm": "Норма"
+      }
+    },
     "about": {
       "title": "О проекте",
       "toMap": "Перейти к карте",
