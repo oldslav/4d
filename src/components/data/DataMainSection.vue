@@ -11,9 +11,9 @@
 </template>
 
 <script>
-	export default {
-		name: "DataMainSection"
-	};
+  export default {
+    name: "DataMainSection"
+  };
 </script>
 
 <style lang="stylus">

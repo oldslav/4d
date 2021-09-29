@@ -40,15 +40,15 @@
 </template>
 
 <script>
-	import VueSlickCarousel from "vue-slick-carousel";
-	import "vue-slick-carousel/dist/vue-slick-carousel.css";
+  import VueSlickCarousel from "vue-slick-carousel";
+  import "vue-slick-carousel/dist/vue-slick-carousel.css";
 
-	export default {
-		name: "DataCarousel",
-		components: {
-			VueSlickCarousel
-		},
-		props: {
+  export default {
+    name: "DataCarousel",
+    components: {
+      VueSlickCarousel
+    },
+    props: {
       list: {
         type: Array,
         default () {
@@ -56,34 +56,34 @@
         }
       }
     },
-		data () {
-			return {
-				settings: {
-					infinite: false,
-					slidesToShow: 4,
-					responsive: [
-						{
-							breakpoint: 1600,
-							settings: {
-								slidesToShow: 3
-							}
-						},
-						{
-							breakpoint: 1300,
-							settings: {
-								slidesToShow: 2
-							}
-						},
-						{
-							breakpoint: 550,
-							settings: "unslick",
-							adaptiveHeight: true
-						}
-					]
-				}
-			};
-		}
-	};
+    data () {
+      return {
+        settings: {
+          infinite: false,
+          slidesToShow: 4,
+          responsive: [
+            {
+              breakpoint: 1600,
+              settings: {
+                slidesToShow: 3
+              }
+            },
+            {
+              breakpoint: 1300,
+              settings: {
+                slidesToShow: 2
+              }
+            },
+            {
+              breakpoint: 550,
+              settings: "unslick",
+              adaptiveHeight: true
+            }
+          ]
+        }
+      };
+    }
+  };
 </script>
 
 <style lang="stylus">

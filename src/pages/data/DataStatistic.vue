@@ -45,17 +45,17 @@
       return store.dispatch(`data/${ GET_DATA_MAIN_PAGE }`);
     },
     mounted () {
-			this.timer = setInterval(() => this.date = new Date(), 1000);
-		},
+      this.timer = setInterval(() => this.date = new Date(), 1000);
+    },
     unmounted () {
       clearInterval(this.timer);
     },
-		data () {
-			return {
-				date: new Date(),
-				timer: null
-			};
-		},
+    data () {
+      return {
+        date: new Date(),
+        timer: null
+      };
+    },
     computed: {
       ...mapGetters("data", [
         "getWeather",
@@ -113,11 +113,11 @@
 
         return month[monthId];
       },
-			getFormattedTime (time) {
-				return time >= 10
-					? time
-					: `0${ time }`;
-			}
+      getFormattedTime (time) {
+        return time >= 10
+          ? time
+          : `0${ time }`;
+      }
     }
   };
 </script>

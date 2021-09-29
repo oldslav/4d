@@ -12,9 +12,9 @@
 </template>
 
 <script>
-	export default {
-		name: "BtnBack"
-	};
+  export default {
+    name: "BtnBack"
+  };
 </script>
 
 <style lang="stylus">
