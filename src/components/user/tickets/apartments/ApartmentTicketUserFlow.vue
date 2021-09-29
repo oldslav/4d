@@ -42,7 +42,9 @@
           .col-6
             | Вы можете ознакомиться с образцом договора.
             DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
-          .col-6.text-body1.text-wrap
+          .col-6.text-body1.text-wrap(v-if="isUserLegal")
+            PaymentFilesForm(v-model="paymentFiles" @submit="onAttachPaymentFiles()" :loading="loading")
+          .col-6.text-body1.text-wrap(v-else)
             | Уважаемый {{name}}.<br>
             | Для вас  сформирована задолженность в размере обеспечительного платежа и стоимости одного месяца аренды.<br>
             | Перед оплатой задолженности ознакомьтесь с публичной офертой и примите ее.<br>
@@ -89,12 +91,14 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapActions } from "vuex";
   import DownloadTemplate from "components/user/tickets/DownloadTemplate";
+  import PaymentFilesForm from "components/user/tickets/PaymentFilesForm";
+  import { SEND_COMPANY_PAYMENT } from "@/store/constants/action-constants";
 
   export default {
     name: "ApartmentTicketUserFlow",
-    components: { DownloadTemplate },
+    components: { PaymentFilesForm, DownloadTemplate },
     props: {
       value: {
         type: Object,
@@ -105,31 +109,55 @@
         default: ""
       }
     },
+    data () {
+      return {
+        paymentFiles: null
+      };
+    },
     computed: {
       ...mapGetters(["isUserLegal"]),
       templatePath () {
         return this.isUserLegal ? "/uploads/templates/living_contract_jur_template.pdf" : "/uploads/templates/living_contract_template.pdf";
       },
       stepsValue () {
-        if (this.value.id === 11) return 1;
-        if (this.value.id === 12) return 2;
-        if (this.value.id === 3) return 3;
-        if ([5, 6, 7].includes(this.value.id)) return 4;
+        if (this.value.status.id === 11) return 1;
+        if (this.value.status.id === 12) return 2;
+        if (this.value.status.id === 3) return 3;
+        if ([5, 6, 7].includes(this.value.status.id)) return 4;
       },
       stepOneDone () {
-        return this.value.id === 12 || this.stepTwoDone;
+        return this.value.status.id === 12 || this.stepTwoDone;
       },
       stepTwoDone () {
-        return this.value.id === 3 || this.stepThreeDone;
+        return this.value.status.id === 3 || this.stepThreeDone;
       },
       stepThreeDone () {
-        return [5, 6, 7].includes(this.value.id) || this.stepFourDone;
+        return [5, 6, 7].includes(this.value.status.id) || this.stepFourDone;
       },
       stepFourDone () {
-        return this.value.id === 8;
+        return this.value.status.id === 8;
+      },
+      loading () {
+        return this.$store.state.wait[`user/tickets/living/${ SEND_COMPANY_PAYMENT }`];
       }
     },
     methods: {
+      ...mapActions("user/tickets/living", [SEND_COMPANY_PAYMENT]),
+      async onAttachPaymentFiles () {
+        try {
+          await this.SEND_COMPANY_PAYMENT({
+            id: this.value.id,
+            payload: this.paymentFiles
+          });
+          this.$emit("update");
+        } catch (e) {
+          this.$q.notify({
+            type: "negative",
+            message: e
+          });
+        }
+      },
+
       onApartmentChoose () {
         this.$emit("choose");
       },
