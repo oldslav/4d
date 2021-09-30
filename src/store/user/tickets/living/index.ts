@@ -14,7 +14,12 @@ import {
   APPROVE_TICKET_LIVING,
   UPDATE_TICKET_APARTMENT,
   UPDATE_TICKET_APARTMENT_VIEWED,
-  GET_USER_TICKET, CREATE_LEGAL_TICKET_LIVING, SEND_CONTRACT_INFO_LIVING, UPDATE_TICKET, DELETE_USER_TICKET_LIVING
+  GET_USER_TICKET,
+  CREATE_LEGAL_TICKET_LIVING,
+  SEND_CONTRACT_INFO_LIVING,
+  UPDATE_TICKET,
+  DELETE_USER_TICKET_LIVING,
+  GET_LEGAL_TICKET, UPDATE_LEGAL_TICKET, SEND_COMPANY_PAYMENT
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -55,6 +60,24 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
+  async [GET_LEGAL_TICKET] ({ commit, dispatch }, ticketId) {
+    const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
+    const { images, ...ticket } = data;
+    const documents = {
+      passport: [],
+      inn: [],
+      job_petition: [],
+      consent_processing_personal_data: [],
+      inn_jur: [],
+      ogrn: [],
+      egrjul: [],
+      partner_card: []
+    };
+    const files = await dispatch("loadFiles", images, { root: true });
+    Object.assign(documents, files);
+    commit(SET_USER_TICKET, { documents, ...ticket });
+  },
+
   async [GET_USER_TICKET] ({ commit, dispatch }, ticketId) {
     const { data } = await this.service.user.tickets.getTicketLiving(ticketId);
     const { images, neighbors: ns, ...ticket } = data;
@@ -90,6 +113,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     commit(SET_USER_TICKETS, data);
   },
 
+  async [SEND_COMPANY_PAYMENT] (_, { id, payload }) {
+    const files = new FormData();
+    payload.forEach((f: any) => {
+      files.append("files", f);
+    });
+    await this.service.user.tickets.uploadLivingCompanyPayment(id, files);
+  },
+
   [REJECT_TICKET_LIVING] (_, { id, reason }) {
     return this.service.user.tickets.rejectTicketLiving(id, reason);
   },
@@ -123,6 +154,21 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id, payload: f })));
     await Promise.all(neighbors.map((n: any) => dispatch(ADD_USER_TICKET_NEIGHBOR, { ticketId: id, payload: n })));
     return id;
+  },
+
+  async [UPDATE_LEGAL_TICKET] ({ getters, dispatch }, { ticketId, payload }) {
+    const { documents, ...rest } = payload;
+    const { documents: oldDocuments } = getters.getCurrentTicket;
+    const filesIds: number[] = Object.values(oldDocuments).reduce((res: number[], val: any) => {
+      const ids = val.map((v: any) => v.id);
+      res.push(...ids);
+      return res;
+    }, []);
+    await Promise.all(filesIds.map((id: number) => this.service.user.tickets.deleteFileLiving(ticketId, id)));
+    await this.service.user.tickets.updateTicketLiving(ticketId, rest);
+    const files = await dispatch("bundleFiles", { files: documents, asNew: true }, { root: true });
+    await Promise.all(files.map((f: any) => dispatch(ADD_USER_TICKET_FILE_LIVING, { id: ticketId, payload: f })));
+    return ticketId;
   },
 
   async [UPDATE_TICKET] ({ getters, dispatch }, { ticketId, payload }) {

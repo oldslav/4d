@@ -355,13 +355,125 @@ const routes: RouteConfig[] = [
   {
     path: "/data",
     name: "data",
+    redirect: {
+      name: "data-statistic"
+    },
     components: {
-      default: (): Promise<any> => import("pages/UnderDevelopment.vue")
+      default: (): Promise<any> => import("pages/data/Data.vue"),
+      asideLeft: (): Promise<any> => import("components/aside/data/AsideData.vue")
     },
     meta: {
+      toolbar: true,
+      asideLeft: true,
       prod: true,
       unauthorized: true
-    }
+    },
+    children: [
+      {
+        path: "",
+        name: "data-statistic",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataStatistic.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "buildings",
+        name: "data-buildings",
+        components: {
+          default: (): Promise<any> => import("src/pages/data/DataBuildings.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "transport",
+        name: "data-transport",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataTransport.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "improvement",
+        name: "data-improvement",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataImprovement.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "lighting",
+        name: "data-lighting",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataLighting.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "tourism",
+        name: "data-tourism",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataTourism.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "territory",
+        name: "data-territory",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataTerritory.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      },
+      {
+        path: "environment",
+        name: "data-environment",
+        components: {
+          default: (): Promise<any> => import("pages/data/DataEnvironment.vue")
+        },
+        meta: {
+          toolbar: true,
+          asideLeft: true,
+          prod: true,
+          unauthorized: true
+        }
+      }
+    ]
   },
   {
     path: "/map",

@@ -74,6 +74,10 @@ export class TicketsService extends Service {
     return this.api.delete(`/api/v1/services/apartments/user/tickets/${ id }`);
   }
 
+  public uploadLivingCompanyPayment (id: number, files: unknown): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/apartments/company/tickets/${ id }/payment`, files);
+  }
+
   public deleteTicketParking (id: number): AxiosPromise<TicketsResponse> {
     return this.api.put(`/api/v1/services/parking/user/tickets/${ id }/cancel`);
   }
