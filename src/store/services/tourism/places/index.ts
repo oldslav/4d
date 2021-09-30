@@ -51,7 +51,7 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_DATA] ({ state, commit }) {
-    const { data } = await this.service.services.tourism.getData({
+    const { data } = await this.service.services.tourism.getPlacesData({
       ...state.filters,
       limit: state.pagination.limit,
       offset: state.pagination.offset - 1
@@ -62,29 +62,29 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   },
 
   async [UPLOAD_IMAGE] (_, { id, payload }) {
-    await this.service.services.tourism.uploadImage(id, payload);
+    await this.service.services.tourism.uploadPlacesImage(id, payload);
   },
 
   async [DELETE_IMAGE] (_, id) {
-    await this.service.services.tourism.deleteImage(id);
+    await this.service.services.tourism.deletePlacesImage(id);
   },
 
   async [DELETE_DOCUMENT] (_, id) {
-    await this.service.services.tourism.deleteDocument(id);
+    await this.service.services.tourism.deletePlacesDocument(id);
   },
 
   async [GET_DETAILS] ({ commit }, id) {
-    const { data } = await this.service.services.tourism.getDetails(id);
+    const { data } = await this.service.services.tourism.getPlacesDetails(id);
 
     commit(SET_DETAILS, data);
   },
 
   async [UPDATE_DETAILS] (_, { id, payload }) {
-    await this.service.services.tourism.updateDetails(id, payload);
+    await this.service.services.tourism.updatePlacesDetails(id, payload);
   },
 
   async [GET_REFERENCES] ({ commit }) {
-    const { data } = await this.service.services.tourism.getReferences();
+    const { data } = await this.service.services.tourism.getPlacesReferences();
 
     commit(SET_REFERENCES, data);
   }
