@@ -1,8 +1,8 @@
 <template lang="pug">
   q-card(v-if="current").bg-white.modal-container__dense.full-width
     q-card-section
-      h6.q-my-auto.ellipsis {{ current.title }}
-        span.float-right
+      h6.q-my-auto.break-word {{ current.title }}
+        q-btn(icon="close" @click="close" flat).float-right.absolute-top-right.q-ma-md
       q-separator.q-my-sm
     div(v-if="current.images.length").q-px-sm
       ImageSlider(:value="current.images.map(v => v.imagePath)" :slides-to-show="4")
@@ -16,7 +16,7 @@
     q-card-section
       div.column.col-12
         span.text-grey-6 Детали
-        span.q-my-auto {{ current.description }}
+        span.q-my-auto.break-word {{ current.description }}
     q-card-section
       div.column.col-12
         span.text-grey-6 Статус
@@ -51,11 +51,12 @@
 
 <script>
   import BaseStatus from "../../common/BaseStatus";
-  import { mapActions, mapState } from "vuex";
+  import { mapActions, mapMutations, mapState } from "vuex";
   import { GET_CURRENT, GET_REFERENCES, UPDATE_LIKE, UPDATE_VOTE } from "../../../store/constants/action-constants";
   import ImageSlider from "../../common/ImageSlider";
   import BaseModal from "../../common/BaseModal";
   import IdeaCommentsModal from "./IdeaCommentsModal";
+  import { SET_FEATURE_ID } from "../../../store/constants/mutation-constants";
 
   export default {
     name: "IdeaDetailsCard",
@@ -88,12 +89,20 @@
       }
     },
     methods: {
+      ...mapMutations("services", [
+        SET_FEATURE_ID
+      ]),
+
       ...mapActions("services/ideas", [
         GET_CURRENT,
         UPDATE_LIKE,
         UPDATE_VOTE,
         GET_REFERENCES
       ]),
+
+      close () {
+        this.SET_FEATURE_ID(null);
+      },
 
       getPercentage (total, partial) {
         return 100 * partial / total || 0;

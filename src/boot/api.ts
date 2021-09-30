@@ -27,6 +27,7 @@ import { LightService } from "src/api/services/light";
 import { WarehouseService } from "src/api/services/warehouse";
 import { BuildingsService } from "src/api/services/buildings";
 import { SecurityService } from "src/api/services/security";
+import DataService from "src/api/data";
 import { EngineeringService } from "src/api/services/engineering";
 import { TransportService } from "src/api/services/transport";
 import { TerritoryService } from "src/api/services/territory";
@@ -41,6 +42,7 @@ declare module "vuex/types/index" {
       dictionaries: DictionariesService,
       references: ReferencesService,
       design: DesignService,
+      data: DataService,
       services: {
         apartments: ApartmentsService,
         buildings: BuildingsService,
@@ -86,6 +88,7 @@ export default boot(({ app }) => {
     dictionaries: new DictionariesService(axios),
     references: new ReferencesService(axios),
     design: new DesignService(axios),
+    data: new DataService(axios),
     services: {
       apartments: new ApartmentsService(axios),
       buildings: new BuildingsService(axios),

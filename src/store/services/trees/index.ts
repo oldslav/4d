@@ -6,6 +6,17 @@ import { TRootState } from "src/store/types/root";
 
 const initialState = (): IServiceTreesState => {
   return {
+    filters: {
+      query: null,
+      typeId: null
+    },
+    pagination: {
+      limit: 10,
+      offset: 1
+    },
+    data: null,
+    references: null,
+    current: null,
     treesStats: [],
     selectedTree: {
       request: {

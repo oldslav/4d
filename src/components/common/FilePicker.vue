@@ -45,8 +45,8 @@
         default: () => []
       },
       lazy: {
-        type: Boolean,
-        default: false
+        type: [Boolean, String],
+        default: null
       },
       rules: {
         type: Array,

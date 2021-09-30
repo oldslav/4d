@@ -53,7 +53,6 @@
 
 <script>
   import FormContract from "components/common/form/FormContract";
-
   export default {
     name: "ApartmentTicketEmployeeFlow",
     components: { FormContract },

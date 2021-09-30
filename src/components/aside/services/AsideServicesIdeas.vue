@@ -27,7 +27,7 @@
         clearable
         v-model="typeId"
         :options="references.crowdSourcingTypes"
-        label="Тип"
+        :label="$t('common.type')"
         optionKey="id"
         optionValue="description"
         hideBottom

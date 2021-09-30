@@ -88,7 +88,7 @@
           },
           {
             name: "data",
-            label: this.$t("entity.data"),
+            label: this.$t("entity.data.title"),
             icon: "bar_chart"
           },
           {

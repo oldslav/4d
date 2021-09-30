@@ -2,7 +2,7 @@
   BaseModal(
     :value="value"
     position="standard"
-    @input="toggleModal"
+    @input="onInput"
     :loading="isLoading"
   )
     q-card.full-width
@@ -51,13 +51,18 @@
           FormContacts(v-model="contacts").q-mt-sm
           q-stepper-navigation.q-gutter-md
             q-btn(@click="step--" color="primary" :label="$t('action.back')")
-            q-btn(@click="createTicket()" color="primary" :label="$t('action.create')" :disable="!formValid")
+            q-btn(@click="onSubmit()" color="primary" :label="$t('action.create')" :disable="!formValid" :loading="isTicketCreating")
 </template>
 
 <script>
   import { cloneDeep } from "lodash";
   import { mapActions, mapGetters } from "vuex";
-  import { CREATE_LEGAL_TICKET_LIVING, GET_COMPANY } from "@/store/constants/action-constants";
+  import {
+    CREATE_LEGAL_TICKET_LIVING,
+    GET_COMPANY,
+    GET_LEGAL_TICKET,
+    REQUEST_APPROVAL_LIVING, UPDATE_LEGAL_TICKET
+  } from "@/store/constants/action-constants";
   import { isDocumentPresent } from "@/util/validators";
   import BaseModal from "components/common/BaseModal";
   import FormName from "components/common/form/FormName";
@@ -71,11 +76,32 @@
       value: {
         type: Boolean,
         default: false
+      },
+      ticketId: {
+        type: [String, Number],
+        default: null
       }
     },
     async created () {
       await this.GET_COMPANY();
-      Object.assign(this.companyDocuments, cloneDeep(this.getCompanyCard.documents));
+      if (this.ticketId) {
+        await this.GET_LEGAL_TICKET(this.ticketId);
+        const { name, contacts, documents, rooms, jobPosition, companyName, companyAddress } = this.getCurrentTicket;
+        const { passport, inn, job_petition, consent_processing_personal_data, inn_jur, ogrn, egrjul, partner_card } = documents;
+        Object.assign(this.$data, cloneDeep({
+          name,
+          contacts,
+          rooms,
+          jobPosition,
+          companyName,
+          companyAddress,
+          userDocuments: { passport, inn, job_petition, consent_processing_personal_data },
+          companyDocuments: { inn_jur, ogrn, egrjul, partner_card }
+        }));
+      } else {
+        Object.assign(this.companyDocuments, cloneDeep(this.getCompanyCard.documents));
+        this.companyName = this.getCompanyCard.name;
+      }
     },
     data () {
       return {
@@ -108,6 +134,7 @@
     },
     computed: {
       ...mapGetters("user/company", ["getCompanyCard"]),
+      ...mapGetters("user/tickets/living", ["getCurrentTicket"]),
       stepTwoDone () {
         return !!this.name.first && !!this.jobPosition && Object.values(this.userDocuments).every(isDocumentPresent);
       },
@@ -123,19 +150,57 @@
         return this.stepOneDone && this.stepTwoDone && this.stepThreeDone;
       },
       isLoading () {
-        return this.$store.state.wait[`user/company/${ GET_COMPANY }`];
+        return this.$store.state.wait[`user/company/${ GET_COMPANY }`] ||
+          this.$store.state.wait[`user/tickets/living/${ GET_LEGAL_TICKET }`] ||
+          this.$store.state.wait[`user/tickets/living/${ UPDATE_LEGAL_TICKET }`] ||
+          this.$store.state.wait[`user/tickets/living/${ CREATE_LEGAL_TICKET_LIVING }`];
+      },
+      isTicketCreating () {
+        return this.$store.state.wait[`user/tickets/living/${ CREATE_LEGAL_TICKET_LIVING }`] ||
+          this.$store.state.wait[`user/tickets/living/${ REQUEST_APPROVAL_LIVING }`];
       }
     },
     methods: {
-      ...mapActions("user/tickets/living", [CREATE_LEGAL_TICKET_LIVING]),
+      ...mapActions("user/tickets/living", [CREATE_LEGAL_TICKET_LIVING, REQUEST_APPROVAL_LIVING, GET_LEGAL_TICKET, UPDATE_LEGAL_TICKET]),
       ...mapActions("user/company", [GET_COMPANY]),
       toggleModal (val) {
         this.$emit("input", val);
         Object.assign(this.$data, this.$options.data.apply(this));
       },
-      createTicket () {
+      closeModal () {
+        this.$emit("update");
+        this.toggleModal(false);
+      },
+      onInput (value) {
+        this.$q.dialog({
+          message: "Сохранить введённые данные?",
+          persistent: true,
+          ok: "Сохранить",
+          cancel: "Отменить"
+        })
+          .onOk(async () => {
+            await this.submitLivingTicket();
+            this.closeModal();
+          })
+          .onCancel(() => {
+            this.toggleModal(value);
+          });
+      },
+      async onSubmit () {
+        const id = await this.submitLivingTicket();
+        await this.REQUEST_APPROVAL_LIVING(id);
+        this.closeModal();
+      },
+      createTicket (payload) {
+        return this.CREATE_LEGAL_TICKET_LIVING(payload);
+      },
+      updateTicket (payload) {
+        const { ticketId } = this;
+        return this.UPDATE_LEGAL_TICKET({ ticketId, payload });
+      },
+      async submitLivingTicket () {
         const { name, contacts, userDocuments, companyDocuments, rooms, jobPosition, companyName, companyAddress } = this;
-        return this.CREATE_LEGAL_TICKET_LIVING({
+        const payload = {
           name,
           contacts,
           documents: { ...userDocuments, ...companyDocuments },
@@ -143,19 +208,21 @@
           jobPosition,
           companyName,
           companyAddress
-        }).then(() => {
+        };
+        const action = !!this.ticketId ? this.updateTicket : this.createTicket;
+        try {
+          const id = await action.call(this, payload);
           this.$q.notify({
             type: "positive",
             message: this.$t("user.tickets.messages.create.success.title")
           });
-          this.$emit("update");
-          this.toggleModal(false);
-        }).catch((e) => {
+          return id;
+        } catch (e) {
           this.$q.notify({
             type: "negative",
             message: e
           });
-        });
+        }
       }
     }
   };

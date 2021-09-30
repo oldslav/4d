@@ -14,7 +14,7 @@
         .row.full-width.justify-between(v-if="references")
           .row.q-gutter-sm.col
             BaseInput(
-              v-model="computedQuery"
+              v-model="query"
               hideBottom
               :label="$t('common.search')"
             ).col-12.col-sm-6.col-md
@@ -31,7 +31,7 @@
               v-model="typeId"
               hideBottom
               :options="references.crowdSourcingTypes"
-              label="Тип"
+              :label="$t('common.type')"
               clearable
               optionKey="id"
               optionValue="description"
@@ -109,7 +109,6 @@
     },
     computed: {
       ...mapState("services/ideas", {
-        query: state => state.query,
         filters: state => state.filters,
         references: state => state.references
       }),
@@ -126,20 +125,10 @@
       }),
 
       ...mapFields("services/ideas", {
-        fields: ["statusId", "typeId", "authorId"],
+        fields: ["statusId", "typeId", "authorId", "query"],
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
-
-      computedQuery: {
-        get () {
-          return this.query;
-        },
-
-        set (value) {
-          this.SET_QUERY(value);
-        }
-      },
 
       isDetailsModal: {
         isActive: false,
@@ -263,10 +252,6 @@
         async handler () {
           await this.getUserTickets();
         }
-      },
-
-      computedQuery () {
-        this.GET_DATA({ isSet: true });
       }
     },
     beforeDestroy () {

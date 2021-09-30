@@ -50,7 +50,7 @@
               | {{$t("entity.services.living.equipment")}}
             .text-body1
               a(role="button" @click="downloadList()").apartment-info__link
-                | {{ getApartmentInfo.equipment.fileName }}
+                | {{ $t("action.download") }}
           .row.items-center.justify-between.no-wrap.q-mt-md(v-if="!!getApartmentInfo.videos.length")
             .text-body1
               | {{$t("entity.maps.buildings.reviews")}}
