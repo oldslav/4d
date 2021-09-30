@@ -203,43 +203,43 @@ export class TicketsService extends Service {
   }
 
   public createTicketCrowdfunding (params: unknown): AxiosPromise<any> {
-    return this.api.post("/api/v1/services/crowdfunding", { params });
+    return this.api.post("/api/v1/services/city_project", { params });
   }
 
   public updateTicketCrowdfunding (id: number, payload: unknown): AxiosPromise<any> {
-    return this.api.put(`/api/v1/services/crowdfunding/${ id }`, payload);
+    return this.api.put(`/api/v1/services/city_project/${ id }`, payload);
   }
 
   public publishTicketCrowdfunding (id: number): AxiosPromise<any> {
-    return this.api.put(`/api/v1/services/crowdfunding/${ id }/publish`);
+    return this.api.put(`/api/v1/services/city_project/${ id }/publish`);
   }
 
   public addTicketCrowdfundingCover (id: number, file: unknown): AxiosPromise<TicketsResponse> {
-    return this.api.post(`/api/v1/services/crowdfunding/${ id }/cover`, file);
+    return this.api.post(`/api/v1/services/city_project/${ id }/cover`, file);
   }
 
   public addTicketCrowdfundingFile (id: number, file: unknown): AxiosPromise<TicketsResponse> {
-    return this.api.post(`/api/v1/services/crowdfunding/${ id }/file`, file);
+    return this.api.post(`/api/v1/services/city_project/${ id }/file`, file);
   }
 
   public getTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
-    return this.api.get("/api/v1/services/crowdfunding", { params });
+    return this.api.get("/api/v1/services/city_project", { params });
   }
 
   public getEmployeeTicketsCrowdfunding (params: unknown): AxiosPromise<any> {
-    return this.api.get("/api/v1/services/crowdfunding", { params });
+    return this.api.get("/api/v1/services/city_project", { params });
   }
 
   public approveTicketCrowdfunding (id: number): AxiosPromise<any> {
-    return this.api.put(`/api/v1/services/crowdfunding/${ id }/approve`);
+    return this.api.put(`/api/v1/services/city_project/${ id }/approve`);
   }
 
   public rejectTicketCrowdfunding (id: number, reason: string): AxiosPromise<any> {
-    return this.api.put(`/api/v1/services/crowdfunding/${ id }/reject`, reason);
+    return this.api.put(`/api/v1/services/city_project/${ id }/reject`, reason);
   }
 
   public deleteTicketCrowdfunding (id: number): AxiosPromise<TicketsResponse> {
-    return this.api.delete(`/api/v1/services/crowdfunding/${ id }`);
+    return this.api.delete(`/api/v1/services/city_project/${ id }`);
   }
 
   // COMMERCE

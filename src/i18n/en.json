@@ -1,5 +1,7 @@
 {
   "common": {
+    "installedYear": "Year of installation",
+    "link": "Link",
     "locales": {
       "RU": {
         "alias": "RU",
@@ -135,6 +137,8 @@
     "number": "Number",
     "premisesNumber": "Premises №",
     "type": "Type",
+    "condition": "Condition",
+    "category": "Category",
     "status": "Status",
     "id": "ID",
     "nameOf": "Name",
