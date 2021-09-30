@@ -3,7 +3,7 @@
     <template v-if="current">
       <span class="text-medium-b">
         <q-icon class="text-primary cursor-pointer" name="arrow_back" size="md" @click="$router.back()"></q-icon>
-        {{ `${ current.address.street } ${ current.address.house || "" }` }}
+        {{ current.type.name }}
       </span>
 
       <div class="row q-gutter-lg q-mt-none">
@@ -36,7 +36,7 @@
             </q-btn>
           </div>
           <q-separator class="q-my-md"></q-separator>
-          <q-list v-if="current.documents.length">
+          <q-list v-if="current.documents && current.documents.length">
             <q-expansion-item
               :key="key"
               v-for="(value, key) in computedDocuments">
@@ -141,21 +141,12 @@
     <BaseModal v-if="isEditModal" v-model="isEditModal" position="standard">
       <q-card class="modal-container__dense">
         <q-card-section>
-          <BaseInput v-model.number="form.number" type="number" :label="$t('entity.estate.details.number')"></BaseInput>
-          <BaseInput v-model.number="form.floors" type="number" :label="$t('entity.estate.details.floors')"></BaseInput>
-          <BaseInput v-model="form.house" :label="$t('entity.estate.details.name')"></BaseInput>
-          <BaseInput v-model="form.street" :label="$t('entity.estate.details.street')"></BaseInput>
-          <BaseInput v-model.number="form.constructYear" type="number" :label="$t('entity.estate.details.constructYear')"></BaseInput>
-          <BaseInput v-model.number="form.area" type="number" :label="$t('entity.estate.details.area')"></BaseInput>
-          <BaseInput v-model="form.link" :label="$t('entity.estate.details.link')"></BaseInput>
-          <BaseInput v-model.number="form.organizationCount" type="number" :label="$t('entity.estate.details.organizationCount')"></BaseInput>
-          <BaseInput v-model.number="form.residentsCount" type="number" :label="$t('entity.estate.details.residentsCount')"></BaseInput>
-          <BaseInput v-model.number="form.parkingCount" type="number" :label="$t('entity.estate.details.parkingCount')"></BaseInput>
-          <BaseSelect v-model="form.infrastructureType" :options="infrastructureTypes" :label="$t('entity.estate.details.infrastructureType')"></BaseSelect>
-          <BaseSelect v-model="form.categoryId" :options="categories" :label="$t('entity.estate.details.category')"></BaseSelect>
-          <BaseSelect v-model="form.statusId" :options="statuses" :label="$t('entity.estate.details.status')"></BaseSelect>
-          <BaseSelect v-model="form.builderId" :options="companies" :label="$t('entity.estate.details.builder')"></BaseSelect>
-          <BaseSelect v-model="form.managementCompanyId" :options="companies" :label="$t('entity.estate.details.managingCompany')"></BaseSelect>
+          <BaseInput v-model="form.link" :label="$t('common.link')"></BaseInput>
+          <BaseInput v-model.number="form.installedYear" type="number" :label="$t('common.installedYear')"></BaseInput>
+          <BaseInput v-model.number="form.lampQuantity" type="number" label="Количество ламп"></BaseInput>
+          <BaseSelect v-model="form.typeId" :options="types" :label="$t('common.type')"></BaseSelect>
+          <BaseSelect v-model="form.statusId" :options="statuses" :label="$t('common.status')"></BaseSelect>
+          <BaseSelect v-model="form.categoryId" :options="categories" :label="$t('common.category')"></BaseSelect>
         </q-card-section>
         <q-card-section class="text-right">
           <q-btn :label="$t('action.save')" color="primary" @click="editDetails"></q-btn>
@@ -218,14 +209,14 @@
   import BaseInput from "../../common/BaseInput";
   import BaseModal from "../../common/BaseModal";
   import BaseSelect from "../../common/BaseSelect";
-  import estate from "../../../store/services/estate";
+  import light from "../../../store/services/light";
   import MyDocumentsForm from "../../forms/documents/MyDocumentsForm";
   import doc from "src/assets/svg/icons/docs/doc.svg";
   import pdf from "src/assets/svg/icons/docs/pdf.svg";
   import xls from "src/assets/svg/icons/docs/xls.svg";
 
   export default {
-    name: "EstateDetails",
+    name: "ServiceTourismDetails",
     components: { MyDocumentsForm, BaseSelect, BaseModal, BaseInput },
     props: {
       id: {
@@ -234,10 +225,10 @@
       }
     },
     preFetch ({ store, currentRoute }) {
-      store.registerModule("estate", estate);
+      store.registerModule("light", light);
       return Promise.all([
-        store.dispatch(`services/estate/${ GET_REFERENCES }`),
-        store.dispatch(`services/estate/${ GET_DETAILS }`, currentRoute.params.id)
+        store.dispatch(`services/light/${ GET_REFERENCES }`),
+        store.dispatch(`services/light/${ GET_DETAILS }`, currentRoute.params.id)
       ]);
     },
     async created () {
@@ -246,21 +237,10 @@
 
       const unwatch = this.$watch("current", value => {
         this.form = {
-          number: value.address.house,
-          floors: value.floors,
-          street: value.address.street,
-          house: value.house,
-          constructYear: value.constructYear,
-          area: value.area,
-          infrastructureType: value.infrastructureType,
-          link: value.link,
-          organizationCount: value.organizationCount,
-          parkingCount: value.parkingCount,
-          residentsCount: value.residentsCount,
-          statusId: value.status.id,
+          installedYear: value.installedYear,
           categoryId: value.category.id,
-          // managementCompanyId: value.company.id,
-          builderId: value.builder.id,
+          lampQuantity: value.lampQuantity.id,
+          statusId: value.status.id,
           typeId: value.type.id
         };
       }, { immediate: true });
@@ -275,47 +255,31 @@
         isDocumentsModal: false,
         isEditModal: false,
         form: {
-          number: null,
-          floors: null,
-          house: null,
-          street: null,
-          constructYear: null,
-          area: null,
-          infrastructureType: null,
-          link: null,
-          organizationCount: null,
-          parkingCount: null,
-          residentsCount: null,
-          statusId: null,
+          installedYear: null,
           categoryId: null,
-          managementCompanyId: null,
-          builderId: null,
+          lampQuantity: null,
+          statusId: null,
           typeId: null
         }
       };
     },
     computed: {
-      ...mapState("services/estate", {
+      ...mapState("services/light", {
         current: state => state.current,
         categories: state => state.references && state.references.category.map(({ id, name }) => ({
           key: "id",
           value: id,
           label: name
         })),
-        infrastructureTypes: state => state.references && state.references.type.map(({ id, description }) => ({
+        types: state => state.references && state.references.type.map(({ id, name }) => ({
+          key: "id",
+          value: id,
+          label: name
+        })),
+        statuses: state => state.references && state.references.status.map(({ id, description }) => ({
           key: "id",
           value: id,
           label: description
-        })),
-        statuses: state => state.references && state.references.status.map(({ id, name }) => ({
-          key: "id",
-          value: id,
-          label: name
-        })),
-        companies: state => state.references && state.references.company.map(({ id, name }) => ({
-          key: "id",
-          value: id,
-          label: name
         }))
       }),
 
@@ -346,16 +310,16 @@
       },
 
       isLoading () {
-        return this.$store.state.wait[`services/estate/${ GET_DETAILS }`] ||
-          this.$store.state.wait[`services/estate/${ DELETE_IMAGE }`];
+        return this.$store.state.wait[`services/light/${ GET_DETAILS }`] ||
+          this.$store.state.wait[`services/light/${ DELETE_IMAGE }`];
       },
 
       imageUploadUrl () {
-        return process.env.SERVER_API_HOST + `/api/v1/map/buildings/gis/${ this.current && this.current.id }/image`;
+        return process.env.SERVER_API_HOST + `/api/v1/map/light/gis/${ this.current && this.current.id }/image`;
       },
 
       documentsUploadUrl () {
-        return process.env.SERVER_API_HOST + `/api/v1/map/buildings/gis/${ this.current && this.current.id }/documents`;
+        return process.env.SERVER_API_HOST + `/api/v1/map/light/gis/${ this.current && this.current.id }/documents`;
       },
 
       // isInfoChanged () {
@@ -374,90 +338,46 @@
       infoFields () {
         return this.current && [
           {
-            label: this.$t("entity.estate.details.id"),
+            label: this.$t("common.id"),
             value: this.formatEmptyString(this.current.id),
             type: "number",
             disabled: true,
             related: this.current.id
           },
           {
-            label: this.$t("entity.estate.details.infrastructureType"),
-            value: this.formatEmptyString(this.current.infrastructureType),
-            options: this.infrastructureTypes,
-            related: this.current.infrastructureType
+            label: this.$t("common.type"),
+            value: this.formatEmptyString(this.current.type.name),
+            options: this.types,
+            related: this.current.type.name
           },
           {
-            label: this.$t("entity.estate.details.number"),
-            value: this.formatEmptyString(this.current.address.house),
-            type: "number",
-            related: this.current.address.house
-          },
-          {
-            label: this.$t("entity.estate.details.category"),
+            label: this.$t("common.category"),
             value: this.formatEmptyString(this.current.category.name),
             options: this.categories,
             related: this.current.category.name
           },
           {
-            label: this.$t("entity.estate.details.floors"),
-            value: this.formatEmptyString(this.current.floors),
-            type: "number",
-            related: this.current.floors
-          },
-          {
-            label: this.$t("entity.estate.details.area"),
-            value: this.formatEmptyString(this.current.area),
-            type: "number",
-            related: this.current.area
-          },
-          {
-            label: this.$t("entity.estate.details.name"),
-            value: this.formatEmptyString(this.current.house),
-            type: "text",
-            related: this.current.house
-          },
-          {
-            label: this.$t("entity.estate.details.managingCompany"),
-            value: this.formatEmptyString(this.current.managementCompany && this.current.managementCompany.name),
-            options: this.companies,
-            related: this.current.managementCompany && this.current.managementCompany.name
-          },
-          {
-            label: this.$t("entity.estate.details.street"),
-            value: this.formatEmptyString(this.current.street),
-            type: "text",
-            related: this.current.street
-          },
-          {
-            label: this.$t("entity.estate.details.residentsCount"),
-            value: this.formatEmptyString(this.current.residentsCount),
-            type: "number",
-            related: this.current.residentsCount
-          },
-          {
-            label: this.$t("entity.estate.details.constructYear"),
-            value: this.formatEmptyString(this.current.constructYear),
-            type: "number",
-            related: this.current.constructYear
-          },
-          {
-            label: this.$t("entity.estate.details.status"),
-            value: this.formatEmptyString(this.current.status.name),
+            label: this.$t("common.condition"),
+            value: this.formatEmptyString(this.current.status.description),
             options: this.statuses,
-            related: this.current.status.name
+            related: this.current.status.description
           },
           {
-            label: this.$t("entity.estate.details.parkingCount"),
-            value: this.formatEmptyString(this.current.parkingCount),
+            label: "Количество ламп",
+            value: this.formatEmptyString(this.current.lampQuantity),
+            related: this.current.lampQuantity
+          },
+          {
+            label: this.$t("common.installedYear"),
+            value: this.formatEmptyString(this.current.installedYear),
             type: "number",
-            related: this.current.parkingCount
+            related: this.current.installedYear
           },
           {
-            label: this.$t("entity.estate.details.builder"),
-            value: this.formatEmptyString(this.current.builder.name),
+            label: this.$t("common.nameOf"),
+            value: this.formatEmptyString(this.current.name),
             type: "text",
-            disabled: true,
-            related: this.current.builder.name
+            related: this.current.name
           }
         ];
       }
@@ -467,7 +387,7 @@
         DOWNLOAD_FILE
       ]),
 
-      ...mapActions("services/estate", {
+      ...mapActions("services/light", {
         GET_DETAILS,
         UPLOAD_IMAGE,
         GET_REFERENCES,
@@ -476,7 +396,7 @@
         DELETE_DOCUMENT
       }),
 
-      ...mapMutations("services/estate", [
+      ...mapMutations("services/light", [
         SET_DETAILS_EMPTY
       ]),
 

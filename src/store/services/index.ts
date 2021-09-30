@@ -30,6 +30,7 @@ import ideas from "src/store/services/ideas";
 import commerce from "src/store/services/commerce";
 import estate from "src/store/services/estate";
 import tourism from "src/store/services/tourism";
+import transport from "src/store/services/transport";
 import warehouse from "src/store/services/warehouse";
 import { cloneDeep } from "lodash";
 import { CesiumScenes } from "src/constaints";
@@ -312,7 +313,8 @@ const services: Module<GeoState, TRootState> = {
     tourism,
     trees,
     light,
-    warehouse
+    warehouse,
+    transport
   }
 };
 

@@ -35,6 +35,8 @@
           multiple
           batch
           hide-upload-btn
+          accept=".jpg, .png, .jpeg"
+          max-total-size="10485760"
           :headers="uploadImageHeaders"
           @uploading="isLoading = true"
           @uploaded="isLoading = false"
