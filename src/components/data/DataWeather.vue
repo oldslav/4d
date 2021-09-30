@@ -105,8 +105,8 @@
 </template>
 
 <script>
-	export default {
-		name: "DataWeather",
+  export default {
+    name: "DataWeather",
     props: {
       weather: {
         type: Object,
@@ -164,7 +164,7 @@
         }
       }
     }
-	};
+  };
 </script>
 
 <style lang="stylus">

@@ -66,11 +66,12 @@
                 | Дождитесь рассмотрения вашей заявки
             ApartmentTicketUserFlow(
               v-if="[6,7,3,5,11,12].includes(props.row.status.id)"
-              :value="props.row.status"
+              :value="props.row"
               :name="props.row.name.full"
               @choose="toApartments(props.row.id)"
               @viewed="apartmentViewed(props.row.id)"
               @pay="goToPayment(props.row.id)"
+              @update="getUserTickets()"
             )
             ValidContractState(
               v-if="props.row.status.id === 8 && !!props.row.contract"

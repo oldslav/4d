@@ -19,7 +19,7 @@ import {
   SEND_CONTRACT_INFO_LIVING,
   UPDATE_TICKET,
   DELETE_USER_TICKET_LIVING,
-  GET_LEGAL_TICKET, UPDATE_LEGAL_TICKET
+  GET_LEGAL_TICKET, UPDATE_LEGAL_TICKET, SEND_COMPANY_PAYMENT
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -111,6 +111,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     });
 
     commit(SET_USER_TICKETS, data);
+  },
+
+  async [SEND_COMPANY_PAYMENT] (_, { id, payload }) {
+    const files = new FormData();
+    payload.forEach((f: any) => {
+      files.append("files", f);
+    });
+    await this.service.user.tickets.uploadLivingCompanyPayment(id, files);
   },
 
   [REJECT_TICKET_LIVING] (_, { id, reason }) {
