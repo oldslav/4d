@@ -202,16 +202,12 @@ export class TicketsService extends Service {
     return this.api.get("/api/v1/payment/parking/user", params as AxiosRequestConfig);
   }
 
-  public createTicketCrowdfunding (params: unknown): AxiosPromise<any> {
-    return this.api.post("/api/v1/services/city_project", { params });
+  public createTicketCrowdfunding (payload: unknown): AxiosPromise<any> {
+    return this.api.post("/api/v1/services/city_project", payload);
   }
 
-  public updateTicketCrowdfunding (id: number, payload: unknown): AxiosPromise<any> {
-    return this.api.put(`/api/v1/services/city_project/${ id }`, payload);
-  }
-
-  public publishTicketCrowdfunding (id: number): AxiosPromise<any> {
-    return this.api.put(`/api/v1/services/city_project/${ id }/publish`);
+  public requestApprovalCrowdfunding (id: number): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/city_project/${ id }/send_on_approval`);
   }
 
   public addTicketCrowdfundingCover (id: number, file: unknown): AxiosPromise<TicketsResponse> {
@@ -222,12 +218,16 @@ export class TicketsService extends Service {
     return this.api.post(`/api/v1/services/city_project/${ id }/file`, file);
   }
 
-  public getTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
+  public getAllTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
     return this.api.get("/api/v1/services/city_project", { params });
   }
 
+  public getUserTicketsCrowdfunding (params: unknown): AxiosPromise<TicketsResponse> {
+    return this.api.get("/api/v1/services/city_project/user", { params });
+  }
+
   public getEmployeeTicketsCrowdfunding (params: unknown): AxiosPromise<any> {
-    return this.api.get("/api/v1/services/city_project", { params });
+    return this.api.get("/api/v1/services/city_project/employee", { params });
   }
 
   public approveTicketCrowdfunding (id: number): AxiosPromise<any> {

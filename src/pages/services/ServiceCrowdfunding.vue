@@ -23,7 +23,7 @@
 
 <script>
   import { mapActions, mapState } from "vuex";
-  import { GET_USER_TICKETS_CROWDFUNDING } from "@/store/constants/action-constants";
+  import { GET_ALL_TICKETS_CROWDFUNDING } from "@/store/constants/action-constants";
   import CoverImage from "@/assets/png/cover-placeholder.png";
   import ServiceCrowdfundingProject from "./ServiceCrowdfundingProject.vue";
 
@@ -31,7 +31,7 @@
     name: "ServiceCrowdfunding",
     components: { ServiceCrowdfundingProject },
     created () {
-      this.GET_USER_TICKETS_CROWDFUNDING();
+      this.GET_ALL_TICKETS_CROWDFUNDING();
     },
     data () {
       return {
@@ -46,7 +46,7 @@
     },
     methods: {
       ...mapActions("user/tickets/crowdfunding", [
-        GET_USER_TICKETS_CROWDFUNDING
+        GET_ALL_TICKETS_CROWDFUNDING
       ]),
       getCoverUrl (project) {
         if (project && project.cover && project.cover.imagePath) {

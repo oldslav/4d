@@ -227,7 +227,7 @@ const getters: GetterTree<any, TRootState> = {
     return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_COMMERCE");
   },
   isEmployeeCrowdfunding (state, getters) {
-    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_CROWDFUNDING");
+    return getters.getUserRolesNames.includes("ROLE_EMPLOYEE_CITY_PROJECT");
   }
 };
 
