@@ -14,7 +14,7 @@
         :today="today"
       )
 
-    .q-mx-md.q-my-lg   
+    .q-mx-md.q-my-lg
       .row.q-mt-sm.q-col-gutter-md
         .col-12.col-sm-6.col-lg-3(
           v-for="(card, index) in cards"
@@ -45,7 +45,9 @@
       return store.dispatch(`data/${ GET_DATA_MAIN_PAGE }`);
     },
     mounted () {
-      this.timer = setInterval(() => this.date = new Date(), 1000);
+      this.timer = setInterval(() => {
+        this.date = new Date();
+      }, 1000);
     },
     unmounted () {
       clearInterval(this.timer);
@@ -89,8 +91,8 @@
         ];
       },
       today () {
-        return `${ this.getFormattedTime(this.date.getHours()) }:${ this.getFormattedTime(this.date.getMinutes()) }, 
-								${ this.date.getDate() } ${ this.getMonthName(this.date.getMonth()) }, 
+        return `${ this.getFormattedTime(this.date.getHours()) }:${ this.getFormattedTime(this.date.getMinutes()) },
+								${ this.date.getDate() } ${ this.getMonthName(this.date.getMonth()) },
 								${ this.date.getFullYear() }`;
       }
     },
