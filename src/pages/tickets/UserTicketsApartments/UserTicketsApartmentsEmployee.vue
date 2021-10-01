@@ -35,7 +35,7 @@
                       | {{ $t("user.tickets.actions.details") }}
                   q-item(clickable v-close-popup @click="showTerminate(props.row.id)" v-if="props.row.status.id === 8")
                     q-item-section(no-wrap).text-red
-                      | Расторгнуть договор
+                      | {{$t("action.terminateContract")}}
         q-tr.bg-blue(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
@@ -261,13 +261,13 @@
           await this.TERMINATE_TICKET(payload);
           this.$q.notify({
             type: "positive",
-            message: "Договор расторгнут"
+            message: this.$t("user.tickets.contract.terminateSuccess")
           });
           await this.getEmployeeTickets();
         } catch (e) {
           this.$q.notify({
             type: "negative",
-            message: "При расторжении договора произошла ошибка"
+            message: this.$t("user.tickets.contract.terminateFail")
           });
         }
       },

@@ -154,6 +154,10 @@ export class TicketsService extends Service {
     return this.api.put(`/api/v1/services/parking/employee/tickets/${ id }/sign_contract_success`, payload);
   }
 
+  public terminateParkingContract (ticketId: number | string, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/parking/employee/tickets/${ ticketId }/contract_terminated`, reason);
+  }
+
   public getTicketsIdeas (params: unknown): AxiosPromise<any> {
     return this.api.get("api/v1/services/crowdsourcing/all", params as AxiosRequestConfig);
   }
@@ -196,6 +200,10 @@ export class TicketsService extends Service {
 
   public rejectTicketWarehouse (id: number, reason: string): AxiosPromise<any> {
     return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ id }/reject`, reason);
+  }
+
+  public terminateWarehouseContract (ticketId: number | string, reason: string): AxiosPromise<any> {
+    return this.api.put(`/api/v1/services/warehouse/employee/tickets/${ ticketId }/contract_terminated`, reason);
   }
 
   public sendContractInfoWarehouse (id: number, payload: unknown): AxiosPromise<any> {

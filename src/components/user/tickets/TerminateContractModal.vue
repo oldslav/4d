@@ -12,7 +12,7 @@
           q-space
           q-btn(icon="close" flat round dense v-close-popup)
         q-card-section
-          BaseInput(type="textarea" label="Причина" v-model="reason" outlined)
+          BaseInput(type="textarea" :label="$t('common.reason')" v-model="reason" outlined)
         q-card-actions(align="right")
           q-btn(:label="$t('action.submit')" type="submit" color="primary")
 </template>
