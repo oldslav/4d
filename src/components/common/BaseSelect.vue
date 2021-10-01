@@ -11,8 +11,8 @@
     :disable="disable"
     :multiple="multiple"
     :option-key="optionKey"
-    :option-value="optionKey"
-    :option-label="optionValue"
+    :option-value="optionValue"
+    :option-label="optionLabel"
     :rules="rules"
     :stack-label="stackLabel"
     :hide-hint="hideBottom"
@@ -45,6 +45,10 @@
         default: null
       },
       optionKey: {
+        type: String,
+        default: "id"
+      },
+      optionLabel: {
         type: String,
         default: "label"
       },
@@ -96,7 +100,7 @@
           if (this.innerValue) {
             return this.innerValue;
           } else {
-            return this.value;
+            return this.value ? this.options.find(i => i[this.optionValue] === this.value || {}).label : this.value;
           }
         },
 

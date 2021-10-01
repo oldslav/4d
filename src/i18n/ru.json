@@ -1,5 +1,7 @@
 {
   "common": {
+    "installedYear": "Год установки",
+    "link": "Ссылка",
     "locales": {
       "RU": {
         "alias": "RU",
@@ -135,6 +137,8 @@
     "number": "Номер",
     "premisesNumber": "№ помещения",
     "type": "Тип",
+    "condition": "Состояние",
+    "category": "Категория",
     "status": "Статус",
     "id": "ID",
     "nameOf": "Название",
