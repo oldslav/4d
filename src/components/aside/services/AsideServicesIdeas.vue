@@ -154,7 +154,13 @@
         }
 
         await this.GET_DATA({
-          statusId: this.isEmployee ? null : [2, 3, 4, 6]
+          params: {
+            filters: {
+              statusId: this.isEmployee ? null : [2, 3, 4, 6]
+            },
+            sort: "likes",
+            order: "desc"
+          }
         });
         done();
       },
@@ -176,7 +182,14 @@
       filters: {
         deep: true,
         async handler () {
-          await this.GET_DATA({ isSet: true, statusId: this.isEmployee ? null : [2, 3, 4, 6] });
+          await this.GET_DATA({
+            isSet: true,
+            params: {
+              filters: {
+                statusId: this.isEmployee ? null : [2, 3, 4, 6]
+              }
+            }
+          });
         }
       }
     },

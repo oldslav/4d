@@ -15,9 +15,13 @@
           )
         BaseInput(
           v-model="title"
+          type="textarea"
           label="Название"
           :rules="rules"
-          maxlength="50"
+          dense
+          counter
+          :maxlength="50"
+          autogrow
         )
         BaseInput(
           v-model="description"
