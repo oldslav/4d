@@ -945,7 +945,7 @@
         "action": {
           "toVote": "Submit to the vote",
           "forConsideration": "For consideration",
-          "finish": "Finish project"
+          "finish": "Finish"
         }
       },
       "parking": "Parking rent",

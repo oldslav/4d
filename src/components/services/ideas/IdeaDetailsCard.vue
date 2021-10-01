@@ -2,7 +2,7 @@
   q-card(v-if="current").bg-white.modal-container__dense.full-width
     q-card-section
       h6.q-my-auto.break-word {{ current.title }}
-        q-btn(icon="close" @click="close" flat).float-right.absolute-top-right.q-ma-md
+        q-btn(v-if="$route.query.id" icon="close" @click="close" flat).float-right.absolute-top-right.q-ma-md
       q-separator.q-my-sm
     div(v-if="current.images.length").q-px-sm
       ImageSlider(:value="current.images.map(v => v.imagePath)" :slides-to-show="4")
