@@ -10,14 +10,13 @@
           :label="$t('user.tickets.vacancies.forms.create.positionName')"
         )
 
-        q-select.q-mb-md(
+        BaseSelect.q-mb-md(
           v-model="values.profIndustryId"
           :label="$t('user.tickets.vacancies.forms.create.profIndustry')"
           :options="getProfIndustryReferences"
-          option-value="id"
-          option-label="description"
-          map-options
-          emit-value
+          optionKey="id"
+          optionLabel="text"
+          optionValue="id"
         )
 
         q-input.q-mb-md(
@@ -27,34 +26,31 @@
           min="0"
         )
 
-        q-select.q-mb-md(
+        BaseSelect.q-mb-md(
           v-model="values.experienceId"
           :label="$t('user.tickets.vacancies.forms.create.experience')"
           :options="getExperienceReferences"
-          option-value="id"
-          option-label="description"
-          map-options
-          emit-value
+          optionKey="id"
+          optionLabel="text"
+          optionValue="id"
         )
 
-        q-select.q-mb-md(
+        BaseSelect.q-mb-md(
           v-model="values.workScheduleId"
           :label="$t('user.tickets.vacancies.forms.create.schedule')"
           :options="getWorkScheduleReferences"
-          option-value="id"
-          option-label="description"
-          map-options
-          emit-value
+          optionKey="id"
+          optionLabel="text"
+          optionValue="id"
         )
 
-        q-select.q-mb-md(
+        BaseSelect.q-mb-md(
           v-model="values.employmentTypeId"
           :label="$t('user.tickets.vacancies.forms.create.employmentType')"
           :options="getEmploymentTypeReferences"
-          option-value="id"
-          option-label="description"
-          map-options
-          emit-value
+          optionKey="id"
+          optionLabel="text"
+          optionValue="id"
         )
 
         q-input.q-mb-md(
@@ -98,6 +94,7 @@
   import { VacancyReferencesEnum } from "../../../store/types/vacancy";
   import FilePicker from "components/common/FilePicker";
   import BaseAutocomplete from "components/common/BaseAutocomplete";
+  import BaseSelect from "../../common/BaseSelect";
 
   const defaults = (vacancy = {}) => ({
     position: vacancy.position || "",
@@ -114,7 +111,7 @@
 
   export default {
     name: "VacancyForm",
-    components: { FilePicker, BaseAutocomplete },
+    components: { BaseSelect, FilePicker, BaseAutocomplete },
 
     props: {
       value: { type: Object, default: () => ({}) },

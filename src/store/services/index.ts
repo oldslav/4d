@@ -122,7 +122,7 @@ const actions: ActionTree<GeoState, TRootState> = {
     commit(SET_GEODATA, preparedData);
   },
 
-  async [GET_IDEAS_GEO] ({ commit }) {
+  async [GET_IDEAS_GEO] ({ commit }, isEmployee = false) {
     // const { data } = await this.service.services.ideas.getIdeas({
     //   limit: 1000,
     //   offset: 0
@@ -151,7 +151,7 @@ const actions: ActionTree<GeoState, TRootState> = {
 
     const { data: { type, features } } = await this.service.services.ideas.getIdeasGeo({
       filters: {
-        statusId: [2, 3, 4, 6]
+        statusId: isEmployee ? null : [2, 3, 4, 6]
       }
     });
 
@@ -163,8 +163,7 @@ const actions: ActionTree<GeoState, TRootState> = {
           properties: {
             ...i.properties,
             layer: i.properties.typeId,
-            // TODO: Исправить ужас ниже
-            image: i.properties.fill === "#FF6565" ? require("@/assets/png/problem.png") : require("@/assets/png/idea.png")
+            image: i.properties.typeId === 2 ? require("@/assets/png/problem.png") : require("@/assets/png/idea.png")
           }
         }))
       },

@@ -769,7 +769,7 @@ const routes: RouteConfig[] = [
             children: [
               {
                 path: ":id",
-                name: "services-estate-details",
+                name: "gis-services-estate-details",
                 components: {
                   default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
                 },
