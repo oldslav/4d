@@ -101,6 +101,7 @@
       } else {
         Object.assign(this.companyDocuments, cloneDeep(this.getCompanyCard.documents));
         this.companyName = this.getCompanyCard.name;
+        this.companyAddress = this.getCompanyCard.legalAddress;
       }
     },
     data () {

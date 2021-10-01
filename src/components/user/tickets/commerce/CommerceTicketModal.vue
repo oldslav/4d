@@ -84,6 +84,7 @@
       await this.GET_COMPANY();
       Object.assign(this.documents, cloneDeep(this.getCompanyCard.documents));
       this.companyName = this.getCompanyCard.name;
+      this.companyAddress = this.getCompanyCard.legalAddress;
     },
     data () {
       return {
