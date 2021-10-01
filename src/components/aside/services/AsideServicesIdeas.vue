@@ -19,7 +19,8 @@
         :options="statuses"
         label="Статус"
         optionKey="id"
-        optionValue="description"
+        optionLabel="description"
+        optionValue="id"
         hideBottom
         dense
       ).col
@@ -29,7 +30,8 @@
         :options="references.crowdSourcingTypes"
         :label="$t('common.type')"
         optionKey="id"
-        optionValue="description"
+        optionLabel="description"
+        optionValue="id"
         hideBottom
         dense
       ).col
@@ -79,7 +81,7 @@
       };
     },
     computed: {
-      ...mapGetters(["isUserNature"]),
+      ...mapGetters(["isUserNature", "isEmployee"]),
 
       ...mapState("services", {
         cesiumInstance: state => state.cesiumInstance
@@ -152,7 +154,13 @@
         }
 
         await this.GET_DATA({
-          statusId: [2, 3, 4, 6]
+          params: {
+            filters: {
+              statusId: this.isEmployee ? null : [2, 3, 4, 6]
+            },
+            sort: "likes",
+            order: "desc"
+          }
         });
         done();
       },
@@ -174,7 +182,14 @@
       filters: {
         deep: true,
         async handler () {
-          await this.GET_DATA({ isSet: true, statusId: [2, 3, 4, 6] });
+          await this.GET_DATA({
+            isSet: true,
+            params: {
+              filters: {
+                statusId: this.isEmployee ? null : [2, 3, 4, 6]
+              }
+            }
+          });
         }
       }
     },

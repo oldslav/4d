@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import { mapActions, mapMutations, mapState } from "vuex";
+  import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
   import {
     GET_DATA,
     GET_IDEAS_GEO,
@@ -58,6 +58,8 @@
       };
     },
     computed: {
+      ...mapGetters(["isEmployee"]),
+
       ...mapState("services", {
         geoJson: state => state.geoJson,
         featureId: state => state.pickedFeatureId,
@@ -166,7 +168,7 @@
       },
 
       async onViewerReady () {
-        await this.GET_IDEAS_GEO();
+        await this.GET_IDEAS_GEO(this.isEmployee);
       }
     },
     watch: {

@@ -15,8 +15,13 @@
           )
         BaseInput(
           v-model="title"
+          type="textarea"
           label="Название"
           :rules="rules"
+          dense
+          counter
+          :maxlength="50"
+          autogrow
         )
         BaseInput(
           v-model="description"
@@ -67,7 +72,7 @@
         description: null,
         rules: [
           val => !!val || this.$t("common.error.validation.required"),
-          val => !new RegExp(/[<>"'%;()&*+]/g).test(val) || this.$t("common.error.validation.invalid")
+          val => !new RegExp(/[<>]/g).test(val) || this.$t("common.error.validation.invalid")
         ],
         typeId: 1,
         options: [

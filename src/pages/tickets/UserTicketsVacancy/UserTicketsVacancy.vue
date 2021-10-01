@@ -44,24 +44,22 @@
 
         div.col-md-auto.q-pl-md-lg.col-xs-12.q-mb-md-sm(style="min-width: 300px")
           div(v-if="!isUserNature") {{ $t('user.tickets.vacancies.entityStatus') }}
-            q-select(
+            BaseSelect(
               v-model="filter.statusId"
               :options="getVacancyStatuses"
-              option-value="id"
-              option-label="description"
-              map-options
-              emit-value
+              optionKey="id"
+              optionValue="id"
+              optionLabel="text"
               outlined
               dense
             )
           div(v-else) {{ $t('user.tickets.vacancies.respondStatus') }}
-            q-select(
+            BaseSelect(
               v-model="filter.statusId"
               :options="getRespondsStatuses"
-              option-value="id"
-              option-label="description"
-              map-options
-              emit-value
+              optionKey="id"
+              optionValue="id"
+              optionLabel="text"
               outlined
               dense
             )
@@ -109,10 +107,12 @@
     from "../../../components/user/tickets/vacancy/table/EmployeeUserVacancyTicketsTable";
   import UserVacancyRespondsTable from "../../../components/user/tickets/vacancy/table/UserVacancyRespondsTable";
   import VerifyCompanyCard from "../../../components/user/company/verify/VerifyCompanyCard";
+  import BaseSelect from "../../../components/common/BaseSelect";
 
   export default {
     name: "UserTicketsVacancy",
     components: {
+      BaseSelect,
       VerifyCompanyCard,
       UserVacancyRespondsTable,
       EmployeeUserVacancyTicketsTable,
@@ -166,13 +166,13 @@
       },
       getVacancyStatuses () {
         return [
-          { id: "", description: this.$t("common.all") },
+          { id: "", text: this.$t("common.all") },
           ...this.getVacancyReferences[VacancyReferencesEnum.vacancyStatus]
         ];
       },
       getRespondsStatuses () {
         return [
-          { id: "", description: this.$t("common.all") },
+          { id: "", text: this.$t("common.all") },
           ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
         ];
       },
