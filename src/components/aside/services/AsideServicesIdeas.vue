@@ -157,9 +157,7 @@
           params: {
             filters: {
               statusId: this.isEmployee ? null : [2, 3, 4, 6]
-            },
-            sort: "likes",
-            order: "desc"
+            }
           }
         });
         done();

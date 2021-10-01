@@ -68,9 +68,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
       },
       limit,
       offset: offset - 1,
-      ...params,
-      sort: "created",
-      order: "desc"
+      ...params
     });
 
     if (isSet || !state.data) commit(SET_DATA, data);
