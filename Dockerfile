@@ -8,7 +8,7 @@ ENV API_HOST=$API_HOST
 RUN npm install -g pm2
 WORKDIR /app
 COPY . .
-RUN npm install && npm install --only=dev
+RUN npm install
 RUN npm run build
 
 EXPOSE 3000

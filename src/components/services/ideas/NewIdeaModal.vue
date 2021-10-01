@@ -17,6 +17,7 @@
           v-model="title"
           label="Название"
           :rules="rules"
+          maxlength="50"
         )
         BaseInput(
           v-model="description"
@@ -67,7 +68,7 @@
         description: null,
         rules: [
           val => !!val || this.$t("common.error.validation.required"),
-          val => !new RegExp(/[<>"'%;()&*+]/g).test(val) || this.$t("common.error.validation.invalid")
+          val => !new RegExp(/[<>]/g).test(val) || this.$t("common.error.validation.invalid")
         ],
         typeId: 1,
         options: [
