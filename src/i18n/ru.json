@@ -573,6 +573,7 @@
       "mainInfo": "Основная информация",
       "ticketApprovement": "Одобрение заявки",
       "ticketRejection": "Отклонение заявки",
+      "ticketRejectionLabel": "Причина",
       "title": "Сервисы",
       "messages": {
         "approve": {
