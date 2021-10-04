@@ -1263,6 +1263,7 @@
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Password",
+    "forgotPassword": "Forgot password?",
     "vehicles": {
       "add": "Add vehicle",
       "title": "Vehicles",

@@ -27,7 +27,7 @@
             @click="isPasswordVisible = !isPasswordVisible"
           )
       a(role="button" @click.stop.prevent="onResetPassword()").login__link
-        | Забыли пароль?
+        | {{ $t("entity.forgotPassword") }}
       .q-mx-lg.q-py-md.flex.items-center.justify-center.full-width.login__error.text-subtitle(v-show="isError")
         | {{ errorMessage }}
       q-btn(:label="$t('action.login')" type="submit" color="primary").full-width

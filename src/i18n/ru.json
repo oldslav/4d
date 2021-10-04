@@ -1262,6 +1262,7 @@
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Пароль",
+    "forgotPassword": "Забыли пароль?",
     "vehicles": {
       "add": "Добавить ТС",
       "title": "Автомобили",
