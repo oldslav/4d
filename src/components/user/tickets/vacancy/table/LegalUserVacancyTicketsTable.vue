@@ -13,7 +13,7 @@
           div.break-word.break-spaces {{ props.row.vac_position }}
 
         q-td(key="profIndustry" :props="props")
-          div.break-word.break-spaces {{ props.row.profIndustry.text }}
+          div.break-word.break-spaces {{ props.row.profIndustry | i18nName('text') }}
 
         q-td(key="publishDate" :props="props")
           | {{  props.row.publishDate | formatDate }}

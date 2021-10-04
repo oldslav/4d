@@ -5,3 +5,8 @@ export default {
   "EN": en,
   "RU": ru
 };
+
+export const quasarLangMapping = {
+ "EN": "en-us",
+ "RU": "ru"
+};

@@ -23,10 +23,8 @@ export default {
       entity.polyline.material.color = new window.Cesium.Color.fromCssColorString(fill).withAlpha(0.5);
     }
 
-    if (entity.show !== visibility) {
-      updateEntity(entity, () => {
-        entity.show = visibility;
-      });
-    }
+    updateEntity(entity, () => {
+      entity.show = visibility;
+    });
   }
 };

@@ -30,7 +30,7 @@
                 )
               div.q-pt-lg.q-mb-lg
                 div.text-h6.q-mb-xs {{ getCurrentVacancy.company.name }}
-                div.text-body2.rich-text {{ getCurrentVacancy.company.text }}
+                div.text-body2.rich-text {{ getCurrentVacancy.company.description }}
               q-separator
 
             div.q-pt-lg
