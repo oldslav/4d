@@ -39,6 +39,7 @@
         this.newTicketVisible = true;
       },
       showSuccessPopup () {
+        this.newTicketVisible = false;
         this.successVisible = true;
       },
       showFailPopup () {
