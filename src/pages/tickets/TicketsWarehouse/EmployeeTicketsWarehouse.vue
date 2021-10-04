@@ -34,12 +34,17 @@
                   q-item(clickable v-close-popup @click="showDetails(props.row)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-
+                  q-item(clickable v-close-popup @click="showTerminate(props.row.id)" v-if="props.row.status.id === 8")
+                    q-item-section(no-wrap).text-red
+                      | {{$t("action.terminateContract")}}
         q-tr.bg-blue(v-show="props.expand" :props="props")
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Примите или отклоните заявку
+            div.column(v-if="props.row.status.id === 14").q-pa-md
+              div.text-body1.text-wrap
+                | Договор был расторгнут
             div.column(v-if="props.row.status.id === 6").q-pa-md
               div.text-right.text-body1.text-wrap
                 | Для подписание договора направьте заявителю приглашение.<br>
@@ -85,7 +90,8 @@
                         :lasts="props.row.serviceOption.storagePeriod"
                       )
 
-    TicketWarehouseDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="activeId" @reject="onTicketReject" @approve="onTicketApprove")
+    TicketWarehouseDetailsModal(v-model="showDetailsModal" :id.sync="activeId" v-if="showDetailsModal && activeId" @reject="onTicketReject" @approve="onTicketApprove")
+    TerminateContractModal(v-model="showTerminateModal" :ticketId.sync="activeId" @submit="terminateTicket" v-if="showTerminateModal && activeId")
 </template>
 
 <script>
@@ -96,7 +102,8 @@
     GET_EMPLOYEE_TICKETS_WAREHOUSE,
     APPROVE_TICKET_WAREHOUSE,
     REJECT_TICKET_WAREHOUSE,
-    SEND_CONTRACT_INFO_WAREHOUSE
+    SEND_CONTRACT_INFO_WAREHOUSE,
+    TERMINATE_TICKET
   } from "@/store/constants/action-constants";
   import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import ApartmentTicketStatus from "components/user/tickets/apartments/ApartmentTicketStatus";
@@ -108,10 +115,12 @@
   import FormContract from "components/common/form/FormContract";
   import ValidContractState from "components/user/tickets/ValidContractState";
   import ExpiredContractState from "components/user/tickets/ExpiredContractState";
+  import TerminateContractModal from "components/user/tickets/TerminateContractModal";
 
   export default {
     name: "EmployeeTicketsWarehouse",
     components: {
+      TerminateContractModal,
       FormContract,
       TicketWarehouseDetailsModal,
       ApartmentsEmployeeDetailsModal,
@@ -129,6 +138,7 @@
       return {
         activeId: null,
         showDetailsModal: false,
+        showTerminateModal: false,
         rejectionReason: "",
         expanded: [],
         columns: [
@@ -202,7 +212,8 @@
         GET_EMPLOYEE_TICKETS_WAREHOUSE,
         REJECT_TICKET_WAREHOUSE,
         APPROVE_TICKET_WAREHOUSE,
-        SEND_CONTRACT_INFO_WAREHOUSE
+        SEND_CONTRACT_INFO_WAREHOUSE,
+        TERMINATE_TICKET
       }),
 
       async getEmployeeTickets (props) {
@@ -277,6 +288,27 @@
           this.expanded.push(props.key);
         } else {
           this.expanded.splice(row, 1);
+        }
+      },
+
+      showTerminate (id) {
+        this.activeId = id;
+        this.showTerminateModal = true;
+      },
+
+      async terminateTicket (payload) {
+        try {
+          await this.TERMINATE_TICKET(payload);
+          this.$q.notify({
+            type: "positive",
+            message: this.$t("user.tickets.contract.terminateSuccess")
+          });
+          await this.getEmployeeTickets();
+        } catch (e) {
+          this.$q.notify({
+            type: "negative",
+            message: this.$t("user.tickets.contract.terminateFail")
+          });
         }
       },
 

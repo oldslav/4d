@@ -13,7 +13,7 @@ import {
   GET_USER_TICKET_PARKING_PAYMENT_LINK,
   ADD_PARKING_FILES,
   SEND_CONTRACT_INFO_PARKING,
-  GET_USER_TICKET
+  GET_USER_TICKET, TERMINATE_TICKET
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -55,7 +55,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_EMPLOYEE_TICKETS_PARKING] ({ state, commit }) {
     const { filters, pagination: { limit, offset, sort } } = state;
 
-    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] });
+    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] });
 
     const { data } = await this.service.user.tickets.getEmployeeTicketsParking({
       filters: f,
@@ -84,6 +84,10 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   [APPROVE_TICKET_PARKING] (_, { id }) {
     return this.service.user.tickets.approveTicketParking(id);
+  },
+
+  [TERMINATE_TICKET] (_, { ticketId, reason }) {
+    return this.service.user.tickets.terminateParkingContract(ticketId, reason);
   },
 
   async [DELETE_USER_TICKET_PARKING] ({ dispatch }, payload) {

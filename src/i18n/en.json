@@ -206,7 +206,9 @@
       },
       "contract": {
         "sendSuccess": "Данные договора успешно отправлены",
-        "sendFail": "При отправлении данных договора произошла ошибка"
+        "sendFail": "При отправлении данных договора произошла ошибка",
+        "terminateSuccess": "Договор расторгнут",
+        "terminateFail": "При расторжении договора произошла ошибка"
       },
       "parking": {
         "steps": {
@@ -517,6 +519,7 @@
     "pay": "Pay",
     "book": "Book",
     "download": "Download",
+    "terminateContract": "Terminate contract",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
     "registerUser": "Register employee",
@@ -769,7 +772,7 @@
       },
       "employmentCenter": "Employment center",
       "light": "Light",
-      "trees":  {
+      "trees": {
         "title": "Trees",
         "aside": {
           "status": "Состояние",

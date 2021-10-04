@@ -13,7 +13,7 @@
         type: Number,
         default: 1,
         required: true,
-        validator: (val) => val >= 1 && val <= 13
+        validator: (val) => val >= 1 && val <= 14
       }
     },
     computed: {
@@ -59,6 +59,13 @@
             color: "red",
             value: 0.75,
             status: "Договор истек"
+          };
+        }
+        if (this.value === 14) {
+          return {
+            color: "red",
+            value: 1,
+            status: "Договор расторгнут"
           };
         }
         if (this.value === 2) {
