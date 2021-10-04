@@ -58,6 +58,14 @@
       type="textarea"
     )
 
+    q-input(
+      v-model="content"
+      :label="$t('entity.services.crowdfunding.form.content')"
+      :rules="[ val => val !== null && val !== '' || '']"
+      outlined
+      type="textarea"
+    )
+
     .text-medium
       | {{ $t("entity.services.crowdfunding.form.cover") }}
     .hint.text-caption.q-mb-md
@@ -122,6 +130,7 @@
         step: 1,
         title: "",
         description: "",
+        content: "",
         startDate: null,
         endDate: null,
         category: "",
@@ -203,8 +212,8 @@
         }
       },
       onSubmit () {
-        const { title, description, startDate, endDate, category, markdownContent, cover, media } = this;
-        return this.CREATE_USER_TICKET_CROWDFUNDING({ title, description, startDate, endDate, categoryId: category, markdownContent, cover: cover[0], media })
+        const { title, description, startDate, endDate, category, content, cover, media } = this;
+        return this.CREATE_USER_TICKET_CROWDFUNDING({ typeId: 2, title, description, startDate, endDate, categoryId: category, content, cover: cover[0], media })
           .then(() => {
             this.$emit("success");
           })
