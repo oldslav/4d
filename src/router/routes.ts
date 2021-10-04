@@ -739,7 +739,8 @@ const routes: RouteConfig[] = [
       toolbar: true,
       prod: true,
       map: true,
-      isBurger: true
+      isBurger: true,
+      unauthorized: true
     },
     children: [
       {
@@ -879,7 +880,8 @@ const routes: RouteConfig[] = [
         },
         meta: {
           asideServices: true,
-          toolbar: true
+          toolbar: true,
+          unauthorized: true
         }
       },
       {
