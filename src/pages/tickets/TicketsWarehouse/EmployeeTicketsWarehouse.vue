@@ -238,7 +238,7 @@
             model: "",
             type: "textarea",
             isValid: val => !!val,
-            label: "Reason",
+            label: this.$t("entity.services.ticketRejectionLabel"),
             outlined: true,
             stackLabel: true
           },

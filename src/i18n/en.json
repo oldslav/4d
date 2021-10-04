@@ -576,6 +576,7 @@
       "mainInfo": "Main information",
       "ticketApprovement": "Одобрение заявки",
       "ticketRejection": "Отклонение заявки",
+      "ticketRejectionLabel": "Reason",
       "title": "Services",
       "messages": {
         "approve": {
@@ -1266,6 +1267,7 @@
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Password",
+    "forgotPassword": "Forgot password?",
     "vehicles": {
       "add": "Add vehicle",
       "title": "Vehicles",

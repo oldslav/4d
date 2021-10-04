@@ -10,10 +10,10 @@
   )
     q-card.auth-modal__card
       q-card-actions(align="right")
-        q-btn(flat v-close-popup icon="close" color="primary" @click="closeModal")
+        q-btn(flat v-close-popup icon="close" color="primary" @click="closeModal()")
       q-card-section.auth-modal__card__content
         LoginForm(@submit="onSubmit" v-if="isLogin")
-        registration-form(v-if="isRegister")
+        registration-form(v-if="isRegister" @close-modal="closeModal()")
         q-card-section(v-if="isRegister").text-small.q-px-none
           | {{ $t("common.register.haveAccount") }}
           q-btn.q-ml-sm(:label="$t('action.login')" flat color="primary" size="md" no-caps @click="toLogin()")

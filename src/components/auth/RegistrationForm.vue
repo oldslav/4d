@@ -79,6 +79,9 @@
             this.$q.dialog({
               message: this.$t("common.register.messages.success"),
               ok: "Ok"
+            }).onOk(() => {
+              this.$emit("close-modal");
+              this.$router.push({ name: "about" });
             });
           })
           .catch(() => {
