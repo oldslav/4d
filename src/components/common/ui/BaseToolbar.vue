@@ -57,6 +57,7 @@
   import BaseTabs from "components/common/BaseTabs";
   import { ACCOUNT_LOGOUT } from "@/store/constants/action-constants";
   import { DEFAULT_COOKIE_OPTIONS } from "../../../constaints";
+  import { quasarLangMapping } from "../../../i18n";
 
   export default {
     name: "BaseToolbar",

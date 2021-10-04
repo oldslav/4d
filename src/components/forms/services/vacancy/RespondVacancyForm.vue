@@ -27,7 +27,7 @@
             @click="onClickBack()"
             color="primary"
             flat
-            label="Назад"
+            :label="$t('action.back')"
             class="q-mr-sm"
           )
           q-btn(

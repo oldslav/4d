@@ -15,13 +15,14 @@
         @click="expandRow(props)"
       )
         q-td(key="position" :props="props")
-          q-icon.q-mr-sm.text-grey-8(
-            v-if="activeExpandStatuses.includes(props.row.status.id)"
-            :class="{'rotate-180': props.expand}"
-            name="expand_more"
-            style="font-size: 18px"
-          )
-          div.break-word.break-spaces {{ props.row.vacancy.position }}
+          div.flex.row
+            q-icon.q-mr-sm.text-grey-8.col-auto(
+              v-if="activeExpandStatuses.includes(props.row.status.id)"
+              :class="{'rotate-180': props.expand}"
+              name="expand_more"
+              style="font-size: 18px"
+            )
+            div.break-word.break-spaces.col {{ props.row.vacancy.position }}
 
         q-td(key="company" :props="props")
           div.break-word.break-spaces {{  props.row.vacancy.companyName }}

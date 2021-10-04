@@ -8,11 +8,12 @@ import { I18nNameLike, I18nNameLikeProps, I18nNamePropertyByLang } from "src/sto
 const fromNow = (date: any) => moment(date).fromNow();
 const formatDate = (date: any) => moment(date).format("DD.MM.YYYY");
 const ticketDate = (date: any) => moment().isSame(moment(date), "day") ? fromNow(date) : formatDate(date);
-const i18nName = (i18n: IVueI18n) => (value: I18nNameLike) => {
+const i18nName = (i18n: IVueI18n) => (value: I18nNameLike, prefix = "") => {
   const locale = i18n.locale as I18nNameLikeProps;
+  const key = `${ prefix }${ locale }`;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const property = I18nNamePropertyByLang[locale] as I18nNameLikeProps;
+  const property = I18nNamePropertyByLang[key] as I18nNameLikeProps;
 
   return value[property as I18nNameLikeProps];
 };

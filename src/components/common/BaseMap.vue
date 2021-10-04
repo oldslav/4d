@@ -251,13 +251,13 @@
           const pickedId = this.$route.query.id;
           if (pickedId) {
             this.entitySelected(cesiumObject.entities.values.find(i => +i.id === +pickedId));
+          } else if (this.pickedFeatureId) {
+            this.onChangePickedFeatureId(this.pickedFeatureId);
           } else {
-            viewer.zoomTo({});
-            // viewer.zoomTo(cesiumObject);
+            // viewer.zoomTo({});
+            viewer.zoomTo(cesiumObject);
           }
           /* end todo */
-
-          this.onChangePickedFeatureId(this.pickedFeatureId);
         });
       },
 

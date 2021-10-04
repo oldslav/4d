@@ -11,7 +11,7 @@
             v-model="filter.statusId"
             :options="getRespondsStatuses"
             option-value="id"
-            option-label="description"
+            option-label="text"
             map-options
             emit-value
             outlined
@@ -85,7 +85,7 @@
       ...mapGetters("services/vacancy", ["getVacancyReferences"]),
       getRespondsStatuses () {
         return [
-          { id:"", description: this.$t("common.all") },
+          { id: "", text: this.$t("common.all") },
           ...this.getVacancyReferences[VacancyReferencesEnum.respondStatus]
         ];
       },
