@@ -3,6 +3,7 @@ import { TRootState } from "src/store/types/root";
 import { IUserTicketsState } from "src/store/types/user/tickets";
 import { SET_USER_TICKETS } from "src/store/constants/mutation-constants";
 import {
+  GET_ALL_TICKETS_CROWDFUNDING,
   GET_USER_TICKETS_CROWDFUNDING,
   GET_EMPLOYEE_TICKETS_CROWDFUNDING,
   REJECT_TICKET_CROWDFUNDING,
@@ -30,15 +31,13 @@ const mutations: MutationTree<IUserTicketsState> = {
 
 const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [CREATE_USER_TICKET_CROWDFUNDING] ({ dispatch }, payload) {
-    const { media, cover, ...result } = payload;
-    const params = { clean: true };
-    const { data: { id } } = await this.service.user.tickets.createTicketCrowdfunding(params);
+    const { media, cover, ...restPayload } = payload;
+    const { data: { id } } = await this.service.user.tickets.createTicketCrowdfunding(restPayload);
     if (id) {
-      await this.service.user.tickets.updateTicketCrowdfunding(id, result);
       if (cover) await dispatch(ADD_USER_TICKET_CROWDFUNDING_COVER, { id, cover });
       if (media && media.length > 0) await dispatch(ADD_USER_TICKET_CROWDFUNDING_FILES, { id, media });
-      await this.service.user.tickets.publishTicketCrowdfunding(id);
-      dispatch(GET_USER_TICKETS_CROWDFUNDING);
+      await this.service.user.tickets.requestApprovalCrowdfunding(id);
+      dispatch(GET_ALL_TICKETS_CROWDFUNDING);
     }
   },
 
@@ -59,12 +58,14 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
     );
   },
 
-  async [GET_USER_TICKETS_CROWDFUNDING] ({ state, commit }) {
-    const { filters } = state;
+  async [GET_ALL_TICKETS_CROWDFUNDING] ({ state, commit }, filters) {
+    const { data } = await this.service.user.tickets.getAllTicketsCrowdfunding(filters);
 
-    const { data } = await this.service.user.tickets.getTicketsCrowdfunding({
-      filters
-    });
+    commit(SET_USER_TICKETS, data);
+  },
+
+  async [GET_USER_TICKETS_CROWDFUNDING] ({ state, commit }, filters) {
+    const { data } = await this.service.user.tickets.getUserTicketsCrowdfunding(filters);
 
     commit(SET_USER_TICKETS, data);
   },

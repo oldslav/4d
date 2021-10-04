@@ -2,8 +2,8 @@
   div
     ModalFail(v-model="failVisible")
     ModalSuccess(v-model="successVisible")
-    NewTiresTicket(v-model="tiresVisible" v-if="tiresVisible" @success="showSuccessPopup" @fail="showFailPopup()")
-    NewBikeTicket(v-model="bikeVisible" v-if="bikeVisible" @success="showSuccessPopup" @fail="showFailPopup()")
+    NewTiresTicket(v-model="tiresVisible" v-if="tiresVisible" @success="showSuccessPopup()" @fail="showFailPopup()")
+    NewBikeTicket(v-model="bikeVisible" v-if="bikeVisible" @success="showSuccessPopup()" @fail="showFailPopup()")
 </template>
 
 <script>

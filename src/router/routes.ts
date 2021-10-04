@@ -744,46 +744,134 @@ const routes: RouteConfig[] = [
     },
     children: [
       {
-        path: "estate",
-        name: "services-estate",
+        path: "gis",
+        name: "gis-services",
+        redirect: { name: "gis-services-estate" },
         components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+          default: (): Promise<any> => import("pages/services/BaseService.vue"), // STUB
+          asideLeft: (): Promise<any> => import("components/aside/AsideServices.vue")
         },
         meta: {
+          prod: true,
+          asideServices: true,
           toolbar: true
         },
         children: [
           {
-            path: ":id",
-            name: "services-estate-details",
+            path: "estate",
+            name: "gis-services-estate",
             components: {
-              default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
+              default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
+            },
+            meta: {
+              toolbar: true,
+              prod: true
+            },
+            children: [
+              {
+                path: ":id",
+                name: "gis-services-estate-details",
+                components: {
+                  default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
+                },
+                meta: {
+                  toolbar: true,
+                  prod: true
+                }
+              }
+            ]
+          },
+          {
+            path: "transport",
+            name: "gis-services-transport",
+            components: {
+              default: (): Promise<any> => import("pages/services/gis/ServiceTransport.vue")
+            },
+            meta: {
+              toolbar: true,
+              prod: true
+            },
+            children: [
+              {
+                path: ":id",
+                name: "gis-services-transport-details",
+                components: {
+                  default: (): Promise<any> => import("pages/services/gis/ServiceTransport.vue")
+                },
+                meta: {
+                  toolbar: true,
+                  prod: true
+                }
+              }
+            ]
+          },
+          {
+            path: "landscape",
+            name: "gis-services-landscape",
+            components: {
+              default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
+            },
+            meta: {
+              toolbar: true
+            }
+          },
+          {
+            path: "light",
+            name: "gis-services-light",
+            components: {
+              default: (): Promise<any> => import("pages/services/gis/ServiceLight.vue")
+            },
+            meta: {
+              toolbar: true,
+              prod: true
+            },
+            children: [
+              {
+                path: ":id",
+                name: "gis-services-light-details",
+                components: {
+                  default: (): Promise<any> => import("pages/services/gis/ServiceLight.vue")
+                },
+                meta: {
+                  toolbar: true,
+                  prod: true
+                }
+              }
+            ]
+          },
+          {
+            path: "tourism",
+            name: "gis-services-tourism",
+            components: {
+              default: (): Promise<any> => import("pages/services/gis/ServiceTourism.vue")
+            },
+            meta: {
+              toolbar: true
+            },
+            children: [
+              {
+                path: ":id",
+                name: "gis-services-tourism-details",
+                components: {
+                  default: (): Promise<any> => import("pages/services/gis/ServiceTourism.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              }
+            ]
+          },
+          {
+            path: "planning",
+            name: "gis-services-planning",
+            components: {
+              default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
             },
             meta: {
               toolbar: true
             }
           }
         ]
-      },
-      {
-        path: "transport",
-        name: "services-transport",
-        components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
-        },
-        meta: {
-          toolbar: true
-        }
-      },
-      {
-        path: "landscape",
-        name: "services-landscape",
-        components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
-        },
-        meta: {
-          toolbar: true
-        }
       },
       {
         path: "light",
@@ -794,16 +882,6 @@ const routes: RouteConfig[] = [
         meta: {
           map: true,
           asideServices: true,
-          toolbar: true
-        }
-      },
-      {
-        path: "planning",
-        name: "services-planning",
-        components: {
-          default: (): Promise<any> => import("pages/services/ServiceEstate.vue")
-        },
-        meta: {
           toolbar: true
         }
       },
@@ -925,6 +1003,7 @@ const routes: RouteConfig[] = [
       }
     ]
   },
+
   {
     path: "/services/commerce/:id",
     name: "services-commerce-place",

@@ -19,7 +19,7 @@ import {
   SEND_CONTRACT_INFO_LIVING,
   UPDATE_TICKET,
   DELETE_USER_TICKET_LIVING,
-  GET_LEGAL_TICKET, UPDATE_LEGAL_TICKET, SEND_COMPANY_PAYMENT
+  GET_LEGAL_TICKET, UPDATE_LEGAL_TICKET, SEND_COMPANY_PAYMENT, TERMINATE_TICKET
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -101,7 +101,7 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_EMPLOYEE_TICKETS_LIVING] ({ state, commit }) {
     const { filters, pagination: { sort, offset, limit } } = state;
 
-    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] }); // no draft
+    const f = Object.assign({}, filters, { statusId: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] }); // no draft
 
     const { data } = await this.service.user.tickets.getEmployeeTicketsLiving({
       filters: f,
@@ -219,6 +219,10 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   [SEND_CONTRACT_INFO_LIVING] ({ dispatch }, { id, payload }) {
     return this.service.user.tickets.sendContractInfoLiving(id, payload)
       .then(() => dispatch(GET_EMPLOYEE_TICKETS_LIVING));
+  },
+
+  [TERMINATE_TICKET] (_, { ticketId, reason }) {
+    return this.service.user.tickets.terminateLivingContract(ticketId, reason);
   }
 };
 

@@ -11,9 +11,10 @@
 
         q-item.q-py-md.text-subtitle(
           v-for="(object, index) in getLayerObjects"
-         :key="object.id"
-         :to="{ name: 'map-tourism-entity', params: { id: object.id } }"
-         clickable
+          :key="object.id"
+          :to="{ name: 'map-tourism-entity', params: { id: object.id } }"
+          @click="setFeatureId(object.id)"
+          clickable
         )
           q-item-section.list-item-avatar(avatar)
             span.aside-services_tourism-layer__order(v-if="object.properties.type === tourismGeoJSONEntities.place")
@@ -47,11 +48,12 @@
     NewTourismRouteModal(v-model="visibleAddModal")
 </template>
 <script>
-  import { mapGetters, mapActions } from "vuex";
+  import { mapGetters, mapActions, mapMutations } from "vuex";
   import { SET_TOURISM_ENTITY_VISIBILITY } from "../../../../store/constants/action-constants";
   import { TourismGeoJSONEntities } from "../../../../store/types/tourism";
   import ImageSlider from "../../../common/ImageSlider";
   import NewTourismRouteModal from "../../../services/tourism/NewTourismRouteModal";
+  import { SET_FEATURE_ID } from "../../../../store/constants/mutation-constants";
 
   export default {
     name: "AsideMapsTourismLayer",
@@ -109,9 +111,18 @@
       }
     },
     methods: {
+      ...mapMutations("services", [
+        SET_FEATURE_ID
+      ]),
+
       ...mapActions("services/tourism", {
         setEntityVisibility: SET_TOURISM_ENTITY_VISIBILITY
       }),
+
+      setFeatureId (id) {
+        this.SET_FEATURE_ID(id);
+      },
+
       onClickAddRoute (){
         this.visibleAddModal = true;
       },

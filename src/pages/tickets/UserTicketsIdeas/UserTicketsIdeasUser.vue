@@ -14,7 +14,7 @@
         .row.full-width.justify-between.items-end(v-if="references")
           .row.q-gutter-sm.col
             BaseInput(
-              v-model="computedQuery"
+              v-model="query"
               hideBottom
               :label="$t('common.search')"
             ).col-12.col-sm-6.col-md
@@ -25,16 +25,18 @@
               label="Статус"
               clearable
               optionKey="id"
-              optionValue="description"
+              optionLabel="description"
+              optionValue="id"
             ).col-12.col-sm-6.col-md-3
             BaseSelect(
               v-model="typeId"
               hideBottom
               :options="references.crowdSourcingTypes"
-              label="Тип"
+              :label="$t('common.type')"
               clearable
               optionKey="id"
-              optionValue="description"
+              optionLabel="description"
+              optionValue="id"
             ).col-12.col-sm-6.col-md-3
           q-btn(
             icon="add"
@@ -109,19 +111,8 @@
 
       ...mapState("services/ideas", {
         references: state => state.references,
-        filters: state => state.filters,
-        query: state => state.query
+        filters: state => state.filters
       }),
-
-      computedQuery: {
-        get () {
-          return this.query;
-        },
-
-        set (value) {
-          this.SET_QUERY(value);
-        }
-      },
 
       ...mapGetters("services/ideas", [
         "tableData",
@@ -135,7 +126,7 @@
       }),
 
       ...mapFields("services/ideas", {
-        fields: ["statusId", "typeId", "authorId"],
+        fields: ["statusId", "typeId", "authorId", "query"],
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
@@ -247,10 +238,6 @@
       }
     },
     watch: {
-      computedQuery () {
-        this.GET_DATA({ isSet: true });
-      },
-
       filters: {
         deep: true,
         async handler () {

@@ -1,5 +1,7 @@
 {
   "common": {
+    "installedYear": "Year of installation",
+    "link": "Link",
     "locales": {
       "RU": {
         "alias": "RU",
@@ -135,6 +137,8 @@
     "number": "Number",
     "premisesNumber": "Premises №",
     "type": "Type",
+    "condition": "Condition",
+    "category": "Category",
     "status": "Status",
     "id": "ID",
     "nameOf": "Name",
@@ -202,7 +206,9 @@
       },
       "contract": {
         "sendSuccess": "Данные договора успешно отправлены",
-        "sendFail": "При отправлении данных договора произошла ошибка"
+        "sendFail": "При отправлении данных договора произошла ошибка",
+        "terminateSuccess": "Договор расторгнут",
+        "terminateFail": "При расторжении договора произошла ошибка"
       },
       "parking": {
         "steps": {
@@ -513,6 +519,7 @@
     "pay": "Pay",
     "book": "Book",
     "download": "Download",
+    "terminateContract": "Terminate contract",
     "toProfile": "Go to the profile",
     "toMap": "Go to the map",
     "registerUser": "Register employee",
@@ -569,6 +576,7 @@
       "mainInfo": "Main information",
       "ticketApprovement": "Одобрение заявки",
       "ticketRejection": "Отклонение заявки",
+      "ticketRejectionLabel": "Reason",
       "title": "Services",
       "messages": {
         "approve": {
@@ -750,6 +758,7 @@
         "form": {
           "title": "Название проекта",
           "description": "Добавьте краткое описание проекта",
+          "content": "Добавьте полное описание проекта",
           "dates": {
             "title": "Выберите сроки реализации проекта",
             "input": "Сроки реализации"
@@ -764,7 +773,7 @@
       },
       "employmentCenter": "Employment center",
       "light": "Light",
-      "trees":  {
+      "trees": {
         "title": "Trees",
         "aside": {
           "status": "Состояние",
@@ -941,7 +950,7 @@
         "action": {
           "toVote": "Submit to the vote",
           "forConsideration": "For consideration",
-          "finish": "Finish project"
+          "finish": "Finish"
         }
       },
       "parking": "Parking rent",
@@ -1283,6 +1292,7 @@
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Password",
+    "forgotPassword": "Forgot password?",
     "vehicles": {
       "add": "Add vehicle",
       "title": "Vehicles",

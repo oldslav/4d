@@ -15,8 +15,13 @@
           )
         BaseInput(
           v-model="title"
+          type="textarea"
           label="Название"
           :rules="rules"
+          dense
+          counter
+          :maxlength="50"
+          autogrow
         )
         BaseInput(
           v-model="description"
@@ -35,6 +40,8 @@
           multiple
           batch
           hide-upload-btn
+          accept=".jpg, .png, .jpeg"
+          max-total-size="10485760"
           :headers="uploadImageHeaders"
           @uploading="isLoading = true"
           @uploaded="isLoading = false"
@@ -65,7 +72,7 @@
         description: null,
         rules: [
           val => !!val || this.$t("common.error.validation.required"),
-          val => !new RegExp(/[<>"'%;()&*+]/g).test(val) || this.$t("common.error.validation.invalid")
+          val => !new RegExp(/[<>]/g).test(val) || this.$t("common.error.validation.invalid")
         ],
         typeId: 1,
         options: [

@@ -14,7 +14,7 @@
         .row.full-width.justify-between(v-if="references")
           .row.q-gutter-sm.col
             BaseInput(
-              v-model="computedQuery"
+              v-model="query"
               hideBottom
               :label="$t('common.search')"
             ).col-12.col-sm-6.col-md
@@ -25,16 +25,18 @@
               label="Статус"
               clearable
               optionKey="id"
-              optionValue="description"
+              optionLabel="description"
+              optionValue="id"
             ).col-12.col-sm-6.col-md-3
             BaseSelect(
               v-model="typeId"
               hideBottom
               :options="references.crowdSourcingTypes"
-              label="Тип"
+              :label="$t('common.type')"
               clearable
               optionKey="id"
-              optionValue="description"
+              optionLabel="description"
+              optionValue="id"
             ).col-12.col-sm-6.col-md-3
       template(v-slot:body="props")
         q-tr(:props="props")
@@ -69,7 +71,7 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("action.details") }}
-                  q-item(v-if="![1, 5, 8].includes(props.row.status.id)" clickable v-close-popup @click="toIdeas({ id: props.row.id })")
+                  q-item(v-if="![5, 8].includes(props.row.status.id)" clickable v-close-popup @click="toIdeas({ id: props.row.id })")
                     q-item-section(no-wrap)
                       | {{ $t("action.showOnMap") }}
 
@@ -109,7 +111,6 @@
     },
     computed: {
       ...mapState("services/ideas", {
-        query: state => state.query,
         filters: state => state.filters,
         references: state => state.references
       }),
@@ -126,20 +127,10 @@
       }),
 
       ...mapFields("services/ideas", {
-        fields: ["statusId", "typeId", "authorId"],
+        fields: ["statusId", "typeId", "authorId", "query"],
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
-
-      computedQuery: {
-        get () {
-          return this.query;
-        },
-
-        set (value) {
-          this.SET_QUERY(value);
-        }
-      },
 
       isDetailsModal: {
         isActive: false,
@@ -263,10 +254,6 @@
         async handler () {
           await this.getUserTickets();
         }
-      },
-
-      computedQuery () {
-        this.GET_DATA({ isSet: true });
       }
     },
     beforeDestroy () {

@@ -7,10 +7,10 @@
     q-card.modal-container
       q-card-section
         q-virtual-scroll(
-          v-if="data.length"
+          v-if="data && data.length"
           :items="data"
-          :style="{ maxHeight: '600px' }"
-        ).overflow-hidden
+          :style="{ maxHeight: '500px' }"
+        )
           template(v-slot="{ item, index }")
             q-item.q-px-none
               q-item-section
@@ -45,9 +45,9 @@
           label="Сообщение"
           counter
           autogrow
-          :key="message"
           :maxlength="200"
           :rules="rules"
+          :key="isSent"
         ).col.q-mr-md
         q-btn(icon="send" color="primary" flat @click="createComment")
 </template>
@@ -76,8 +76,9 @@
     data () {
       return {
         message: null,
+        isSent: false,
         rules: [
-          val => !new RegExp(/[<>"'%;()&*+]/g).test(val) || this.$t("common.error.validation.invalid")
+          val => !new RegExp(/[<>]/g).test(val) || this.$t("common.error.validation.invalid")
         ]
       };
     },
@@ -123,6 +124,7 @@
         await this.CREATE_COMMENT({ id: this.current.id, payload: this.message });
         await this.getData();
         this.message = null;
+        this.isSent = !this.isSent;
       },
 
       async getData () {

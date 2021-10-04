@@ -5,7 +5,7 @@ ARG API_HOST
 ENV NODE_ENV=$NODE_ENV
 ENV API_HOST=$API_HOST
 
-RUN npm install pm2 -g
+RUN npm install -g pm2
 WORKDIR /app
 COPY . .
 RUN npm install

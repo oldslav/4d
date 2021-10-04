@@ -1,5 +1,7 @@
 {
   "common": {
+    "installedYear": "Год установки",
+    "link": "Ссылка",
     "locales": {
       "RU": {
         "alias": "RU",
@@ -135,6 +137,8 @@
     "number": "Номер",
     "premisesNumber": "№ помещения",
     "type": "Тип",
+    "condition": "Состояние",
+    "category": "Категория",
     "status": "Статус",
     "id": "ID",
     "nameOf": "Название",
@@ -202,7 +206,9 @@
       },
       "contract": {
         "sendSuccess": "Данные договора успешно отправлены",
-        "sendFail": "При отправлении данных договора произошла ошибка"
+        "sendFail": "При отправлении данных договора произошла ошибка",
+        "terminateSuccess": "Договор расторгнут",
+        "terminateFail": "При расторжении договора произошла ошибка"
       },
       "parking": {
         "steps": {
@@ -513,6 +519,7 @@
     "pay": "Оплатить",
     "book": "Забронировать",
     "download": "Скачать",
+    "terminateContract": "Расторгнуть договор",
     "toProfile": "Перейти в личный кабинет",
     "toMap": "Перейти к карте",
     "registerUser": "Зарегистрировать сотрудника",
@@ -569,6 +576,7 @@
       "mainInfo": "Основная информация",
       "ticketApprovement": "Одобрение заявки",
       "ticketRejection": "Отклонение заявки",
+      "ticketRejectionLabel": "Причина",
       "title": "Сервисы",
       "messages": {
         "approve": {
@@ -750,6 +758,7 @@
         "form": {
           "title": "Название проекта",
           "description": "Добавьте краткое описание проекта",
+          "content": "Добавьте полное описание проекта",
           "dates": {
             "title": "Выберите сроки реализации проекта",
             "input": "Сроки реализации"
@@ -938,7 +947,7 @@
         "action": {
           "toVote": "Вынести на голосование",
           "forConsideration": "На рассмотрение",
-          "finish": "Завершить проект"
+          "finish": "Завершить"
         }
       },
       "parking": "Аренда парковок",
@@ -1281,6 +1290,7 @@
     "playground": "Playground",
     "email": "E-mail / Login",
     "password": "Пароль",
+    "forgotPassword": "Забыли пароль?",
     "vehicles": {
       "add": "Добавить ТС",
       "title": "Автомобили",

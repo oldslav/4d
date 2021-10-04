@@ -1,5 +1,6 @@
 import { boot } from "quasar/wrappers";
-import messages from "src/i18n";
+import Quasar from "quasar";
+import messages, { quasarLangMapping } from "src/i18n";
 import Vue from "vue";
 import VueI18n from "vue-i18n";
 
@@ -50,7 +51,7 @@ const pluralizationRules = {
 
 export const i18n = new VueI18n({
   locale: "RU",
-  fallbackLocale: "EN", 
+  fallbackLocale: "EN",
   messages,
   pluralizationRules,
   numberFormats
@@ -62,4 +63,19 @@ export default boot(({ app }) => {
   // Set i18n instance on app
   i18n.locale = application.$cookies.get("locale") || "RU";
   app.i18n = i18n;
+
+  if (!process.env.SERVER) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    i18n.vm.$watch("locale", function (val) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const quasarLang = quasarLangMapping[val];
+
+      import(`quasar/lang/${ quasarLang }`).then((language) => {
+        Quasar.lang.set(language.default);
+      });
+
+    }, { immediate: true });
+  }
 });

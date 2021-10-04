@@ -32,7 +32,7 @@
             <h6 class="col text-medium-b q-my-auto">
               {{ $t("common.documents") }}
             </h6>
-            <q-btn color="primary" icon="add" flat @click="isDocumentsModal = !isDocumentsModal">
+            <q-btn color="primary" icon="add" disable flat @click="isDocumentsModal = !isDocumentsModal">
             </q-btn>
           </div>
           <q-separator class="q-my-md"></q-separator>
@@ -71,7 +71,7 @@
             <h6 class="col text-medium-b q-my-auto">
               {{ $t("common.photos") }}
             </h6>
-            <q-btn color="primary" icon="add" flat @click="isImagesModal = !isImagesModal">
+            <q-btn color="primary" icon="add" disable flat @click="isImagesModal = !isImagesModal">
             </q-btn>
           </div>
           <q-separator class="q-my-md"></q-separator>
@@ -298,18 +298,22 @@
       ...mapState("services/estate", {
         current: state => state.current,
         categories: state => state.references && state.references.category.map(({ id, name }) => ({
+          key: "id",
           value: id,
           label: name
         })),
         infrastructureTypes: state => state.references && state.references.type.map(({ id, description }) => ({
+          key: "id",
           value: id,
           label: description
         })),
         statuses: state => state.references && state.references.status.map(({ id, name }) => ({
+          key: "id",
           value: id,
           label: name
         })),
         companies: state => state.references && state.references.company.map(({ id, name }) => ({
+          key: "id",
           value: id,
           label: name
         }))

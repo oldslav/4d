@@ -157,6 +157,7 @@
         set (value) {
           this.$q.cookies.set("locale", value.value, DEFAULT_COOKIE_OPTIONS);
           this.$i18n.locale = value.value;
+          // this.$q.lang.set(value.value);
         }
       },
 

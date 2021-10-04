@@ -39,31 +39,37 @@
         return [
           {
             label: this.$t("entity.estate.title"),
-            action: { name: "services-estate" },
+            action: { name: "gis-services-estate" },
             icon: "o_article",
-            show: this.isDev && this.isUserGIS
+            show: this.isUserGIS
           },
           {
             label: this.$t("entity.transport"),
-            action: { name: "services-transport" },
+            action: { name: "gis-services-transport" },
             icon: "o_directions_bus",
+            show: this.isUserGIS
+          },
+          {
+            label: this.$t("entity.tourism"),
+            action: { name: "gis-services-tourism" },
+            icon: "o_photo_camera",
             show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.landscape"),
-            action: { name: "services-landscape" },
+            action: { name: "gis-services-landscape" },
             icon: "o_park",
             show: this.isDev && this.isUserGIS
           },
           {
             label: this.$t("entity.lighting"),
-            action: { name: "services-lighting" },
+            action: { name: "gis-services-light" },
             icon: "o_lightbulb",
-            show: this.isDev && this.isUserGIS
+            show: this.isUserGIS
           },
           {
             label: this.$t("entity.planning"),
-            action: { name: "services-planning" },
+            action: { name: "gis-services-planning" },
             icon: "o_explore",
             show: this.isDev && this.isUserGIS
           },
@@ -73,7 +79,7 @@
               name: "services-apartments"
             },
             icon: "o_person",
-            show: this.isDev && this.$route.query.requestId && this.isUserNature || this.isUserLegal
+            show: (this.isDev && this.isUserNature || this.isUserLegal) && this.$route.query.requestId
           },
           {
             label: this.$t("entity.services.commerce.title"),

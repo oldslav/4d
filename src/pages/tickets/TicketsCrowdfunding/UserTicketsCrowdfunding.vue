@@ -1,10 +1,10 @@
 <template lang="pug">
   div
     BaseTable(
-      v-if="data"
+      v-if="userProjects"
       row-key="id"
       :columns="columns"
-      :data="data"
+      :data="userProjects"
       :loading="isLoading"
       :getData="getUserTickets"
     )
@@ -110,6 +110,10 @@
       ...mapState("user/tickets/crowdfunding", {
         data: state => state.data
       }),
+
+      userProjects () {
+        return this.data ? { ...this.data, items: this.data.items.filter(item => item.author.id === this.$store.getters.getAccount.id) } : null;
+      },
 
       isLoading () {
         return this.$store.state.wait[`user/tickets/crowdfunding/${ GET_USER_TICKETS_CROWDFUNDING }`];

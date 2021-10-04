@@ -7,11 +7,10 @@
         | {{ getMenu.name }}
     q-separator
 
-    q-expansion-item.security-light-expansion-item(
+    q-expansion-item.light-expansion-item(
       v-for="section in getSections"
       :key="section.id"
       :header-style="{ 'fontSize': '16px' }"
-      :disable="hasOneSection"
       :value="section.id === sectionId"
       @show="onShowSection(section.id)"
       default-opened
@@ -20,7 +19,7 @@
     )
       div.row.items-center.full-width(slot="header")
         div.col {{ section.name }}
-        div.col-auto(v-if="canDisplaySectionVisible")
+        div.col-auto
           q-btn(
             @click.stop.prevent="toggleSectionVisibility(section.id)"
             size="12px"
@@ -176,4 +175,7 @@
 
 .layer__list_invisible
   visibility hidden
+
+.light-expansion-item button
+  cursor pointer !important
 </style>

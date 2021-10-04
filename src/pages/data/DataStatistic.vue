@@ -45,7 +45,9 @@
       return store.dispatch(`data/${ GET_DATA_MAIN_PAGE }`);
     },
     mounted () {
-      this.timer = setInterval(() => this.date = new Date(), 1000);
+      this.timer = setInterval(() => {
+        this.date = new Date();
+      }, 1000);
     },
     unmounted () {
       clearInterval(this.timer);
@@ -89,8 +91,8 @@
         ];
       },
       today () {
-        return `${ this.getFormattedTime(this.date.getHours()) }:${ this.getFormattedTime(this.date.getMinutes()) }, 
-								${ this.date.getDate() } ${ this.getMonthName(this.date.getMonth()) }, 
+        return `${ this.getFormattedTime(this.date.getHours()) }:${ this.getFormattedTime(this.date.getMinutes()) },
+								${ this.date.getDate() } ${ this.getMonthName(this.date.getMonth()) },
 								${ this.date.getFullYear() }`;
       },
       isDarkMode () {

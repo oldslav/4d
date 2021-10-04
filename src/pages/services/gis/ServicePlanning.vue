@@ -6,28 +6,31 @@
                  :columns="columns"
                  :data="tableData"
                  :isLoading="isLoading"
-                 :getData="getEstate"
+                 :getData="getData"
                  :pagination="tablePagination"
                  :filter="filters"
                  :expanded.sync="expanded">
         <template #top>
-          <div class="row q-gutter-sm full-width justify-end">
-            <BaseInput
-              v-model="query"
-              disable
-              dense
-              class="col-12 col-sm-6 col-md"
-              :label="$t('common.search')">
-            </BaseInput>
-            <BaseSelect
-              v-if="infrastructureTypes"
-              v-model="categoryId"
-              :options="infrastructureTypes"
-              clearable
-              class="col-12 col-sm-6 col-md-3"
-              label="Тип"
-              dense>
-            </BaseSelect>
+          <div class="row full-width justify-between items-end">
+            <div class="row q-gutter-sm col">
+              <BaseInput
+                v-model="query"
+                dense
+                class="col-12 col-sm-6 col-md"
+                :label="$t('common.search')">
+              </BaseInput>
+              <BaseSelect
+                v-if="infrastructureTypes"
+                v-model="typeId"
+                :options="infrastructureTypes"
+                clearable
+                class="col-12 col-sm-6 col-md-3"
+                :label="$t('common.type')"
+                optionKey="value"
+                optionValue="label"
+                dense>
+              </BaseSelect>
+            </div>
           </div>
         </template>
         <template #body="props">
@@ -39,33 +42,23 @@
             </q-td>
             <q-td key="name" :props="props">
               <span>
-                {{ props.row.house }}
-              </span>
-            </q-td>
-            <q-td key="address" :props="props">
-              <span>
-                {{ `${ props.row.address.street } ${ props.row.address.house || "" }` }}
+                {{ props.row.name }}
               </span>
             </q-td>
             <q-td key="category" :props="props">
               <span>
-                {{ props.row.infrastructureType }}
+                {{ props.row.type.name }}
               </span>
             </q-td>
             <q-td key="updatedAt" :props="props">
               <span>
-                {{ moment(props.row.updatedAt || props.row.createdAt).fromNow() }}
+                {{ moment(props.row.updatedAt || props.row.created).format("DD.MM.YYYY") }}
               </span>
             </q-td>
             <q-td key="menu" :props="props" auto-width>
               <q-btn flat round dense icon="more_vert" @click.stop>
                 <q-menu>
                   <q-list>
-                    <q-item clickable>
-                      <q-item-section no-wrap class="text-red">
-                        {{ $t("action.showOnMap") }}
-                      </q-item-section>
-                    </q-item>
                     <q-item clickable>
                       <q-item-section no-wrap @click="toDetails(props.row.id)">
                         {{ $t("action.details") }}
@@ -81,24 +74,24 @@
     </q-page>
   </transition>
   <transition v-else name="fade" mode="out-in">
-    <EstateDetails :id="currentRowId"></EstateDetails>
+    <ServiceTransportDetails :id="currentRowId"></ServiceTransportDetails>
   </transition>
 </template>
 
 <script>
-  import BaseTable from "../../components/common/BaseTable";
+  import BaseTable from "@/components/common/BaseTable";
   import { mapActions, mapGetters, mapState } from "vuex";
-  import { mapFields } from "../../plugins/mapFields";
-  import { UPDATE_FILTERS, UPDATE_PAGINATION } from "../../store/constants/mutation-constants";
-  import { GET_DATA, GET_REFERENCES } from "../../store/constants/action-constants";
+  import { mapFields } from "@/plugins/mapFields";
+  import { UPDATE_FILTERS, UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
+  import { GET_DATA, GET_REFERENCES } from "@/store/constants/action-constants";
   import moment from "moment";
-  import BaseSelect from "../../components/common/BaseSelect";
-  import BaseInput from "../../components/common/BaseInput";
-  import EstateDetails from "../../components/services/estate/EstateDetails";
+  import BaseSelect from "@/components/common/BaseSelect";
+  import BaseInput from "@/components/common/BaseInput";
+  import ServiceTransportDetails from "@/components/services/transport/ServiceTransportDetails";
 
   export default {
-    name: "ServiceEstate",
-    components: { EstateDetails, BaseInput, BaseSelect, BaseTable },
+    name: "ServicePlanning",
+    components: { ServiceTransportDetails, BaseInput, BaseSelect, BaseTable },
     async created () {
       await this.GET_REFERENCES();
       await this.GET_DATA();
@@ -118,12 +111,6 @@
             name: "name",
             required: true,
             label: this.$t("common.nameOf"),
-            align: "left"
-          },
-          {
-            name: "address",
-            required: true,
-            label: this.$t("common.address"),
             align: "left"
           },
           {
@@ -147,23 +134,23 @@
       };
     },
     computed: {
-      ...mapState("services/estate", {
+      ...mapState("services/planning", {
         filters: state => state.filters
       }),
 
-      ...mapGetters("services/estate", [
+      ...mapGetters("services/planning", [
         "tablePagination",
         "tableData",
         "infrastructureTypes"
       ]),
 
-      ...mapFields("services/estate", {
-        fields: ["categoryId", "query"],
+      ...mapFields("services/planning", {
+        fields: ["typeId", "query"],
         base: "filters",
         mutation: UPDATE_FILTERS
       }),
 
-      ...mapFields("services/estate", {
+      ...mapFields("services/planning", {
         fields: ["limit", "offset"],
         base: "pagination",
         mutation: UPDATE_PAGINATION
@@ -174,27 +161,27 @@
       },
 
       isLoading () {
-        return this.$store.state.wait[`services/estate/${ GET_DATA }`];
+        return this.$store.state.wait[`services/planning/${ GET_DATA }`];
       }
     },
     methods: {
       moment,
 
-      ...mapActions("services/estate", {
+      ...mapActions("services/planning", {
         GET_DATA,
         GET_REFERENCES
       }),
 
       toDetails (id) {
         this.$router.push({
-          name: "services-estate-details",
+          name: "gis-services-planning-details",
           params: {
             id
           }
         });
       },
 
-      async getEstate (props) {
+      async getData (props) {
         if (props) {
           const { pagination: { page, rowsPerPage } } = props;
 
