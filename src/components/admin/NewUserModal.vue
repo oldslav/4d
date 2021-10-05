@@ -133,7 +133,8 @@
           await this.REGISTER_EMPLOYEE({ ...user, roles });
           this.$emit("success");
         } catch (e) {
-          this.$emit("fail");
+          const message = e.response.data.message || null;
+          this.$emit("fail", message);
         }
         this.toggleModal(false);
       },

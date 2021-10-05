@@ -89,7 +89,7 @@
     NewUserModal(
       v-model="isNewUserModal"
       @success="registerSuccess()"
-      @fail="registerFail()"
+      @fail="registerFail"
       :employee-roles="employeeRoles"
     )
 </template>
@@ -309,10 +309,10 @@
         return this.getUsers();
       },
 
-      registerFail () {
+      registerFail (message) {
         this.$q.notify({
           type: "negative",
-          message: this.$t("common.register.messages.fail")
+          message: message || this.$t("common.register.messages.fail")
         });
       },
 
