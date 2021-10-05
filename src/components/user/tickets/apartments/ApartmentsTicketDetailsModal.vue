@@ -13,16 +13,44 @@
         q-btn(icon="close" flat round dense v-close-popup)
       q-card-section
         .text-medium.q-mb-sm
-          | {{ $t("entity.services.mainInfo") }}
+          | {{ getCurrentTicket.isJuristic ? "Данные юр. лица" : $t("entity.services.mainInfo") }}
+        template(v-if="getCurrentTicket.isJuristic")
+          .row.q-col-gutter-sm
+            .col-12
+              q-input(readonly :label="$t('user.companyName')" :value="getCurrentTicket.companyName" borderless)
+          .q-mb-sm(v-for="(type, i) in Object.keys(companyDocuments)" :key="i")
+            .text-small.text-primary-light(v-if="companyDocuments[type].length > 0")
+              | {{ $t(`entity.files.${type}`) }}
+            DownloaderInput(v-for="(file, j) in companyDocuments[type]" :value="file" :key="j")
+        template(v-else)
+          .row.q-col-gutter-sm
+            .col-12.col-md-4
+              q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.name.last" borderless)
+            .col-12.col-md-4
+              q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.name.first" borderless)
+            .col-12.col-md-4
+              q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
+
+      q-separator
+
+      q-card-section(v-if="getCurrentTicket.isJuristic")
+        .text-medium.q-mb-sm
+          | Информация о проживающем
         .row.q-col-gutter-sm
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.name.last" borderless)
+            q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.author.name.last" borderless)
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.name.first" borderless)
+            q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.author.name.first" borderless)
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
+            q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.author.name.patronymic" v-if="!!getCurrentTicket.author.name.patronymic" borderless)
+          .col-12.col-md-4
+            q-input(readonly :label="$t('common.position')" :value="getCurrentTicket.jobPosition" borderless)
+        .q-mb-sm(v-for="(type, i) in Object.keys(userDocuments)" :key="i")
+          .text-small.text-primary-light(v-if="userDocuments[type].length > 0")
+            | {{ $t(`entity.files.${type}`) }}
+          DownloaderInput(v-for="(file, j) in userDocuments[type]" :value="file" :key="j")
 
-      q-card-section
+      q-card-section(v-if="!getCurrentTicket.isJuristic")
         .q-mb-sm(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
           .text-small.text-primary-light
             | {{ $t(`entity.files.${type}`) }}
@@ -108,6 +136,25 @@
       },
       loadingTicket () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`];
+      },
+      companyDocuments () {
+        if (this.getCurrentTicket.isJuristic) return {
+          inn_jur: this.getCurrentTicket.documents.inn_jur || null,
+          ogrn: this.getCurrentTicket.documents.ogrn || null,
+          egrjul: this.getCurrentTicket.documents.egrjul || null,
+          partner_card: this.getCurrentTicket.documents.partner_card || null
+        };
+        return null;
+      },
+      userDocuments () {
+        if (this.getCurrentTicket.isJuristic) return {
+          consent_processing_personal_data: this.getCurrentTicket.documents.consent_processing_personal_data || null,
+          passport: this.getCurrentTicket.documents.passport || null,
+          inn: this.getCurrentTicket.documents.inn || null,
+          job: this.getCurrentTicket.documents.job || null,
+          job_petition: this.getCurrentTicket.documents.job_petition || null
+        };
+        return null;
       }
     },
     methods: {
