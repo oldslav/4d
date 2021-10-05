@@ -19,6 +19,8 @@
   import DataCarousel from "@/components/data/DataCarousel.vue";
   import DataMainSection from "@/components/data/DataMainSection.vue";
   import BtnBack from "@/components/data/BtnBack.vue";
+  import { GET_DATA_TERRITORY } from "@/store/constants/action-constants";
+  import { mapGetters } from "vuex";
 
   export default {
     name: "DataTerritory",
@@ -27,44 +29,50 @@
       DataMainSection,
       BtnBack
     },
+    preFetch ({ store }) {
+      return store.dispatch(`data/${ GET_DATA_TERRITORY }`);
+    },
     computed: {
+      ...mapGetters("data", [
+        "getTerritory"
+      ]),
       cards () {
         return [
           {
             name: this.$t("entity.data.territory.territoryGP"),
             icon: "territory/square.svg",
-            data: "test",
+            data: `${ this.getTerritory.gpArea.gpArea } ${ this.$t("entity.data.abbrs.ha") }`,
             leftSectionName: this.$t("entity.data.territory.builtUp"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getTerritory.gpArea.builtUp } ${ this.$t("entity.data.abbrs.ha") }`,
             rightSectionName: this.$t("entity.data.territory.available"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getTerritory.gpArea.available } ${ this.$t("entity.data.abbrs.ha") }`
           },
           {
             name: this.$t("entity.data.territory.residentialPZZ"),
             icon: "territory/square.svg",
-            data: "test",
+            data: `${ this.getTerritory.pzzArea.pzzArea } ${ this.$t("entity.data.abbrs.ha") }`,
             leftSectionName: this.$t("entity.data.territory.public"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getTerritory.pzzArea.commonBusiness } ${ this.$t("entity.data.abbrs.ha") }`,
             rightSectionName: this.$t("entity.data.territory.recreational"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getTerritory.pzzArea.recreationalAssignment } ${ this.$t("entity.data.abbrs.ha") }`
           },
           {
             name: this.$t("entity.data.territory.residentialPPT"),
             icon: "territory/square.svg",
-            data: "test",
+            data: `${ this.getTerritory.pptArea.pptArea } ${ this.$t("entity.data.abbrs.ha") }`,
             leftSectionName: this.$t("entity.data.territory.technopark"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getTerritory.pptArea.technopark } ${ this.$t("entity.data.abbrs.ha") }`,
             rightSectionName: this.$t("entity.data.territory.publicCenter"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getTerritory.pptArea.commonCenter } ${ this.$t("entity.data.abbrs.ha") }`
           },
           {
             name: this.$t("entity.data.territory.masteredGP"),
             icon: "territory/mastered.svg",
-            data: "test",
+            data: `${ this.getTerritory.gpLandsMastered.gpLandsMastered } %`,
             leftSectionName: this.$t("entity.data.territory.projectPopulation"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getTerritory.gpLandsMastered.projectPopulation } %`,
             rightSectionName: this.$t("entity.data.territory.population"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getTerritory.gpLandsMastered.actualPopulation } %`
           }
         ];
       }

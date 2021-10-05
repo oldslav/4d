@@ -14,13 +14,13 @@
         :today="today"
       )
 
-    .q-mx-md.q-my-lg
-      .row.q-mt-sm.q-col-gutter-md
+    .q-mx-md.q-mt-lg.q-py-sm   
+      .row.q-col-gutter-md
         .col-12.col-sm-6.col-lg-3(
           v-for="(card, index) in cards"
           :key="index"
         )
-          q-card.overflow-hidden.text-center.q-pa-md.row.column.full-height
+          q-card.bg-card2.overflow-hidden.text-center.q-pa-md.row.column.full-height
             .col-auto
               img.data-statistic__card-img(
                 :src="require(`@/assets/svg/data/${ card.icon }`)"
@@ -71,22 +71,22 @@
           {
             name: this.$t("entity.data.crads.newObject"),
             data: "test",
-            icon: "newObject.svg"
+            icon: this.isDarkMode ? "newObjectDark.svg" : "newObject.svg"
           },
           {
             name: this.$t("entity.data.crads.newIdeas"),
             data: `+ ${ this.getNewIdeas }`,
-            icon: "newIdeas.svg"
+            icon: this.isDarkMode ? "newIdeasDark.svg" : "newIdeas.svg"
           },
           {
             name: this.$t("entity.data.crads.newProblems"),
             data: `+ ${ this.getNewProblems }`,
-            icon: "newProblems.svg"
+            icon: this.isDarkMode ? "newProblemsDark.svg" : "newProblems.svg"
           },
           {
             name: this.$t("entity.data.crads.bicycleForRent"),
             data: `${ this.getBicycleForRent } шт`,
-            icon: "bicycleForRent.svg"
+            icon: this.isDarkMode ? "bicycleForRentDark.svg" : "bicycleForRent.svg"
           }
         ];
       },
@@ -94,6 +94,9 @@
         return `${ this.getFormattedTime(this.date.getHours()) }:${ this.getFormattedTime(this.date.getMinutes()) },
 								${ this.date.getDate() } ${ this.getMonthName(this.date.getMonth()) },
 								${ this.date.getFullYear() }`;
+      },
+      isDarkMode () {
+        return this.$q.dark.isActive;
       }
     },
     methods: {

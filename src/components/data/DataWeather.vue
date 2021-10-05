@@ -6,7 +6,7 @@
       '--snow': precipitation(0).type === 2, \
     }"
   )
-    .weather__today.row.column.justify-center.items-center.text-center(
+    .weather__today.column.justify-center.items-center.text-center(
       :class="{ \
         '--dry': precipitation(0).type === 0, \
         '--rain': precipitation(0).type === 1, \
@@ -30,7 +30,7 @@
           .col.text-no-wrap
             | {{ $t("entity.data.weather.precipitationNumber") }}
           .col.weather__today-data.q-ml-sm-xl
-            | {{ weather[Object.keys(weather)[0]].precipitationIntensity }} мм/ч
+            | {{ weather[Object.keys(weather)[0]].precipitationIntensity }} {{ this.$t("entity.data.abbrs.mmh") }}
         .row.q-my-sm-xs.gt-xs
           .col.text-no-wrap
             | {{ $t("entity.data.weather.humidity") }}
@@ -40,27 +40,27 @@
           .col.text-no-wrap
             | {{ $t("entity.data.weather.airPressure") }}
           .col.weather__today-data
-            | {{ weather[Object.keys(weather)[0]].airPressure }} мм рт. ст.
+            | {{ weather[Object.keys(weather)[0]].airPressure }} {{ this.$t("entity.data.abbrs.mmhg") }}
         .row.q-my-sm-xs.gt-xs
           .col.text-no-wrap
             | {{ $t("entity.data.weather.windVelocity") }}
           .col.weather__today-data
-            | {{ weather[Object.keys(weather)[0]].windVelocity }} м/с
+            | {{ weather[Object.keys(weather)[0]].windVelocity }} {{ this.$t("entity.data.abbrs.ms") }}
 
-    q-card.weather__dates.q-px-md.q-px-sm-lg.q-py-sm
+    q-card.bg-card2.weather__dates.q-px-md.q-px-sm-lg.q-py-sm
       .lt-sm.row.q-my-md
         .col
           div
             .weather__info-name {{ $t("entity.data.weather.precipitation") }}
-            div {{ weather[Object.keys(weather)[0]].precipitationIntensity }} мм/ч
+            div {{ weather[Object.keys(weather)[0]].precipitationIntensity }} {{ this.$t("entity.data.abbrs.mmh") }}
 
           .q-mt-sm
             .weather__info-name {{ $t("entity.data.weather.windVelocity") }}
-            div {{ weather[Object.keys(weather)[0]].windVelocity }} м/с
+            div {{ weather[Object.keys(weather)[0]].windVelocity }} {{ this.$t("entity.data.abbrs.ms") }}
           
           .q-mt-sm
             .weather__info-name {{ $t("entity.data.weather.airPressure") }}
-            div {{ weather[Object.keys(weather)[0]].airPressure }} мм рт. ст.
+            div {{ weather[Object.keys(weather)[0]].airPressure }} {{ this.$t("entity.data.abbrs.mmhg") }}
         .col
           div
             .weather__info-name {{ $t("entity.data.weather.humidity") }}
@@ -68,7 +68,7 @@
           
           .q-mt-sm
             .weather__info-name {{ $t("entity.data.weather.windDirection") }}
-            div {{ weather[Object.keys(weather)[0]].windVelocity }} %
+            div {{ weather[Object.keys(weather)[0]].windVelocity }} (!)
       q-separator.lt-sm
 
       .weather__per-day.q-mt-sm.q-mb-xs.q-mb-sm-sm
@@ -236,6 +236,8 @@
 
     &__dates
       box-shadow none
+      border-top-left-radius 0
+      border-top-right-radius 0
 
       @media (min-width $breakpoint-sm-min)
         line-height 1.5
