@@ -940,7 +940,8 @@
       "ogrn": "Скан-копия ОГРН",
       "egrjul": "Скан-копия выписки из ЕГРЮЛ",
       "partner_card": "Скан-копия карты партнера",
-      "parkingRegulations": "Регламент пользования подземной парковкой"
+      "parkingRegulations": "Регламент пользования подземной парковкой",
+      "payment_confirm": "Payment confirm"
     },
     "tickets": {
       "title": "Tickets",

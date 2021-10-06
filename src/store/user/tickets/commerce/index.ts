@@ -10,7 +10,7 @@ import {
   GET_COMPANY_COMMERCE_TICKET,
   GET_COMPANY_COMMERCE_TICKETS, GET_EMPLOYEE_COMMERCE_TICKET,
   GET_EMPLOYEE_COMMERCE_TICKETS, REJECT_TICKET_COMMERCE,
-  REQUEST_APPROVAL_COMMERCE, SIGN_CONTRACT_COMMERCE
+  REQUEST_APPROVAL_COMMERCE, SEND_COMMERCE_PAYMENT, SIGN_CONTRACT_COMMERCE
 } from "src/store/constants/action-constants";
 
 const state = (): IUserTicketsState => ({
@@ -103,6 +103,10 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 
   [SIGN_CONTRACT_COMMERCE] (_, id) {
     return this.service.user.tickets.sendContractInfoCommerce(id);
+  },
+
+  [SEND_COMMERCE_PAYMENT] (_, id) {
+    return this.service.user.tickets.approveCommercePayment(id);
   }
 };
 

@@ -41,11 +41,17 @@
                   q-item(clickable v-close-popup @click="openDetails(props.row.id)")
                     q-item-section(no-wrap)
                       | {{ $t("user.tickets.actions.details") }}
-        q-tr(v-show="props.expand" :props="props")
+        q-tr(v-show="props.expand" :props="props").bg-blue
           q-td(colspan="100%").is-paddingless
             div.column(v-if="props.row.status.id === 2").q-pa-md
               div.text-body1.text-wrap
                 | Дождитесь рассмотрения вашей заявки
+            .row(v-if="props.row.status.id === 3").q-pa-md
+              .col-6.offset-6
+                .text-body-1.text-wrap
+                  | Оплатите услугу.
+                div.text-right.q-mt-md
+                  q-btn(color="primary" @click="onPay(props.row.id)" :label="$t('action.pay')" :loading="loadingPayment")
             div.column(v-if="props.row.status.id === 7").q-pa-md.q-col-gutter-md
               div.text-body1.text-wrap
                 | Ваш договор готов к подписанию!
@@ -67,7 +73,7 @@
   import {
     CANCEL_TICKET_COMMERCE,
     DELETE_TICKET_COMMERCE,
-    GET_COMPANY_COMMERCE_TICKETS
+    GET_COMPANY_COMMERCE_TICKETS, SEND_COMMERCE_PAYMENT
   } from "@/store/constants/action-constants";
   import { UPDATE_PAGINATION } from "@/store/constants/mutation-constants";
   import BaseTable from "components/common/BaseTable";
@@ -127,10 +133,13 @@
       }),
       isLoading () {
         return this.$store.state.wait[`user/tickets/commerce/${ GET_COMPANY_COMMERCE_TICKETS }`] || this.$store.state.wait[`user/tickets/commerce/${ DELETE_TICKET_COMMERCE }`];
+      },
+      loadingPayment () {
+        return this.$store.state.wait[`user/tickets/commerce/${ SEND_COMMERCE_PAYMENT }`];
       }
     },
     methods: {
-      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKETS, CANCEL_TICKET_COMMERCE, DELETE_TICKET_COMMERCE]),
+      ...mapActions("user/tickets/commerce", [GET_COMPANY_COMMERCE_TICKETS, CANCEL_TICKET_COMMERCE, DELETE_TICKET_COMMERCE, SEND_COMMERCE_PAYMENT]),
       async getCompanyTickets (props) {
         if (props) {
           const { pagination: { page, rowsPerPage } } = props;
@@ -197,6 +206,17 @@
       },
       toServiceCommerce () {
         this.$router.push({ name: "services-commerce" });
+      },
+      async onPay (id) {
+        try {
+          await this.SEND_COMMERCE_PAYMENT(id);
+          await this.getCompanyTickets();
+        } catch (e) {
+          this.$q.notify({
+            type: "negative",
+            message: "Произошла ошибка"
+          });
+        }
       }
     }
   };

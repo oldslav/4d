@@ -310,4 +310,12 @@ export class TicketsService extends Service {
   public sendContractInfoCommerce (ticketId: number): AxiosPromise<TicketResponse> {
     return this.api.put(`/api/v1/services/commerce/employee/tickets/${ ticketId }/sign_contract_success`);
   }
+
+  public approveCommercePayment (ticketId: number): AxiosPromise<any> {
+    return this.api.post(`/api/v1/services/commerce/company/tickets/${ ticketId }/payment`, null, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
 }
