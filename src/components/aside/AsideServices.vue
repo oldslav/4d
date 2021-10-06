@@ -24,10 +24,17 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+  import { mapGetters, mapMutations } from "vuex";
+  import { SET_EMPTY } from "../../store/constants/mutation-constants";
 
   export default {
     name: "AsideServices",
+    beforeRouteUpdate (to, from, next) {
+      if (to.name === "services" && from.meta.map) {
+        this.SET_EMPTY();
+      }
+      next();
+    },
     computed: {
       ...mapGetters(["isUserNature", "isUserLegal", "isUserGIS", "isEmployee", "isDev"]),
 
@@ -147,6 +154,11 @@
           }
         ];
       }
+    },
+    methods: {
+      ...mapMutations("services", [
+        SET_EMPTY
+      ])
     }
   };
 </script>

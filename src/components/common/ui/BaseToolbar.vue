@@ -95,7 +95,8 @@
           {
             name: "design",
             label: this.$t("entity.design"),
-            icon: "list_alt"
+            icon: "list_alt",
+            hide: this.isMobile
           },
           {
             name: "services",

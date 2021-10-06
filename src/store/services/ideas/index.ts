@@ -16,6 +16,7 @@ import {
   UPDATE_STATUS, UPDATE_VOTE, UPLOAD_IMAGES
 } from "src/store/constants/action-constants";
 import comments from "src/store/services/ideas/comments";
+import { merge } from "lodash";
 
 const initialState = (): IUserTicketsState => {
   return {
@@ -62,14 +63,15 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
   async [GET_DATA] ({ state, commit }, { isSet = false, params = {} }) {
     const { filters, pagination: { limit, offset } } = state;
 
-    const { data } = await this.service.services.ideas.getIdeas({
-      filters: {
-        ...filters
+    const { data } = await this.service.services.ideas.getIdeas(merge(
+      {},
+      {
+        filters,
+        limit,
+        offset: offset - 1
       },
-      limit,
-      offset: offset - 1,
-      ...params
-    });
+      params
+    ));
 
     if (isSet || !state.data) commit(SET_DATA, data);
     else commit(UPDATE_DATA, data);
