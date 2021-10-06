@@ -47,16 +47,23 @@
               div.text-body1.text-wrap
                 | Дождитесь рассмотрения вашей заявки
             .row(v-if="props.row.status.id === 3").q-pa-md
-              .col-6.offset-6
+              .col-6.text-body1
+                | Вы можете ознакомиться с образцом договора.
+                DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
+              .col-6
                 .text-body-1.text-wrap
                   | Оплатите услугу.
                 div.text-right.q-mt-md
                   q-btn(color="primary" @click="onPay(props.row.id)" :label="$t('action.pay')" :loading="loadingPayment")
-            div.column(v-if="props.row.status.id === 7").q-pa-md.q-col-gutter-md
-              div.text-body1.text-wrap
-                | Ваш договор готов к подписанию!
-              div.text-body1.text-wrap
-                | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
+            .row(v-if="props.row.status.id === 7").q-pa-md.q-col-gutter-md
+              .col-6.text-body1
+                | Вы можете ознакомиться с образцом договора.
+                DownloadTemplate(name="Образец договора" :path="templatePath" style="max-width: 50%")
+              .col-6.text-body1.text-wrap
+                div
+                  | Ваш договор готов к подписанию!
+                div
+                  | Вам необходимо подойти в “Фонд развития города Иннополис” для подписания договора и получения ключей.
             ValidContractState(
               :contract="props.row.contract"
               v-if="props.row.status.id === 8"
@@ -80,10 +87,11 @@
   import CommerceTicketDetailsModal from "components/user/tickets/commerce/CommerceTicketDetailsModal";
   import CommerceTicketStatus from "components/user/tickets/commerce/CommerceTicketStatus";
   import ValidContractState from "components/user/tickets/ValidContractState";
+  import DownloadTemplate from "components/user/tickets/DownloadTemplate";
 
   export default {
     name: "TicketsCommerceCompany",
-    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable, ValidContractState },
+    components: { CommerceTicketStatus, CommerceTicketDetailsModal, BaseTable, ValidContractState, DownloadTemplate },
     async created () {
       await this.getCompanyTickets();
     },
@@ -136,6 +144,9 @@
       },
       loadingPayment () {
         return this.$store.state.wait[`user/tickets/commerce/${ SEND_COMMERCE_PAYMENT }`];
+      },
+      templatePath () {
+        return "/uploads/templates/commerce_contract_template.pdf";
       }
     },
     methods: {
