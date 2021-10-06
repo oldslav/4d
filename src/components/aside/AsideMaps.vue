@@ -27,6 +27,12 @@
 
   export default {
     name: "AsideMaps",
+    beforeRouteUpdate (to, from, next) {
+      if (to.name === "services" && from.meta.map) {
+        this.SET_EMPTY();
+      }
+      next();
+    },
     computed: {
       ...mapGetters(["isUserGIS", "isEmployee"]),
       meta () {

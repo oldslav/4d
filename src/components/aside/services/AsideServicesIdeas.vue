@@ -23,7 +23,7 @@
         optionValue="id"
         hideBottom
         dense
-      ).col
+      ).col-12
       BaseSelect(
         clearable
         v-model="typeId"
@@ -34,7 +34,7 @@
         optionValue="id"
         hideBottom
         dense
-      ).col
+      ).col-12
     .column.col.q-ma-lg.overflow-auto
       q-infinite-scroll(
         :offset="50"
@@ -184,7 +184,7 @@
             isSet: true,
             params: {
               filters: {
-                statusId: this.isEmployee ? null : [2, 3, 4, 6]
+                statusId: this.isEmployee ? null : this.statusId
               }
             }
           });
