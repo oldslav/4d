@@ -5,34 +5,36 @@
 				.data-carousel__arrow--prev
 					img(:src="require('@/assets/svg/data/arrowLeft.svg')")
 
-			q-card.data-carousel__card.q-pa-md.full-height.text-center(
+			q-card.bg-card2.data-carousel__card.q-pa-md.text-center(
 				v-for="(card, index) in list"
 				:key="index"
 			)
-				.col-grow.row.column.justify-center.items-center
+				.column.justify-between.full-height
 					.col-auto
-						img(:src="require(`@/assets/svg/data/${ card.icon }`)")
-					.col-auto
-						| {{ card.data }}
-					.col-grow.row.justify-center.items-center
-						| {{ card.name }}
+						.column.justify-center.full-height
+							.col-auto
+								img(:src="require(`@/assets/svg/data/${ card.icon }`)")
+							.col-auto.text-h6
+								| {{ card.data }}
+							.col-auto(:class="{'data-carousel__small-text': card.isSmall}")
+								| {{ card.name }}
+						q-separator.q-my-sm
+						
+					.col-3
+						.row.items-center.full-height
+							.col
+								div
+									| {{ card.leftSectionData }}
+								div.data-carousel__small-text.text-grey-7
+									| {{ card.leftSectionName }}
 
-				q-separator.q-my-sm
-
-				.col-auto.row
-					.col.row.column.justify-center.items-center
-						div
-							| {{ card.leftSectionData }}
-						div.data-carousel__small-text
-							| {{ card.leftSectionName }}
-
-					q-separator(vertical)
-					
-					.col.row.column.justify-center.items-center
-						div
-							| {{ card.rightSectionData }}
-						div.data-carousel__small-text
-							| {{ card.rightSectionName }}
+							q-separator(vertical)
+								
+							.col
+								div
+									| {{ card.rightSectionData }}
+								div.data-carousel__small-text.text-grey-7
+									| {{ card.rightSectionName }}
 			
 			template(#nextArrow)
 				.data-carousel__arrow--next
@@ -61,23 +63,33 @@
         settings: {
           infinite: false,
           slidesToShow: 4,
+					swipeToSlide: true,
           responsive: [
             {
-              breakpoint: 1600,
+              breakpoint: 1875,
               settings: {
                 slidesToShow: 3
               }
             },
             {
-              breakpoint: 1300,
+              breakpoint: 1515,
               settings: {
                 slidesToShow: 2
               }
             },
             {
-              breakpoint: 550,
-              settings: "unslick",
-              adaptiveHeight: true
+              breakpoint: 1150,
+              settings: "unslick"
+            },
+						{
+              breakpoint: 1123,
+              settings: {
+                slidesToShow: 2
+              }
+            },
+						{
+              breakpoint: 750,
+              settings: "unslick"
             }
           ]
         }
@@ -89,9 +101,8 @@
 <style lang="stylus">
 	.data-carousel
 		&__card
+			height 232px
 			margin 0 $space-base
-			display flex!important
-			flex-direction column
 
 			&:not(:first-of-type)
 				margin-top $space-base

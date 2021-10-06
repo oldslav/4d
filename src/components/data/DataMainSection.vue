@@ -1,5 +1,5 @@
 <template lang="pug">
-	q-card.main-section
+	q-card.bg-card2.main-section
 		.main-section__row.row
 			.col.q-pa-md
 				slot(name="left")

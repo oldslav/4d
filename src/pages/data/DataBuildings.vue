@@ -43,74 +43,74 @@
           {
             name: this.$t("entity.data.buildings.squareBuildings"),
             icon: "buildings/square.svg",
-            data: `${ this.getObjectsInfo.livingArea.livingArea } ${ this.$t("entity.data.sqm") }`,
+            data: `${ this.getObjectsInfo.livingArea.livingArea } ${ this.$t("entity.data.abbrs.sqm") }`,
             leftSectionName: this.$t("entity.data.buildings.MKD"),
-            leftSectionData: `${ this.getObjectsInfo.livingArea.apartmentsBuildings } ${ this.$t("entity.data.sqm") }`,
+            leftSectionData: `${ this.getObjectsInfo.livingArea.apartmentsBuildings } ${ this.$t("entity.data.abbrs.sqm") }`,
             rightSectionName: this.$t("entity.data.buildings.townhouses"),
-            rightSectionData: `${ this.getObjectsInfo.livingArea.townhouses } ${ this.$t("entity.data.sqm") }`
+            rightSectionData: `${ this.getObjectsInfo.livingArea.townhouses } ${ this.$t("entity.data.abbrs.sqm") }`
           },
           {
-            name: this.$t("entity.data.buildings.squareCommercial"),
-            icon: "buildings/square.svg",
-            data: `${ this.getObjectsInfo.commerceArea.commerceArea } ${ this.$t("entity.data.sqm") }`,
-            leftSectionName: this.$t("entity.data.buildings.busy"),
-            leftSectionData: `${ this.getObjectsInfo.commerceArea.busy } ${ this.$t("entity.data.sqm") }`,
-            rightSectionName: this.$t("entity.data.buildings.free"),
-            rightSectionData: "data"
-          },
-          {
-            name: this.$t("entity.data.buildings.squareOffice"),
-            icon: "buildings/square.svg",
-            data: "test",
-            leftSectionName: this.$t("entity.data.buildings.busy"),
-            leftSectionData: "data",
-            rightSectionName: this.$t("entity.data.buildings.free"),
-            rightSectionData: "data"
-          },
+						name: this.$t("entity.data.buildings.squareCommercial"),
+						icon: "buildings/square.svg",
+						data: `${ this.getObjectsInfo.commerceArea.commerceArea } ${ this.$t("entity.data.abbrs.sqm") }`,
+						leftSectionName: this.$t("entity.data.buildings.busy"),
+						leftSectionData: `${ this.getObjectsInfo.commerceArea.busy } ${ this.$t("entity.data.abbrs.sqm") }`,
+						rightSectionName: this.$t("entity.data.buildings.free"),
+						rightSectionData: `${ this.getObjectsInfo.commerceArea.free } ${ this.$t("entity.data.abbrs.sqm") }`
+					},
+					{
+						name: this.$t("entity.data.buildings.squareOffice"),
+						icon: "buildings/square.svg",
+						data: `${ this.getObjectsInfo.officeArea.officeArea } ${ this.$t("entity.data.abbrs.sqm") }`,
+						leftSectionName: this.$t("entity.data.buildings.busy"),
+						leftSectionData: `${ this.getObjectsInfo.officeArea.busy } ${ this.$t("entity.data.abbrs.sqm") }`,
+						rightSectionName: this.$t("entity.data.buildings.free"),
+						rightSectionData: `${ this.getObjectsInfo.officeArea.free } ${ this.$t("entity.data.abbrs.sqm") }`
+					},
           {
             name: this.$t("entity.data.buildings.organizations"),
             icon: "buildings/organizations.svg",
-            data: "test",
+            data: this.getObjectsInfo.organization.organization,
             leftSectionName: this.$t("entity.data.buildings.commercial"),
-            leftSectionData: "data",
+            leftSectionData: this.getObjectsInfo.organization.commerce,
             rightSectionName: this.$t("entity.data.buildings.service"),
-            rightSectionData: "data"
+            rightSectionData: this.getObjectsInfo.organization.service
           },
           {
             name: this.$t("entity.data.buildings.offices"),
             icon: "buildings/organizations.svg",
-            data: "test",
+            data: this.getObjectsInfo.technoparkOffices.technoparkOffices,
             leftSectionName: this.$t("entity.data.buildings.forEvents"),
-            leftSectionData: "data",
+            leftSectionData: this.getObjectsInfo.technoparkOffices.eventHalls,
             rightSectionName: this.$t("entity.data.buildings.cafes"),
-            rightSectionData: "data"
+            rightSectionData: this.getObjectsInfo.technoparkOffices.caffe
           },
           {
             name: this.$t("entity.data.buildings.squareSocial"),
             icon: "buildings/square.svg",
-            data: "test",
+            data: `${ this.getObjectsInfo.socialArea.socialArea } ${ this.$t("entity.data.abbrs.sqm") }`,
             leftSectionName: this.$t("entity.data.buildings.education"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getObjectsInfo.socialArea.educational } ${ this.$t("entity.data.abbrs.sqm") }`,
             rightSectionName: this.$t("entity.data.buildings.leisure"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getObjectsInfo.socialArea.leisure } ${ this.$t("entity.data.abbrs.sqm") }`
           },
           {
             name: this.$t("entity.data.buildings.averageFloor"),
             icon: "buildings/floor.svg",
-            data: "test",
+            data: `${ this.getObjectsInfo.avgFloor.avgFloor } ${ this.$t("entity.data.abbrs.floor") }`,
             leftSectionName: this.$t("entity.data.buildings.min"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getObjectsInfo.avgFloor.min } ${ this.$t("entity.data.abbrs.floor") }`,
             rightSectionName: this.$t("entity.data.buildings.max"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getObjectsInfo.avgFloor.max } ${ this.$t("entity.data.abbrs.floor") }`
           },
           {
             name: this.$t("entity.data.buildings.flats"),
             icon: "buildings/flat.svg",
-            data: "test",
+            data: this.getObjectsInfo.apartments.apartments,
             leftSectionName: this.$t("entity.data.buildings.room1"),
-            leftSectionData: "data",
+            leftSectionData: this.getObjectsInfo.apartments.oneRoom,
             rightSectionName: this.$t("entity.data.buildings.room2"),
-            rightSectionData: "data"
+            rightSectionData: this.getObjectsInfo.apartments.twoRoom
           }
         ];
       }

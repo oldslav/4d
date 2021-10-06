@@ -19,6 +19,8 @@
   import DataCarousel from "@/components/data/DataCarousel.vue";
   import DataMainSection from "@/components/data/DataMainSection.vue";
   import BtnBack from "@/components/data/BtnBack.vue";
+  import { GET_DATA_LIGHTING } from "@/store/constants/action-constants";
+  import { mapGetters } from "vuex";
 
   export default {
     name: "DataLighting",
@@ -27,44 +29,50 @@
       DataMainSection,
       BtnBack
     },
+    preFetch ({ store }) {
+      return store.dispatch(`data/${ GET_DATA_LIGHTING }`);
+    },
     computed: {
+      ...mapGetters("data", [
+        "getLighting"
+      ]),
       cards () {
         return [
           {
             name: this.$t("entity.data.lighting.flashlights"),
             icon: "lighting/flashlight.svg",
-            data: "test",
+            data: this.getLighting.lanternsInCity.lanternsInCity,
             leftSectionName: this.$t("entity.data.lighting.alongRoads"),
-            leftSectionData: "data",
+            leftSectionData: this.getLighting.lanternsInCity.alongRoads,
             rightSectionName: this.$t("entity.data.lighting.inResidential"),
-            rightSectionData: "data"
+            rightSectionData: this.getLighting.lanternsInCity.inResidentialAreas
           },
           {
             name: this.$t("entity.data.lighting.lamps"),
             icon: "lighting/lamp.svg",
-            data: "test",
+            data: `${ this.getLighting.fixtures.fixtures } ${ this.$t("entity.data.abbrs.types") }`,
             leftSectionName: this.$t("entity.data.lighting.flashlightWord"),
-            leftSectionData: "data",
+            leftSectionData: `${ this.getLighting.fixtures.lanterns } ${ this.$t("entity.data.abbrs.types") }`,
             rightSectionName: this.$t("entity.data.lighting.backlight"),
-            rightSectionData: "data"
+            rightSectionData: `${ this.getLighting.fixtures.backlights } ${ this.$t("entity.data.abbrs.types") }`
           },
           {
             name: this.$t("entity.data.lighting.lightsInPark"),
             icon: "lighting/icon-tree.svg",
-            data: "test",
+            data: this.getLighting.lanternsInPark.lanternsInPark,
             leftSectionName: this.$t("entity.data.lighting.lamp"),
-            leftSectionData: "data",
+            leftSectionData: this.getLighting.lanternsInPark.luminaire,
             rightSectionName: this.$t("entity.data.lighting.bollards"),
-            rightSectionData: "data"
+            rightSectionData: this.getLighting.lanternsInPark.bollardLighting
           },
           {
             name: this.$t("entity.data.lighting.colors"),
             icon: "lighting/color.svg",
-            data: "test",
+            data: this.getLighting.backlightColors.backlightColors,
             leftSectionName: this.$t("entity.data.lighting.warm"),
-            leftSectionData: "data",
+            leftSectionData: this.getLighting.backlightColors.warm,
             rightSectionName: this.$t("entity.data.lighting.cold"),
-            rightSectionData: "data"
+            rightSectionData: this.getLighting.backlightColors.cold
           }
         ];
       }

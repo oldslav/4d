@@ -162,7 +162,8 @@
 
       familyDone () {
         return this.isFamilyInfo ? this.neighbors.map(neighbor => {
-          return neighbor.name.first && Object.values(neighbor.documents).every(isDocumentPresent);
+          const requiredDocumentsLength = neighbor.neighborType.id === 4 ? 4 : 5;
+          return neighbor.name.first && Object.keys(neighbor.documents).length === requiredDocumentsLength && Object.values(neighbor.documents).every(isDocumentPresent);
         }).every(val => val) : true;
       },
 

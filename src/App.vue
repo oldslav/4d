@@ -14,7 +14,7 @@
           elevated
           behavior="mobile"
         )
-          .full-height.column.justify-between
+          .aside-nav.column.justify-between
             transition(name="fade" mode="out-in")
               router-view(name="asideLeft")
                 AsideProfile
@@ -248,4 +248,7 @@
   opacity 0
   width: 100px
   height: 100px
+
+.aside-left
+  min-height 100%
 </style>
