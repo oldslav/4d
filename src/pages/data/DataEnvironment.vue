@@ -9,7 +9,7 @@
 				template(#right)
 					| test2
 
-		.q-mx-sm
+		.q-mx-sm.q-py-sm
 			DataCarousel(
 				:list="cards"
 			)

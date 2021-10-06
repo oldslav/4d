@@ -3,13 +3,26 @@
 		BtnBack
 
 		.q-mx-md-md.q-my-md
-			DataMainSection
+			DataMainSection(:title="$t('entity.data.lighting.chart.title')")
 				template(#left)
-					| test1
-				template(#right)
-					| test2
+					LineChart(
+						v-if="!loading" 
+						:chart-data="chartData"
+						:options="options"
+					)
 
-		.q-mx-sm
+				template(#right)
+					span.text-title {{ dataSum }} 
+					span {{ $t('entity.data.lighting.chart.rightTitle') }}
+
+					.row.q-my-sm(
+						v-for="(val, name) in getLighting.byType"
+						:key="name"
+					)
+						.col {{ name }}
+						.col-3.q-ml-sm.text-right {{ val }}&nbsp;{{ $t('entity.data.abbrs.pcs') }}
+
+		.q-mx-sm.q-py-sm
 			DataCarousel(
 				:list="cards"
 			)
@@ -21,17 +34,63 @@
   import BtnBack from "@/components/data/BtnBack.vue";
   import { GET_DATA_LIGHTING } from "@/store/constants/action-constants";
   import { mapGetters } from "vuex";
+  import LineChart from "@/components/data/chart/LineChart.js";
 
   export default {
     name: "DataLighting",
     components: {
       DataCarousel,
       DataMainSection,
-      BtnBack
+      BtnBack,
+      LineChart
     },
     preFetch ({ store }) {
       return store.dispatch(`data/${ GET_DATA_LIGHTING }`);
     },
+    data () {
+			return {
+				chartData: {
+					labels: null,
+					datasets: [
+						{
+							backgroundColor: "rgba(175, 111, 15, 0.1)",
+              borderColor: "rgba(249, 205, 137, 1)",
+							data: null
+						}
+					]
+				},
+				options: {
+					layout: {
+						padding: {
+							top: 30
+						}
+					},
+					maintainAspectRatio: false,
+					legend: {
+						display: false
+					},
+					scales: {
+						xAxes: [{
+							gridLines: {
+								//display: false,
+								offsetGridLines: false,
+								borderDash: [7, 10]
+							}
+						}],
+						yAxes: [{
+							ticks: {
+								stepSize: 100
+							},
+							scaleLabel: {
+								display: true,
+								labelString: this.$t("entity.data.territory.chart.yLabel")
+							}
+						}]
+					}	
+				},
+				loading: true
+			};
+		},
     computed: {
       ...mapGetters("data", [
         "getLighting"
@@ -75,6 +134,43 @@
             rightSectionData: this.getLighting.backlightColors.cold
           }
         ];
+      },
+			dataSum () {
+				let sum = 0;
+				for (let prop in this.getLighting.byType) {
+					sum += +this.getLighting.byType[prop];
+				}
+				return sum;
+			},
+      dataList () {
+				let arr = [];
+				for (let prop in this.getLighting.byYear) {
+					arr.push(this.getLighting.byYear[prop]);
+				}
+				return arr;
+			},
+			labelsList () {
+				let arr = [];
+				for (let prop in this.getLighting.byYear) {
+					arr.push(prop);
+				}
+				return arr;
+			}
+    },
+    mounted () {
+      this.fillChart();
+      this.loading = false;
+    },
+    methods: {
+      fillChart () {
+        this.chartData = {
+					labels: this.labelsList,
+					datasets: [{
+						data: this.dataList,
+            backgroundColor: "rgba(175, 111, 15, 0.1)",
+            borderColor: "rgba(249, 205, 137, 1)"
+					}]
+				};
       }
     }
   };

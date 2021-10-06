@@ -1,18 +1,30 @@
 <template lang="pug">
 	q-card.bg-card2.main-section
-		.main-section__row.row
-			.col.q-pa-md
+		.main-section__row.row.q-py-md
+			.col-12.col-md.q-px-md
+				.text-subtitle.gt-sm
+					| {{ title }}
 				slot(name="left")
 
 			q-separator(vertical).gt-sm
 
-			.col-3.q-pa-md
+			.col-12.col-md-3.q-px-md.main-section__right-section
+				.text-subtitle.lt-md.q-mb-md
+					| {{ title }}
 				slot(name="right")
 </template>
 
 <script>
   export default {
-    name: "DataMainSection"
+    name: "DataMainSection",
+		props: {
+			title: {
+				type: String,
+				default () {
+					return "";
+				}
+			}
+		}
   };
 </script>
 
@@ -23,4 +35,7 @@
 
 			@media (min-width $breakpoint-md-min)
 				flex-direction row
+		
+		&__right-section
+			min-width 285px!important
 </style>
