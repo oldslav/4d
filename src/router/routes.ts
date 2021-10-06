@@ -148,9 +148,6 @@ const routes: RouteConfig[] = [
       {
         path: "tickets",
         name: "user-tickets",
-        redirect: {
-          name: "user-tickets-parking"
-        },
         components: {
           default: (): Promise<any> => import("pages/UserTickets.vue")
         },
