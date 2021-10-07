@@ -59,12 +59,12 @@
     } = store.getters;
 
     const tabs = [
-      { route: "user-tickets-apartments", visible: isDev && isUserNature || isUserLegal || isEmployeeLiving },
+      { route: "user-tickets-apartments", visible: isDev && (isUserNature || isUserLegal || isEmployeeLiving) },
       { route: "user-tickets-parking", visible: isUserNature || isEmployeeParking },
-      { route: "user-tickets-ideas", visible: isDev && isUserNature || isEmployeeIdea },
+      { route: "user-tickets-ideas", visible: isDev && (isUserNature || isEmployeeIdea) },
       { route: "user-tickets-warehouse", visible: isUserNature || isEmployeeWarehouse },
-      { route: "user-tickets-commerce", visible: isDev && isUserLegal || isEmployeeCommerce },
-      { route: "user-tickets-crowdfunding", visible: isDev && isUserNature || isEmployeeCrowdfunding },
+      { route: "user-tickets-commerce", visible: isDev && (isUserLegal || isEmployeeCommerce) },
+      { route: "user-tickets-crowdfunding", visible: isDev && (isUserNature || isEmployeeCrowdfunding) },
       { route: "user-tickets-vacancy", visible: isUserLegal || isUserNature || isEmployeeEmploymentCenter },
       { route: "user-tickets-employee-responds", visible: isDev && isEmployeeEmploymentCenter },
       { route: "user-tickets-verify-requests", visible: isDev && isEmployeeEmploymentCenter }

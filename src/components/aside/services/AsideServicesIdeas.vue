@@ -17,7 +17,7 @@
         clearable
         v-model="statusId"
         :options="statuses"
-        label="Статус"
+        :label="$t('common.status')"
         optionKey="id"
         optionLabel="description"
         optionValue="id"

@@ -99,12 +99,12 @@
             name: ""
           },
           {
-            title: this.$t("entity.transport"),
+            title: this.$t("entity.transport.title"),
             image: this.isDarkMode ? require("@/assets/svg/dark/two-wheels-dark.svg") : require("@/assets/svg/light/two-wheels.svg"),
             name: ""
           },
           {
-            title: this.$t("entity.landscape"),
+            title: this.$t("entity.improvement"),
             image: this.isDarkMode ? require("@/assets/svg/dark/benches-dark.svg") : require("@/assets/svg/light/benches.svg"),
             name: ""
           },

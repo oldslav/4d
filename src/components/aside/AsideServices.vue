@@ -51,7 +51,7 @@
             show: this.isUserGIS
           },
           {
-            label: this.$t("entity.transport"),
+            label: this.$t("entity.transport.title"),
             action: { name: "gis-services-transport" },
             icon: "o_directions_bus",
             show: this.isUserGIS
@@ -63,8 +63,8 @@
             show: this.isDev && this.isUserGIS
           },
           {
-            label: this.$t("entity.landscape"),
-            action: { name: "gis-services-landscape" },
+            label: this.$t("entity.improvement"),
+            action: { name: "gis-services-improvement" },
             icon: "o_park",
             show: this.isDev && this.isUserGIS
           },
