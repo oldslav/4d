@@ -38,14 +38,14 @@ const mutations: MutationTree<IMapTransportState> = {
 
 const actions: ActionTree<IMapTransportState, TRootState> = {
   async [FETCH_TRANSPORT_MENU] ({ commit }) {
-    const { data } = await this.service.services.transport.getMapMenu();
+    const { data } = await this.service.services.transport.getTrobjectsMapMenu();
 
     commit("setMenu", data);
   },
 
   async [FETCH_TRANSPORT_ITEM] ({ commit, getters }, { layerId, id }) {
     const layer = getters.getLayerById(layerId);
-    const { data } = await this.service.services.transport.getFeature(layer.path, id);
+    const { data } = await this.service.services.transport.getTrobjectsFeature(layer.path, id);
 
     commit("setFeature", data);
   },

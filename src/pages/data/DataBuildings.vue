@@ -5,7 +5,7 @@
 		.q-mx-md-md.q-my-md
 			DataMainSection
 				template(#left)
-					
+
 				template(#right)
 					| test2
 
@@ -50,23 +50,23 @@
             rightSectionData: `${ this.getObjectsInfo.livingArea.townhouses } ${ this.$t("entity.data.abbrs.sqm") }`
           },
           {
-						name: this.$t("entity.data.buildings.squareCommercial"),
-						icon: "buildings/square.svg",
-						data: `${ this.getObjectsInfo.commerceArea.commerceArea } ${ this.$t("entity.data.abbrs.sqm") }`,
-						leftSectionName: this.$t("entity.data.buildings.busy"),
-						leftSectionData: `${ this.getObjectsInfo.commerceArea.busy } ${ this.$t("entity.data.abbrs.sqm") }`,
-						rightSectionName: this.$t("entity.data.buildings.free"),
-						rightSectionData: `${ this.getObjectsInfo.commerceArea.free } ${ this.$t("entity.data.abbrs.sqm") }`
-					},
-					{
-						name: this.$t("entity.data.buildings.squareOffice"),
-						icon: "buildings/square.svg",
-						data: `${ this.getObjectsInfo.officeArea.officeArea } ${ this.$t("entity.data.abbrs.sqm") }`,
-						leftSectionName: this.$t("entity.data.buildings.busy"),
-						leftSectionData: `${ this.getObjectsInfo.officeArea.busy } ${ this.$t("entity.data.abbrs.sqm") }`,
-						rightSectionName: this.$t("entity.data.buildings.free"),
-						rightSectionData: `${ this.getObjectsInfo.officeArea.free } ${ this.$t("entity.data.abbrs.sqm") }`
-					},
+            name: this.$t("entity.data.buildings.squareCommercial"),
+            icon: "buildings/square.svg",
+            data: `${ this.getObjectsInfo.commerceArea.commerceArea } ${ this.$t("entity.data.abbrs.sqm") }`,
+            leftSectionName: this.$t("entity.data.buildings.busy"),
+            leftSectionData: `${ this.getObjectsInfo.commerceArea.busy } ${ this.$t("entity.data.abbrs.sqm") }`,
+            rightSectionName: this.$t("entity.data.buildings.free"),
+            rightSectionData: `${ this.getObjectsInfo.commerceArea.free } ${ this.$t("entity.data.abbrs.sqm") }`
+          },
+          {
+            name: this.$t("entity.data.buildings.squareOffice"),
+            icon: "buildings/square.svg",
+            data: `${ this.getObjectsInfo.officeArea.officeArea } ${ this.$t("entity.data.abbrs.sqm") }`,
+            leftSectionName: this.$t("entity.data.buildings.busy"),
+            leftSectionData: `${ this.getObjectsInfo.officeArea.busy } ${ this.$t("entity.data.abbrs.sqm") }`,
+            rightSectionName: this.$t("entity.data.buildings.free"),
+            rightSectionData: `${ this.getObjectsInfo.officeArea.free } ${ this.$t("entity.data.abbrs.sqm") }`
+          },
           {
             name: this.$t("entity.data.buildings.organizations"),
             icon: "buildings/organizations.svg",

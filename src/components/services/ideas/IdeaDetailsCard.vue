@@ -1,8 +1,8 @@
 <template lang="pug">
   q-card(v-if="current").bg-white.modal-container__dense.full-width
     q-card-section
+      q-btn(v-if="$route.query.id" icon="close" @click="close" flat).float-right
       h6.q-my-auto.break-word {{ current.title }}
-        q-btn(v-if="$route.query.id" icon="close" @click="close" flat).float-right.absolute-top-right.q-ma-md
       q-separator.q-my-sm
     div(v-if="current.images.length").q-px-sm
       ImageSlider(:value="current.images.map(v => v.imagePath)" :slides-to-show="4")
@@ -127,6 +127,12 @@
         immediate: true,
         handler () {
           this.GET_CURRENT(this.id);
+        }
+      },
+
+      async isCommentsModal (v) {
+        if (!v) {
+          await this.GET_CURRENT(this.id);
         }
       }
     }

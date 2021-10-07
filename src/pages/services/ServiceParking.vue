@@ -12,7 +12,7 @@
             active-class="bg-primary-light text-primary"
             clickable
             @click="toggleSectionVisibility(item.layer)"
-          )
+          ).map-legend__item
             q-item-section.text-center
               q-item-label(:class="item.color")
                 | {{ item.label }}

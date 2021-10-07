@@ -91,12 +91,14 @@
           {
             name: "data",
             label: this.$t("entity.data.title"),
-            icon: "bar_chart"
+            icon: "bar_chart",
+            hide: !this.isDev
           },
           {
             name: "design",
             label: this.$t("entity.design"),
-            icon: "list_alt"
+            icon: "list_alt",
+            hide: this.isMobile
           },
           {
             name: "services",

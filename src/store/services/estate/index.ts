@@ -1,20 +1,8 @@
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
-import {
-  SET_DATA,
-  SET_EMPTY,
-  UPDATE_PAGINATION,
-  SET_REFERENCES, UPDATE_FILTERS, SET_DETAILS, SET_DETAILS_EMPTY
-} from "src/store/constants/mutation-constants";
 import { TRootState } from "src/store/types/root";
-import {
-  DELETE_DOCUMENT,
-  DELETE_IMAGE,
-  GET_DATA,
-  GET_DETAILS,
-  GET_REFERENCES,
-  UPDATE_DETAILS, UPLOAD_IMAGE
-} from "src/store/constants/action-constants";
 import { IUserTicketsState } from "src/store/types/user/tickets";
+import buildings from "src/store/services/estate/buildings";
+import commerce from "src/store/services/estate/commerce";
 
 const initialState = (): IUserTicketsState => {
   return {
@@ -34,98 +22,22 @@ const initialState = (): IUserTicketsState => {
 
 const state = initialState;
 
-const mutations: MutationTree<IUserTicketsState> = {
-  [SET_EMPTY]: state => Object.assign(state, initialState()),
-  [SET_DATA]: (state, payload) => state.data = payload,
-  [SET_DETAILS]: (state, payload) => state.current = payload,
-  [SET_DETAILS_EMPTY]: (state) => state.current = null,
-  [SET_REFERENCES]: (state, payload) => state.references = payload,
-  [UPDATE_PAGINATION] (state, pagination) {
-    state.pagination = { ...state.pagination, ...pagination };
-  },
-  [UPDATE_FILTERS] (state, filters) {
-    state.filters = { ...state.filters, ...filters };
-  }
-};
+const mutations: MutationTree<IUserTicketsState> = {};
 
-const actions: ActionTree<IUserTicketsState, TRootState> = {
-  async [GET_DATA] ({ state, commit }) {
-    const { data } = await this.service.services.estate.getEstate({
-      ...state.filters,
-      limit: state.pagination.limit,
-      offset: state.pagination.offset - 1
-    });
+const actions: ActionTree<IUserTicketsState, TRootState> = {};
 
-    commit(SET_DATA, data);
-    commit(UPDATE_PAGINATION, { rowsNumber: data.count });
-  },
-
-  async [UPLOAD_IMAGE] (_, { id, payload }) {
-    await this.service.services.estate.uploadEstateImage(id, payload);
-  },
-
-  async [DELETE_IMAGE] (_, id) {
-    await this.service.services.estate.deleteEstateImage(id);
-  },
-
-  async [DELETE_DOCUMENT] (_, id) {
-    await this.service.services.estate.deleteEstateDocument(id);
-  },
-
-  async [GET_DETAILS] ({ commit }, id) {
-    const { data } = await this.service.services.estate.getEstateDetails(id);
-
-    commit(SET_DETAILS, data);
-  },
-
-  async [UPDATE_DETAILS] (_, { id, payload }) {
-    await this.service.services.estate.updateEstateDetails(id, payload);
-  },
-
-  async [GET_REFERENCES] ({ commit }) {
-    const { data } = await this.service.services.estate.getEstateReferences();
-
-    commit(SET_REFERENCES, data);
-  }
-};
-
-const getters: GetterTree<IUserTicketsState, TRootState> = {
-  infrastructureTypes (state) {
-    return state.references.category.map((item: any) => ({
-      value: item.id,
-      label: item.name
-    }));
-  },
-
-  tableData (state) {
-    const { data } = state;
-
-    if (data) {
-      return {
-        items: data.items
-      };
-    }
-  },
-
-  tablePagination (state) {
-    const { pagination, data } = state;
-
-    if (data) {
-      return {
-        rowsPerPage: pagination.limit,
-        page: pagination.offset,
-        rowsNumber: data.count
-      };
-    }
-  }
-};
+const getters: GetterTree<IUserTicketsState, TRootState> = {};
 
 const estate: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,
   actions,
-  getters
+  getters,
+  modules: {
+    buildings,
+    commerce
+  }
 };
 
 export default estate;

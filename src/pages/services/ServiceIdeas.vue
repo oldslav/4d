@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-pa-lg(style="height: calc(100vh - 50px)")
+  .q-pa-lg(style="height: calc(100vh - 70px)")
     .col-12.column.justify-between.full-height(v-if="componentInstance && geoJson")
       .row
         IdeaDetailsCard(v-if="id" :id="id")
@@ -13,7 +13,7 @@
             active-class="bg-primary-light text-primary"
             clickable
             @click="toggleSectionVisibility(item.layer)"
-          )
+          ).map-legend__item
             q-item-section.text-center
               q-item-label(:class="item.color")
                 | {{ item.label }}

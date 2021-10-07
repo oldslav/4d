@@ -19,7 +19,7 @@
 							.col-auto(:class="{'data-carousel__small-text': card.isSmall}")
 								| {{ card.name }}
 						q-separator.q-my-sm
-						
+
 					.col-3
 						.row.items-center.full-height
 							.col
@@ -29,13 +29,13 @@
 									| {{ card.leftSectionName }}
 
 							q-separator(vertical)
-								
+
 							.col
 								div
 									| {{ card.rightSectionData }}
 								div.data-carousel__small-text.text-grey-7
 									| {{ card.rightSectionName }}
-			
+
 			template(#nextArrow)
 				.data-carousel__arrow--next
 					img(:src="require('@/assets/svg/data/arrowRight.svg')")
@@ -63,7 +63,7 @@
         settings: {
           infinite: false,
           slidesToShow: 4,
-					swipeToSlide: true,
+          swipeToSlide: true,
           responsive: [
             {
               breakpoint: 1875,
@@ -81,13 +81,13 @@
               breakpoint: 1150,
               settings: "unslick"
             },
-						{
+            {
               breakpoint: 1123,
               settings: {
                 slidesToShow: 2
               }
             },
-						{
+            {
               breakpoint: 750,
               settings: "unslick"
             }
@@ -118,18 +118,18 @@
 
 			&--prev
 				@extends .data-carousel__arrow
-			
+
 			&--next
 				@extends .data-carousel__arrow
 				right 0
 
-			img 
+			img
 				width 26px
 				height 26px
 
 		&__small-text
 			font-size 12px
-		
+
 		.slick-disabled
 			display none
 
@@ -137,7 +137,7 @@
 			display: flex !important;
 			align-items stretch
 
-		.slick-slide 
+		.slick-slide
 			padding 3px $space-base*0.5
 			height inherit
 
