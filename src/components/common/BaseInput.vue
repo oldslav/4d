@@ -7,7 +7,7 @@
     :dense="dense"
     :autogrow="autogrow"
     :counter="counter"
-    :maxlength="type === 'textarea' && maxlength || undefined"
+    :maxlength="maxlength"
     :filled="filled"
     :type="type"
     :label="label"
@@ -84,7 +84,7 @@
       },
       maxlength: {
         type: Number,
-        default: 30
+        default: 50
       },
       clearable: {
         type: Boolean,

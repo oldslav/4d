@@ -1,6 +1,6 @@
 <template lang="pug">
   .column
-    q-input(type="email" v-model.trim="model.email" label="Email" :rules="validateEmail" lazy-rules dense)
+    q-input(type="email" v-model.trim="model.email" :label="$t('user.email')" :rules="validateEmail" lazy-rules dense)
     q-input(v-model.trim="model.firstName" :label="$t('user.firstName')" :rules="requiredRule" lazy-rules dense)
     q-input(v-model.trim="model.lastName" :label="$t('user.lastName')" :rules="requiredRule" lazy-rules dense)
     q-input(

@@ -114,9 +114,12 @@
     },
     "rent": "Rent",
     "position": "Position",
+    "distance": "Distance",
+    "location": "Location",
     "guestVisit": "Guest visit",
     "description": "Description",
     "notice": "Message",
+    "material": "Material",
     "reason": "Reason",
     "rentPrice": "Rent price, rubles",
     "minRent": "Минимальный срок аренды",
@@ -418,6 +421,7 @@
         }
       }
     },
+    "email": "Email",
     "firstName": "Firstname",
     "lastName": "Lastname",
     "patronymic": "Patronymic",
@@ -551,10 +555,24 @@
         "status": "Construction stage",
         "organizationCount": "Amount of organizations",
         "link": "Link to website"
+      },
+      "sub": {
+        "buildings": "Buildings",
+        "commerce": "Commercial real estate"
       }
     },
-    "transport": "Transport Infrastructure",
-    "landscape": "Urban Landscaping",
+    "transport": {
+      "title": "Transport Infrastructure",
+      "sub": {
+        "trobjects": "Trobjects",
+        "parking": "parking",
+        "navigation": "Navigation",
+        "plan": "Plan",
+        "crosswalk": "Crosswalk",
+        "highway": "Highway"
+      }
+    },
+    "improvement": "Urban Landscaping",
     "lighting": "Urban Lighting",
     "tourism": "Tourism Infrastructure",
     "ideas": "Ideas and Propositions",
@@ -849,7 +867,9 @@
           "routeFileFormat": "Select the desired file format",
           "offerRoute": "Suggest your route",
           "routeMinutesDuration": "{minutes}min.",
-          "routeDuration": "{hours}hr. {minutes}min."
+          "routeDuration": "{hours}hr. {minutes}min.",
+          "places": "Places",
+          "routes": "Routes"
         },
         "offerForm": {
           "title": "Suggest a route",
@@ -859,6 +879,16 @@
           "routeDescription": "Describe your route",
           "route": "Track route",
           "routeFileFormat": "Format gpx, tcx"
+        }
+      },
+      "improvement": {
+        "sub": {
+          "forms": "Forms",
+          "objects": "Objects",
+          "flower": "Flower",
+          "park": "Park",
+          "square": "Square",
+          "trees": "Trees"
         }
       }
     },
@@ -944,7 +974,8 @@
       "ogrn": "Скан-копия ОГРН",
       "egrjul": "Скан-копия выписки из ЕГРЮЛ",
       "partner_card": "Скан-копия карты партнера",
-      "parkingRegulations": "Регламент пользования подземной парковкой"
+      "parkingRegulations": "Регламент пользования подземной парковкой",
+      "payment_confirm": "Payment confirm"
     },
     "tickets": {
       "title": "Tickets",

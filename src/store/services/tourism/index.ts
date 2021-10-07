@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { ActionTree, GetterTree, Module, MutationTree } from "vuex";
 import { cloneDeep } from "lodash";
-
 import { TRootState } from "src/store/types/root";
 import {
   FETCH_TOURISM_MENU,
@@ -20,8 +19,9 @@ import {
   SET_TOURISM_ENTITY,
   SET_TOURISM_CURRENT_LAYER
 } from "src/store/constants/mutation-constants";
-
 import { IOfferRouteParams, IServicesTourismState, TourismGeoJSONEntities } from "../../types/tourism";
+import places from "src/store/services/tourism/places";
+import routes from "src/store/services/tourism/routes";
 
 const initialState = (): IServicesTourismState => ({
   serviceMenu: null,
@@ -235,7 +235,11 @@ const tourism: Module<IServicesTourismState, TRootState> = {
   state,
   mutations,
   actions,
-  getters
+  getters,
+  modules: {
+    places,
+    routes
+  }
 };
 
 export default tourism;

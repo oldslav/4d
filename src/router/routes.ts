@@ -148,9 +148,6 @@ const routes: RouteConfig[] = [
       {
         path: "tickets",
         name: "user-tickets",
-        redirect: {
-          name: "user-tickets-parking"
-        },
         components: {
           default: (): Promise<any> => import("pages/UserTickets.vue")
         },
@@ -760,6 +757,9 @@ const routes: RouteConfig[] = [
           {
             path: "estate",
             name: "gis-services-estate",
+            redirect: {
+              name: "gis-services-estate-buildings"
+            },
             components: {
               default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
             },
@@ -769,21 +769,55 @@ const routes: RouteConfig[] = [
             },
             children: [
               {
-                path: ":id",
-                name: "gis-services-estate-details",
+                path: "buildings",
+                name: "gis-services-estate-buildings",
                 components: {
-                  default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
+                  default: (): Promise<any> => import("components/services/estate/ServiceEstateBuildings.vue")
                 },
                 meta: {
-                  toolbar: true,
-                  prod: true
+                  toolbar: true
+                }
+              },
+              {
+                path: "commerce",
+                name: "gis-services-estate-commerce",
+                components: {
+                  default: (): Promise<any> => import("components/services/estate/ServiceEstateCommerce.vue")
+                },
+                meta: {
+                  toolbar: true
                 }
               }
             ]
           },
           {
+            path: "estate/buildings/:id",
+            name: "gis-services-estate-buildings-details",
+            component: (): Promise<any> => import("components/services/tourism/ServiceTourismRoutesDetails.vue"),
+            meta: {
+              toolbar: true
+            },
+            props: route => ({
+              id: route.params.id
+            })
+          },
+          {
+            path: "estate/commerce/:id",
+            name: "gis-services-estate-commerce-details",
+            component: (): Promise<any> => import("components/services/tourism/ServiceTourismRoutesDetails.vue"),
+            meta: {
+              toolbar: true
+            },
+            props: route => ({
+              id: route.params.id
+            })
+          },
+          {
             path: "transport",
             name: "gis-services-transport",
+            redirect: {
+              name: "gis-services-transport-trobjects"
+            },
             components: {
               default: (): Promise<any> => import("pages/services/gis/ServiceTransport.vue")
             },
@@ -793,27 +827,128 @@ const routes: RouteConfig[] = [
             },
             children: [
               {
-                path: ":id",
-                name: "gis-services-transport-details",
+                path: "trobjects",
+                name: "gis-services-transport-trobjects",
                 components: {
-                  default: (): Promise<any> => import("pages/services/gis/ServiceTransport.vue")
+                  default: (): Promise<any> => import("components/services/transport/ServiceTransportTrobjects.vue")
                 },
                 meta: {
-                  toolbar: true,
-                  prod: true
+                  toolbar: true
+                }
+              },
+              {
+                path: "parking",
+                name: "gis-services-transport-parking",
+                components: {
+                  default: (): Promise<any> => import("components/services/transport/ServiceTransportParking.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "crosswalk",
+                name: "gis-services-transport-crosswalk",
+                components: {
+                  default: (): Promise<any> => import("components/services/transport/ServiceTransportCrosswalk.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "highway",
+                name: "gis-services-transport-highway",
+                components: {
+                  default: (): Promise<any> => import("components/services/transport/ServiceTransportHighway.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "navigation",
+                name: "gis-services-transport-navigation",
+                components: {
+                  default: (): Promise<any> => import("components/services/transport/ServiceTransportNavigation.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "plan",
+                name: "gis-services-transport-plan",
+                components: {
+                  default: (): Promise<any> => import("components/services/transport/ServiceTransportPlan.vue")
+                },
+                meta: {
+                  toolbar: true
                 }
               }
             ]
           },
           {
-            path: "landscape",
-            name: "gis-services-landscape",
+            path: "improvement",
+            name: "gis-services-improvement",
             components: {
-              default: (): Promise<any> => import("pages/services/gis/ServiceEstate.vue")
+              default: (): Promise<any> => import("pages/services/gis/ServiceImprovement.vue")
             },
             meta: {
               toolbar: true
-            }
+            },
+            children: [
+              {
+                path: "trees",
+                name: "gis-services-improvement-trees",
+                components: {
+                  default: (): Promise<any> => import("components/services/improvement/ServiceImprovementTrees.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "park",
+                name: "gis-services-improvement-park",
+                components: {
+                  default: (): Promise<any> => import("components/services/improvement/ServiceImprovementPark.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "objects",
+                name: "gis-services-improvement-objects",
+                components: {
+                  default: (): Promise<any> => import("components/services/improvement/ServiceImprovementObjects.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "square",
+                name: "gis-services-improvement-square",
+                components: {
+                  default: (): Promise<any> => import("components/services/improvement/ServiceImprovementSquare.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "flower",
+                name: "gis-services-improvement-flower",
+                components: {
+                  default: (): Promise<any> => import("components/services/improvement/ServiceImprovementFlower.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              }
+            ]
           },
           {
             path: "light",
@@ -840,8 +975,33 @@ const routes: RouteConfig[] = [
             ]
           },
           {
+            path: "tourism/places/:id",
+            name: "gis-services-tourism-places-details",
+            component: (): Promise<any> => import("components/services/tourism/ServiceTourismPlacesDetails.vue"),
+            meta: {
+              toolbar: true
+            },
+            props: route => ({
+              id: route.params.id
+            })
+          },
+          {
+            path: "tourism/routes/:id",
+            name: "gis-services-tourism-routes-details",
+            component: (): Promise<any> => import("components/services/tourism/ServiceTourismRoutesDetails.vue"),
+            meta: {
+              toolbar: true
+            },
+            props: route => ({
+              id: route.params.id
+            })
+          },
+          {
             path: "tourism",
             name: "gis-services-tourism",
+            redirect: {
+              name: "gis-services-tourism-places"
+            },
             components: {
               default: (): Promise<any> => import("pages/services/gis/ServiceTourism.vue")
             },
@@ -850,10 +1010,20 @@ const routes: RouteConfig[] = [
             },
             children: [
               {
-                path: ":id",
-                name: "gis-services-tourism-details",
+                path: "places",
+                name: "gis-services-tourism-places",
                 components: {
-                  default: (): Promise<any> => import("pages/services/gis/ServiceTourism.vue")
+                  default: (): Promise<any> => import("components/services/tourism/ServiceTourismPlaces.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              },
+              {
+                path: "routes",
+                name: "gis-services-tourism-routes",
+                components: {
+                  default: (): Promise<any> => import("components/services/tourism/ServiceTourismRoutes.vue")
                 },
                 meta: {
                   toolbar: true
@@ -869,7 +1039,19 @@ const routes: RouteConfig[] = [
             },
             meta: {
               toolbar: true
-            }
+            },
+            children: [
+              {
+                path: "border",
+                name: "gis-services-planning-border",
+                components: {
+                  default: (): Promise<any> => import("components/services/improvement/ServiceImprovementFlower.vue")
+                },
+                meta: {
+                  toolbar: true
+                }
+              }
+            ]
           }
         ]
       },

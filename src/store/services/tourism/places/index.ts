@@ -91,8 +91,8 @@ const actions: ActionTree<IUserTicketsState, TRootState> = {
 };
 
 const getters: GetterTree<IUserTicketsState, TRootState> = {
-  infrastructureTypes (state) {
-    return state.references.type.map((item: any) => ({
+  categories (state) {
+    return state.references.category.map((item: any) => ({
       value: item.id,
       label: item.name
     }));
@@ -121,7 +121,7 @@ const getters: GetterTree<IUserTicketsState, TRootState> = {
   }
 };
 
-const tourism: Module<IUserTicketsState, TRootState> = {
+const places: Module<IUserTicketsState, TRootState> = {
   namespaced: true,
   state,
   mutations,
@@ -129,4 +129,4 @@ const tourism: Module<IUserTicketsState, TRootState> = {
   getters
 };
 
-export default tourism;
+export default places;

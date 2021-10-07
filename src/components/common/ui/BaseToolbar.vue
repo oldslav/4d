@@ -57,6 +57,7 @@
   import BaseTabs from "components/common/BaseTabs";
   import { ACCOUNT_LOGOUT } from "@/store/constants/action-constants";
   import { DEFAULT_COOKIE_OPTIONS } from "../../../constaints";
+  // eslint-disable-next-line no-unused-vars
   import { quasarLangMapping } from "../../../i18n";
 
   export default {
@@ -90,12 +91,14 @@
           {
             name: "data",
             label: this.$t("entity.data.title"),
-            icon: "bar_chart"
+            icon: "bar_chart",
+            hide: !this.isDev
           },
           {
             name: "design",
             label: this.$t("entity.design"),
-            icon: "list_alt"
+            icon: "list_alt",
+            hide: this.isMobile
           },
           {
             name: "services",
@@ -157,10 +160,10 @@
       ...mapActions([ACCOUNT_LOGOUT]),
       onLogout () {
         this.ACCOUNT_LOGOUT();
-
-        if (this.$route.name !== "main") {
-          this.$router.push({ name: "main" });
-        }
+        const onComplete = () => {
+          window.location.reload();
+        };
+        this.$router.replace({ name: "main" }, onComplete);
       },
       onAuth () {
         this.$emit("auth");
