@@ -13,48 +13,42 @@
         q-btn(icon="close" flat round dense v-close-popup)
       q-card-section
         .text-medium.q-mb-sm
-          | {{ getCurrentTicket.isJuristic ? "Данные юр. лица" : $t("entity.services.mainInfo") }}
-        template(v-if="getCurrentTicket.isJuristic")
-          .row.q-col-gutter-sm
-            .col-12
-              q-input(readonly :label="$t('user.companyName')" :value="getCurrentTicket.companyName" borderless)
-          .q-mb-sm(v-for="(type, i) in Object.keys(companyDocuments)" :key="i")
-            .text-small.text-primary-light(v-if="companyDocuments[type].length > 0")
-              | {{ $t(`entity.files.${type}`) }}
-            DownloaderInput(v-for="(file, j) in companyDocuments[type]" :value="file" :key="j")
-        template(v-else)
-          .row.q-col-gutter-sm
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.name.last" borderless)
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.name.first" borderless)
-            .col-12.col-md-4
-              q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
-
-      q-separator
-
-      q-card-section(v-if="getCurrentTicket.isJuristic")
-        .text-medium.q-mb-sm
-          | Информация о проживающем
+          | {{ $t("entity.services.mainInfo") }}
         .row.q-col-gutter-sm
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.author.name.last" borderless)
+            q-input(readonly :label="$t('user.lastName')" :value="getCurrentTicket.name.last" borderless)
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.author.name.first" borderless)
+            q-input(readonly :label="$t('user.firstName')" :value="getCurrentTicket.name.first" borderless)
           .col-12.col-md-4
-            q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.author.name.patronymic" v-if="!!getCurrentTicket.author.name.patronymic" borderless)
-          .col-12.col-md-4
-            q-input(readonly :label="$t('common.position')" :value="getCurrentTicket.jobPosition" borderless)
-        .q-mb-sm(v-for="(type, i) in Object.keys(userDocuments)" :key="i")
-          .text-small.text-primary-light(v-if="userDocuments[type].length > 0")
-            | {{ $t(`entity.files.${type}`) }}
-          DownloaderInput(v-for="(file, j) in userDocuments[type]" :value="file" :key="j")
+            q-input(readonly :label="$t('user.patronymic')" :value="getCurrentTicket.name.patronymic" v-if="!!getCurrentTicket.name.patronymic" borderless)
 
-      q-card-section(v-if="!getCurrentTicket.isJuristic")
+      q-card-section(v-if="isUserLegal")
+        .row.q-col-gutter-sm
+          .col-12
+            q-expansion-item(dense)
+              template(#header)
+                .flex.full-width.q-pl-none.items-center
+                  | Документы юридического лица
+              .q-pt-sm
+                .q-mb-sm(v-for="(type, i) in Object.keys(legalDocuments)" :key="i")
+                  .text-small.text-primary-light(v-if="!!legalDocuments[type].length")
+                    | {{ $t(`entity.files.${type}`) }}
+                  DownloaderInput(v-for="(file, j) in legalDocuments[type]" :value="file" :key="j" v-if="!!legalDocuments[type].length")
+          .col-12
+            q-expansion-item(dense)
+              template(#header)
+                .flex.full-width.q-pl-none.items-center
+                  | Документы жителя
+              .q-pt-sm
+                .q-mb-sm(v-for="(type, i) in Object.keys(residentDocuments)" :key="i")
+                  .text-small.text-primary-light(v-if="!!residentDocuments[type].length")
+                    | {{ $t(`entity.files.${type}`) }}
+                  DownloaderInput(v-for="(file, j) in residentDocuments[type]" :value="file" :key="j" v-if="!!residentDocuments[type].length")
+      q-card-section(v-else)
         .q-mb-sm(v-for="(type, i) in Object.keys(getCurrentTicket.documents)" :key="i")
-          .text-small.text-primary-light
+          .text-small.text-primary-light(v-if="!!getCurrentTicket.documents[type].length")
             | {{ $t(`entity.files.${type}`) }}
-          DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j")
+          DownloaderInput(v-for="(file, j) in getCurrentTicket.documents[type]" :value="file" :key="j" v-if="!!getCurrentTicket.documents[type].length")
       q-separator
 
       q-card-section(v-if="getCurrentTicket.neighbors.length > 0")
@@ -92,7 +86,15 @@
           | {{ $t("entity.contacts.title") }}
         .row
           .col
-            q-input(readonly :label="$t('entity.contacts.phone')" :value="getCurrentTicket.contacts.phones[0]" borderless v-if="getCurrentTicket.contacts.phones.length")
+            q-input(
+              readonly
+              :label="$t('entity.contacts.phone')"
+              v-for="(phone, index) in getCurrentTicket.contacts.phones"
+              :value="phone"
+              borderless
+              v-if="getCurrentTicket.contacts.phones.length"
+              :key="index"
+            )
             q-input(readonly :label="$t('entity.contacts.telegram')" :value="getCurrentTicket.contacts.telegramAlias" borderless v-if="getCurrentTicket.contacts.telegramAlias")
       q-card-actions(v-if="getCurrentTicket.status.id === 2 && isEmployee" align="right")
         q-btn(v-close-popup flat color="red" :label="$t('action.reject')" @click="onReject()")
@@ -102,7 +104,7 @@
 <script>
   import { mapActions, mapGetters } from "vuex";
   import BaseModal from "components/common/BaseModal";
-  import { GET_USER_TICKET } from "@/store/constants/action-constants";
+  import { GET_LEGAL_TICKET, GET_USER_TICKET } from "@/store/constants/action-constants";
   import DownloaderInput from "components/common/DownloaderInput";
 
   export default {
@@ -120,7 +122,8 @@
     },
     async created () {
       try {
-        await this.GET_USER_TICKET(this.id);
+        const action = this.isUserLegal ? this.GET_LEGAL_TICKET : this.GET_USER_TICKET;
+        await action.call(this, this.id);
       } catch (e) {
         this.$q.notify({
           type: "negative",
@@ -130,35 +133,24 @@
     },
     computed: {
       ...mapGetters("user/tickets/living", ["getCurrentTicket"]),
-      ...mapGetters(["isEmployee"]),
+      ...mapGetters(["isEmployee", "isUserLegal"]),
       contactsPresent () {
         return !!this.getCurrentTicket.contacts.phones.length || this.getCurrentTicket.contacts.telegramAlias;
       },
       loadingTicket () {
         return this.$store.state.wait[`user/tickets/living/${ GET_USER_TICKET }`];
       },
-      companyDocuments () {
-        if (this.getCurrentTicket.isJuristic) return {
-          inn_jur: this.getCurrentTicket.documents.inn_jur || null,
-          ogrn: this.getCurrentTicket.documents.ogrn || null,
-          egrjul: this.getCurrentTicket.documents.egrjul || null,
-          partner_card: this.getCurrentTicket.documents.partner_card || null
-        };
-        return null;
+      legalDocuments () {
+        const { inn_jur, ogrn, egrjul, partner_card } = this.getCurrentTicket.documents;
+        return { inn_jur, ogrn, egrjul, partner_card };
       },
-      userDocuments () {
-        if (this.getCurrentTicket.isJuristic) return {
-          consent_processing_personal_data: this.getCurrentTicket.documents.consent_processing_personal_data || null,
-          passport: this.getCurrentTicket.documents.passport || null,
-          inn: this.getCurrentTicket.documents.inn || null,
-          job: this.getCurrentTicket.documents.job || null,
-          job_petition: this.getCurrentTicket.documents.job_petition || null
-        };
-        return null;
+      residentDocuments () {
+        const { passport, inn, consent_processing_personal_data, job_petition } = this.getCurrentTicket.documents;
+        return { passport, inn, consent_processing_personal_data, job_petition };
       }
     },
     methods: {
-      ...mapActions("user/tickets/living", [GET_USER_TICKET]),
+      ...mapActions("user/tickets/living", [GET_USER_TICKET, GET_LEGAL_TICKET]),
       toggleModal (val) {
         this.$emit("input", val);
         this.$emit("update:id", null);

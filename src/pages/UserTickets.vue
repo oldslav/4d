@@ -66,8 +66,8 @@
       { route: "user-tickets-commerce", visible: isDev && (isUserLegal || isEmployeeCommerce) },
       { route: "user-tickets-crowdfunding", visible: isDev && (isUserNature || isEmployeeCrowdfunding) },
       { route: "user-tickets-vacancy", visible: isUserLegal || isUserNature || isEmployeeEmploymentCenter },
-      { route: "user-tickets-employee-responds", visible: isDev && isEmployeeEmploymentCenter },
-      { route: "user-tickets-verify-requests", visible: isDev && isEmployeeEmploymentCenter }
+      { route: "user-tickets-employee-responds", visible: isDev || isEmployeeEmploymentCenter },
+      { route: "user-tickets-verify-requests", visible: isDev || isEmployeeEmploymentCenter }
     ];
 
     return tabs.filter(t => t.visible);
