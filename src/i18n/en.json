@@ -786,7 +786,11 @@
           "markdownDescription": "Добавьте описание проекта",
           "media": "Добавьте фото",
           "mediaMaxCount": "Не более 5 фото",
-          "loadedMedia": "Загруженные фотографии"
+          "loadedMedia": "Загруженные фотографии",
+          "type": "Тип заявки",
+          "descriptionLabel": "Описание проекта",
+          "projectMayor": "Проект мэрии",
+          "projectCitizen": "Проект жителя"
         }
       },
       "employmentCenter": "Employment center",
@@ -1161,7 +1165,17 @@
         "min": "Minimum",
         "max": "Maximum",
         "room1": "1-room apartments",
-        "room2": "2-room apartments"
+        "room2": "2-room apartments",
+        "chart": {
+          "title": "Введено в эксплуатацию",
+          "yLabel": "Количество, шт.",
+          "xLabel": "Год",
+          "rightTitle": "шт. всего",
+          "living": "Жилая",
+          "social": "Социальная",
+          "business": "Деловая",
+          "commerce": "Коммерческая"
+        }
       },
       "transport": {
         "crosswalk": "Наземных переходов",
@@ -1201,7 +1215,47 @@
         "free": "Free",
         "parkingForGuests": "Available for guests",
         "nearSport": "У спорт. комплекса",
-        "nearUniversity": "Close to university"
+        "nearUniversity": "Close to university",
+        "chart": {
+          "pedestrianTab": {
+            "title": "Количество установленных объектов",
+            "undergroundPassages": "Подземные переходы",
+            "groundPassages": "Наземные переходы",
+            "rightTitle": "шт. всего"
+          },
+          "bicycleTab": {
+            "title": "Введено велосипедных парковок",
+            "triangular": "Треугольные",
+            "rectangular": "Прямоугольные",
+            "covered": "Крытые",
+            "rightTitle": "шт. всего",
+            "buses": "Автобусы",
+            "cars": "Личные автомобили",
+            "unmannedVehicles": "Беспилотные автомобили",
+            "pedestrians": "Пешеходы",
+            "bicycles": "Велосипедисты",
+            "other": "Прочее"
+          },
+          "carTab": {
+            "title": "Способы передвижения",
+            "rightTitle": "тыс.м протяженность дорог"
+          },
+          "parkingTab": {
+            "title": "Парковочные места возле основных объектов",
+            "rightTitle": "мест",
+            "places": "мест",
+            "popov": "АДЦ имени А. А. Попова",
+            "university": "Университет Иннополиса",
+            "lobachevsky": "АДЦ имени А. А. Лобачевского",
+            "sportcomplex": "Спортивный комплекс",
+            "fullArea": "Общая площадь",
+            "availableForRent": "Доступно для аренды"
+          },
+          "pedestrian": "Пешеходная",
+          "bicycle": "Велосипедная",
+          "car": "Автомобильный и общественный транспорт",
+          "parking": "Парковочные пространства"
+        }
       },
       "improvement": {
         "recreational": "Recreational area",
@@ -1223,7 +1277,12 @@
         "allSeason": "All-season",
         "navigation": "Navigation elements",
         "freestanding": "Standing Alone",
-        "wallMounted": "Настенных"
+        "wallMounted": "Настенных",
+        "chart": {
+          "title": "Самые распространенные растения",
+          "flowersArea": "Площадь цветников",
+          "hedgeArea": "Площадь изгородей"
+        }
       },
       "lighting": {
         "alongRoads": "Along the roads",
@@ -1237,7 +1296,13 @@
         "bollards": "Боллардов освещения",
         "colors": "Backlight colors",
         "warm": "Warm",
-        "cold": "Cold"
+        "cold": "Cold",
+        "chart": {
+          "title": "Установлено фонарей",
+          "yLabel": "Фонари, шт.",
+          "xLabel": "Время, год",
+          "rightTitle": "шт. всего"
+        }
       },
       "tourism": {
         "sights": "Attractions",
@@ -1251,7 +1316,13 @@
         "toMonastery": "To Makaryevsky Monastery",
         "height": "Difference of heights in the city territory",
         "upPoint": "Top point of the city",
-        "downPoint": "Lowest point of the city"
+        "downPoint": "Lowest point of the city",
+        "chart": {
+          "title": "Расстояние от центра города до туристических мест",
+          "yLabel": "Расстояние, км",
+          "xLabel": "Туристические места",
+          "rightTitle": "мест"
+        }
       },
       "territory": {
         "territoryGP": "Площадь территории в соотв. с ГП",
@@ -1265,7 +1336,12 @@
         "technopark": "Technopark",
         "publicCenter": "Общ. центра",
         "projectPopulation": "Project population",
-        "population": "Actual population"
+        "population": "Actual population",
+        "chart": {
+          "title": "Площади освоения территориальных зон",
+          "yLabel": "Освоено, га",
+          "rightTitle": "га общая площадь"
+        }
       },
       "environment": {
         "note": "Note",

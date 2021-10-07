@@ -81,7 +81,7 @@ const actions: ActionTree<any, any> = {
 
 const getters: GetterTree<any, any> = {
   getWeather: (state) => state.mainPageData.weather,
-  //getNewObject: (state) => state.mainPageData.weather,
+  getNewObject: (state) => state.mainPageData.newLivingBuilding,
   getNewIdeas: (state) => state.mainPageData.newIdeas,
   getNewProblems: (state) => state.mainPageData.newProblems,
   getBicycleForRent: (state) => state.mainPageData.bicycleForRent,

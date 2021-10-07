@@ -70,7 +70,7 @@
         return [
           {
             name: this.$t("entity.data.crads.newObject"),
-            data: "test",
+            data: this.getNewObject,
             icon: this.isDarkMode ? "newObjectDark.svg" : "newObject.svg"
           },
           {
