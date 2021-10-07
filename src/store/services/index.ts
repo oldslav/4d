@@ -34,6 +34,8 @@ import transport from "src/store/services/transport";
 import warehouse from "src/store/services/warehouse";
 import { cloneDeep } from "lodash";
 import { CesiumScenes } from "src/constaints";
+import improvement from "src/store/services/improvement";
+import planning from "src/store/services/planning";
 
 const initialState = (): GeoState => {
   return {
@@ -313,7 +315,9 @@ const services: Module<GeoState, TRootState> = {
     trees,
     light,
     warehouse,
-    transport
+    transport,
+    improvement,
+    planning
   }
 };
 

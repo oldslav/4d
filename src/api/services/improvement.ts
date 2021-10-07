@@ -11,4 +11,229 @@ export class ImprovementService extends Service {
     const { data } = await this.api.get(path);
     return data;
   }
+
+
+
+  // Park
+
+  public getParkMapMenu (): AxiosPromise<IMapMenuResponse>{
+    return this.api.get("/api/v1/map/section/2");
+  }
+
+  public async getParkLayerGeoJSON (path: string): Promise<any> {
+    const { data } = await this.api.get(path);
+    return data;
+  }
+
+  public getParkFeature (layerPath: string, id: number): AxiosPromise<any> {
+    return this.api.get(`${ layerPath }/${ id }`);
+  }
+
+  public getParkData (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/map/park/gis", { params });
+  }
+
+  public getParkDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`api/v1/map/park/gis/${ id }`);
+  }
+
+  public updateParkDetails (id: number, payload: Record<any, any>): AxiosPromise<any> {
+    return this.api.put(`api/v1/map/park/gis/${ id }`, { ...payload });
+  }
+
+  public getParkReferences (): AxiosPromise<any> {
+    return this.api.get("api/v1/map/park/gis/references");
+  }
+
+  public uploadParkImage (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/map/park/gis/${ id }/image`, payload);
+  }
+
+  public deleteParkImage (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/park/gis/image/${ id }`);
+  }
+
+  public deleteParkDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/park/gis/documents/${ id }`);
+  }
+
+
+
+  // Flower
+
+  public getFlowerMapMenu (): AxiosPromise<IMapMenuResponse>{
+    return this.api.get("/api/v1/map/section/2");
+  }
+
+  public async getFlowerLayerGeoJSON (path: string): Promise<any> {
+    const { data } = await this.api.get(path);
+    return data;
+  }
+
+  public getFlowerFeature (layerPath: string, id: number): AxiosPromise<any> {
+    return this.api.get(`${ layerPath }/${ id }`);
+  }
+
+  public getFlowerData (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/map/flower/gis", { params });
+  }
+
+  public getFlowerDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`api/v1/map/flower/gis/${ id }`);
+  }
+
+  public updateFlowerDetails (id: number, payload: Record<any, any>): AxiosPromise<any> {
+    return this.api.put(`api/v1/map/flower/gis/${ id }`, { ...payload });
+  }
+
+  public getFlowerReferences (): AxiosPromise<any> {
+    return this.api.get("api/v1/map/flower/gis/references");
+  }
+
+  public uploadFlowerImage (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/map/flower/gis/${ id }/image`, payload);
+  }
+
+  public deleteFlowerImage (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/flower/gis/image/${ id }`);
+  }
+
+  public deleteFlowerDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/flower/gis/documents/${ id }`);
+  }
+
+
+
+  // Trees
+
+  public getTreesMapMenu (): AxiosPromise<IMapMenuResponse>{
+    return this.api.get("/api/v1/map/section/2");
+  }
+
+  public async getTreesLayerGeoJSON (path: string): Promise<any> {
+    const { data } = await this.api.get(path);
+    return data;
+  }
+
+  public getTreesFeature (layerPath: string, id: number): AxiosPromise<any> {
+    return this.api.get(`${ layerPath }/${ id }`);
+  }
+
+  public getTreesData (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/map/trees/gis", { params });
+  }
+
+  public getTreesDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`api/v1/map/trees/gis/${ id }`);
+  }
+
+  public updateTreesDetails (id: number, payload: Record<any, any>): AxiosPromise<any> {
+    return this.api.put(`api/v1/map/trees/gis/${ id }`, { ...payload });
+  }
+
+  public getTreesReferences (): AxiosPromise<any> {
+    return this.api.get("api/v1/map/trees/gis/references");
+  }
+
+  public uploadTreesImage (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/map/trees/gis/${ id }/image`, payload);
+  }
+
+  public deleteTreesImage (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/trees/gis/image/${ id }`);
+  }
+
+  public deleteTreesDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/trees/gis/documents/${ id }`);
+  }
+
+
+
+  // Art
+
+  public getArtMapMenu (): AxiosPromise<IMapMenuResponse>{
+    return this.api.get("/api/v1/map/section/2");
+  }
+
+  public async getArtLayerGeoJSON (path: string): Promise<any> {
+    const { data } = await this.api.get(path);
+    return data;
+  }
+
+  public getArtFeature (layerPath: string, id: number): AxiosPromise<any> {
+    return this.api.get(`${ layerPath }/${ id }`);
+  }
+
+  public getArtData (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/map/artobject/gis", { params });
+  }
+
+  public getArtDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`api/v1/map/artobject/gis/${ id }`);
+  }
+
+  public updateArtDetails (id: number, payload: Record<any, any>): AxiosPromise<any> {
+    return this.api.put(`api/v1/map/artobject/gis/${ id }`, { ...payload });
+  }
+
+  public getArtReferences (): AxiosPromise<any> {
+    return this.api.get("api/v1/map/artobject/gis/references");
+  }
+
+  public uploadArtImage (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/map/artobject/gis/${ id }/image`, payload);
+  }
+
+  public deleteArtImage (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/artobject/gis/image/${ id }`);
+  }
+
+  public deleteArtDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/artobject/gis/documents/${ id }`);
+  }
+
+
+
+  // Square
+
+  public getSquareMapMenu (): AxiosPromise<IMapMenuResponse>{
+    return this.api.get("/api/v1/map/section/2");
+  }
+
+  public async getSquareLayerGeoJSON (path: string): Promise<any> {
+    const { data } = await this.api.get(path);
+    return data;
+  }
+
+  public getSquareFeature (layerPath: string, id: number): AxiosPromise<any> {
+    return this.api.get(`${ layerPath }/${ id }`);
+  }
+
+  public getSquareData (params: unknown): AxiosPromise<any> {
+    return this.api.get("/api/v1/map/square/gis", { params });
+  }
+
+  public getSquareDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`api/v1/map/square/gis/${ id }`);
+  }
+
+  public updateSquareDetails (id: number, payload: Record<any, any>): AxiosPromise<any> {
+    return this.api.put(`api/v1/map/square/gis/${ id }`, { ...payload });
+  }
+
+  public getSquareReferences (): AxiosPromise<any> {
+    return this.api.get("api/v1/map/square/gis/references");
+  }
+
+  public uploadSquareImage (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/map/square/gis/${ id }/image`, payload);
+  }
+
+  public deleteSquareImage (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/square/gis/image/${ id }`);
+  }
+
+  public deleteSquareDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/square/gis/documents/${ id }`);
+  }
 }

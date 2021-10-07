@@ -30,6 +30,34 @@ export class EstateService extends Service {
     return this.api.delete(`api/v1/map/buildings/gis/documents/${ id }`);
   }
 
+  public getCommerce (params: unknown): AxiosPromise<any> {
+    return this.api.get("api/v1/map/commerce/gis", { params });
+  }
+
+  public getCommerceDetails (id: number): AxiosPromise<any> {
+    return this.api.get(`api/v1/map/commerce/gis/${ id }`);
+  }
+
+  public updateCommerceDetails (id: number, payload: Record<any, any>): AxiosPromise<any> {
+    return this.api.put(`api/v1/map/commerce/gis/${ id }`, { ...payload });
+  }
+
+  public getCommerceReferences (): AxiosPromise<any> {
+    return this.api.get("api/v1/map/commerce/gis/references");
+  }
+
+  public uploadCommerceImage (id: number, payload: unknown): AxiosPromise<any> {
+    return this.api.post(`api/v1/map/commerce/gis/${ id }/image`, payload);
+  }
+
+  public deleteCommerceImage (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/commerce/gis/image/${ id }`);
+  }
+
+  public deleteCommerceDocument (id: number): AxiosPromise<any> {
+    return this.api.delete(`api/v1/map/commerce/gis/documents/${ id }`);
+  }
+
   // public static getApartments (id: number): AxiosPromise<any> {
   //   return this.api.get(`/api/v1/services/apartments/${ id }`);
   // }
