@@ -768,7 +768,11 @@
           "markdownDescription": "Добавьте описание проекта",
           "media": "Добавьте фото",
           "mediaMaxCount": "Не более 5 фото",
-          "loadedMedia": "Загруженные фотографии"
+          "loadedMedia": "Загруженные фотографии",
+          "type": "Тип заявки",
+          "descriptionLabel": "Описание проекта",
+          "projectMayor": "Проект мэрии",
+          "projectCitizen": "Проект жителя"
         }
       },
       "employmentCenter": "Employment center",
@@ -1180,7 +1184,47 @@
         "free": "Free",
         "parkingForGuests": "Available for guests",
         "nearSport": "У спорт. комплекса",
-        "nearUniversity": "Close to university"
+        "nearUniversity": "Close to university",
+        "chart": {
+          "pedestrianTab": {
+            "title": "Количество установленных объектов",
+            "undergroundPassages": "Подземные переходы",
+            "groundPassages": "Наземные переходы",
+            "rightTitle": "шт. всего"
+          },
+          "bicycleTab": {
+            "title": "Введено велосипедных парковок",
+            "triangular": "Треугольные",
+            "rectangular": "Прямоугольные",
+            "covered": "Крытые",
+            "rightTitle": "шт. всего",
+            "buses": "Автобусы",
+            "cars": "Личные автомобили",
+            "unmannedVehicles": "Беспилотные автомобили",
+            "pedestrians": "Пешеходы",
+            "bicycles": "Велосипедисты",
+            "other": "Прочее"
+          },
+          "carTab": {
+            "title": "Способы передвижения",
+            "rightTitle": "тыс.м протяженность дорог"
+          },
+          "parkingTab": {
+            "title": "Парковочные места возле основных объектов",
+            "rightTitle": "мест",
+            "places": "мест",
+            "popov": "АДЦ имени А. А. Попова",
+            "university": "Университет Иннополиса",
+            "lobachevsky": "АДЦ имени А. А. Лобачевского",
+            "sportcomplex": "Спортивный комплекс",
+            "fullArea": "Общая площадь",
+            "availableForRent": "Доступно для аренды"
+          },
+          "pedestrian": "Пешеходная",
+          "bicycle": "Велосипедная",
+          "car": "Автомобильный и общественный транспорт",
+          "parking": "Парковочные пространства"
+        }
       },
       "improvement": {
         "recreational": "Recreational area",
@@ -1244,9 +1288,9 @@
         "downPoint": "Lowest point of the city",
         "chart": {
           "title": "Расстояние от центра города до туристических мест",
-          "yLabel": "Distance, km",
-          "xLabel": "Tourist places",
-          "rightTitle": "places"
+          "yLabel": "Расстояние, км",
+          "xLabel": "Туристические места",
+          "rightTitle": "мест"
         }
       },
       "territory": {
